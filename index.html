@@ -9,23 +9,24 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="navbar">
-    <div class="logo">Dala🚲na.</div>
-    <div class="title">Dala Ko na.</div>
-    <div class="cart">dala-Cart</div>
-    <div class="hamburger" id="hamburger">&#9776;</div>
-  </header>
-
-  <!-- Mobile Nav -->
-  <nav id="mobileNav" class="mobile-nav hidden">
+  <!-- Left Hamburger Sidebar Nav -->
+  <div class="sidebar" id="sidebar">
     <a href="#join-rider">Join as Rider</a>
     <a href="#join-merchant">Join as Merchant</a>
     <a href="#partners">Our Partner Merchants</a>
-  </nav>
+  </div>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    <div class="logo">Dala🚲na.</div>
+    <div class="title">Dala Ko na.</div>
+    <div class="cart">dala-Cart</div>
+  </header>
 
   <!-- Hero Section -->
   <section class="hero">
+    <img src="https://images.unsplash.com/photo-1607082349567-e88a7c9c50ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Bike with groceries" class="hero-bg" />
     <div class="hero-text">
       <h1>Dala Ko na.</h1>
       <h2>Subong dayon!</h2>
@@ -83,10 +84,10 @@
 
   <script>
     const hamburger = document.getElementById("hamburger");
-    const mobileNav = document.getElementById("mobileNav");
+    const sidebar = document.getElementById("sidebar");
 
     hamburger.addEventListener("click", () => {
-      mobileNav.classList.toggle("hidden");
+      sidebar.classList.toggle("show");
     });
   </script>
 
