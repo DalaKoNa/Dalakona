@@ -3,64 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Merchant 1 – Dala🚲na</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Merchant 1 | Dala🚲na</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="hamburger" id="hamburger">&#9776;</div>
-    <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
-    <div class="cart" onclick="window.location.href='cart.html'">dala-Cart 🛒</div>
-  </header>
+<header class="navbar">
+  <a href="/" class="title">Dala🚲na.</a>
+  <div class="cart">🛒 <span id="cart-count">0</span></div>
+</header>
 
-  <!-- Merchant Info -->
-  <section class="merchant-profile">
-    <img src="https://via.placeholder.com/500x300" alt="Merchant 1 Logo" />
-    <h1>Merchant 1</h1>
-    <p>Fresh local produce and pantry staples, delivered same day!</p>
-  </section>
-
-  <!-- Product List -->
-  <section class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/200x150" alt="Item">
-      <h3>Tomatoes</h3>
-      <p>₱50 / 500g</p>
-      <button onclick="addToCart('Merchant 1', 'Tomatoes', 50)">Add 🛒</button>
+<section class="merchant-detail">
+  <h1>Merchant 1 – Grocery Shop</h1>
+  <div class="product-list">
+    <div class="product">
+      <p>Bananas – ₱20</p>
+      <button onclick="addToCart('Bananas', 20)">Add</button>
     </div>
-
-    <div class="product-card">
-      <img src="https://via.placeholder.com/200x150" alt="Item">
-      <h3>Eggs (1 dozen)</h3>
-      <p>₱90</p>
-      <button onclick="addToCart('Merchant 1', 'Eggs', 90)">Add 🛒</button>
+    <div class="product">
+      <p>Eggs (Dozen) – ₱60</p>
+      <button onclick="addToCart('Eggs', 60)">Add</button>
     </div>
+    <div class="product">
+      <p>Milk – ₱50</p>
+      <button onclick="addToCart('Milk', 50)">Add</button>
+    </div>
+  </div>
+</section>
 
-    <!-- Add more products similarly -->
-  </section>
+<section class="checkout">
+  <h2>Your Cart</h2>
+  <ul id="cart-list"></ul>
+  <p>Total: ₱<span id="cart-total">0</span></p>
+  <a id="checkout-btn" target="_blank">🛒 Checkout via Airtable</a>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Dala🚲na</p>
-  </footer>
-
-  <script>
-    let cart = [];
-
-    function addToCart(merchant, itemName, price) {
-      cart.push({ merchant, itemName, price });
-      alert(`${itemName} added to cart from ${merchant}!`);
-      localStorage.setItem('dalaCart', JSON.stringify(cart));
-    }
-
-    // Optional: load existing cart from localStorage
-    window.onload = () => {
-      const stored = localStorage.getItem('dalaCart');
-      if (stored) cart = JSON.parse(stored);
-    };
-  </script>
+<script src="js/cart.js"></script>
+<script>
+  initCart("Merchant 1");
+</script>
 
 </body>
 </html>
