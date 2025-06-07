@@ -1,52 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ellen's Cake – Dala🚲na</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merchant 1 – Dala🚲na</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Navbar -->
   <header class="navbar">
-    <a href="index.html" class="logo">← Back</a>
-    <div class="title">Ellen's Cake</div>
-    <div class="cart">🛒 <span id="cart-count">0</span></div>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
+    <div class="cart" onclick="window.location.href='cart.html'">dala-Cart 🛒</div>
   </header>
 
-  <section class="merchant-products">
-    <h2>Our Cakes</h2>
-    <div class="product-grid">
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Chocolate Cake" />
-        <h3>Chocolate Cake</h3>
-        <p>₱350</p>
-        <button onclick="addToCart('Chocolate Cake')">Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Ube Cake" />
-        <h3>Ube Cake</h3>
-        <p>₱300</p>
-        <button onclick="addToCart('Ube Cake')">Add to Cart</button>
-      </div>
-    </div>
+  <!-- Merchant Info -->
+  <section class="merchant-profile">
+    <img src="https://via.placeholder.com/500x300" alt="Merchant 1 Logo" />
+    <h1>Merchant 1</h1>
+    <p>Fresh local produce and pantry staples, delivered same day!</p>
   </section>
 
-  <section class="checkout">
-    <h3>Checkout Cart</h3>
-    <form id="orderForm" action="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" method="GET" target="_blank">
-      <input type="hidden" name="products" id="airtable-products">
-      <button type="submit" class="btn">Send My Order</button>
-    </form>
-    <p id="confirmation"></p>
+  <!-- Product List -->
+  <section class="product-grid">
+    <div class="product-card">
+      <img src="https://via.placeholder.com/200x150" alt="Item">
+      <h3>Tomatoes</h3>
+      <p>₱50 / 500g</p>
+      <button onclick="addToCart('Merchant 1', 'Tomatoes', 50)">Add 🛒</button>
+    </div>
+
+    <div class="product-card">
+      <img src="https://via.placeholder.com/200x150" alt="Item">
+      <h3>Eggs (1 dozen)</h3>
+      <p>₱90</p>
+      <button onclick="addToCart('Merchant 1', 'Eggs', 90)">Add 🛒</button>
+    </div>
+
+    <!-- Add more products similarly -->
   </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Dala🚲na</p>
+  </footer>
 
   <script>
     let cart = [];
 
-    function addToCart(product) {
-      cart.push(product);
-      document.getElementById("cart-count").innerText = cart.length;
-      document.getElementById("airtable-products").value = cart.join(", ");
+    function addToCart(merchant, itemName, price) {
+      cart.push({ merchant, itemName, price });
+      alert(`${itemName} added to cart from ${merchant}!`);
+      localStorage.setItem('dalaCart', JSON.stringify(cart));
     }
+
+    // Optional: load existing cart from localStorage
+    window.onload = () => {
+      const stored = localStorage.getItem('dalaCart');
+      if (stored) cart = JSON.parse(stored);
+    };
   </script>
+
 </body>
 </html>
