@@ -1,4 +1,4 @@
-/* General Reset */
+/* Global Styles */
 body, html {
   margin: 0;
   padding: 0;
@@ -35,7 +35,6 @@ body, html {
 .cart {
   font-size: 18px;
   white-space: nowrap;
-  color: white;
 }
 
 /* Sidebar */
@@ -71,8 +70,8 @@ body, html {
   justify-content: center;
   text-align: center;
   color: white;
+  margin-top: 60px;
   overflow: hidden;
-  margin-top: 60px; /* Offset for navbar */
 }
 
 .hero-bg {
@@ -85,6 +84,7 @@ body, html {
   height: 100%;
   width: 100%;
   z-index: -1;
+  filter: brightness(0.6);
 }
 
 .hero-text {
@@ -92,15 +92,17 @@ body, html {
   padding: 20px;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
+  max-width: 90%;
 }
 
 .hero-text h1 {
   font-size: 3rem;
+  margin: 0;
 }
 
 .hero-text h2 {
   font-size: 2rem;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 /* Partners Section */
@@ -122,11 +124,12 @@ body, html {
   text-align: center;
   text-decoration: none;
   color: #333;
+  max-width: 300px;
 }
 
 .merchant img {
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: auto;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -157,4 +160,25 @@ footer {
   margin-right: 10px;
   color: white;
   text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-text h2 {
+    font-size: 1.4rem;
+  }
+
+  .merchant-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
