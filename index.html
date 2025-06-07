@@ -7,20 +7,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
 <!-- Sidebar Navigation -->
 <div class="sidebar" id="sidebar">
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">Join as Rider</a>
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">Join as Merchant</a>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" class="btn" target="_blank">Join as Rider</a>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" class="btn" target="_blank">Join as Merchant</a>
   <a href="#partners">Our Partner Merchants</a>
 </div>
 
-<!-- Navbar -->
+<!-- Header -->
 <header class="navbar">
   <div class="hamburger" id="hamburger">&#9776;</div>
-  <div class="title" onclick="location.href='index.html'">Dala🚲na.</div>
+  <a href="/" class="title">Dala🚲na.</a>
   <div class="cart">🛒 dala-Cart</div>
 </header>
 
@@ -34,7 +33,7 @@
   </div>
 </section>
 
-<!-- Merchants Section -->
+<!-- Merchants -->
 <section class="partners" id="partners">
   <h2>Our Merchants</h2>
   <div class="merchant-grid">
@@ -45,6 +44,10 @@
     <a href="merchant2.html" class="merchant">
       <img src="https://via.placeholder.com/300x200" alt="Merchant 2">
       <p>Merchant 2</p>
+    </a>
+    <a href="merchant3.html" class="merchant">
+      <img src="https://via.placeholder.com/300x200" alt="Merchant 3">
+      <p>Merchant 3</p>
     </a>
   </div>
 </section>
@@ -70,10 +73,11 @@
   </div>
 </footer>
 
-<!-- Hamburger Menu Script -->
+<!-- JavaScript -->
 <script>
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
+
   hamburger.addEventListener("click", () => {
     sidebar.classList.toggle("show");
   });
