@@ -203,3 +203,17 @@ footer p {
 .sidebar.show {
   transform: translateX(0);
 }
+.btn {
+  background-color: #00b894;
+  color: white;
+  padding: 10px 20px;
+  display: inline-block;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 5px 0;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #019875;
+}
