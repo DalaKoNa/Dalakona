@@ -9,21 +9,24 @@
 </head>
 <body>
 
-  <!-- Sidebar Navigation (Hidden by Default) -->
-<div class="sidebar" id="sidebar">
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" class="btn" target="_blank">Join as Rider</a>
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" class="btn" target="_blank">Join as Merchant</a>
+  <!-- Hamburger sidebar nav -->
+<div id="sidebar" class="sidebar">
+  <a href="#" class="close-btn" id="closeBtn">&times;</a>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">Join as Rider</a>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">Join as Merchant</a>
   <a href="#partners">Our Partner Merchants</a>
 </div>
-  <!-- Header -->
+
+<!-- Header -->
 <header class="navbar">
-  <div class="hamburger" id="hamburger">&#9776;</div>
-  <div class="title" onclick="location.href='index.html'">Dala🚲na.</div>
-  <div class="cart" onclick="location.href='cart.html'">dala-Cart 🛒</div>
+  <div id="hamburger" class="hamburger">&#9776;</div>
+  <a href="/" class="title">Dala🚲na.</a>
+  <div class="cart">🛒 dala-Cart</div>
 </header>
 
-  <section class="hero">
-  <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80" alt="Stylish bike with basket full of groceries" class="hero-img" />
+<section class="hero">
+  <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1500&q=80" alt="Bike with basket full of groceries" class="hero-img" />
+  <div class="overlay"></div>
   <div class="hero-text">
     <h1>Dala Ko na.</h1>
     <h2>Subong dayon!</h2>
@@ -75,13 +78,17 @@
     </div>
   </footer>
 
-  <!-- JavaScript -->
-  <script>
+<script>
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
+  const closeBtn = document.getElementById("closeBtn");
 
   hamburger.addEventListener("click", () => {
-    sidebar.classList.toggle("show");
+    sidebar.style.width = "250px";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    sidebar.style.width = "0";
   });
 </script>
 
