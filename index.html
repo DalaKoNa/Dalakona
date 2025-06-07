@@ -9,79 +9,84 @@
 </head>
 <body>
 
-<!-- Sidebar Navigation -->
-<div class="sidebar" id="sidebar">
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" class="btn" target="_blank">Join as Rider</a>
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" class="btn" target="_blank">Join as Merchant</a>
-  <a href="#partners">Our Partner Merchants</a>
-</div>
-
-<!-- Header -->
-<header class="navbar">
-  <div class="hamburger" id="hamburger">&#9776;</div>
-  <a href="/" class="title">Dala🚲na.</a>
-  <div class="cart">🛒 dala-Cart</div>
-</header>
-
-<!-- Hero Section -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-text">
-    <h1>Dala Ko na.</h1>
-    <h2>Subong dayon!</h2>
-    <p>Delivering daily essentials with love & speed</p>
+  <!-- Sidebar (Hamburger Nav) -->
+  <div id="sidebar" class="sidebar">
+    <a href="#" class="close-btn" id="closeBtn">&times;</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">Join as Merchant</a>
+    <a href="#partners">Our Partner Merchants</a>
   </div>
-</section>
 
-<!-- Merchants -->
-<section class="partners" id="partners">
-  <h2>Our Merchants</h2>
-  <div class="merchant-grid">
-    <a href="merchant1.html" class="merchant">
-      <img src="https://via.placeholder.com/300x200" alt="Merchant 1">
-      <p>Merchant 1</p>
-    </a>
-    <a href="merchant2.html" class="merchant">
-      <img src="https://via.placeholder.com/300x200" alt="Merchant 2">
-      <p>Merchant 2</p>
-    </a>
-    <a href="merchant3.html" class="merchant">
-      <img src="https://via.placeholder.com/300x200" alt="Merchant 3">
-      <p>Merchant 3</p>
-    </a>
-  </div>
-</section>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div id="hamburger" class="hamburger">&#9776;</div>
+    <a href="/" class="title">Dala🚲na.</a>
+    <div class="cart">🛒 dala-Cart</div>
+  </header>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-left">
-    <p>@dalakona.subongdayon</p>
-    <div class="socials">
-      <a href="#">FB</a>
-      <a href="#">IG</a>
-      <a href="#">X</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1500&q=80" alt="Bike with groceries" class="hero-img" />
+    <div class="hero-text">
+      <h1>Dala Ko na.</h1>
+      <h2>Subong dayon!</h2>
+      <p>Delivering daily essentials with love & speed</p>
     </div>
-  </div>
-  <div class="footer-right">
-    <a href="#">Careers</a>
-    <a href="#">About</a>
-    <a href="#">Offers</a>
-    <a href="#">T&C</a>
-    <a href="#">Privacy</a>
-    <a href="#">Privacy Statement</a>
-    <p>© 2025 Dala🚲na. All rights reserved.</p>
-  </div>
-</footer>
+  </section>
 
-<!-- JavaScript -->
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sidebar = document.getElementById("sidebar");
+  <!-- Merchants Section -->
+  <section class="partners" id="partners">
+    <h2>Our Merchants</h2>
+    <div class="merchant-grid">
+      <a href="merchant1.html" class="merchant">
+        <img src="https://via.placeholder.com/300x200" alt="Merchant 1">
+        <p>Merchant 1</p>
+      </a>
+      <a href="merchant2.html" class="merchant">
+        <img src="https://via.placeholder.com/300x200" alt="Merchant 2">
+        <p>Merchant 2</p>
+      </a>
+      <a href="merchant3.html" class="merchant">
+        <img src="https://via.placeholder.com/300x200" alt="Merchant 3">
+        <p>Merchant 3</p>
+      </a>
+    </div>
+  </section>
 
-  hamburger.addEventListener("click", () => {
-    sidebar.classList.toggle("show");
-  });
-</script>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">X</a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <a href="#">Careers</a>
+      <a href="#">About</a>
+      <a href="#">Offers</a>
+      <a href="#">T&C</a>
+      <a href="#">Privacy</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
+
+    hamburger.addEventListener("click", () => {
+      sidebar.style.width = "250px";
+    });
+
+    closeBtn.addEventListener("click", () => {
+      sidebar.style.width = "0";
+    });
+  </script>
 
 </body>
 </html>
