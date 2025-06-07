@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Dala-Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
+    <div class="cart">Your Cart 🛒</div>
+  </header>
+
+  <section class="cart-page">
+    <h1>Review Your Cart</h1>
+    <ul id="cart-list"></ul>
+    <button onclick="submitCart()">Submit Order</button>
+  </section>
+
+  <script>
+    const cartList = document.getElementById("cart-list");
+    let cart = JSON.parse(localStorage.getItem("dalaCart") || "[]");
+
+    if (cart.length === 0) {
+      cartList.innerHTML = "<p>Your cart is empty!</p>";
+    } else {
+      cart.forEach((item, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.itemName} from ${item.merchant} – ₱${item.price}`;
+        cartList.appendChild(li);
+      });
+    }
+
+    function submitCart() {
+      // Group items by merchant
+      const grouped = {};
+      cart.forEach(item => {
+        if (!grouped[item.merchant]) grouped[item.merchant] = [];
+        grouped[item.merchant].push(`${item.itemName} (₱${item.price})`);
+      });
+
+      // For demo: submit only to the first merchant
+      const merchant = Object.keys(grouped)[0];
+      const items = grouped[merchant].join(", ");
+
+      const airtableURL = {
+        "Merchant 1": "https://airtable.com/appXXX/pagXXXX/form",
+        "Merchant 2": "https://airtable.com/appXXX/pagYYYY/form"
+      }[merchant];
+
+      if (!airtableURL) {
+        alert("Unknown merchant!");
+        return;
+      }
+
+      const fullURL = `${airtableURL}?prefill_Items=${encodeURIComponent(items)}`;
+
+      window.location.href = fullURL;
+    }
+  </script>
+
+</body>
+</html>
