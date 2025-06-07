@@ -432,3 +432,104 @@ footer {
   z-index: 1;
   padding: 0 1rem;
 }
+.hero {
+  position: relative;
+  height: 100vh;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hero-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(245, 245, 245, 0.5); /* white-gray overlay with 50% opacity */
+  z-index: 1;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+  padding: 0 1rem;
+}
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0; left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  z-index: 9999;
+  font-family: 'Cinzel', serif;
+}
+
+.sidebar a {
+  padding: 10px 30px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  display: block;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background-color: #ddd;
+}
+
+.sidebar .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-family: 'Cinzel', serif;
+  position: relative;
+  z-index: 10000;
+}
+
+.hamburger {
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.title {
+  font-size: 24px;
+  color: #333;
+  text-decoration: none;
+}
+
+.cart {
+  font-size: 18px;
+  cursor: pointer;
+}
