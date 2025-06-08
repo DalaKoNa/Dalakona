@@ -461,7 +461,6 @@ footer {
   .socials a {
     margin-right: 1em;
   }
-}
 .hero {
   position: relative;
   text-align: center;
@@ -481,23 +480,65 @@ footer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.4); /* semi-transparent black */
-  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1rem 1.5rem;
   border-radius: 12px;
   text-align: center;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 1.5s ease-out forwards;
+  opacity: 0;
 }
 
 .hero-text h1 {
-  font-size: 3rem;
+  font-size: 2.25rem;
   margin-bottom: 0.5rem;
 }
 
 .hero-text h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .hero-text p {
-  font-size: 1.25rem;
+  font-size: 1rem;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Responsive text sizing */
+@media (max-width: 768px) {
+  .hero-text h1 {
+    font-size: 1.75rem;
+  }
+  .hero-text h2 {
+    font-size: 1.25rem;
+  }
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text {
+    padding: 0.75rem 1rem;
+  }
+  .hero-text h1 {
+    font-size: 1.5rem;
+  }
+  .hero-text h2 {
+    font-size: 1.1rem;
+  }
+  .hero-text p {
+    font-size: 0.9rem;
+  }
 }
