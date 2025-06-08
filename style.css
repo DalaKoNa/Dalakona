@@ -186,3 +186,62 @@ footer {
 .hidden {
   display: none;
 }
+.checkout-form {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  z-index: 999;
+  border: 2px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+}
+
+.checkout-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.checkout-form button {
+  margin-top: 1.2rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.checkout-form button[type="button"] {
+  background-color: #ccc;
+  color: #000;
+  margin-left: 1rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
