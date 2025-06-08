@@ -4,83 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Merchant 1 | Dala🚲na</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header class="navbar">
-  <a href="/" class="title">Dala🚲na.</a>
-  <div class="cart">🛒 <span id="cart-count">0</span></div>
-</header>
-
-<section class="merchant-detail">
-  <h1>Merchant 1 – Grocery Shop</h1>
-  <div class="product-list">
-    <div class="product">
-      <p>Bananas – ₱20</p>
-      <button onclick="addToCart('Bananas', 20)">Add</button>
-    </div>
-    <div class="product">
-      <p>Eggs (Dozen) – ₱60</p>
-      <button onclick="addToCart('Eggs', 60)">Add</button>
-    </div>
-    <div class="product">
-      <p>Milk – ₱50</p>
-      <button onclick="addToCart('Milk', 50)">Add</button>
-    </div>
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="#" class="close-btn" id="closeBtn">&times;</a>
+    <a href="index.html">Home</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">Join as Merchant</a>
+    <a href="index.html#partners">Our Partner Merchants</a>
   </div>
-</section>
-<!-- Other content above -->
 
-<!-- Cart Display Section -->
-<div>
-  <h3>Cart (<span id="cart-count">0</span> items)</h3>
-  <ul id="cart-list"></ul>
-  <p>Total: ₱<span id="cart-total">0</span></p>
-  <a id="checkout-btn" href="#" target="_blank">Checkout</a>
-</div>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div id="hamburger" class="hamburger">&#9776;</div>
+    <a href="index.html" class="title">Dala🚲na.</a>
+    <div class="cart">🛒 <span id="cart-count">0</span></div>
+  </header>
 
-<!-- Shopping Cart Script -->
-<script>
-  let cart = [];
-  let merchantName = "";
+  <!-- Merchant Content -->
+  <section class="merchant-detail">
+    <h1>Merchant 1 – Grocery Shop</h1>
+    <div class="product-list">
+      <div class="product">
+        <p>Bananas – ₱20</p>
+        <button onclick="addToCart('Bananas', 20)">Add</button>
+      </div>
+      <div class="product">
+        <p>Eggs (Dozen) – ₱60</p>
+        <button onclick="addToCart('Eggs', 60)">Add</button>
+      </div>
+      <div class="product">
+        <p>Milk – ₱50</p>
+        <button onclick="addToCart('Milk', 50)">Add</button>
+      </div>
+    </div>
+  </section>
 
-  function initCart(merchant) {
-    merchantName = merchant;
-    updateCartDisplay();
-  }
+  <!-- Cart Section -->
+  <section class="cart-section">
+    <h3>Cart (<span id="cart-count">0</span> items)</h3>
+    <ul id="cart-list"></ul>
+    <p>Total: ₱<span id="cart-total">0</span></p>
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">Checkout</a>
+  </section>
 
-  function addToCart(item, price) {
-    cart.push({ item, price });
-    updateCartDisplay();
-  }
+  <!-- Script -->
+  <script>
+    let cart = [];
+    let merchantName = "Merchant 1";
 
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const checkoutBtn = document.getElementById("checkout-btn");
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCartDisplay();
+    }
 
-    cartList.innerHTML = "";
-    let total = 0;
-    cart.forEach(entry => {
-      const li = document.createElement("li");
-      li.textContent = `${entry.item} – ₱${entry.price}`;
-      cartList.appendChild(li);
-      total += entry.price;
+    function updateCartDisplay() {
+      const cartList = document.getElementById("cart-list");
+      const cartTotal = document.getElementById("cart-total");
+      const cartCount = document.querySelectorAll("#cart-count");
+
+      cartList.innerHTML = "";
+      let total = 0;
+      cart.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `${entry.item} – ₱${entry.price}`;
+        cartList.appendChild(li);
+        total += entry.price;
+      });
+
+      cartTotal.textContent = total;
+      cartCount.forEach(span => span.textContent = cart.length);
+
+      const itemsStr = cart.map(e => e.item).join(", ");
+      const airtableURL = `https://airtable.com/appISjv70ZQ4pxBxv/pagNTESTFORM?prefill_Merchant=${encodeURIComponent(merchantName)}&prefill_Items=${encodeURIComponent(itemsStr)}&prefill_Total=${total}`;
+
+      document.getElementById("checkout-btn").href = airtableURL;
+    }
+
+    // Sidebar script
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
+
+    hamburger.addEventListener("click", () => {
+      sidebar.style.width = "250px";
     });
 
-    cartTotal.textContent = total;
-    cartCount.textContent = cart.length;
+    closeBtn.addEventListener("click", () => {
+      sidebar.style.width = "0";
+    });
 
-    const itemsStr = cart.map(e => e.item).join(", ");
-    const airtableURL = `https://airtable.com/appISjv70ZQ4pxBxv/pagNTESTFORM?prefill_Merchant=${encodeURIComponent(merchantName)}&prefill_Items=${encodeURIComponent(itemsStr)}&prefill_Total=${total}`;
-
-    checkoutBtn.href = airtableURL;
-  }
-
-  // Example init for Merchant 1:
-  initCart("Merchant 1");
-</script>
+    const sidebarLinks = sidebar.querySelectorAll("a");
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.style.width = "0";
+      });
+    });
+  </script>
 </body>
 </html>
