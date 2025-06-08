@@ -542,3 +542,9 @@ footer {
     font-size: 0.9rem;
   }
 }
+<style>
+  .merchant-banner img {
+    display: block;
+    margin: 0 auto;
+  }
+</style>
