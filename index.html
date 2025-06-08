@@ -20,7 +20,7 @@
   <!-- Navbar -->
   <header class="navbar">
     <div id="hamburger" class="hamburger">&#9776;</div>
-    <a href="/" class="title">Dala🚲na.</a>
+    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
     <div class="cart">🛒 dala-Cart</div>
   </header>
 
@@ -109,6 +109,15 @@
       sidebar.style.width = "0";
     });
   });
+</script>
+<script>
+  function scrollToTop(e) {
+    e.preventDefault(); // Prevent the default anchor behavior
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 </script>
 
 </body>
