@@ -128,6 +128,21 @@
         cart[item] = { price, qty: 1 };
       }
       updateCartDisplay();
+function decreaseItem(item) {
+  if (cart[item]) {
+    cart[item].qty -= 1;
+    if (cart[item].qty <= 0) {
+      delete cart[item];
+    }
+    updateCartDisplay();
+  }
+}
+
+function removeItem(item) {
+  delete cart[item];
+  updateCartDisplay();
+}
+
     }
 function updateCartDisplay() {
   const cartList = document.getElementById("cart-list");
