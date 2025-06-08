@@ -81,50 +81,60 @@
     <p>Total: ₱<span id="cart-total">0</span></p>
     <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">Checkout</a>
   </section>
+<!-- Script -->
+<script>
+  const cart = {};
+  const merchantName = "Merchant 1";
 
-  <!-- Script -->
-  <script>
-    const cart = {};
-    const merchantName = "Merchant 1";
+  function addToCart(item, price) {
+    if (cart[item]) {
+      cart[item].qty += 1;
+    } else {
+      cart[item] = { price, qty: 1 };
+    }
+    updateCartDisplay();
+  }
 
-    function addToCart(item, price) {
-      if (cart[item]) {
-        cart[item].qty += 1;
-      } else {
-        cart[item] = { price, qty: 1 };
-      }
-      updateCartDisplay();
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.querySelectorAll("#cart-count");
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let totalPrice = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+      totalQty += entry.qty;
+      totalPrice += entry.price * entry.qty;
     }
 
-    function updateCartDisplay() {
-      const cartList = document.getElementById("cart-list");
-      const cartTotal = document.getElementById("cart-total");
-      const cartCount = document.querySelectorAll("#cart-count");
+    cartTotal.textContent = totalPrice;
+    cartCount.forEach(el => el.textContent = totalQty);
 
-      cartList.innerHTML = "";
-      let totalQty = 0;
-      let totalPrice = 0;
+    // Get input values (if present in the DOM)
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
-      for (let item in cart) {
-        const entry = cart[item];
-        const li = document.createElement("li");
-        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-        cartList.appendChild(li);
-        totalQty += entry.qty;
-        totalPrice += entry.price * entry.qty;
-      }
+    const itemsStr = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty}`)
+      .join(", ");
 
-      cartTotal.textContent = totalPrice;
-      cartCount.forEach(el => el.textContent = totalQty);
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(totalPrice)}`;
 
-      const itemsStr = Object.entries(cart)
-        .map(([item, data]) => `${item} × ${data.qty}`)
-        .join(", ");
-      const airtableURL = `https://airtable.com/appISjv70ZQ4pxBxv/pagNTESTFORM?prefill_Merchant=${encodeURIComponent(merchantName)}&prefill_Items=${encodeURIComponent(itemsStr)}&prefill_Total=${totalPrice}`;
-
-      document.getElementById("checkout-btn").href = airtableURL;
-    }
-  </script>
+    document.getElementById("checkout-btn").href = filloutURL;
+  }
+</script>
 
 </body>
 </html>
