@@ -46,7 +46,7 @@
         <img src="https://via.placeholder.com/300x200" alt="Merchant 2">
         <p>Merchant 2</p>
       </a>
-      <a href="merchant3.html" class="merchant">
+      <a href="#" class="merchant">
         <img src="https://via.placeholder.com/300x200" alt="Merchant 3">
         <p>Merchant 3</p>
       </a>
@@ -72,21 +72,27 @@
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const sidebar = document.getElementById("sidebar");
+  const closeBtn = document.getElementById("closeBtn");
 
-  <!-- Script -->
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.getElementById("sidebar");
-    const closeBtn = document.getElementById("closeBtn");
+  hamburger.addEventListener("click", () => {
+    sidebar.style.width = "250px";
+  });
 
-    hamburger.addEventListener("click", () => {
-      sidebar.style.width = "250px";
-    });
+  closeBtn.addEventListener("click", () => {
+    sidebar.style.width = "0";
+  });
 
-    closeBtn.addEventListener("click", () => {
+  // Close sidebar when any link inside is clicked
+  const sidebarLinks = sidebar.querySelectorAll("a");
+  sidebarLinks.forEach(link => {
+    link.addEventListener("click", () => {
       sidebar.style.width = "0";
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
