@@ -131,3 +131,43 @@ footer {
   text-decoration: none;
   margin: 5px 0;
 }
+/* Sidebar */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 30px;
+  color: white;
+  text-decoration: none;
+}
+
+.hamburger {
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: 10px;
+}
