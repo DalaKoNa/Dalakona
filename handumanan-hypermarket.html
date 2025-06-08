@@ -118,106 +118,87 @@
 
   <!-- JS Logic -->
   <script>
-    const cart = {};
-    const merchantName = "Merchant 1";
+  const cart = {};
+  const serviceFee = 29.99;
 
-    function addToCart(item, price) {
-      if (cart[item]) {
-        cart[item].qty += 1;
-      } else {
-        cart[item] = { price, qty: 1 };
-      }
-      updateCartDisplay();
-function decreaseItem(item) {
-  if (cart[item]) {
-    cart[item].qty -= 1;
-    if (cart[item].qty <= 0) {
-      delete cart[item];
+  function addToCart(item, price) {
+    if (cart[item]) {
+      cart[item].qty += 1;
+    } else {
+      cart[item] = { price, qty: 1 };
     }
     updateCartDisplay();
   }
-}
 
-function removeItem(item) {
-  delete cart[item];
-  updateCartDisplay();
-}
-
+  function decreaseItem(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) {
+        delete cart[item];
+      }
+      updateCartDisplay();
     }
-function updateCartDisplay() {
-  const cartList = document.getElementById("cart-list");
-  const cartTotal = document.getElementById("cart-total");
-  const cartCount = document.querySelectorAll("#cart-count");
-
-  cartList.innerHTML = "";
-  let totalQty = 0;
-  let totalPrice = 0;
-
-  for (let item in cart) {
-    const entry = cart[item];
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
-      <button onclick="decreaseItem('${item}')">➖</button>
-      <button onclick="removeItem('${item}')">❌</button>
-    `;
-    cartList.appendChild(li);
-    totalQty += entry.qty;
-    totalPrice += entry.price * entry.qty;
   }
 
-  cartTotal.textContent = totalPrice;
-  cartCount.forEach(el => el.textContent = totalQty);
+  function removeItem(item) {
+    delete cart[item];
+    updateCartDisplay();
+  }
 
-  const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-  const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-  const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.querySelectorAll("#cart-count");
 
-  const itemsStr = Object.entries(cart)
-    .map(([item, data]) => `${item} × ${data.qty}`)
-    .join(", ");
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
 
-  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-    `?Name=${name}` +
-    `&Email=${email}` +
-    `&Contact_Number=${contact}` +
-    `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-    `&Total_price=${encodeURIComponent(totalPrice)}`;
+    for (let item in cart) {
+      const entry = cart[item];
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">➕</button>
+        <button onclick="decreaseItem('${item}')">➖</button>
+        <button onclick="removeItem('${item}')">❌</button>
+      `;
+      cartList.appendChild(li);
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+    }
 
-  document.getElementById("checkout-btn").href = filloutURL;
-}
+    // Add fixed service & delivery fee
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
 
-  // Add fixed service & delivery fee
-  const serviceFee = 29.99;
-  const feeLine = document.createElement("li");
-  feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-  cartList.appendChild(feeLine);
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.forEach(el => el.textContent = totalQty);
 
-  const finalTotal = subtotal + serviceFee;
-  cartTotal.textContent = finalTotal.toFixed(2);
-  cartCount.forEach(el => el.textContent = totalQty);
+    // Update checkout link
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
-  // Get input values
-  const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-  const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-  const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+    const itemsStr = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty}`)
+      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
+      .join(", ");
 
-  const itemsStr = Object.entries(cart)
-    .map(([item, data]) => `${item} × ${data.qty}`)
-    .concat([`Service & Delivery Fee × 1`])
-    .join(", ");
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
 
-  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-    `?Name=${name}` +
-    `&Email=${email}` +
-    `&Contact_Number=${contact}` +
-    `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-    `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
-
-  document.getElementById("checkout-btn").href = filloutURL;
-}
-
-  </script>
+    document.getElementById("checkout-btn").href = filloutURL;
+  }
+</script>
 
 </body>
 </html>
