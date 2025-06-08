@@ -105,5 +105,32 @@
       });
     });
   </script>
+<!-- Checkout Button -->
+<button onclick="openForm()">🛒 Checkout</button>
+
+<!-- Checkout Modal -->
+<div id="checkout-form" class="checkout-form hidden">
+  <form id="order-form">
+    <h3>Checkout</h3>
+    <label>Name:</label>
+    <input type="text" id="name" required />
+
+    <label>Email:</label>
+    <input type="email" id="email" required />
+
+    <label>Contact #:</label>
+    <input type="tel" id="contact" required />
+
+    <label>Address:</label>
+    <textarea id="address" required></textarea>
+
+    <label>Special Instructions:</label>
+    <textarea id="notes"></textarea>
+
+    <button type="submit">Submit Order</button>
+    <button type="button" onclick="closeForm()">Cancel</button>
+  </form>
+</div>
+
 </body>
 </html>
