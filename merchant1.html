@@ -104,6 +104,85 @@
         sidebar.style.width = "0";
       });
     });
+<script>
+let cart = [];
+let merchantName = "";
+
+function initCart(merchant) {
+  merchantName = merchant;
+  updateCartDisplay();
+}
+
+function addToCart(item, price) {
+  cart.push({ item, price });
+  updateCartDisplay();
+}
+
+function updateCartDisplay() {
+  const cartList = document.getElementById("cart-list");
+  const cartTotal = document.getElementById("cart-total");
+  const cartCount = document.getElementById("cart-count");
+
+  cartList.innerHTML = "";
+  let total = 0;
+  cart.forEach(entry => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.item} – ₱${entry.price}`;
+    cartList.appendChild(li);
+    total += entry.price;
+  });
+
+  cartTotal.textContent = total;
+  cartCount.textContent = cart.length;
+}
+
+function openForm() {
+  document.getElementById("checkout-form").classList.remove("hidden");
+}
+function closeForm() {
+  document.getElementById("checkout-form").classList.add("hidden");
+}
+
+document.getElementById("order-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const contact = document.getElementById("contact").value;
+  const address = document.getElementById("address").value;
+  const notes = document.getElementById("notes").value;
+
+  const items = cart.map(c => `${c.item} (₱${c.price})`).join(", ");
+  const total = cart.reduce((sum, c) => sum + c.price, 0);
+
+  // ✅ Step 1: Airtable submission in new tab
+  const airtableURL = `https://airtable.com/appISjv70ZQ4pxBxv/pagOVgcwePh9vMkW3/form?prefill_Name=${encodeURIComponent(name)}&prefill_Email=${encodeURIComponent(email)}&prefill_Contact+Number=${encodeURIComponent(contact)}&prefill_Address=${encodeURIComponent(address)}&prefill_Special+Instructions=${encodeURIComponent(notes)}&prefill_Items=${encodeURIComponent(items)}&prefill_Total+Price=${total}&prefill_Merchant=${encodeURIComponent(merchantName)}`;
+  window.open(airtableURL, "_blank");
+
+  // ✅ Step 2: Send confirmation email via Formspree
+  const formData = new FormData();
+  formData.append("_replyto", email);
+  formData.append("message", `Hi ${name},\n\nThanks for your order from ${merchantName}!\n\nItems: ${items}\nTotal: ₱${total}\n\nWe’ll deliver to:\n${address}\n\n- Dala Ko Na 🚲`);
+
+  fetch("https://formspree.io/f/mpwrqvlo", {
+    method: "POST",
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      alert("✅ Order submitted! 📧 Confirmation sent.");
+    } else {
+      alert("⚠️ Order saved, but email failed to send.");
+    }
+  });
+
+  cart = [];
+  updateCartDisplay();
+  closeForm();
+  this.reset();
+});
+</script>
+
   </script>
 <!-- Checkout Button -->
 <button onclick="openForm()">🛒 Checkout</button>
