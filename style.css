@@ -548,3 +548,28 @@ footer {
     margin: 0 auto;
   }
 </style>
+<style>
+  body {
+    font-family: 'Cinzel', serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    background-color: #222;
+    color: white;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* New style for cart buttons */
+  .cart-section button {
+    margin-left: 5px;
+    font-size: 0.8em;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+</style>
