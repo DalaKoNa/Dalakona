@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Merchant 1 | Dala🚲na</title>
+  <title>Handumanan Hypermarket | Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -75,22 +75,29 @@
 
   <!-- Merchant Content -->
   <section class="merchant-detail">
-    <h1>Merchant 1 – Grocery Shop</h1>
-    <div class="product-list">
-      <div class="product">
-        <p>Bananas – ₱20</p>
-        <button onclick="addToCart('Bananas', 20)">Add</button>
-      </div>
-      <div class="product">
-        <p>Eggs (Dozen) – ₱60</p>
-        <button onclick="addToCart('Eggs', 60)">Add</button>
-      </div>
-      <div class="product">
-        <p>Milk – ₱50</p>
-        <button onclick="addToCart('Milk', 50)">Add</button>
-      </div>
-    </div>
-  </section>
+  <h1>Handumanan Hypermarket</h1>
+  <div class="product-list">
+    <!-- 🥬 Vegetables -->
+    <div class="product"><p>Tomatoes – ₱25</p><button onclick="addToCart('Tomatoes', 25)">Add</button></div>
+    <div class="product"><p>Potatoes (1kg) – ₱45</p><button onclick="addToCart('Potatoes (1kg)', 45)">Add</button></div>
+    <div class="product"><p>Onions (1kg) – ₱55</p><button onclick="addToCart('Onions (1kg)', 55)">Add</button></div>
+
+    <!-- 🍜 Snacks & Dry Goods -->
+    <div class="product"><p>Skyflakes Crackers – ₱15</p><button onclick="addToCart('Skyflakes Crackers', 15)">Add</button></div>
+    <div class="product"><p>Nissin Cup Noodles – ₱22</p><button onclick="addToCart('Nissin Cup Noodles', 22)">Add</button></div>
+    <div class="product"><p>Piattos (Large) – ₱30</p><button onclick="addToCart('Piattos (Large)', 30)">Add</button></div>
+
+    <!-- 🥫 Canned Goods -->
+    <div class="product"><p>Century Tuna – ₱40</p><button onclick="addToCart('Century Tuna', 40)">Add</button></div>
+    <div class="product"><p>Argentina Corned Beef – ₱39</p><button onclick="addToCart('Argentina Corned Beef', 39)">Add</button></div>
+    <div class="product"><p>555 Sardines – ₱18</p><button onclick="addToCart('555 Sardines', 18)">Add</button></div>
+
+    <!-- 🧴 Household Items -->
+    <div class="product"><p>Safeguard Soap – ₱28</p><button onclick="addToCart('Safeguard Soap', 28)">Add</button></div>
+    <div class="product"><p>Surf Powder (350g) – ₱25</p><button onclick="addToCart('Surf Powder (350g)', 25)">Add</button></div>
+    <div class="product"><p>Downy Sachet – ₱7</p><button onclick="addToCart('Downy Sachet', 7)">Add</button></div>
+  </div>
+</section>
 
   <!-- Cart & Checkout -->
   <section class="cart-section">
