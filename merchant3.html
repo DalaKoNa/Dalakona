@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merchant 3 | Dala🚲na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 1.5em;
+      text-decoration: none;
+      color: white;
+    }
+
+    .cart {
+      font-size: 1.2em;
+    }
+
+    .merchant-detail {
+      padding: 1em;
+    }
+
+    .product {
+      margin-bottom: 1em;
+    }
+
+    .cart-section {
+      background: #f9f9f9;
+      padding: 1em;
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="title">Dala🚲na.</a>
+    <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+  </header>
+
+  <!-- Merchant Content -->
+  <section class="merchant-detail">
+    <h1>Merchant 3 – Grocery Shop</h1>
+    <div class="product-list">
+      <div class="product">
+        <p>Bananas – ₱20</p>
+        <button onclick="addToCart('Bananas', 20)">Add</button>
+      </div>
+      <div class="product">
+        <p>Eggs (Dozen) – ₱60</p>
+        <button onclick="addToCart('Eggs', 60)">Add</button>
+      </div>
+      <div class="product">
+        <p>Milk – ₱50</p>
+        <button onclick="addToCart('Milk', 50)">Add</button>
+      </div>
+    </div>
+  </section>
+<section class="cart-section">
+  <div class="cart-card">
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p class="total">Total: ₱<span id="cart-total">0</span></p>
+
+    <div class="form-fields">
+      <input type="text" id="user-name" placeholder="Your Name" />
+      <input type="email" id="user-email" placeholder="Your Email" />
+      <input type="tel" id="user-contact" placeholder="Contact Number" />
+    </div>
+
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  </div>
+</section>
+
+<script>
+  const cart = {};
+  const merchantName = "Merchant 1";
+
+  function addToCart(item, price) {
+    if (cart[item]) {
+      cart[item].qty += 1;
+    } else {
+      cart[item] = { price, qty: 1 };
+    }
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.querySelectorAll("#cart-count");
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let totalPrice = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+      totalQty += entry.qty;
+      totalPrice += entry.price * entry.qty;
+    }
+
+    cartTotal.textContent = totalPrice;
+    cartCount.forEach(el => el.textContent = totalQty);
+
+    // Get input values (if present in the DOM)
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+
+    const itemsStr = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty}`)
+      .join(", ");
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(totalPrice)}`;
+
+    document.getElementById("checkout-btn").href = filloutURL;
+  }
+</script>
+
+</body>
+</html>
