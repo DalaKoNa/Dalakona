@@ -390,3 +390,75 @@ footer {
 .checkout-btn:hover {
   background-color: #225e5f;
 }
+footer {
+  font-family: 'Cinzel', serif;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em 3em;
+  background-color: #1e1e1e;
+  color: #eee;
+  flex-wrap: wrap;
+  gap: 1.5em;
+}
+
+.footer-left, .footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  min-width: 180px;
+}
+
+.footer-left p {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #e0b87e; /* warm gold */
+}
+
+.socials a {
+  margin-right: 0.8em;
+  font-weight: 700;
+  color: #e0b87e;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: color 0.3s ease;
+}
+
+.socials a:hover {
+  color: #fff;
+}
+
+.footer-right a {
+  color: #bbb;
+  text-decoration: none;
+  font-size: 0.95em;
+  margin-bottom: 0.4em;
+  transition: color 0.3s ease;
+}
+
+.footer-right a:hover {
+  color: #e0b87e;
+}
+
+.footer-right p {
+  margin-top: 1em;
+  font-size: 0.85em;
+  color: #888;
+}
+
+/* Responsive: stack on smaller screens */
+@media (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-left, .footer-right {
+    align-items: center;
+    min-width: auto;
+  }
+  
+  .socials a {
+    margin-right: 1em;
+  }
+}
