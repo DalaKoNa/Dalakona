@@ -124,46 +124,53 @@
     }
 
     function updateCartDisplay() {
-      const cartList = document.getElementById("cart-list");
-      const cartTotal = document.getElementById("cart-total");
-      const cartCount = document.querySelectorAll("#cart-count");
+  const cartList = document.getElementById("cart-list");
+  const cartTotal = document.getElementById("cart-total");
+  const cartCount = document.querySelectorAll("#cart-count");
 
-      cartList.innerHTML = "";
-      let totalQty = 0;
-      let totalPrice = 0;
+  cartList.innerHTML = "";
+  let totalQty = 0;
+  let subtotal = 0;
 
-      for (let item in cart) {
-        const entry = cart[item];
-        const li = document.createElement("li");
-        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-        cartList.appendChild(li);
-        totalQty += entry.qty;
-        totalPrice += entry.price * entry.qty;
-      }
+  for (let item in cart) {
+    const entry = cart[item];
+    const li = document.createElement("li");
+    li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+    cartList.appendChild(li);
+    totalQty += entry.qty;
+    subtotal += entry.price * entry.qty;
+  }
 
-      cartTotal.textContent = totalPrice;
-      cartCount.forEach(el => el.textContent = totalQty);
+  // Add fixed service & delivery fee
+  const serviceFee = 29.99;
+  const feeLine = document.createElement("li");
+  feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+  cartList.appendChild(feeLine);
 
-      // Get user info
-      const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-      const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-      const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+  const finalTotal = subtotal + serviceFee;
+  cartTotal.textContent = finalTotal.toFixed(2);
+  cartCount.forEach(el => el.textContent = totalQty);
 
-      // Get item summary
-      const itemsStr = Object.entries(cart)
-        .map(([item, data]) => `${item} × ${data.qty}`)
-        .join(", ");
+  // Get input values
+  const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+  const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+  const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
-      // Fillout link
-      const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-        `?Name=${name}` +
-        `&Email=${email}` +
-        `&Contact_Number=${contact}` +
-        `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-        `&Total_price=${encodeURIComponent(totalPrice)}`;
+  const itemsStr = Object.entries(cart)
+    .map(([item, data]) => `${item} × ${data.qty}`)
+    .concat([`Service & Delivery Fee × 1`])
+    .join(", ");
 
-      document.getElementById("checkout-btn").href = filloutURL;
-    }
+  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+    `?Name=${name}` +
+    `&Email=${email}` +
+    `&Contact_Number=${contact}` +
+    `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+    `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
+
+  document.getElementById("checkout-btn").href = filloutURL;
+}
+
   </script>
 
 </body>
