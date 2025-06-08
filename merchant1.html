@@ -2,34 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Merchant 1 | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Simple modal styling for demo */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      justify-content: center; align-items: center;
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0;
+      padding: 0;
     }
-    .modal.show {
+
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .checkout-form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
+
+    .title {
+      font-size: 1.5em;
+      text-decoration: none;
+      color: white;
+    }
+
+    .cart {
+      font-size: 1.2em;
+    }
+
+    .merchant-detail {
+      padding: 1em;
+    }
+
+    .product {
+      margin-bottom: 1em;
+    }
+
+    .cart-section {
+      background: #f9f9f9;
+      padding: 1em;
+      border-top: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar and Navbar here (unchanged) -->
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="title">Dala🚲na.</a>
+    <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+  </header>
 
   <!-- Merchant Content -->
   <section class="merchant-detail">
@@ -52,123 +76,55 @@
 
   <!-- Cart Section -->
   <section class="cart-section">
-    <h3>Cart (<span id="cart-count">0</span> items)</h3>
+    <h3>Your Cart (<span id="cart-count">0</span> items)</h3>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
-    <button id="checkout-btn" onclick="openModal()">🛍 Proceed to Checkout</button>
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">Checkout</a>
   </section>
 
-  <!-- Modal Checkout Form -->
-  <div id="checkoutModal" class="modal">
-    <form id="order-form" class="checkout-form">
-      <h2>Complete Your Order</h2>
+  <!-- Script -->
+  <script>
+    const cart = {};
+    const merchantName = "Merchant 1";
 
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required />
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="address">Delivery Address</label>
-      <textarea id="address" name="address" rows="3" required></textarea>
-
-      <input type="hidden" name="merchant" id="merchant-field" />
-      <input type="hidden" name="items" id="items-field" />
-      <input type="hidden" name="total" id="total-field" />
-      <input type="hidden" name="message" id="message-field" />
-
-      <button type="submit">Submit Order</button>
-      <button type="button" onclick="closeModal()">Cancel</button>
-    </form>
-  </div>
-
-<script>
-  // Single source of truth for cart
-  let cart = [];
-  const merchantName = "Merchant 1";
-
-  function addToCart(item, price) {
-    cart.push({ item, price });
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-
-    cartList.innerHTML = "";
-    let total = 0;
-
-    cart.forEach(entry => {
-      const li = document.createElement("li");
-      li.textContent = `${entry.item} – ₱${entry.price}`;
-      cartList.appendChild(li);
-      total += entry.price;
-    });
-
-    cartTotal.textContent = total;
-    cartCount.textContent = cart.length;
-
-    // Update hidden form fields
-    document.getElementById("merchant-field").value = merchantName;
-    document.getElementById("items").value = cart.map(e => e.item).join(", ");
-    document.getElementById("items-field").value = cart.map(e => e.item).join(", ");
-    document.getElementById("total-field").value = total;
-  }
-
-  function openModal() {
-    if (cart.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
-    document.getElementById("checkoutModal").classList.add("show");
-  }
-
-  function closeModal() {
-    document.getElementById("checkoutModal").classList.remove("show");
-  }
-
-  document.getElementById("order-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const address = form.address.value.trim();
-    const merchant = merchantName;
-    const items = cart.map(c => `${c.item} (₱${c.price})`).join(", ");
-    const total = cart.reduce((sum, c) => sum + c.price, 0);
-
-    // Compose confirmation message
-    const message = `Hi ${name},\n\nThanks for your order from ${merchant}!\n\n🧾 Items: ${items}\n💰 Total: ₱${total}\n📍 Delivery Address:\n${address}\n\n⏰ ETA: Within 30–45 mins (subject to availability)\n\nFor urgent questions, reply to this email.\n\n- Dala Ko Na 🚲`;
-
-    // Set message field
-    document.getElementById("message-field").value = message;
-
-    const formData = new FormData(form);
-
-    fetch("https://formspree.io/f/mpwrqvlo", {
-      method: "POST",
-      body: formData,
-      headers: { Accept: "application/json" }
-    })
-    .then(response => {
-      if (response.ok) {
-        alert("✅ Order submitted! Please check your email.");
-        form.reset();
-        cart = [];
-        updateCartDisplay();
-        closeModal();
+    function addToCart(item, price) {
+      if (cart[item]) {
+        cart[item].qty += 1;
       } else {
-        alert("⚠️ There was a problem submitting your order. Please try again.");
+        cart[item] = { price, qty: 1 };
       }
-    })
-    .catch(() => {
-      alert("⚠️ Something went wrong. Try again later.");
-    });
-  });
-</script>
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const cartList = document.getElementById("cart-list");
+      const cartTotal = document.getElementById("cart-total");
+      const cartCount = document.querySelectorAll("#cart-count");
+
+      cartList.innerHTML = "";
+      let totalQty = 0;
+      let totalPrice = 0;
+
+      for (let item in cart) {
+        const entry = cart[item];
+        const li = document.createElement("li");
+        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+        cartList.appendChild(li);
+        totalQty += entry.qty;
+        totalPrice += entry.price * entry.qty;
+      }
+
+      cartTotal.textContent = totalPrice;
+      cartCount.forEach(el => el.textContent = totalQty);
+
+      const itemsStr = Object.entries(cart)
+        .map(([item, data]) => `${item} × ${data.qty}`)
+        .join(", ");
+      const airtableURL = `https://airtable.com/appISjv70ZQ4pxBxv/pagNTESTFORM?prefill_Merchant=${encodeURIComponent(merchantName)}&prefill_Items=${encodeURIComponent(itemsStr)}&prefill_Total=${totalPrice}`;
+
+      document.getElementById("checkout-btn").href = airtableURL;
+    }
+  </script>
 
 </body>
 </html>
