@@ -245,3 +245,12 @@ footer {
   background: rgba(0, 0, 0, 0.4);
   z-index: 998;
 }
+.cart-section input {
+  display: block;
+  width: 100%;
+  padding: 0.6em;
+  margin-bottom: 0.6em;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
