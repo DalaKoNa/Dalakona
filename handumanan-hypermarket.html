@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Handumanan Hypermarket | Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
@@ -40,6 +39,10 @@
       margin-bottom: 1em;
     }
 
+    .product button {
+      margin-right: 0.5em;
+    }
+
     .cart-section {
       background: #f9f9f9;
       padding: 1em;
@@ -63,61 +66,149 @@
       text-decoration: none;
       border-radius: 4px;
     }
+
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2em;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <a href="index.html" class="title">Dala🚲na.</a>
-    <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-  </header>
+<!-- Navbar -->
+<header class="navbar">
+  <a href="index.html" class="title">Dala🚲na.</a>
+  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+</header>
 
-  <!-- Merchant Content -->
- <section class="merchant-detail">
+<!-- Merchant Content -->
+<section class="merchant-detail">
   <h1>Handumanan Hypermarket</h1>
   <div class="product-list">
+
     <!-- 🥬 Vegetables -->
-    <div class="product"><p>Tomatoes – ₱25</p><button onclick="addToCart('Tomatoes', 25)">Add</button></div>
-    <div class="product"><p>Potatoes (1kg) – ₱45</p><button onclick="addToCart('Potatoes (1kg)', 45)">Add</button></div>
-    <div class="product"><p>Onions (1kg) – ₱55</p><button onclick="addToCart('Onions (1kg)', 55)">Add</button></div>
+    <div class="product"><p>Tomatoes – ₱25</p>
+      <button onclick="addToCart('Tomatoes', 25)">Add</button>
+      <button onclick="showModal('Tomatoes', 'Fresh red tomatoes. Good for cooking and salads.')">View</button>
+    </div>
+    <div class="product"><p>Potatoes (1kg) – ₱45</p>
+      <button onclick="addToCart('Potatoes (1kg)', 45)">Add</button>
+      <button onclick="showModal('Potatoes (1kg)', 'Versatile root vegetable. Great for fries or stews.')">View</button>
+    </div>
+    <div class="product"><p>Onions (1kg) – ₱55</p>
+      <button onclick="addToCart('Onions (1kg)', 55)">Add</button>
+      <button onclick="showModal('Onions (1kg)', 'Essential for many Filipino dishes. Mild and sweet.')">View</button>
+    </div>
 
     <!-- 🍜 Snacks & Dry Goods -->
-    <div class="product"><p>Skyflakes Crackers – ₱15</p><button onclick="addToCart('Skyflakes Crackers', 15)">Add</button></div>
-    <div class="product"><p>Nissin Cup Noodles – ₱22</p><button onclick="addToCart('Nissin Cup Noodles', 22)">Add</button></div>
-    <div class="product"><p>Piattos (Large) – ₱30</p><button onclick="addToCart('Piattos (Large)', 30)">Add</button></div>
+    <div class="product"><p>Skyflakes Crackers – ₱15</p>
+      <button onclick="addToCart('Skyflakes Crackers', 15)">Add</button>
+      <button onclick="showModal('Skyflakes Crackers', 'Classic plain crackers. Great snack or pairing.')">View</button>
+    </div>
+    <div class="product"><p>Nissin Cup Noodles – ₱22</p>
+      <button onclick="addToCart('Nissin Cup Noodles', 22)">Add</button>
+      <button onclick="showModal('Nissin Cup Noodles', 'Instant noodles in cup format. Flavored broth.')">View</button>
+    </div>
+    <div class="product"><p>Piattos (Large) – ₱30</p>
+      <button onclick="addToCart('Piattos (Large)', 30)">Add</button>
+      <button onclick="showModal('Piattos (Large)', 'Crunchy hexagonal chips. Available in cheese flavor.')">View</button>
+    </div>
 
     <!-- 🥫 Canned Goods -->
-    <div class="product"><p>Century Tuna – ₱40</p><button onclick="addToCart('Century Tuna', 40)">Add</button></div>
-    <div class="product"><p>Argentina Corned Beef – ₱39</p><button onclick="addToCart('Argentina Corned Beef', 39)">Add</button></div>
-    <div class="product"><p>555 Sardines – ₱18</p><button onclick="addToCart('555 Sardines', 18)">Add</button></div>
+    <div class="product"><p>Century Tuna – ₱40</p>
+      <button onclick="addToCart('Century Tuna', 40)">Add</button>
+      <button onclick="showModal('Century Tuna', 'Canned tuna in oil or water. High protein source.')">View</button>
+    </div>
+    <div class="product"><p>Argentina Corned Beef – ₱39</p>
+      <button onclick="addToCart('Argentina Corned Beef', 39)">Add</button>
+      <button onclick="showModal('Argentina Corned Beef', 'Popular canned beef. Savory and ready to eat.')">View</button>
+    </div>
+    <div class="product"><p>555 Sardines – ₱18</p>
+      <button onclick="addToCart('555 Sardines', 18)">Add</button>
+      <button onclick="showModal('555 Sardines', 'Sardines in tomato sauce. Staple pantry item.')">View</button>
+    </div>
 
     <!-- 🧴 Household Items -->
-    <div class="product"><p>Safeguard Soap – ₱28</p><button onclick="addToCart('Safeguard Soap', 28)">Add</button></div>
-    <div class="product"><p>Surf Powder (350g) – ₱25</p><button onclick="addToCart('Surf Powder (350g)', 25)">Add</button></div>
-    <div class="product"><p>Downy Sachet – ₱7</p><button onclick="addToCart('Downy Sachet', 7)">Add</button></div>
+    <div class="product"><p>Safeguard Soap – ₱28</p>
+      <button onclick="addToCart('Safeguard Soap', 28)">Add</button>
+      <button onclick="showModal('Safeguard Soap', 'Antibacterial bar soap. Protects from germs.')">View</button>
+    </div>
+    <div class="product"><p>Surf Powder (350g) – ₱25</p>
+      <button onclick="addToCart('Surf Powder (350g)', 25)">Add</button>
+      <button onclick="showModal('Surf Powder (350g)', 'Powder detergent. Leaves clothes fresh and clean.')">View</button>
+    </div>
+    <div class="product"><p>Downy Sachet – ₱7</p>
+      <button onclick="addToCart('Downy Sachet', 7)">Add</button>
+      <button onclick="showModal('Downy Sachet', 'Fabric conditioner sachet. Long-lasting fragrance.')">View</button>
+    </div>
+
   </div>
 </section>
 
-  <!-- Cart & Checkout -->
-  <section class="cart-section">
-    <div class="cart-card">
-      <h2>🛒 Your Cart</h2>
-      <ul id="cart-list"></ul>
-      <p class="total">Total: ₱<span id="cart-total">0</span></p>
+<!-- Cart Section -->
+<section class="cart-section">
+  <div class="cart-card">
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p class="total">Total: ₱<span id="cart-total">0</span></p>
 
-      <div class="form-fields">
-        <input type="text" id="user-name" placeholder="Your Name" />
-        <input type="email" id="user-email" placeholder="Your Email" />
-        <input type="tel" id="user-contact" placeholder="Contact Number" />
-      </div>
-
-      <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+    <div class="form-fields">
+      <input type="text" id="user-name" placeholder="Your Name" />
+      <input type="email" id="user-email" placeholder="Your Email" />
+      <input type="tel" id="user-contact" placeholder="Contact Number" />
     </div>
-  </section>
 
-  <!-- JS Logic -->
-  <script>
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="product-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modal-title">Product Title</h2>
+    <p id="modal-description">Product description goes here.</p>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
   const cart = {};
   const serviceFee = 29.99;
 
@@ -168,7 +259,6 @@
       subtotal += entry.price * entry.qty;
     }
 
-    // Add fixed service & delivery fee
     if (subtotal > 0) {
       const feeLine = document.createElement("li");
       feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
@@ -179,7 +269,6 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.forEach(el => el.textContent = totalQty);
 
-    // Update checkout link
     const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
     const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
     const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
@@ -197,6 +286,23 @@
       `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
 
     document.getElementById("checkout-btn").href = filloutURL;
+  }
+
+  function showModal(title, description) {
+    document.getElementById("modal-title").textContent = title;
+    document.getElementById("modal-description").textContent = description;
+    document.getElementById("product-modal").style.display = "block";
+  }
+
+  function closeModal() {
+    document.getElementById("product-modal").style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById("product-modal");
+    if (event.target === modal) {
+      closeModal();
+    }
   }
 </script>
 
