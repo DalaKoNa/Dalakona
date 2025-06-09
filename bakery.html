@@ -22,5 +22,137 @@
     </div>
   </section>
   <!-- (Same cart & script as in hypermarket) -->
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p class="total">Total: ₱<span id="cart-total">0</span></p>
+
+    <div class="form-fields">
+      <input type="text" id="user-name" placeholder="Your Name" />
+      <input type="email" id="user-email" placeholder="Your Email" />
+      <input type="tel" id="user-contact" placeholder="Contact Number" />
+    </div>
+
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="product-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modal-title">Product Title</h2>
+    <p id="modal-description">Product description goes here.</p>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  const cart = {};
+  const serviceFee = 29.99;
+
+  function addToCart(item, price) {
+    if (cart[item]) {
+      cart[item].qty += 1;
+    } else {
+      cart[item] = { price, qty: 1 };
+    }
+    updateCartDisplay();
+  }
+
+  function decreaseItem(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) {
+        delete cart[item];
+      }
+      updateCartDisplay();
+    }
+  }
+
+  function removeItem(item) {
+    delete cart[item];
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.querySelectorAll("#cart-count");
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">➕</button>
+        <button onclick="decreaseItem('${item}')">➖</button>
+        <button onclick="removeItem('${item}')">❌</button>
+      `;
+      cartList.appendChild(li);
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+    }
+
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
+
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.forEach(el => el.textContent = totalQty);
+
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+
+    const itemsStr = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty}`)
+      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
+      .join(", ");
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
+
+    document.getElementById("checkout-btn").href = filloutURL;
+  }
+
+  function showModal(title, description) {
+    document.getElementById("modal-title").textContent = title;
+    document.getElementById("modal-description").textContent = description;
+    document.getElementById("product-modal").style.display = "block";
+  }
+
+  function closeModal() {
+    document.getElementById("product-modal").style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById("product-modal");
+    if (event.target === modal) {
+      closeModal();
+    }
+  }
+function filterProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const products = document.querySelectorAll(".product-list .product");
+
+  products.forEach(product => {
+    const text = product.textContent.toLowerCase();
+    product.style.display = text.includes(input) ? "block" : "none";
+  });
+}
+
+</script>
+
 </body>
 </html>
