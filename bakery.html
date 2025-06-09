@@ -2,263 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bakery | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Cinzel', serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .navbar {
-      background-color: #222;
-      color: white;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .title {
-      font-size: 1.5em;
-      text-decoration: none;
-      color: white;
-    }
-
-    .cart {
-      font-size: 1.2em;
-    }
-
-    .merchant-detail {
-      padding: 1em;
-    }
-
-    .product {
-      margin-bottom: 1em;
-    }
-
-    .product button {
-      margin-right: 0.5em;
-    }
-
-    .cart-section {
-      background: #f9f9f9;
-      padding: 1em;
-      border-top: 1px solid #ddd;
-    }
-
-    .form-fields input {
-      display: block;
-      margin: 0.5em 0;
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .checkout-btn {
-      display: inline-block;
-      margin-top: 1em;
-      padding: 0.75em 1.5em;
-      background-color: #000;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-
-    /* MODAL STYLES */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 2em;
-      border: 1px solid #888;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 10px;
-      position: relative;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-    }
-
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 28px;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: #000;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <h1>Dala🚲na</h1>
+    <p>Bakery – Freshly Baked Goods Delivered</p>
+  </header>
 
-<!-- Navbar -->
-<header class="navbar">
-  <a href="index.html" class="title">Dala🚲na.</a>
-  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-</header>
-
-  <!-- Replace only the product list section below -->
-<div class="product-list" id="product-list">
-  <div class="product"><p>Pandesal (6 pcs) – ₹30</p><button onclick="addToCart('Pandesal (6 pcs)', 30)">Add</button></div>
-  <div class="product"><p>Spanish Bread (6 pcs) – ₹45</p><button onclick="addToCart('Spanish Bread (6 pcs)', 45)">Add</button></div>
-  <div class="product"><p>Ensaymada – ₹20</p><button onclick="addToCart('Ensaymada', 20)">Add</button></div>
-  <div class="product"><p>Ube Cheese Pandesal – ₹50</p><button onclick="addToCart('Ube Cheese Pandesal', 50)">Add</button></div>
-  <div class="product"><p>Loaf Bread – ₹60</p><button onclick="addToCart('Loaf Bread', 60)">Add</button></div>
-</div>
- <!-- Cart Section -->
-<section class="cart-section">
-  <div class="cart-card">
-    <h2>🛒 Your Cart</h2>
-    <ul id="cart-list"></ul>
-    <p class="total">Total: ₱<span id="cart-total">0</span></p>
-
-    <div class="form-fields">
-      <input type="text" id="user-name" placeholder="Your Name" />
-      <input type="email" id="user-email" placeholder="Your Email" />
-      <input type="tel" id="user-contact" placeholder="Contact Number" />
+  <main class="product-list">
+    <div class="product">
+      <h2>Pandesal (10 pcs)</h2>
+      <p>₱30</p>
+      <button onclick="addToCart('Pandesal', 30)">Add to Cart</button>
     </div>
+    <div class="product">
+      <h2>Spanish Bread</h2>
+      <p>₱10</p>
+      <button onclick="addToCart('Spanish Bread', 10)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <h2>Ensaymada</h2>
+      <p>₱20</p>
+      <button onclick="addToCart('Ensaymada', 20)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <h2>Cheese Roll</h2>
+      <p>₱25</p>
+      <button onclick="addToCart('Cheese Roll', 25)">Add to Cart</button>
+    </div>
+  </main>
 
-    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  <footer>
+    <button onclick="openCart()">🛒 View Cart (<span id="cart-count">0</span>)</button>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <span onclick="closeCart()" class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p>Total: ₱<span id="cart-total">0</span></p>
+      <a href="https://form.fillout.com/t/dalana-checkout" target="_blank"><button>Checkout</button></a>
+    </div>
   </div>
-</section>
 
-<!-- Modal -->
-<div id="product-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="modal-title">Product Title</h2>
-    <p id="modal-description">Product description goes here.</p>
-  </div>
-</div>
+  <script>
+    let cart = [];
 
-<!-- JS -->
-<script>
-  const cart = {};
-  const serviceFee = 29.99;
-
-  function addToCart(item, price) {
-    if (cart[item]) {
-      cart[item].qty += 1;
-    } else {
-      cart[item] = { price, qty: 1 };
-    }
-    updateCartDisplay();
-  }
-
-  function decreaseItem(item) {
-    if (cart[item]) {
-      cart[item].qty -= 1;
-      if (cart[item].qty <= 0) {
-        delete cart[item];
-      }
-      updateCartDisplay();
-    }
-  }
-
-  function removeItem(item) {
-    delete cart[item];
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.querySelectorAll("#cart-count");
-
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
-
-    for (let item in cart) {
-      const entry = cart[item];
-      const li = document.createElement("li");
-      li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
-        <button onclick="addToCart('${item}', ${entry.price})">➕</button>
-        <button onclick="decreaseItem('${item}')">➖</button>
-        <button onclick="removeItem('${item}')">❌</button>
-      `;
-      cartList.appendChild(li);
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCart();
     }
 
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
+    function updateCart() {
+      document.getElementById("cart-count").innerText = cart.length;
+      const cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(({ item, price }) => {
+        const li = document.createElement("li");
+        li.textContent = `${item} - ₱${price}`;
+        cartItems.appendChild(li);
+        total += price;
+      });
+      document.getElementById("cart-total").innerText = total;
     }
 
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.forEach(el => el.textContent = totalQty);
-
-    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
-
-    const itemsStr = Object.entries(cart)
-      .map(([item, data]) => `${item} × ${data.qty}`)
-      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
-      .join(", ");
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}` +
-      `&Email=${email}` +
-      `&Contact_Number=${contact}` +
-      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
-
-    document.getElementById("checkout-btn").href = filloutURL;
-  }
-
-  function showModal(title, description) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal-description").textContent = description;
-    document.getElementById("product-modal").style.display = "block";
-  }
-
-  function closeModal() {
-    document.getElementById("product-modal").style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById("product-modal");
-    if (event.target === modal) {
-      closeModal();
+    function openCart() {
+      document.getElementById("cart-modal").style.display = "block";
     }
-  }
-function filterProducts() {
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const products = document.querySelectorAll(".product-list .product");
 
-  products.forEach(product => {
-    const text = product.textContent.toLowerCase();
-    product.style.display = text.includes(input) ? "block" : "none";
-  });
-}
-
-</script>
-
+    function closeCart() {
+      document.getElementById("cart-modal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
