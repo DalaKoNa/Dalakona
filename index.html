@@ -38,28 +38,44 @@
   </div>
 </section>
 
-  <!-- Merchants Section -->
-<!-- Merchants Section -->
-<section class="partners" id="partners">
+  <section class="partners" id="partners">
   <h2>Our Merchants</h2>
-  <div class="merchant-grid" style="display: flex; flex-wrap: wrap; gap: 1rem;">
-    <a href="handumanan-hypermarket.html" class="merchant" style="flex: 1 1 200px; text-decoration: none; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: 'Cinzel', serif; font-size: 1.2rem;">
-      Handumanan Hypermarket
-    </a>
-    <a href="merchant2.html" class="merchant" style="flex: 1 1 200px; text-decoration: none; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: 'Cinzel', serif; font-size: 1.2rem;">
-      Merchant 2
-    </a>
-    <a href="merchant3.html" class="merchant" style="flex: 1 1 200px; text-decoration: none; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: 'Cinzel', serif; font-size: 1.2rem;">
-      Merchant 3
-    </a>
-    <a href="merchant4.html" class="merchant" style="flex: 1 1 200px; text-decoration: none; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: 'Cinzel', serif; font-size: 1.2rem;">
-      Merchant 4
-    </a>
-    <a href="merchant5.html" class="merchant" style="flex: 1 1 200px; text-decoration: none; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: 'Cinzel', serif; font-size: 1.2rem;">
-      Merchant 5
-    </a>
+  <div class="merchant-scroll" style="display: flex; overflow-x: auto; gap: 1rem; padding: 1rem;">
+    <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+    <a href="merchant2.html" class="merchant-card">Merchant 2</a>
+    <a href="merchant3.html" class="merchant-card">Merchant 3</a>
+    <a href="merchant4.html" class="merchant-card">Merchant 4</a>
+    <a href="merchant5.html" class="merchant-card">Merchant 5</a>
   </div>
 </section>
+
+<style>
+  .merchant-card {
+    flex: 0 0 auto;
+    min-width: 200px;
+    text-decoration: none;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .merchant-card:hover {
+    background: #f4f4f4;
+  }
+
+  /* Optional: hide scrollbar on WebKit (Chrome, Safari) */
+  .merchant-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .merchant-scroll {
+    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+</style>
 
 <!-- Footer -->
 <!-- Footer -->
