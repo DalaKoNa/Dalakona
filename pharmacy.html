@@ -2,11 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pharmacy | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <style>
-    /* ...same styles as bakery.html... */
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0; padding: 0;
+    }
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title {
+      font-size: 1.5em;
+      text-decoration: none;
+      color: white;
+    }
+    .cart {
+      font-size: 1.2em;
+    }
+    .merchant-detail {
+      padding: 1em;
+    }
+    .product {
+      margin-bottom: 1em;
+    }
+    .product button {
+      margin-right: 0.5em;
+    }
+    .cart-section {
+      background: #f9f9f9;
+      padding: 1em;
+      border-top: 1px solid #ddd;
+    }
+    .form-fields input {
+      display: block;
+      margin: 0.5em 0;
+      padding: 0.5em;
+      width: 100%;
+      max-width: 400px;
+    }
+    .checkout-btn {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.75em 1.5em;
+      background-color: #000;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2em;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -21,29 +104,21 @@
   <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
   <div class="product-list">
 
-    <div class="product"><p>Paracetamol 500mg (10 tablets) – ₱20</p>
-      <button onclick="addToCart('Paracetamol 500mg (10 tablets)', 20)">Add</button>
-      <button onclick="showModal('Paracetamol 500mg (10 tablets)', 'Pain reliever and fever reducer.')">View</button>
+    <div class="product"><p>Paracetamol 500mg – ₱10</p>
+      <button onclick="addToCart('Paracetamol 500mg', 10)">Add</button>
+      <button onclick="showModal('Paracetamol 500mg', 'Pain reliever and fever reducer.')">View</button>
     </div>
-
-    <div class="product"><p>Cough Syrup (100ml) – ₱85</p>
-      <button onclick="addToCart('Cough Syrup (100ml)', 85)">Add</button>
-      <button onclick="showModal('Cough Syrup (100ml)', 'Relieves cough and soothes throat.')">View</button>
+    <div class="product"><p>Vitamin C 1000mg – ₱50</p>
+      <button onclick="addToCart('Vitamin C 1000mg', 50)">Add</button>
+      <button onclick="showModal('Vitamin C 1000mg', 'Boosts immune system.')">View</button>
     </div>
-
-    <div class="product"><p>Vitamin C 1000mg (30 tablets) – ₱120</p>
-      <button onclick="addToCart('Vitamin C 1000mg (30 tablets)', 120)">Add</button>
-      <button onclick="showModal('Vitamin C 1000mg (30 tablets)', 'Immune system booster.')">View</button>
+    <div class="product"><p>Antiseptic Cream – ₱75</p>
+      <button onclick="addToCart('Antiseptic Cream', 75)">Add</button>
+      <button onclick="showModal('Antiseptic Cream', 'Prevents infection in minor cuts.')">View</button>
     </div>
-
-    <div class="product"><p>Antiseptic Cream (20g) – ₱75</p>
-      <button onclick="addToCart('Antiseptic Cream (20g)', 75)">Add</button>
-      <button onclick="showModal('Antiseptic Cream (20g)', 'Prevents infections on minor cuts.')">View</button>
-    </div>
-
-    <div class="product"><p>Band-Aids (pack of 10) – ₱40</p>
-      <button onclick="addToCart('Band-Aids (pack of 10)', 40)">Add</button>
-      <button onclick="showModal('Band-Aids (pack of 10)', 'Adhesive bandages for small wounds.')">View</button>
+    <div class="product"><p>Cough Syrup – ₱60</p>
+      <button onclick="addToCart('Cough Syrup', 60)">Add</button>
+      <button onclick="showModal('Cough Syrup', 'Relieves cough symptoms.')">View</button>
     </div>
 
   </div>
@@ -74,7 +149,6 @@
 </div>
 
 <script>
-  // Same JS code as bakery.html (replace product names/prices accordingly)
   const cart = {};
   const serviceFee = 29.99;
 
@@ -113,16 +187,16 @@
 
     for (let item in cart) {
       const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
       const li = document.createElement("li");
       li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
         <button onclick="addToCart('${item}', ${entry.price})">➕</button>
         <button onclick="decreaseItem('${item}')">➖</button>
         <button onclick="removeItem('${item}')">❌</button>
       `;
       cartList.appendChild(li);
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
     }
 
     if (subtotal > 0) {
@@ -135,9 +209,9 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const name = encodeURIComponent(document.getElementById("user-name").value || "");
-    const email = encodeURIComponent(document.getElementById("user-email").value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
     const itemsStr = Object.entries(cart)
       .map(([item, data]) => `${item} × ${data.qty}`)
@@ -145,40 +219,41 @@
       .join(", ");
 
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}&Email=${email}&Contact=${contact}&Items=${encodeURIComponent(itemsStr)}&Total=${finalTotal.toFixed(2)}`;
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
 
     document.getElementById("checkout-btn").href = filloutURL;
   }
 
-  document.getElementById("user-name").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-email").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-contact").addEventListener("input", updateCartDisplay);
-
-  function filterProducts() {
-    const filter = document.getElementById("searchInput").value.toLowerCase();
-    const products = document.querySelectorAll(".product");
-    products.forEach(product => {
-      const text = product.textContent.toLowerCase();
-      product.style.display = text.includes(filter) ? "" : "none";
-    });
-  }
-
-  const modal = document.getElementById("product-modal");
   function showModal(title, description) {
     document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-description").textContent = description;
-    modal.style.display = "block";
+    document.getElementById("product-modal").style.display = "block";
   }
+
   function closeModal() {
-    modal.style.display = "none";
+    document.getElementById("product-modal").style.display = "none";
   }
+
   window.onclick = function(event) {
-    if (event.target == modal) {
+    const modal = document.getElementById("product-modal");
+    if (event.target === modal) {
       closeModal();
     }
   }
 
-  updateCartDisplay();
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const products = document.querySelectorAll(".product-list .product");
+
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      product.style.display = text.includes(input) ? "block" : "none";
+    });
+  }
 </script>
 
 </body>
