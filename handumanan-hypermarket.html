@@ -120,6 +120,7 @@
 <!-- Merchant Content -->
 <section class="merchant-detail">
   <h1>Handumanan Hypermarket</h1>
+<input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
   <div class="product-list">
 
     <!-- 🥬 Vegetables -->
@@ -304,6 +305,16 @@
       closeModal();
     }
   }
+function filterProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const products = document.querySelectorAll(".product-list .product");
+
+  products.forEach(product => {
+    const text = product.textContent.toLowerCase();
+    product.style.display = text.includes(input) ? "block" : "none";
+  });
+}
+
 </script>
 
 </body>
