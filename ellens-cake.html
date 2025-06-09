@@ -34,13 +34,6 @@
     .product {
       margin-bottom: 1em;
     }
-    .product img {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      display: block;
-      margin: 0.5em 0;
-    }
     .cart-section {
       background: #f9f9f9;
       padding: 1em;
@@ -112,48 +105,15 @@
 <!-- Merchant Info -->
 <section class="merchant-detail">
   <h1>Ellen’s Cakes</h1>
-  <p><em>Delivery Time: ~60–90 mins</em></p>
   <div class="product-list">
-    <div class="product">
-      <p>1-Layer Cake (Chocolate) – ₱350</p>
-      <img src="img/cake1.jpg" alt="Chocolate Cake">
-      <button onclick="addToCart('1-Layer Chocolate Cake', 350)">Add</button>
-    </div>
-    <div class="product">
-      <p>2-Layer Cake (Chiffon) – ₱650</p>
-      <img src="img/cake2.jpg" alt="Chiffon Cake">
-      <button onclick="addToCart('2-Layer Chiffon Cake', 650)">Add</button>
-    </div>
-    <div class="product">
-      <p>3-Layer Cake (Custom) – ₱950</p>
-      <img src="img/cake3.jpg" alt="3 Layer Custom Cake">
-      <button onclick="addToCart('3-Layer Custom Cake', 950)">Add</button>
-    </div>
-    <div class="product">
-      <p>Cartoon Character Cake – ₱1,200</p>
-      <img src="img/cartoon-cake.jpg" alt="Cartoon Cake">
-      <button onclick="addToCart('Cartoon Character Cake', 1200)">Add</button>
-    </div>
-    <div class="product">
-      <p>Event Cake (Wedding/Birthday) – ₱1,500</p>
-      <img src="img/event-cake.jpg" alt="Event Cake">
-      <button onclick="addToCart('Event Cake (Wedding/Birthday)', 1500)">Add</button>
-    </div>
-    <div class="product">
-      <p>Cupcakes (Box of 6) – ₱180</p>
-      <img src="img/cupcakes.jpg" alt="Cupcakes">
-      <button onclick="addToCart('Cupcakes (Box of 6)', 180)">Add</button>
-    </div>
-    <div class="product">
-      <p>Brazo de Mercedes Roll – ₱250</p>
-      <img src="img/brazo.jpg" alt="Brazo de Mercedes">
-      <button onclick="addToCart('Brazo de Mercedes Roll', 250)">Add</button>
-    </div>
-    <div class="product">
-      <p>Special Custom Request – ₱0</p>
-      <img src="img/custom-request.jpg" alt="Custom Cake Request">
-      <button onclick="addToCart('Special Request', 0)">Add</button>
-    </div>
+    <div class="product"><p>1-Layer Cake (Chocolate) – ₱350</p><button onclick="addToCart('1-Layer Chocolate Cake', 350)">Add</button></div>
+    <div class="product"><p>2-Layer Cake (Chiffon) – ₱650</p><button onclick="addToCart('2-Layer Chiffon Cake', 650)">Add</button></div>
+    <div class="product"><p>3-Layer Cake (Custom) – ₱950</p><button onclick="addToCart('3-Layer Custom Cake', 950)">Add</button></div>
+    <div class="product"><p>Cartoon Character Cake (Any Design) – ₱1,200</p><button onclick="addToCart('Cartoon Character Cake', 1200)">Add</button></div>
+    <div class="product"><p>Event Cake (Wedding/Birthday) – ₱1,500</p><button onclick="addToCart('Event Cake (Wedding/Birthday)', 1500)">Add</button></div>
+    <div class="product"><p>Cupcakes (Box of 6) – ₱180</p><button onclick="addToCart('Cupcakes (Box of 6)', 180)">Add</button></div>
+    <div class="product"><p>Brazo de Mercedes Roll – ₱250</p><button onclick="addToCart('Brazo de Mercedes Roll', 250)">Add</button></div>
+    <div class="product"><p>Special Custom Request – ₱0</p><button onclick="addToCart('Special Request', 0)">Add</button></div>
   </div>
 </section>
 
@@ -182,7 +142,6 @@
   </div>
 </div>
 
-<script>
 <!-- JavaScript -->
 <script>
   const cart = {};
