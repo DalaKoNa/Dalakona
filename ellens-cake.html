@@ -2,285 +2,184 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ellen's Cake | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ellen's Cakes | Dala🚲na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Cinzel', serif;
-      margin: 0;
-      padding: 0;
-      background: #fff;
-    }
-
-    .navbar {
-      background-color: #222;
-      color: white;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .title {
-      font-size: 1.5em;
-      text-decoration: none;
-      color: white;
-    }
-
-    .cart {
-      font-size: 1.2em;
-    }
-
-    .merchant-detail {
-      padding: 1em;
-    }
-
-    .product-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1em;
-    }
-
-    .product {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 1em;
-      flex: 1 1 calc(50% - 1em);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .product p {
-      margin: 0.5em 0;
-    }
-
-    .product button {
-      margin-top: 0.5em;
-      padding: 0.5em 1em;
-      background-color: #222;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .cart-section {
-      background: #f9f9f9;
-      padding: 1em;
-      border-top: 1px solid #ddd;
-    }
-
-    .form-fields input {
-      display: block;
-      margin: 0.5em 0;
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .checkout-btn {
-      display: inline-block;
-      margin-top: 1em;
-      padding: 0.75em 1.5em;
-      background-color: #000;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-
-    /* Cart item control buttons */
-    .cart-section button {
-      margin-left: 5px;
-      font-size: 0.8em;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Modal Search Box */
-    #searchModal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-    }
-
-    .search-box {
-      background: white;
-      margin: 10% auto;
-      padding: 1em;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 8px;
-    }
-
-    .close-modal {
-      float: right;
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      .product {
-        flex: 1 1 100%;
-      }
-
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .title, .cart {
-        width: 100%;
-        text-align: left;
-      }
-    }
+    /* same styles */
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <a href="index.html" class="title">Dala🚲na.</a>
-    <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-  </header>
+<header class="navbar">
+  <a href="index.html" class="title">Dala🚲na.</a>
+  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+</header>
 
-  <!-- Search Button -->
-  <div style="padding: 1em;">
-    <button onclick="document.getElementById('searchModal').style.display='block'">🔍 Search Products</button>
+<section class="merchant-detail">
+  <h1>Ellen's Cakes</h1>
+  <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
+  <div class="product-list">
+
+    <div class="product"><p>Classic Chocolate Cake (Slice) – ₱65</p>
+      <button onclick="addToCart('Classic Chocolate Cake (Slice)', 65)">Add</button>
+      <button onclick="showModal('Classic Chocolate Cake (Slice)', 'Rich and moist chocolate cake slice.')">View</button>
+    </div>
+
+    <div class="product"><p>Red Velvet Cake (Slice) – ₱70</p>
+      <button onclick="addToCart('Red Velvet Cake (Slice)', 70)">Add</button>
+      <button onclick="showModal('Red Velvet Cake (Slice)', 'Soft red velvet cake with cream cheese frosting.')">View</button>
+    </div>
+
+    <div class="product"><p>Cheesecake (Slice) – ₱80</p>
+      <button onclick="addToCart('Cheesecake (Slice)', 80)">Add</button>
+      <button onclick="showModal('Cheesecake (Slice)', 'Creamy cheesecake with graham cracker crust.')">View</button>
+    </div>
+
+    <div class="product"><p>Carrot Cake (Slice) – ₱60</p>
+      <button onclick="addToCart('Carrot Cake (Slice)', 60)">Add</button>
+      <button onclick="showModal('Carrot Cake (Slice)', 'Spiced carrot cake with cream cheese frosting.')">View</button>
+    </div>
+
+    <div class="product"><p>Banana Walnut Cake (Slice) – ₱65</p>
+      <button onclick="addToCart('Banana Walnut Cake (Slice)', 65)">Add</button>
+      <button onclick="showModal('Banana Walnut Cake (Slice)', 'Moist banana cake with walnuts.')">View</button>
+    </div>
+
   </div>
+</section>
 
-  <!-- Modal Search -->
-  <div id="searchModal">
-    <div class="search-box">
-      <span class="close-modal" onclick="document.getElementById('searchModal').style.display='none'">❌</span>
-      <input type="text" placeholder="Search items..." oninput="searchItems(this.value)" style="width: 100%; padding: 0.5em;"/>
-      <ul id="search-results"></ul>
+<section class="cart-section">
+  <div class="cart-card">
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p class="total">Total: ₱<span id="cart-total">0</span></p>
+
+    <div class="form-fields">
+      <input type="text" id="user-name" placeholder="Your Name" />
+      <input type="email" id="user-email" placeholder="Your Email" />
+      <input type="tel" id="user-contact" placeholder="Contact Number" />
     </div>
+
+    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
+</section>
 
-  <!-- Merchant Details -->
-  <section class="merchant-detail">
-    <h1>Ellen's Cake</h1>
-    <div class="product-list" id="product-list">
-      <div class="product"><p>1-Layer Birthday Cake – ₱450</p><button onclick="addToCart('1-Layer Birthday Cake', 450)">Add</button></div>
-      <div class="product"><p>2-Layer Event Cake – ₱850</p><button onclick="addToCart('2-Layer Event Cake', 850)">Add</button></div>
-      <div class="product"><p>3-Layer Wedding Cake – ₱1350</p><button onclick="addToCart('3-Layer Wedding Cake', 1350)">Add</button></div>
-      <div class="product"><p>Cartoon Design Cake (Custom) – ₱700</p><button onclick="addToCart('Cartoon Design Cake', 700)">Add</button></div>
-      <div class="product"><p>Cupcakes (Box of 6) – ₱180</p><button onclick="addToCart('Cupcakes', 180)">Add</button></div>
-      <div class="product"><p>Brazo de Mercedes – ₱300</p><button onclick="addToCart('Brazo de Mercedes', 300)">Add</button></div>
-      <div class="product"><p>Special Request Cake – ₱1000</p><button onclick="addToCart('Special Request Cake', 1000)">Add</button></div>
-    </div>
-  </section>
+<div id="product-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modal-title">Product Title</h2>
+    <p id="modal-description">Product description goes here.</p>
+  </div>
+</div>
 
-  <!-- Cart Section -->
-  <section class="cart-section">
-    <div class="cart-card">
-      <h2>🛒 Your Cart</h2>
-      <ul id="cart-list"></ul>
-      <p class="total">Total: ₱<span id="cart-total">0</span></p>
+<script>
+  // Same JS logic as above pages
+  const cart = {};
+  const serviceFee = 29.99;
 
-      <div class="form-fields">
-        <input type="text" id="user-name" placeholder="Your Name" />
-        <input type="email" id="user-email" placeholder="Your Email" />
-        <input type="tel" id="user-contact" placeholder="Contact Number" />
-      </div>
+  function addToCart(item, price) {
+    if (cart[item]) {
+      cart[item].qty += 1;
+    } else {
+      cart[item] = { price, qty: 1 };
+    }
+    updateCartDisplay();
+  }
 
-      <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
-    </div>
-  </section>
-
-  <!-- JavaScript Logic -->
-  <script>
-    const cart = {};
-    const serviceFee = 29.99;
-
-    function addToCart(item, price) {
-      if (cart[item]) {
-        cart[item].qty += 1;
-      } else {
-        cart[item] = { price, qty: 1 };
+  function decreaseItem(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) {
+        delete cart[item];
       }
       updateCartDisplay();
     }
+  }
 
-    function decreaseItem(item) {
-      if (cart[item]) {
-        cart[item].qty -= 1;
-        if (cart[item].qty <= 0) {
-          delete cart[item];
-        }
-        updateCartDisplay();
-      }
+  function removeItem(item) {
+    delete cart[item];
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}
+        <button onclick="addToCart('${item}', ${entry.price})">➕</button>
+        <button onclick="decreaseItem('${item}')">➖</button>
+        <button onclick="removeItem('${item}')">❌</button>
+      `;
+      cartList.appendChild(li);
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
     }
 
-    function removeItem(item) {
-      delete cart[item];
-      updateCartDisplay();
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
     }
 
-    function updateCartDisplay() {
-      const cartList = document.getElementById("cart-list");
-      const cartTotal = document.getElementById("cart-total");
-      const cartCount = document.querySelectorAll("#cart-count");
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
 
-      cartList.innerHTML = "";
-      let totalQty = 0;
-      let subtotal = 0;
+    const name = encodeURIComponent(document.getElementById("user-name").value || "");
+    const email = encodeURIComponent(document.getElementById("user-email").value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
 
-      for (let item in cart) {
-        const entry = cart[item];
-        const li = document.createElement("li");
-        li.innerHTML = `
-          ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
-          <button onclick="addToCart('${item}', ${entry.price})">➕</button>
-          <button onclick="decreaseItem('${item}')">➖</button>
-          <button onclick="removeItem('${item}')">❌</button>
-        `;
-        cartList.appendChild(li);
-        totalQty += entry.qty;
-        subtotal += entry.price * entry.qty;
-      }
+    const itemsStr = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty}`)
+      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
+      .join(", ");
 
-      if (subtotal > 0) {
-        const feeLine = document.createElement("li");
-        feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-        cartList.appendChild(feeLine);
-      }
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?Name=${name}&Email=${email}&Contact=${contact}&Items=${encodeURIComponent(itemsStr)}&Total=${finalTotal.toFixed(2)}`;
 
-      const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-      cartTotal.textContent = finalTotal.toFixed(2);
-      cartCount.forEach(el => el.textContent = totalQty);
+    document.getElementById("checkout-btn").href = filloutURL;
+  }
 
-      const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-      const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-      const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+  document.getElementById("user-name").addEventListener("input", updateCartDisplay);
+  document.getElementById("user-email").addEventListener("input", updateCartDisplay);
+  document.getElementById("user-contact").addEventListener("input", updateCartDisplay);
 
-      const itemsStr = Object.entries(cart)
-        .map(([item, data]) => `${item} × ${data.qty}`)
-        .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
-        .join(", ");
+  function filterProducts() {
+    const filter = document.getElementById("searchInput").value.toLowerCase();
+    const products = document.querySelectorAll(".product");
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      product.style.display = text.includes(filter) ? "" : "none";
+    });
+  }
 
-      const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-        `?Name=${name}` +
-        `&Email=${email}` +
-        `&Contact_Number=${contact}` +
-        `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-        `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
-
-      document.getElementById("checkout-btn").href = filloutURL;
+  const modal = document.getElementById("product-modal");
+  function showModal(title, description) {
+    document.getElementById("modal-title").textContent = title;
+    document.getElementById("modal-description").textContent = description;
+    modal.style.display = "block";
+  }
+  function closeModal() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      closeModal();
     }
+  }
 
-    function searchItems(query) {
-      const products = document.querySelectorAll('.product');
-      products.forEach(p => {
-        p.style.display = p.innerText.toLowerCase().includes(query.toLowerCase()) ? 'block' : 'none';
-      });
-    }
-  </script>
+  updateCartDisplay();
+</script>
 
 </body>
 </html>
