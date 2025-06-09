@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bakery | Dala🚲na</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="title">Dala🚲na.</a>
+    <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+  </header>
+
+  <section class="merchant-detail">
+    <h1>Bakery</h1>
+    <div class="product-list">
+      <div class="product"><p>Pandesal (per piece) – ₱5</p><button onclick="addToCart('Pandesal', 5)">Add</button></div>
+      <div class="product"><p>Spanish Bread – ₱7</p><button onclick="addToCart('Spanish Bread', 7)">Add</button></div>
+      <div class="product"><p>Ensaymada – ₱10</p><button onclick="addToCart('Ensaymada', 10)">Add</button></div>
+      <div class="product"><p>Loaf Bread – ₱30</p><button onclick="addToCart('Loaf Bread', 30)">Add</button></div>
+    </div>
+  </section>
+  <!-- (Same cart & script as in hypermarket) -->
+</body>
+</html>
