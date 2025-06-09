@@ -6,7 +6,89 @@
   <title>Chicken Inasal | Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
-    /* same styles */
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0; padding: 0;
+    }
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title {
+      font-size: 1.5em;
+      text-decoration: none;
+      color: white;
+    }
+    .cart {
+      font-size: 1.2em;
+    }
+    .merchant-detail {
+      padding: 1em;
+    }
+    .product {
+      margin-bottom: 1em;
+    }
+    .product button {
+      margin-right: 0.5em;
+    }
+    .cart-section {
+      background: #f9f9f9;
+      padding: 1em;
+      border-top: 1px solid #ddd;
+    }
+    .form-fields input {
+      display: block;
+      margin: 0.5em 0;
+      padding: 0.5em;
+      width: 100%;
+      max-width: 400px;
+    }
+    .checkout-btn {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.75em 1.5em;
+      background-color: #000;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2em;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -18,32 +100,24 @@
 
 <section class="merchant-detail">
   <h1>Chicken Inasal</h1>
-  <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
+  <input type="text" id="searchInput" placeholder="Search chicken inasal items..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
   <div class="product-list">
 
-    <div class="product"><p>Chicken Inasal (1/4) – ₱150</p>
-      <button onclick="addToCart('Chicken Inasal (1/4)', 150)">Add</button>
-      <button onclick="showModal('Chicken Inasal (1/4)', 'Grilled marinated chicken quarter.')">View</button>
+    <div class="product"><p>Chicken Inasal – ₱180</p>
+      <button onclick="addToCart('Chicken Inasal', 180)">Add</button>
+      <button onclick="showModal('Chicken Inasal', 'Traditional Bacolod-style grilled chicken.')">View</button>
     </div>
-
-    <div class="product"><p>Chicken Inasal (1/2) – ₱290</p>
-      <button onclick="addToCart('Chicken Inasal (1/2)', 290)">Add</button>
-      <button onclick="showModal('Chicken Inasal (1/2)', 'Grilled marinated chicken half.')">View</button>
+    <div class="product"><p>Paa (Leg Quarter) – ₱160</p>
+      <button onclick="addToCart('Paa', 160)">Add</button>
+      <button onclick="showModal('Paa', 'Grilled chicken leg quarter, juicy and flavorful.')">View</button>
     </div>
-
-    <div class="product"><p>Chicken Inasal (Whole) – ₱570</p>
-      <button onclick="addToCart('Chicken Inasal (Whole)', 570)">Add</button>
-      <button onclick="showModal('Chicken Inasal (Whole)', 'Whole grilled marinated chicken.')">View</button>
+    <div class="product"><p>Pecho (Breast) – ₱170</p>
+      <button onclick="addToCart('Pecho', 170)">Add</button>
+      <button onclick="showModal('Pecho', 'Grilled chicken breast for a hearty meal.')">View</button>
     </div>
-
-    <div class="product"><p>Rice (Regular) – ₱35</p>
-      <button onclick="addToCart('Rice (Regular)', 35)">Add</button>
-      <button onclick="showModal('Rice (Regular)', 'Steamed white rice.')">View</button>
-    </div>
-
-    <div class="product"><p>Rice (Large) – ₱50</p>
-      <button onclick="addToCart('Rice (Large)', 50)">Add</button>
-      <button onclick="showModal('Rice (Large)', 'Large serving of steamed rice.')">View</button>
+    <div class="product"><p>Inasal with Rice Meal – ₱200</p>
+      <button onclick="addToCart('Inasal with Rice Meal', 200)">Add</button>
+      <button onclick="showModal('Inasal with Rice Meal', 'Includes rice, atchara, and dipping sauce.')">View</button>
     </div>
 
   </div>
@@ -74,7 +148,6 @@
 </div>
 
 <script>
-  // Same JS logic as other merchant pages
   const cart = {};
   const serviceFee = 29.99;
 
@@ -113,16 +186,16 @@
 
     for (let item in cart) {
       const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
       const li = document.createElement("li");
       li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
         <button onclick="addToCart('${item}', ${entry.price})">➕</button>
         <button onclick="decreaseItem('${item}')">➖</button>
         <button onclick="removeItem('${item}')">❌</button>
       `;
       cartList.appendChild(li);
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
     }
 
     if (subtotal > 0) {
@@ -135,9 +208,9 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const name = encodeURIComponent(document.getElementById("user-name").value || "");
-    const email = encodeURIComponent(document.getElementById("user-email").value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
     const itemsStr = Object.entries(cart)
       .map(([item, data]) => `${item} × ${data.qty}`)
@@ -145,40 +218,41 @@
       .join(", ");
 
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}&Email=${email}&Contact=${contact}&Items=${encodeURIComponent(itemsStr)}&Total=${finalTotal.toFixed(2)}`;
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
 
     document.getElementById("checkout-btn").href = filloutURL;
   }
 
-  document.getElementById("user-name").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-email").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-contact").addEventListener("input", updateCartDisplay);
-
-  function filterProducts() {
-    const filter = document.getElementById("searchInput").value.toLowerCase();
-    const products = document.querySelectorAll(".product");
-    products.forEach(product => {
-      const text = product.textContent.toLowerCase();
-      product.style.display = text.includes(filter) ? "" : "none";
-    });
-  }
-
-  const modal = document.getElementById("product-modal");
   function showModal(title, description) {
     document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-description").textContent = description;
-    modal.style.display = "block";
+    document.getElementById("product-modal").style.display = "block";
   }
+
   function closeModal() {
-    modal.style.display = "none";
+    document.getElementById("product-modal").style.display = "none";
   }
+
   window.onclick = function(event) {
-    if (event.target == modal) {
+    const modal = document.getElementById("product-modal");
+    if (event.target === modal) {
       closeModal();
     }
   }
 
-  updateCartDisplay();
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const products = document.querySelectorAll(".product-list .product");
+
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      product.style.display = text.includes(input) ? "block" : "none";
+    });
+  }
 </script>
 
 </body>
