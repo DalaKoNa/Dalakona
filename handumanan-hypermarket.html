@@ -120,7 +120,7 @@
 <!-- Merchant Content -->
 <section class="merchant-detail">
   <h1>Handumanan Hypermarket</h1>
-<input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
+  <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
   <div class="product-list">
 
     <!-- 🥬 Vegetables -->
@@ -240,7 +240,7 @@
   function updateCartDisplay() {
     const cartList = document.getElementById("cart-list");
     const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.querySelectorAll("#cart-count");
+    const cartCount = document.getElementById("cart-count");
 
     cartList.innerHTML = "";
     let totalQty = 0;
@@ -250,7 +250,7 @@
       const entry = cart[item];
       const li = document.createElement("li");
       li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        ${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}
         <button onclick="addToCart('${item}', ${entry.price})">➕</button>
         <button onclick="decreaseItem('${item}')">➖</button>
         <button onclick="removeItem('${item}')">❌</button>
@@ -268,11 +268,11 @@
 
     const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
     cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.forEach(el => el.textContent = totalQty);
+    cartCount.textContent = totalQty;
 
-    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
+    const name = encodeURIComponent(document.getElementById("user-name").value || "");
+    const email = encodeURIComponent(document.getElementById("user-email").value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
 
     const itemsStr = Object.entries(cart)
       .map(([item, data]) => `${item} × ${data.qty}`)
@@ -280,41 +280,43 @@
       .join(", ");
 
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}` +
-      `&Email=${email}` +
-      `&Contact_Number=${contact}` +
-      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
+      `?Name=${name}&Email=${email}&Contact=${contact}&Items=${encodeURIComponent(itemsStr)}&Total=${finalTotal.toFixed(2)}`;
 
     document.getElementById("checkout-btn").href = filloutURL;
   }
 
+  // Update cart display whenever user changes their info
+  document.getElementById("user-name").addEventListener("input", updateCartDisplay);
+  document.getElementById("user-email").addEventListener("input", updateCartDisplay);
+  document.getElementById("user-contact").addEventListener("input", updateCartDisplay);
+
+  // Filter products by search
+  function filterProducts() {
+    const filter = document.getElementById("searchInput").value.toLowerCase();
+    const products = document.querySelectorAll(".product");
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      product.style.display = text.includes(filter) ? "" : "none";
+    });
+  }
+
+  // Modal
+  const modal = document.getElementById("product-modal");
   function showModal(title, description) {
     document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-description").textContent = description;
-    document.getElementById("product-modal").style.display = "block";
+    modal.style.display = "block";
   }
-
   function closeModal() {
-    document.getElementById("product-modal").style.display = "none";
+    modal.style.display = "none";
   }
-
   window.onclick = function(event) {
-    const modal = document.getElementById("product-modal");
-    if (event.target === modal) {
+    if (event.target == modal) {
       closeModal();
     }
   }
-function filterProducts() {
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const products = document.querySelectorAll(".product-list .product");
 
-  products.forEach(product => {
-    const text = product.textContent.toLowerCase();
-    product.style.display = text.includes(input) ? "block" : "none";
-  });
-}
-
+  updateCartDisplay();
 </script>
 
 </body>
