@@ -123,15 +123,22 @@
   </div>
 </section>
 
-<!-- Cart Section -->
 <section class="cart-section">
   <div class="cart-card">
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p class="total">Total: ₱<span id="cart-total">0</span></p>
+
+    <div class="form-fields">
+      <input type="text" id="user-name" placeholder="Your Name" />
+      <input type="email" id="user-email" placeholder="Your Email" />
+      <input type="tel" id="user-contact" placeholder="Contact Number" />
+    </div>
+
     <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
 </section>
+
 <div id="product-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
@@ -246,45 +253,6 @@
       product.style.display = text.includes(input) ? "block" : "none";
     });
   }
-</script>
-<script>
-  const cart = []; // Sample: [{ name: "Item", price: 100 }]
-  const cartList = document.getElementById("cart-list");
-  const cartTotal = document.getElementById("cart-total");
-  const checkoutLink = document.getElementById("checkout-btn");
-
-  const SERVICE_AND_DELIVERY_FEE = 29.99;
-
-  function renderCart() {
-    cartList.innerHTML = "";
-    let subtotal = 0;
-
-    cart.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.name} – ₱${item.price.toFixed(2)}`;
-      cartList.appendChild(li);
-      subtotal += item.price;
-    });
-
-    const total = subtotal + SERVICE_AND_DELIVERY_FEE;
-    cartTotal.textContent = total.toFixed(2);
-
-    // Fillout prefilled form URL
-    const items = cart.map(item => item.name).join(", ");
-    const encodedItems = encodeURIComponent(items);
-    const encodedTotal = encodeURIComponent(total.toFixed(2));
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?Items_ordered=${encodedItems}&Total_price=${encodedTotal}`;
-    checkoutLink.href = filloutURL;
-  }
-
-  function addToCart(name, price) {
-    cart.push({ name, price });
-    renderCart();
-  }
-
-  // Example (wire this to your "Add to Cart" buttons)
-  // addToCart("Chicken Inasal", 120);
 </script>
 
 </body>
