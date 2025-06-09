@@ -573,3 +573,34 @@ footer {
     cursor: pointer;
   }
 </style>
+/* Responsive tweaks */
+@media screen and (max-width: 768px) {
+  .hero-text h1, .hero-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .merchant-card {
+    min-width: 150px;
+    font-size: 1rem;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-left, .footer-right {
+    text-align: center;
+  }
+}
