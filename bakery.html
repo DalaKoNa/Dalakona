@@ -117,14 +117,14 @@
   <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
 </header>
 
-  <section class="merchant-detail">
-    <h1>Bakery</h1>
-    <div class="product-list">
-      <div class="product"><p>Pandesal (per piece) – ₱5</p><button onclick="addToCart('Pandesal', 5)">Add</button></div>
-      <div class="product"><p>Spanish Bread – ₱7</p><button onclick="addToCart('Spanish Bread', 7)">Add</button></div>
-      <div class="product"><p>Ensaymada – ₱10</p><button onclick="addToCart('Ensaymada', 10)">Add</button></div>
-      <div class="product"><p>Loaf Bread – ₱30</p><button onclick="addToCart('Loaf Bread', 30)">Add</button></div>
-    </div>
+  <!-- Replace only the product list section below -->
+<div class="product-list" id="product-list">
+  <div class="product"><p>Pandesal (6 pcs) – ₹30</p><button onclick="addToCart('Pandesal (6 pcs)', 30)">Add</button></div>
+  <div class="product"><p>Spanish Bread (6 pcs) – ₹45</p><button onclick="addToCart('Spanish Bread (6 pcs)', 45)">Add</button></div>
+  <div class="product"><p>Ensaymada – ₹20</p><button onclick="addToCart('Ensaymada', 20)">Add</button></div>
+  <div class="product"><p>Ube Cheese Pandesal – ₹50</p><button onclick="addToCart('Ube Cheese Pandesal', 50)">Add</button></div>
+  <div class="product"><p>Loaf Bread – ₹60</p><button onclick="addToCart('Loaf Bread', 60)">Add</button></div>
+</div>
  <!-- Cart Section -->
 <section class="cart-section">
   <div class="cart-card">
