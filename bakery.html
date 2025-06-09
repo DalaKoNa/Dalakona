@@ -14,7 +14,9 @@
       background-color: #222;
       color: white;
       padding: 1em;
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .title {
       font-size: 1.5em;
@@ -54,7 +56,7 @@
       text-decoration: none;
       border-radius: 4px;
     }
-    /* MODAL */
+    /* MODAL STYLES */
     .modal {
       display: none;
       position: fixed;
@@ -99,32 +101,24 @@
 
 <section class="merchant-detail">
   <h1>Bakery</h1>
-  <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
+  <input type="text" id="searchInput" placeholder="Search bakery items..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
   <div class="product-list">
 
-    <div class="product"><p>Pan de Sal (6 pcs) – ₱25</p>
-      <button onclick="addToCart('Pan de Sal (6 pcs)', 25)">Add</button>
-      <button onclick="showModal('Pan de Sal (6 pcs)', 'Classic Filipino bread rolls, slightly sweet and soft.')">View</button>
+    <div class="product"><p>Banana Bread – ₱150</p>
+      <button onclick="addToCart('Banana Bread', 150)">Add</button>
+      <button onclick="showModal('Banana Bread', 'Moist banana bread with walnuts.')">View</button>
     </div>
-
-    <div class="product"><p>Ensaymada – ₱35</p>
-      <button onclick="addToCart('Ensaymada', 35)">Add</button>
-      <button onclick="showModal('Ensaymada', 'Soft, buttery bread topped with sugar and cheese.')">View</button>
+    <div class="product"><p>Blueberry Muffin – ₱120</p>
+      <button onclick="addToCart('Blueberry Muffin', 120)">Add</button>
+      <button onclick="showModal('Blueberry Muffin', 'Fresh blueberry muffin.')">View</button>
     </div>
-
-    <div class="product"><p>Ube Cake Slice – ₱55</p>
-      <button onclick="addToCart('Ube Cake Slice', 55)">Add</button>
-      <button onclick="showModal('Ube Cake Slice', 'Purple yam flavored cake with creamy frosting.')">View</button>
+    <div class="product"><p>Croissant – ₱130</p>
+      <button onclick="addToCart('Croissant', 130)">Add</button>
+      <button onclick="showModal('Croissant', 'Buttery and flaky croissant.')">View</button>
     </div>
-
-    <div class="product"><p>Banana Bread – ₱45</p>
-      <button onclick="addToCart('Banana Bread', 45)">Add</button>
-      <button onclick="showModal('Banana Bread', 'Moist banana loaf, perfect for snacks or breakfast.')">View</button>
-    </div>
-
-    <div class="product"><p>Chocolate Croissant – ₱40</p>
-      <button onclick="addToCart('Chocolate Croissant', 40)">Add</button>
-      <button onclick="showModal('Chocolate Croissant', 'Flaky buttery pastry filled with chocolate.')">View</button>
+    <div class="product"><p>Cinnamon Roll – ₱140</p>
+      <button onclick="addToCart('Cinnamon Roll', 140)">Add</button>
+      <button onclick="showModal('Cinnamon Roll', 'Sweet cinnamon roll.')">View</button>
     </div>
 
   </div>
@@ -193,16 +187,16 @@
 
     for (let item in cart) {
       const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
       const li = document.createElement("li");
       li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
         <button onclick="addToCart('${item}', ${entry.price})">➕</button>
         <button onclick="decreaseItem('${item}')">➖</button>
         <button onclick="removeItem('${item}')">❌</button>
       `;
       cartList.appendChild(li);
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
     }
 
     if (subtotal > 0) {
@@ -215,9 +209,9 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const name = encodeURIComponent(document.getElementById("user-name").value || "");
-    const email = encodeURIComponent(document.getElementById("user-email").value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
+    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
+    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
+    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
 
     const itemsStr = Object.entries(cart)
       .map(([item, data]) => `${item} × ${data.qty}`)
@@ -225,40 +219,41 @@
       .join(", ");
 
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}&Email=${email}&Contact=${contact}&Items=${encodeURIComponent(itemsStr)}&Total=${finalTotal.toFixed(2)}`;
+      `?Name=${name}` +
+      `&Email=${email}` +
+      `&Contact_Number=${contact}` +
+      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
+      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
 
     document.getElementById("checkout-btn").href = filloutURL;
   }
 
-  document.getElementById("user-name").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-email").addEventListener("input", updateCartDisplay);
-  document.getElementById("user-contact").addEventListener("input", updateCartDisplay);
-
-  function filterProducts() {
-    const filter = document.getElementById("searchInput").value.toLowerCase();
-    const products = document.querySelectorAll(".product");
-    products.forEach(product => {
-      const text = product.textContent.toLowerCase();
-      product.style.display = text.includes(filter) ? "" : "none";
-    });
-  }
-
-  const modal = document.getElementById("product-modal");
   function showModal(title, description) {
     document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-description").textContent = description;
-    modal.style.display = "block";
+    document.getElementById("product-modal").style.display = "block";
   }
+
   function closeModal() {
-    modal.style.display = "none";
+    document.getElementById("product-modal").style.display = "none";
   }
+
   window.onclick = function(event) {
-    if (event.target == modal) {
+    const modal = document.getElementById("product-modal");
+    if (event.target === modal) {
       closeModal();
     }
   }
 
-  updateCartDisplay();
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const products = document.querySelectorAll(".product-list .product");
+
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      product.style.display = text.includes(input) ? "block" : "none";
+    });
+  }
 </script>
 
 </body>
