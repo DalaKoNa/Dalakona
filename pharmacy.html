@@ -117,13 +117,16 @@
   <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
 </header>
 
-  <section class="merchant-detail">
-    <h1>Pharmacy</h1>
-    <div class="product-list">
-      <div class="product"><p>Paracetamol (10s) – ₱20</p><button onclick="addToCart('Paracetamol (10s)', 20)">Add</button></div>
-      <div class="product"><p>Cough Syrup – ₱35</p><button onclick="addToCart('Cough Syrup', 35)">Add</button></div>
-      <div class="product"><p>Vitamin C (10s) – ₱15</p><button onclick="addToCart('Vitamin C', 15)">Add</button></div>
-    </div>
+  <!-- Template for Pharmacy -->
+<!-- Save as pharmacy.html -->
+<div class="product-list" id="product-list">
+  <div class="product"><p>Paracetamol (10 tablets) – ₹30</p><button onclick="addToCart('Paracetamol (10 tablets)', 30)">Add</button></div>
+  <div class="product"><p>Vitamin C (10 tablets) – ₹40</p><button onclick="addToCart('Vitamin C (10 tablets)', 40)">Add</button></div>
+  <div class="product"><p>Cough Syrup (120ml) – ₹90</p><button onclick="addToCart('Cough Syrup (120ml)', 90)">Add</button></div>
+  <div class="product"><p>Antacid – ₹20</p><button onclick="addToCart('Antacid', 20)">Add</button></div>
+  <div class="product"><p>Bandages (Pack of 5) – ₹35</p><button onclick="addToCart('Bandages (Pack of 5)', 35)">Add</button></div>
+</div>
+
   <!-- Cart Section -->
 <section class="cart-section">
   <div class="cart-card">
