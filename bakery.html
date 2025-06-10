@@ -14,9 +14,8 @@
     .product { margin-bottom: 1em; }
     .product button { margin-right: 0.5em; }
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
-    .form-fields input { display: block; margin: 0.5em 0; padding: 0.5em; width: 100%; max-width: 400px; }
-    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; }
-    .checkout-btn:hover { background-color: #333; }
+    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
+    ul#cart-list { padding-left: 1em; }
   </style>
 </head>
 <body>
@@ -38,11 +37,6 @@
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
-    <div class="form-fields">
-      <input type="text" id="user-name" placeholder="Your Name" />
-      <input type="email" id="user-email" placeholder="Your Email" />
-      <input type="tel" id="user-contact" placeholder="Contact Number" />
-    </div>
     <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
 </section>
@@ -70,7 +64,7 @@
       totalQty += entry.qty;
       subtotal += entry.price * entry.qty;
       const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}`;
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
       cartList.appendChild(li);
     }
 
@@ -84,10 +78,6 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const name = encodeURIComponent(document.getElementById("user-name").value || "");
-    const email = encodeURIComponent(document.getElementById("user-email").value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact").value || "");
-
     const itemsStr = Object.entries(cart)
       .map(([item, data]) => `${item} × ${data.qty}`)
       .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
@@ -95,9 +85,9 @@
 
     const totalPrice = finalTotal.toFixed(2);
 
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?Name=${name}&Email=${email}&Contact_Number=${contact}&Items_ordered=${encodeURIComponent(itemsStr)}&Total_price=${encodeURIComponent(totalPrice)}`;
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?Items_ordered=${encodeURIComponent(itemsStr)}&Total_price=${encodeURIComponent(totalPrice)}`;
 
-    const waText = `Hello! New order from ${decodeURIComponent(name)}\nItems: ${decodeURIComponent(itemsStr)}\nTotal: ₱${totalPrice}\nContact: ${decodeURIComponent(contact)}`;
+    const waText = `Hello! New order from Bakery\nItems: ${itemsStr}\nTotal: ₱${totalPrice}`;
     const waURL = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(waText)}`;
 
     document.getElementById("checkout-btn").onclick = () => {
