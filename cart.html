@@ -58,6 +58,10 @@
     <ul id="cart-list"></ul>
     <p id="total-price"></p>
 
+    <h3>📋 Palihug kopyaha ang order details kag i-paste sa Fillout Form nga makita sa sunod nga page.</h3>
+    <textarea id="order-summary" readonly style="width: 100%; height: 120px; margin: 10px 0; padding: 10px;"></textarea>
+    <button onclick="copySummary()">📄 Kopyaha ang Order</button>
+
     <button onclick="submitCart()">Proceed to Checkout</button>
   </section>
 
@@ -78,6 +82,10 @@
       });
       totalPriceDisplay.textContent = `Total: ₱${total}`;
     }
+      const summaryBox = document.getElementById("order-summary");
+      summaryBox.value = cart.map(item =>
+  `${item.itemName} (${item.merchant}) – ₱${item.price}`
+).join("\n") + `\nTotal: ₱${total}`;
 
     function submitCart() {
       if (!cart || cart.length === 0) {
