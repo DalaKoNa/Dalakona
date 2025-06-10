@@ -2,21 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Dala-Cart</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
     .cart-page {
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
+      padding: 1em;
+    }
+
+    ul {
+      padding-left: 1em;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 1em;
     }
 
     button {
       padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #0077cc;
+      font-size: 1em;
+      background-color: #000;
       color: white;
       border: none;
       cursor: pointer;
@@ -24,24 +53,7 @@
     }
 
     button:hover {
-      background-color: #005fa3;
-    }
-
-    .empty-cart-msg {
-      color: #a00;
-      font-weight: bold;
-      margin-top: 1rem;
-    }
-
-    ul#cart-list {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 1rem;
-    }
-
-    ul#cart-list li {
-      padding: 0.5rem;
-      border-bottom: 1px solid #ddd;
+      background-color: #333;
     }
   </style>
 </head>
@@ -54,70 +66,50 @@
 
   <section class="cart-page">
     <h1>Review Your Cart</h1>
-
     <ul id="cart-list"></ul>
     <p id="total-price"></p>
 
     <h3>📋 Palihug kopyaha ang order details kag i-paste sa Fillout Form nga makita sa sunod nga page.</h3>
-    <textarea id="order-summary" readonly style="width: 100%; height: 120px; margin: 10px 0; padding: 10px;"></textarea>
+    <textarea id="order-summary" readonly></textarea>
     <button onclick="copySummary()">📄 Kopyaha ang Order</button>
-
-    <button onclick="submitCart()">Proceed to Checkout</button>
+    <br><br>
+    <button onclick="goToForm()">🚀 Padayon sa Form</button>
   </section>
 
   <script>
     const cartList = document.getElementById("cart-list");
     const totalPriceDisplay = document.getElementById("total-price");
+    const summaryBox = document.getElementById("order-summary");
+
     let cart = JSON.parse(localStorage.getItem("dalaCart") || "[]");
 
-    if (!cart || cart.length === 0) {
-      cartList.innerHTML = '<p class="empty-cart-msg">Your cart is empty!</p>';
+    if (cart.length === 0) {
+      cartList.innerHTML = "<p>Wala pa sulod ang imo cart.</p>";
+      summaryBox.value = "";
     } else {
       let total = 0;
-      cart.forEach((item) => {
+      cart.forEach((item, i) => {
         const li = document.createElement("li");
-        li.textContent = `${item.itemName} from ${item.merchant} – ₱${item.price}`;
+        li.textContent = `${item.itemName} (${item.merchant}) – ₱${item.price}`;
         cartList.appendChild(li);
         total += item.price;
       });
+
       totalPriceDisplay.textContent = `Total: ₱${total}`;
-    }
-      const summaryBox = document.getElementById("order-summary");
       summaryBox.value = cart.map(item =>
-  `${item.itemName} (${item.merchant}) – ₱${item.price}`
+        `${item.itemName} (${item.merchant}) – ₱${item.price}`
       ).join("\n") + `\nTotal: ₱${total}`;
-const summaryBox = document.getElementById("order-summary");
-summaryBox.value = cart.map(item =>
-  `${item.itemName} (${item.merchant}) – ₱${item.price}`
-).join("\n") + `\nTotal: ₱${total}`;
+    }
 
-    function submitCart() {
-      if (!cart || cart.length === 0) {
-        alert("Cart is empty!");
-        return;
-      }
+    function copySummary() {
+      summaryBox.select();
+      summaryBox.setSelectionRange(0, 99999); // mobile
+      document.execCommand("copy");
+      alert("✔️ Nakopya na ang order! I-paste ini sa Fillout Form.");
+    }
 
-      const grouped = {};
-      let total = 0;
-
-      cart.forEach((item) => {
-        if (!grouped[item.merchant]) grouped[item.merchant] = [];
-        grouped[item.merchant].push(`${item.itemName} (₱${item.price})`);
-        total += item.price;
-      });
-
-      const merchant = Object.keys(grouped)[0]; // Handle one merchant for now
-      const items = grouped[merchant].join(", ");
-
-      const filloutURL = "https://forms.fillout.com/t/oMZACWUnvFus";
-      const fullURL = `${filloutURL}?Items_ordered=${encodeURIComponent(items)}&Total_price=${encodeURIComponent(total)}`;
-
-      if (!confirm("Are you sure you want to proceed to checkout?")) {
-        return;
-      }
-
-      localStorage.removeItem("dalaCart");
-      window.location.href = fullURL;
+    function goToForm() {
+      window.open("https://forms.fillout.com/t/oMZACWUnvFus", "_blank");
     }
   </script>
 
