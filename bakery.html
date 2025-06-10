@@ -64,54 +64,63 @@
   }
 
   function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const orderSummary = document.getElementById("order-summary");
+  const cartList = document.getElementById("cart-list");
+  const cartTotal = document.getElementById("cart-total");
+  const cartCount = document.getElementById("cart-count");
+  const orderSummary = document.getElementById("order-summary");
 
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
+  cartList.innerHTML = "";
+  let totalQty = 0;
+  let subtotal = 0;
 
-    for (let item in cart) {
-      const entry = cart[item];
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
-      const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-      cartList.appendChild(li);
-    }
-
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
-    }
-
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.textContent = totalQty;
-
-    // Order summary (for copy)
-    const summaryText = Object.entries(cart)
-      .map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`)
-      .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
-      .concat([`Total: ₱${finalTotal.toFixed(2)}`])
-      .join("\n");
-    
-    orderSummary.value = summaryText;
-
-    // Checkout button URL (Fillout form)
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus`;
-    const waText = `Hello! New order from Bakery:\n${summaryText}`;
-    const waURL = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(waText)}`;
-
-    document.getElementById("checkout-btn").onclick = () => {
-      window.open(filloutURL, '_blank');
-      window.open(waURL, '_blank');
-    };
+  for (let item in cart) {
+    const entry = cart[item];
+    totalQty += entry.qty;
+    subtotal += entry.price * entry.qty;
+    const li = document.createElement("li");
+    li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+    cartList.appendChild(li);
   }
 
+  if (subtotal > 0) {
+    const feeLine = document.createElement("li");
+    feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+    cartList.appendChild(feeLine);
+  }
+
+  const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+  cartTotal.textContent = finalTotal.toFixed(2);
+  cartCount.textContent = totalQty;
+
+  // Order summary (for copy)
+  const merchantName = "Bakery"; // 💡 Change this on each page
+  const summaryText = [`Merchant: ${merchantName}`]
+    .concat(
+      Object.entries(cart).map(
+        ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+      )
+    )
+    .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
+    .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+    .join("\n");
+
+  orderSummary.value = summaryText;
+
+  // WhatsApp setup
+  const merchantNumber = "63XXXXXXXXXX"; // 💬 Replace with merchant's WhatsApp number
+  const adminNumber = "63YYYYYYYYYY";    // 💬 Replace with your WhatsApp number
+
+  const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+  const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
+  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus`;
+
+  document.getElementById("checkout-btn").onclick = () => {
+    window.open(filloutURL, '_blank');
+    window.open(waMerchant, '_blank');
+    window.open(waAdmin, '_blank');
+  };
+}
   function copySummary() {
     const textarea = document.getElementById("order-summary");
     textarea.select();
