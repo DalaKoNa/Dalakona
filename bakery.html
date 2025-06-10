@@ -15,14 +15,19 @@
     .product button { margin-right: 0.5em; }
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
-    ul#cart-list { padding-left: 1em; }
+    .checkout-btn:hover { background-color: #333; }
+    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
+    button.copy-btn:hover { background-color: #666; }
   </style>
 </head>
 <body>
+
 <header class="navbar">
-  <div class="title" onclick="window.location.href='index.html'">Dala🚲Na | Bakery</div>
+  <a href="index.html" class="title">Dala🚲Na | Bakery</a>
   <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
 </header>
+
 <section class="merchant-detail">
   <h1>Bakery</h1>
   <div class="product-list">
@@ -32,14 +37,22 @@
     <div class="product"><p>Cinnamon Roll – ₱140</p><button onclick="addToCart('Cinnamon Roll', 140)">Add</button></div>
   </div>
 </section>
+
 <section class="cart-section">
   <div>
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
-    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
+
+    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
+    <textarea id="order-summary" readonly></textarea>
+    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
+
+    <br />
+    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
 </section>
+
 <script>
   const cart = {};
   const serviceFee = 29.99;
@@ -54,6 +67,7 @@
     const cartList = document.getElementById("cart-list");
     const cartTotal = document.getElementById("cart-total");
     const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
 
     cartList.innerHTML = "";
     let totalQty = 0;
@@ -78,16 +92,18 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const itemsStr = Object.entries(cart)
-      .map(([item, data]) => `${item} × ${data.qty}`)
-      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
-      .join(", ");
+    // Order summary (for copy)
+    const summaryText = Object.entries(cart)
+      .map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`)
+      .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
+      .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+      .join("\n");
+    
+    orderSummary.value = summaryText;
 
-    const totalPrice = finalTotal.toFixed(2);
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?Items_ordered=${encodeURIComponent(itemsStr)}&Total_price=${encodeURIComponent(totalPrice)}`;
-
-    const waText = `Hello! New order from Bakery\nItems: ${itemsStr}\nTotal: ₱${totalPrice}`;
+    // Checkout button URL (Fillout form)
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus`;
+    const waText = `Hello! New order from Bakery:\n${summaryText}`;
     const waURL = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(waText)}`;
 
     document.getElementById("checkout-btn").onclick = () => {
@@ -95,6 +111,15 @@
       window.open(waURL, '_blank');
     };
   }
+
+  function copySummary() {
+    const textarea = document.getElementById("order-summary");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // for mobile
+    document.execCommand("copy");
+    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+  }
 </script>
+
 </body>
 </html>
