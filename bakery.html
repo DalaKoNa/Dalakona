@@ -8,7 +8,7 @@
   <style>
     body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
     .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
-    .title { font-size: 1.5em; text-decoration: none; color: white; }
+    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
     .cart { font-size: 1.2em; }
     .merchant-detail { padding: 1em; }
     .product { margin-bottom: 1em; }
@@ -16,11 +16,12 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .form-fields input { display: block; margin: 0.5em 0; padding: 0.5em; width: 100%; max-width: 400px; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; }
+    .checkout-btn:hover { background-color: #333; }
   </style>
 </head>
 <body>
 <header class="navbar">
-  <a href="#" class="title">Dala🚲Na | Bakery</a>
+  <div class="title" onclick="window.location.href='index.html'">Dala🚲Na | Bakery</div>
   <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
 </header>
 <section class="merchant-detail">
@@ -69,7 +70,7 @@
       totalQty += entry.qty;
       subtotal += entry.price * entry.qty;
       const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      li.textContent = `${item} × ${entry.qty} – ₱${(entry.price * entry.qty).toFixed(2)}`;
       cartList.appendChild(li);
     }
 
