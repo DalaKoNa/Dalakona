@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Chicken Inasal - Dala🚲na.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chicken Inasal | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Cinzel', serif;
-      margin: 0; padding: 0;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
+
     .navbar {
       background-color: #222;
       color: white;
@@ -18,242 +20,107 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .title {
       font-size: 1.5em;
-      text-decoration: none;
-      color: white;
-    }
-    .cart {
-      font-size: 1.2em;
-    }
-    .merchant-detail {
-      padding: 1em;
-    }
-    .product {
-      margin-bottom: 1em;
-    }
-    .product button {
-      margin-right: 0.5em;
-    }
-    .cart-section {
-      background: #f9f9f9;
-      padding: 1em;
-      border-top: 1px solid #ddd;
-    }
-    .form-fields input {
-      display: block;
-      margin: 0.5em 0;
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-    }
-    .checkout-btn {
-      display: inline-block;
-      margin-top: 1em;
-      padding: 0.75em 1.5em;
-      background-color: #000;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
-    }
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 2em;
-      border: 1px solid #888;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 10px;
-      position: relative;
-    }
-    .modal-content h2 {
-      margin-top: 0;
-    }
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 28px;
       cursor: pointer;
     }
-    .close:hover {
-      color: #000;
+
+    .menu-section {
+      padding: 1em;
+    }
+
+    .item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .item h3 {
+      margin: 0 0 5px;
+    }
+
+    .item button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .item button:hover {
+      background-color: #333;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 1em;
     }
   </style>
 </head>
 <body>
+  <header class="navbar">
+    <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
+    <div class="cart" onclick="window.location.href='cart.html'">🛒</div>
+  </header>
 
-<header class="navbar">
-  <a href="index.html" class="title">Dala🚲na.</a>
-  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-</header>
+  <section class="menu-section">
+    <h1>Chicken Inasal Menu</h1>
 
-<section class="merchant-detail">
-  <h1>Chicken Inasal</h1>
-  <input type="text" id="searchInput" placeholder="Search chicken inasal items..." onkeyup="filterProducts()" style="width:100%;padding:0.5em;margin-bottom:1em;font-size:1em;" />
-  <div class="product-list">
-
-    <div class="product"><p>Chicken Inasal – ₱180</p>
-      <button onclick="addToCart('Chicken Inasal', 180)">Add</button>
-      <button onclick="showModal('Chicken Inasal', 'Traditional Bacolod-style grilled chicken.')">View</button>
+    <div class="item">
+      <h3>Pecho – ₱130</h3>
+      <button onclick="addToCart('Pecho', 130)">➕ Add</button>
     </div>
-    <div class="product"><p>Paa (Leg Quarter) – ₱160</p>
-      <button onclick="addToCart('Paa', 160)">Add</button>
-      <button onclick="showModal('Paa', 'Grilled chicken leg quarter, juicy and flavorful.')">View</button>
+    <div class="item">
+      <h3>Paa – ₱110</h3>
+      <button onclick="addToCart('Paa', 110)">➕ Add</button>
     </div>
-    <div class="product"><p>Pecho (Breast) – ₱170</p>
-      <button onclick="addToCart('Pecho', 170)">Add</button>
-      <button onclick="showModal('Pecho', 'Grilled chicken breast for a hearty meal.')">View</button>
+    <div class="item">
+      <h3>Baticolon – ₱60</h3>
+      <button onclick="addToCart('Baticolon', 60)">➕ Add</button>
     </div>
-    <div class="product"><p>Inasal with Rice Meal – ₱200</p>
-      <button onclick="addToCart('Inasal with Rice Meal', 200)">Add</button>
-      <button onclick="showModal('Inasal with Rice Meal', 'Includes rice, atchara, and dipping sauce.')">View</button>
+    <div class="item">
+      <h3>Isol – ₱60</h3>
+      <button onclick="addToCart('Isol', 60)">➕ Add</button>
     </div>
 
-  </div>
-</section>
+    <h3>📋 Palihug kopyaha ang order details kag i-paste sa Fillout Form nga makita sa sunod nga page.</h3>
+    <textarea id="order-summary" readonly></textarea>
+    <button onclick="copySummary()">📄 Kopyaha ang Order</button>
+  </section>
 
-<section class="cart-section">
-  <div class="cart-card">
-    <h2>🛒 Your Cart</h2>
-    <ul id="cart-list"></ul>
-    <p class="total">Total: ₱<span id="cart-total">0</span></p>
+  <script>
+    const merchantName = "Chicken Inasal";
+    const summaryBox = document.getElementById("order-summary");
+    let cart = JSON.parse(localStorage.getItem("dalaCart") || "[]");
 
-    <div class="form-fields">
-      <input type="text" id="user-name" placeholder="Your Name" />
-      <input type="email" id="user-email" placeholder="Your Email" />
-      <input type="tel" id="user-contact" placeholder="Contact Number" />
-    </div>
-
-    <a id="checkout-btn" href="#" class="checkout-btn" target="_blank">🚀 Checkout</a>
-  </div>
-</section>
-
-<div id="product-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="modal-title">Product Title</h2>
-    <p id="modal-description">Product description goes here.</p>
-  </div>
-</div>
-
-<script>
-  const cart = {};
-  const serviceFee = 29.99;
-
-  function addToCart(item, price) {
-    if (cart[item]) {
-      cart[item].qty += 1;
-    } else {
-      cart[item] = { price, qty: 1 };
-    }
-    updateCartDisplay();
-  }
-
-  function decreaseItem(item) {
-    if (cart[item]) {
-      cart[item].qty -= 1;
-      if (cart[item].qty <= 0) {
-        delete cart[item];
-      }
-      updateCartDisplay();
-    }
-  }
-
-  function removeItem(item) {
-    delete cart[item];
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
-
-    for (let item in cart) {
-      const entry = cart[item];
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
-      const li = document.createElement("li");
-      li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
-        <button onclick="addToCart('${item}', ${entry.price})">➕</button>
-        <button onclick="decreaseItem('${item}')">➖</button>
-        <button onclick="removeItem('${item}')">❌</button>
-      `;
-      cartList.appendChild(li);
+    function addToCart(itemName, price) {
+      cart.push({ itemName, price, merchant: merchantName });
+      localStorage.setItem("dalaCart", JSON.stringify(cart));
+      updateSummary();
     }
 
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
+    function updateSummary() {
+      let total = 0;
+      summaryBox.value = cart
+        .map(item => {
+          total += item.price;
+          return `${item.itemName} (${item.merchant}) – ₱${item.price}`;
+        })
+        .join("\n") + `\nTotal: ₱${total}`;
     }
 
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.textContent = totalQty;
-
-    const name = encodeURIComponent(document.getElementById("user-name")?.value || "");
-    const email = encodeURIComponent(document.getElementById("user-email")?.value || "");
-    const contact = encodeURIComponent(document.getElementById("user-contact")?.value || "");
-
-    const itemsStr = Object.entries(cart)
-      .map(([item, data]) => `${item} × ${data.qty}`)
-      .concat(subtotal > 0 ? [`Service & Delivery Fee × 1`] : [])
-      .join(", ");
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?Name=${name}` +
-      `&Email=${email}` +
-      `&Contact_Number=${contact}` +
-      `&Items_ordered=${encodeURIComponent(itemsStr)}` +
-      `&Total_price=${encodeURIComponent(finalTotal.toFixed(2))}`;
-
-    document.getElementById("checkout-btn").href = filloutURL;
-  }
-
-  function showModal(title, description) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal-description").textContent = description;
-    document.getElementById("product-modal").style.display = "block";
-  }
-
-  function closeModal() {
-    document.getElementById("product-modal").style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById("product-modal");
-    if (event.target === modal) {
-      closeModal();
+    function copySummary() {
+      summaryBox.select();
+      summaryBox.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("✔️ Nakopya na ang order! I-paste ini sa Fillout Form.");
     }
-  }
 
-  function filterProducts() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const products = document.querySelectorAll(".product-list .product");
-
-    products.forEach(product => {
-      const text = product.textContent.toLowerCase();
-      product.style.display = text.includes(input) ? "block" : "none";
-    });
-  }
-</script>
-
+    updateSummary();
+  </script>
 </body>
 </html>
