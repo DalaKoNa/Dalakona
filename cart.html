@@ -85,6 +85,10 @@
       const summaryBox = document.getElementById("order-summary");
       summaryBox.value = cart.map(item =>
   `${item.itemName} (${item.merchant}) – ₱${item.price}`
+      ).join("\n") + `\nTotal: ₱${total}`;
+const summaryBox = document.getElementById("order-summary");
+summaryBox.value = cart.map(item =>
+  `${item.itemName} (${item.merchant}) – ₱${item.price}`
 ).join("\n") + `\nTotal: ₱${total}`;
 
     function submitCart() {
