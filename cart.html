@@ -2,8 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Dala-Cart</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cart-page {
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .empty-cart-msg {
+      color: #a00;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    ul#cart-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+
+    ul#cart-list li {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body>
 
@@ -14,39 +54,23 @@
 
   <section class="cart-page">
     <h1>Review Your Cart</h1>
-    
+
     <ul id="cart-list"></ul>
     <p id="total-price"></p>
 
-    <div class="checkout-info">
-      <input type="text" id="user-name" placeholder="Your Name" required />
-      <input type="email" id="user-email" placeholder="Email Address" required />
-      <input type="tel" id="user-contact" placeholder="Contact Number" required />
-    </div>
-
-    <button onclick="submitCart()">Submit Order</button>
+    <button onclick="submitCart()">Proceed to Checkout</button>
   </section>
-
-  <style>
-    .checkout-info input {
-      display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      font-size: 1em;
-    }
-  </style>
 
   <script>
     const cartList = document.getElementById("cart-list");
     const totalPriceDisplay = document.getElementById("total-price");
     let cart = JSON.parse(localStorage.getItem("dalaCart") || "[]");
 
-    if (cart.length === 0) {
-      cartList.innerHTML = "<p>Your cart is empty!</p>";
+    if (!cart || cart.length === 0) {
+      cartList.innerHTML = '<p class="empty-cart-msg">Your cart is empty!</p>';
     } else {
       let total = 0;
-      cart.forEach((item, i) => {
+      cart.forEach((item) => {
         const li = document.createElement("li");
         li.textContent = `${item.itemName} from ${item.merchant} – ₱${item.price}`;
         cartList.appendChild(li);
@@ -56,42 +80,31 @@
     }
 
     function submitCart() {
-      // Get user input
-      const name = encodeURIComponent(document.getElementById("user-name").value);
-      const email = encodeURIComponent(document.getElementById("user-email").value);
-      const contact = encodeURIComponent(document.getElementById("user-contact").value);
-
-      if (!name || !email || !contact) {
-        alert("Please fill out all fields.");
-        return;
-      }
-
-      if (cart.length === 0) {
+      if (!cart || cart.length === 0) {
         alert("Cart is empty!");
         return;
       }
 
-      // Group items by merchant
       const grouped = {};
       let total = 0;
 
-      cart.forEach(item => {
+      cart.forEach((item) => {
         if (!grouped[item.merchant]) grouped[item.merchant] = [];
         grouped[item.merchant].push(`${item.itemName} (₱${item.price})`);
         total += item.price;
       });
 
-      const merchant = Object.keys(grouped)[0]; // For now, handle only 1 merchant
+      const merchant = Object.keys(grouped)[0]; // Handle one merchant for now
       const items = grouped[merchant].join(", ");
 
       const filloutURL = "https://forms.fillout.com/t/oMZACWUnvFus";
-      const fullURL = `${filloutURL}` +
-        `?Name=${name}` +
-        `&Email=${email}` +
-        `&Contact_Number=${contact}` +
-        `&Items_ordered=${encodeURIComponent(items)}` +
-        `&Total_price=${encodeURIComponent(total)}`;
+      const fullURL = `${filloutURL}?Items_ordered=${encodeURIComponent(items)}&Total_price=${encodeURIComponent(total)}`;
 
+      if (!confirm("Are you sure you want to proceed to checkout?")) {
+        return;
+      }
+
+      localStorage.removeItem("dalaCart");
       window.location.href = fullURL;
     }
   </script>
