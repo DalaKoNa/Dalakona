@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -69,36 +70,10 @@
     <ul id="cart-list"></ul>
     <p id="total-price"></p>
 
-  <script>
-    const cartList = document.getElementById("cart-list");
-    const totalPriceDisplay = document.getElementById("total-price");
-    const summaryBox = document.getElementById("order-summary");
-
-    let cart = JSON.parse(localStorage.getItem("dalaCart") || "[]");
-
-    if (cart.length === 0) {
-      cartList.innerHTML = "<p>Wala pa sulod ang imo cart.</p>";
-      summaryBox.value = "";
-    } else {
-      let total = 0;
-      cart.forEach((item, i) => {
-        const li = document.createElement("li");
-        li.textContent = `${item.itemName} (${item.merchant}) – ₱${item.price}`;
-        cartList.appendChild(li);
-        total += item.price;
-      });
-
       totalPriceDisplay.textContent = `Total: ₱${total}`;
       summaryBox.value = cart.map(item =>
         `${item.itemName} (${item.merchant}) – ₱${item.price}`
       ).join("\n") + `\nTotal: ₱${total}`;
-    }
-
-    function copySummary() {
-      summaryBox.select();
-      summaryBox.setSelectionRange(0, 99999); // mobile
-      document.execCommand("copy");
-      alert("✔️ Nakopya na ang order! I-paste ini sa Fillout Form.");
     }
 
     function goToForm() {
