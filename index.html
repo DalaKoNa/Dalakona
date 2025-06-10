@@ -3,107 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city.">
   <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
+  <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- Sidebar (Hamburger Nav) -->
-  <div id="sidebar" class="sidebar">
-    <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">Join as Rider</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">Join as Merchant</a>
+  <nav id="sidebar" class="sidebar" aria-hidden="true">
+    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
     <a href="#partners">Our Partner Merchants</a>
-  </div>
+  </nav>
 
   <!-- Navbar -->
   <header class="navbar">
-    <div id="hamburger" class="hamburger">&#9776;</div>
+    <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
     <div class="cart">🛒 dala-Cart</div>
   </header>
 
- <!-- Hero Section -->
-<section class="hero">
-  <img 
-    src="bike-hero.jpg" 
-    alt="Bike with grocery basket at night" 
-    class="hero-img" 
-  />
-  <div class="hero-text">
-    <h1>Dala Ko na.</h1>
-    <h2>Subong dayon!</h2>
-    <p>Delivering daily essentials with love & speed</p>
-  </div>
-</section>
-
-  <section class="partners" id="partners">
-  <h2>Our Merchants</h2>
-  <div class="merchant-scroll" style="display: flex; overflow-x: auto; gap: 1rem; padding: 1rem;">
-<a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-<a href="bakery.html" class="merchant-card">Bakery</a>
-<a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-<a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-<a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
-  </div>
-</section>
-
-
-<!-- Footer -->
-<!-- Footer -->
-<footer style="font-family: 'Cinzel', serif; background-color: #f9f9f9; padding: 2em; display: flex; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #ddd;">
-  <div class="footer-left" style="flex: 1; min-width: 200px;">
-    <p>@dalakona.subongdayon</p>
-    <div class="socials" style="margin-top: 0.5em;">
-      <a href="https://facebook.com" target="_blank" style="margin-right: 10px; text-decoration: none; color: #0077cc;">FB</a>
-      <a href="https://instagram.com" target="_blank" style="margin-right: 10px; text-decoration: none; color: #0077cc;">IG</a>
-      <a href="https://x.com" target="_blank" style="text-decoration: none; color: #0077cc;">X</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <img 
+      src="bike-hero.jpg" 
+      alt="Bike with grocery basket at night" 
+      class="hero-img" 
+      loading="lazy"
+    />
+    <div class="hero-text">
+      <h1>Dala Ko na.</h1>
+      <h2>Subong dayon!</h2>
+      <p>Delivering daily essentials with love & speed</p>
     </div>
-    <p style="margin-top: 1em;">dala🚲na hasta sa FB, IG, X</p>
-  </div>
+  </section>
 
-  <div class="footer-right" style="flex: 1; min-width: 200px; text-align: right;">
-    <a href="careers.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">Careers / Trabaho</a>
-    <a href="about.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">About / Ang Istorya Naton</a>
-    <a href="offers.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">Offers / Mga Promos</a>
-    <a href="contact.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">Contact / Kontaka Kami</a>
-    <a href="terms.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">Terms & Conditions / Kasugtanan</a>
-    <a href="privacy.html" style="display: block; margin-bottom: 6px; color: #333; text-decoration: none;">Privacy / Pribado nga Palisi</a>
-    <p style="margin-top: 1em; font-size: 0.9em; color: #999;">© 2025 Dala🚲na. All rights reserved.</p>
-  </div>
-</footer>
+  <!-- Merchants -->
+  <section class="partners" id="partners">
+    <h2>Our Merchants</h2>
+    <div class="merchant-scroll">
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+    </div>
+  </section>
 
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const sidebar = document.getElementById("sidebar");
-  const closeBtn = document.getElementById("closeBtn");
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Facebook">FB</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Instagram">IG</a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on X">X</a>
+      </div>
+      <p>dala🚲na hasta sa FB, IG, X</p>
+    </div>
 
-  hamburger.addEventListener("click", () => {
-    sidebar.style.width = "250px";
-  });
+    <nav class="footer-right" aria-label="Footer navigation">
+      <a href="careers.html">Careers / Trabaho</a>
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="contact.html">Contact / Kontaka Kami</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
+      <p class="copyright">© 2025 Dala🚲na. All rights reserved.</p>
+    </nav>
+  </footer>
 
-  closeBtn.addEventListener("click", () => {
-    sidebar.style.width = "0";
-  });
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
 
-  // Close sidebar when any link inside is clicked
-  const sidebarLinks = sidebar.querySelectorAll("a");
-  sidebarLinks.forEach(link => {
-    link.addEventListener("click", () => {
+    hamburger.addEventListener("click", () => {
+      sidebar.style.width = "250px";
+    });
+
+    closeBtn.addEventListener("click", () => {
       sidebar.style.width = "0";
     });
-  });
-</script>
-<script>
-  function scrollToTop(e) {
-    e.preventDefault(); // Prevent the default anchor behavior
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+
+    const sidebarLinks = sidebar.querySelectorAll("a");
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.style.width = "0";
+      });
     });
-  }
-</script>
+
+    function scrollToTop(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 
 </body>
 </html>
