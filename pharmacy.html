@@ -16,9 +16,11 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    textarea, input { width: 100%; max-width: 500px; padding: 10px; font-size: 1em; margin-top: 5px; }
+    textarea { height: 120px; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
+    input, textarea { font-family: 'Cinzel', serif; }
   </style>
 </head>
 <body>
@@ -32,9 +34,9 @@
   <h1>Pharmacy</h1>
   <div class="product-list">
     <div class="product"><p>Paracetamol (10 tablets) – ₱50</p><button onclick="addToCart('Paracetamol (10 tablets)', 50)">Add</button></div>
-    <div class="product"><p>Vitamin C (500mg, 10s) – ₱80</p><button onclick="addToCart('Vitamin C (500mg, 10s)', 80)">Add</button></div>
-    <div class="product"><p>Antacid Tablets (10s) – ₱60</p><button onclick="addToCart('Antacid Tablets (10s)', 60)">Add</button></div>
-    <div class="product"><p>Cough Syrup – ₱120</p><button onclick="addToCart('Cough Syrup', 120)">Add</button></div>
+    <div class="product"><p>Vitamin C (30 tablets) – ₱120</p><button onclick="addToCart('Vitamin C (30 tablets)', 120)">Add</button></div>
+    <div class="product"><p>Cough Syrup – ₱180</p><button onclick="addToCart('Cough Syrup', 180)">Add</button></div>
+    <div class="product"><p>First Aid Kit – ₱450</p><button onclick="addToCart('First Aid Kit', 450)">Add</button></div>
   </div>
 </section>
 
@@ -44,10 +46,37 @@
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
 
+    <label>🙋 Customer Name:
+      <input type="text" id="customer-name" required />
+    </label><br /><br />
+
+    <label>📧 Customer Email:
+      <input type="email" id="customer-email" required />
+    </label><br /><br />
+
+    <label>📱 WhatsApp Number:
+      <input type="tel" id="whatsapp-number" required />
+    </label><br /><br />
+
+    <label>📞 Phone Number:
+      <input type="tel" id="customer-phone" required />
+    </label><br /><br />
+
+    <label>📆 Delivery Date:
+      <input type="date" id="delivery-date" onchange="handleDateChange()" required />
+    </label><br /><br />
+
+    <label>⏰ Delivery Time:
+      <input type="time" id="delivery-time" required />
+    </label><br /><br />
+
+    <label>📝 Special Instructions or Customization:
+      <textarea id="customization-notes" placeholder="e.g. Specific brand or dosage preference"></textarea>
+    </label><br /><br />
+
     <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
     <textarea id="order-summary" readonly></textarea>
     <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
-
     <br />
     <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
@@ -62,64 +91,103 @@
     else cart[item] = { price, qty: 1 };
     updateCartDisplay();
   }
-function updateCartDisplay() {
-  const cartList = document.getElementById("cart-list");
-  const cartTotal = document.getElementById("cart-total");
-  const cartCount = document.getElementById("cart-count");
-  const orderSummary = document.getElementById("order-summary");
 
-  cartList.innerHTML = "";
-  let totalQty = 0;
-  let subtotal = 0;
+  function handleDateChange() {
+    const dateInput = document.getElementById("delivery-date");
+    const timeInput = document.getElementById("delivery-time");
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+    const isToday = selectedDate.toDateString() === today.toDateString();
 
-  for (let item in cart) {
-    const entry = cart[item];
-    totalQty += entry.qty;
-    subtotal += entry.price * entry.qty;
-    const li = document.createElement("li");
-    li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-    cartList.appendChild(li);
+    if (isToday) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 80);
+      const pad = n => n.toString().padStart(2, '0');
+      timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
   }
 
-  if (subtotal > 0) {
-    const feeLine = document.createElement("li");
-    feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-    cartList.appendChild(feeLine);
-  }
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
 
-  const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-  cartTotal.textContent = finalTotal.toFixed(2);
-  cartCount.textContent = totalQty;
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
 
-  // Order summary (for copy)
-  const merchantName = "Pharmacy"; // 💡 Change this on each page
-  const summaryText = [`Merchant: ${merchantName}`]
-    .concat(
-      Object.entries(cart).map(
-        ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+    for (let item in cart) {
+      const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+    }
+
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
+
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
+
+    const merchantName = "Pharmacy";
+    const customerName = document.getElementById("customer-name")?.value || "Not provided";
+    const customerEmail = document.getElementById("customer-email")?.value || "Not provided";
+    const whatsappNumber = document.getElementById("whatsapp-number")?.value || "Not provided";
+    const customerPhone = document.getElementById("customer-phone")?.value || "Not provided";
+    const deliveryDate = document.getElementById("delivery-date")?.value || "Not specified";
+    const deliveryTime = document.getElementById("delivery-time")?.value || "Not specified";
+    const customizationNotes = document.getElementById("customization-notes")?.value || "None";
+
+    const summaryText = [`Merchant: ${merchantName}`]
+      .concat(
+        Object.entries(cart).map(
+          ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+        )
       )
-    )
-    .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
-    .concat([`Total: ₱${finalTotal.toFixed(2)}`])
-    .join("\n");
+      .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
+      .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+      .concat([
+        `Delivery Date: ${deliveryDate}`,
+        `Delivery Time: ${deliveryTime}`,
+        `Customization / Notes: ${customizationNotes}`
+      ])
+      .join("\n");
 
-  orderSummary.value = summaryText;
+    orderSummary.value = summaryText;
 
-  // WhatsApp setup
-  const merchantNumber = "63XXXXXXXXXX"; // 💬 Replace with merchant's WhatsApp number
-  const adminNumber = "63YYYYYYYYYY";    // 💬 Replace with your WhatsApp number
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with actual merchant number
+    const adminNumber = "63YYYYYYYYYY";    // Replace with actual admin number
 
-  const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-  const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+    const waMessage = `Hello! New order from ${merchantName}:\n\n` +
+      summaryText + "\n\n" +
+      `🙋 Name: ${customerName}\n📱 WhatsApp: ${whatsappNumber}\n📧 Email: ${customerEmail}\n📞 Phone: ${customerPhone}`;
 
-  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus`;
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(waMessage)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - " + waMessage)}`;
 
-  document.getElementById("checkout-btn").onclick = () => {
-    window.open(filloutURL, '_blank');
-    window.open(waMerchant, '_blank');
-    window.open(waAdmin, '_blank');
-  };
-}
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?customerName=${encodeURIComponent(customerName)}` +
+      `&whatsappNumber=${encodeURIComponent(whatsappNumber)}` +
+      `&cartSummary=${encodeURIComponent(summaryText)}` +
+      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+      `&customerEmail=${encodeURIComponent(customerEmail)}` +
+      `&customerPhone=${encodeURIComponent(customerPhone)}`;
+
+    document.getElementById("checkout-btn").onclick = () => {
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
+  }
 
   function copySummary() {
     const textarea = document.getElementById("order-summary");
