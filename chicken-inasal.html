@@ -1,191 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chicken Inasal - Order Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chicken Inasal | Dala🚲Na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    .product { margin-bottom: 16px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-    .qty-controls { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-    .qty-controls button { padding: 4px 10px; font-size: 16px; cursor: pointer; }
-    .qty-controls input { width: 40px; text-align: center; }
-    #cart-summary { margin-top: 20px; border-top: 1px solid #000; padding-top: 10px; }
-    textarea { width: 100%; height: 120px; margin-top: 10px; }
+    body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
+    .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
+    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
+    .cart { font-size: 1.2em; }
+    .merchant-detail { padding: 1em; }
+    .product { margin-bottom: 1em; }
+    .product button { margin-right: 0.5em; }
+    .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
+    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
+    .checkout-btn:hover { background-color: #333; }
+    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
+    button.copy-btn:hover { background-color: #666; }
+    .warning { color: red; font-weight: bold; margin-top: 10px; }
+    input, textarea { display: block; margin-top: 10px; max-width: 500px; padding: 10px; width: 100%; font-size: 1em; }
   </style>
 </head>
 <body>
 
-  <h1>Chicken Inasal Order Form</h1>
+<header class="navbar">
+  <a href="index.html" class="title">Dala🚲Na | Chicken Inasal</a>
+  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+</header>
 
-  <div class="product">
-    <h3>Chicken Inasal (Pecho)</h3>
-    <p>₱129.00</p>
-    <div class="qty-controls">
-      <button class="qty-minus" data-item="Chicken Inasal (Pecho)">➖</button>
-      <input type="number" min="0" value="0" readonly id="qty-Chicken Inasal (Pecho)">
-      <button class="qty-plus" data-item="Chicken Inasal (Pecho)">➕</button>
-    </div>
+<section class="merchant-detail">
+  <h1>Chicken Inasal</h1>
+  <div class="product-list">
+    <div class="product"><p>Half Lechon Manok – ₱160</p><button onclick="addToCart('Half Lechon Manok', 160)">Add</button></div>
+    <div class="product"><p>Full Lechon Manok (Original) – ₱300</p><button onclick="addToCart('Full Lechon Manok (Original)', 300)">Add</button></div>
+    <div class="product"><p>Full Lechon Manok (Spicy) – ₱310</p><button onclick="addToCart('Full Lechon Manok (Spicy)', 310)">Add</button></div>
+    <div class="product"><p>Full Lechon Manok (Garlic Butter) – ₱320</p><button onclick="addToCart('Full Lechon Manok (Garlic Butter)', 320)">Add</button></div>
   </div>
+</section>
 
-  <div class="product">
-    <h3>Chicken Inasal (Paa)</h3>
-    <p>₱119.00</p>
-    <div class="qty-controls">
-      <button class="qty-minus" data-item="Chicken Inasal (Paa)">➖</button>
-      <input type="number" min="0" value="0" readonly id="qty-Chicken Inasal (Paa)">
-      <button class="qty-plus" data-item="Chicken Inasal (Paa)">➕</button>
-    </div>
+<section class="cart-section">
+  <div>
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p>Total: ₱<span id="cart-total">0</span></p>
+
+    <label for="customer-name">🙋 Customer Name:</label>
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
+
+    <label for="customer-email">📧 Email Address:</label>
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
+
+    <label for="customer-phone">📱 WhatsApp Number:</label>
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
+
+    <label for="delivery-date">📅 Preferred Delivery Date:</label>
+    <input type="date" id="delivery-date" onchange="autoSetTime()" />
+
+    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
+    <input type="time" id="delivery-time" />
+
+    <label for="customization-notes">📝 Special Instructions / Customization:</label>
+    <textarea id="customization-notes" placeholder="Ex. Extra sauce, no spicy, etc."></textarea>
+
+    <div class="warning" id="warning"></div>
+
+    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
+    <textarea id="order-summary" readonly></textarea>
+    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
+
+    <br />
+    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
+</section>
 
-  <div class="product">
-    <h3>Garlic Rice</h3>
-    <p>₱25.00</p>
-    <div class="qty-controls">
-      <button class="qty-minus" data-item="Garlic Rice">➖</button>
-      <input type="number" min="0" value="0" readonly id="qty-Garlic Rice">
-      <button class="qty-plus" data-item="Garlic Rice">➕</button>
-    </div>
-  </div>
+<script>
+  const cart = {};
+  const serviceFee = 29.99;
 
-  <div class="product">
-    <h3>Bottled Water</h3>
-    <p>₱20.00</p>
-    <div class="qty-controls">
-      <button class="qty-minus" data-item="Bottled Water">➖</button>
-      <input type="number" min="0" value="0" readonly id="qty-Bottled Water">
-      <button class="qty-plus" data-item="Bottled Water">➕</button>
-    </div>
-  </div>
+  function addToCart(item, price) {
+    if (cart[item]) cart[item].qty += 1;
+    else cart[item] = { price, qty: 1 };
+    updateCartDisplay();
+  }
 
-  <hr>
+  function autoSetTime() {
+    const dateInput = document.getElementById("delivery-date");
+    const timeInput = document.getElementById("delivery-time");
+    const warning = document.getElementById("warning");
 
-  <h3>Customer Information</h3>
-  <input type="text" id="customer-name" placeholder="Your Name" required><br>
-  <input type="email" id="customer-email" placeholder="Email"><br>
-  <input type="tel" id="customer-phone" placeholder="WhatsApp Number" required><br>
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
 
-  <h3>Delivery Details</h3>
-  <input type="date" id="delivery-date"><br>
-  <input type="time" id="delivery-time"><br>
+    if (selectedDate.toDateString() === today.toDateString()) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 80);
+      timeInput.value = now.toTimeString().slice(0,5);
 
-  <h3>Special Instructions</h3>
-  <textarea id="customization-notes" placeholder="e.g. No chili, extra rice..."></textarea>
+      warning.textContent = now.getHours() >= 18
+        ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
+        : "";
+    } else {
+      warning.textContent = "";
+    }
 
-  <h3>Cart Summary</h3>
-  <div id="cart-summary"></div>
-  <textarea id="order-summary" readonly></textarea><br>
+    updateCartDisplay();
+  }
 
-  <button id="checkout-btn">Checkout</button>
-  <button onclick="copySummary()">Copy Summary</button>
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
 
-  <script>
-    const cart = {};
-    const serviceFee = 29.99;
-    const prices = {
-      "Chicken Inasal (Pecho)": 129,
-      "Chicken Inasal (Paa)": 119,
-      "Garlic Rice": 25,
-      "Bottled Water": 20
+    const customerName = document.getElementById("customer-name").value.trim();
+    const customerEmail = document.getElementById("customer-email").value.trim();
+    const customerPhone = document.getElementById("customer-phone").value.trim();
+    const deliveryDate = document.getElementById("delivery-date").value;
+    const deliveryTime = document.getElementById("delivery-time").value;
+    const customizationNotes = document.getElementById("customization-notes").value.trim();
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+    }
+
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
+
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
+
+    const merchantName = "Chicken Inasal";
+    const summaryText = [
+      `Merchant: ${merchantName}`,
+      `🙋 Name: ${customerName}`,
+      `📧 Email: ${customerEmail}`,
+      `📱 WhatsApp: ${customerPhone}`,
+      ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
+      ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
+      `Total: ₱${finalTotal.toFixed(2)}`,
+      deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
+      deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
+      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+    ].filter(Boolean).join("\n");
+
+    orderSummary.value = summaryText;
+
+    const merchantNumber = "63XXXXXXXXXX";
+    const adminNumber = "63YYYYYYYYYY";
+
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?customerName=${encodeURIComponent(customerName)}` +
+      `&customerEmail=${encodeURIComponent(customerEmail)}` +
+      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
+      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+      `&cartSummary=${encodeURIComponent(summaryText)}`;
+
+    document.getElementById("checkout-btn").onclick = () => {
+      if (!customerName || !customerPhone) {
+        alert("❗ Please enter your name and WhatsApp number.");
+        return;
+      }
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
     };
+  }
 
-    function updateCart() {
-      const cartContainer = document.getElementById("cart-summary");
-      cartContainer.innerHTML = "";
-
-      let subtotal = 0;
-      for (const item in cart) {
-        const { qty, price } = cart[item];
-        if (qty > 0) {
-          subtotal += qty * price;
-          cartContainer.innerHTML += `<div>${item} × ${qty} – ₱${qty * price}</div>`;
-        }
-      }
-
-      if (subtotal > 0) {
-        cartContainer.innerHTML += `<div>Service Fee – ₱${serviceFee.toFixed(2)}</div>`;
-      }
-
-      const total = subtotal > 0 ? subtotal + serviceFee : 0;
-      cartContainer.innerHTML += `<strong>Total: ₱${total.toFixed(2)}</strong>`;
-
-      generateSummary(subtotal, total);
-    }
-
-    function adjustQty(item, delta) {
-      if (!cart[item]) cart[item] = { qty: 0, price: prices[item] };
-      cart[item].qty = Math.max(0, cart[item].qty + delta);
-      document.getElementById(`qty-${item}`).value = cart[item].qty;
-      updateCart();
-    }
-
-    document.querySelectorAll(".qty-plus").forEach(btn => btn.onclick = () => adjustQty(btn.dataset.item, 1));
-    document.querySelectorAll(".qty-minus").forEach(btn => btn.onclick = () => adjustQty(btn.dataset.item, -1));
-
-    function generateSummary(subtotal, finalTotal) {
-      const customerName = document.getElementById("customer-name").value;
-      const customerEmail = document.getElementById("customer-email").value;
-      const customerPhone = document.getElementById("customer-phone").value;
-      const deliveryDate = document.getElementById("delivery-date").value;
-      let deliveryTime = document.getElementById("delivery-time").value;
-      const customizationNotes = document.getElementById("customization-notes").value;
-
-      if (!deliveryTime && deliveryDate === new Date().toISOString().split('T')[0]) {
-        const now = new Date();
-        now.setMinutes(now.getMinutes() + 80);
-        deliveryTime = now.toTimeString().slice(0,5);
-        document.getElementById("delivery-time").value = deliveryTime;
-      }
-
-      const merchantName = "Chicken Inasal";
-      const summaryText = [
-        `Merchant: ${merchantName}`,
-        `🙋 Name: ${customerName}`,
-        `📧 Email: ${customerEmail}`,
-        `📱 WhatsApp: ${customerPhone}`,
-        ...Object.entries(cart).filter(([_, d]) => d.qty > 0).map(([item, d]) => `${item} × ${d.qty} – ₱${d.qty * d.price}`),
-        ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
-        `Total: ₱${finalTotal.toFixed(2)}`,
-        deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
-        deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-        customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
-      ].filter(Boolean).join("\n");
-
-      document.getElementById("order-summary").value = summaryText;
-
-      const merchantNumber = "63XXXXXXXXXX";
-      const adminNumber = "63YYYYYYYYYY";
-
-      const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-      const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-      const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-        `?customerName=${encodeURIComponent(customerName)}` +
-        `&customerEmail=${encodeURIComponent(customerEmail)}` +
-        `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
-        `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
-        `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
-        `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
-        `&cartSummary=${encodeURIComponent(summaryText)}`;
-
-      document.getElementById("checkout-btn").onclick = () => {
-        if (!customerName || !customerPhone) {
-          alert("❗ Please enter your name and WhatsApp number.");
-          return;
-        }
-        window.open(filloutURL, '_blank');
-        window.open(waMerchant, '_blank');
-        window.open(waAdmin, '_blank');
-      };
-    }
-
-    function copySummary() {
-      const textarea = document.getElementById("order-summary");
-      textarea.select();
-      document.execCommand("copy");
-      alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
-    }
-  </script>
+  function copySummary() {
+    const textarea = document.getElementById("order-summary");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+  }
+</script>
 
 </body>
 </html>
