@@ -136,8 +136,13 @@
       const entry = cart[item];
       totalQty += entry.qty;
       subtotal += entry.price * entry.qty;
+
       const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">+</button>
+        <button onclick="removeFromCart('${item}')">–</button>
+      `;
       cartList.appendChild(li);
     }
 
@@ -167,8 +172,8 @@
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX";
-    const adminNumber = "63YYYYYYYYYY";
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
     const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
@@ -192,7 +197,6 @@
       window.open(waAdmin, '_blank');
     };
   }
-
   function copySummary() {
     const textarea = document.getElementById("order-summary");
     textarea.select();
