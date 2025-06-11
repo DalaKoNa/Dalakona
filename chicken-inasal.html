@@ -16,7 +16,7 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    textarea, input, select { width: 100%; max-width: 500px; margin-top: 10px; padding: 10px; font-size: 1em; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
   </style>
@@ -44,6 +44,16 @@
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
 
+    <label>📅 Delivery Date:
+      <input type="date" id="delivery-date">
+    </label>
+    <label>⏰ Delivery Time:
+      <input type="time" id="delivery-time">
+    </label>
+    <label>📝 Customization Notes:
+      <textarea id="customization-notes" placeholder="e.g. Extra rice, no sauce, etc."></textarea>
+    </label>
+
     <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
     <textarea id="order-summary" readonly></textarea>
     <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
@@ -62,64 +72,71 @@
     else cart[item] = { price, qty: 1 };
     updateCartDisplay();
   }
-function updateCartDisplay() {
-  const cartList = document.getElementById("cart-list");
-  const cartTotal = document.getElementById("cart-total");
-  const cartCount = document.getElementById("cart-count");
-  const orderSummary = document.getElementById("order-summary");
 
-  cartList.innerHTML = "";
-  let totalQty = 0;
-  let subtotal = 0;
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
 
-  for (let item in cart) {
-    const entry = cart[item];
-    totalQty += entry.qty;
-    subtotal += entry.price * entry.qty;
-    const li = document.createElement("li");
-    li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-    cartList.appendChild(li);
-  }
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
 
-  if (subtotal > 0) {
-    const feeLine = document.createElement("li");
-    feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-    cartList.appendChild(feeLine);
-  }
+    for (let item in cart) {
+      const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+    }
 
-  const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-  cartTotal.textContent = finalTotal.toFixed(2);
-  cartCount.textContent = totalQty;
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
 
-  // Order summary (for copy)
-  const merchantName = "Chickan Inasal"; // 💡 Change this on each page
-  const summaryText = [`Merchant: ${merchantName}`]
-    .concat(
-      Object.entries(cart).map(
-        ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
+
+    const merchantName = "Chicken Inasal";
+    const deliveryDate = document.getElementById("delivery-date").value;
+    const deliveryTime = document.getElementById("delivery-time").value;
+    const notes = document.getElementById("customization-notes").value;
+
+    const summaryText = [`Merchant: ${merchantName}`]
+      .concat(
+        Object.entries(cart).map(
+          ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+        )
       )
-    )
-    .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
-    .concat([`Total: ₱${finalTotal.toFixed(2)}`])
-    .join("\n");
+      .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
+      .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+      .concat([`Delivery Date: ${deliveryDate || '-'}`])
+      .concat([`Delivery Time: ${deliveryTime || '-'}`])
+      .concat([`Notes: ${notes || '-'}`])
+      .join("\n");
 
-  orderSummary.value = summaryText;
+    orderSummary.value = summaryText;
 
-  // WhatsApp setup
-  const merchantNumber = "63XXXXXXXXXX"; // 💬 Replace with merchant's WhatsApp number
-  const adminNumber = "63YYYYYYYYYY";    // 💬 Replace with your WhatsApp number
+    const merchantNumber = "63XXXXXXXXXX";
+    const adminNumber = "63YYYYYYYYYY";
 
-  const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-  const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
 
-  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus`;
+    const filloutBase = `https://forms.fillout.com/t/oMZACWUnvFus`;
+    const filloutURL = `${filloutBase}?cartSummary=${encodeURIComponent(summaryText)}&customizationNotes=${encodeURIComponent(notes)}&deliveryDate=${encodeURIComponent(deliveryDate)}&deliveryTime=${encodeURIComponent(deliveryTime)}`;
 
-  document.getElementById("checkout-btn").onclick = () => {
-    window.open(filloutURL, '_blank');
-    window.open(waMerchant, '_blank');
-    window.open(waAdmin, '_blank');
-  };
-}
+    document.getElementById("checkout-btn").onclick = () => {
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
+  }
 
   function copySummary() {
     const textarea = document.getElementById("order-summary");
