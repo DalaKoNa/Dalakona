@@ -203,3 +203,6 @@ body {
     margin-top: 1em;
   }
 }
+.cart-section, .cart-section * {
+  font-size: 0.9em;
+}
