@@ -156,6 +156,61 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
+<!-- Order Instructions Popup -->
+<div id="order-popup" style="
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+">
+  <div style="
+    background: #fff;
+    max-width: 480px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    font-family: 'Cinzel', serif;
+    text-align: left;
+    line-height: 1.5;
+  ">
+    <h2 style="margin-top: 0;">📦 Paano mag-order? / How to Order?</h2>
+
+    <p><strong>🔸 Hiligaynon:</strong> Pilia ang imo paborito nga tindahan. Idugang sa cart ang mga items. Sunod, pun-a ang imo pangalan, WhatsApp number, kag petsa/time sang delivery.</p>
+
+    <p>I-klik ang <strong>“📄 Kopyaha ang Order”</strong> kag i-paste ini sa Fillout Form. Dayon i-klik ang <strong>“🚀 Checkout”</strong> para ma-send sa WhatsApp kag sa form.</p>
+
+    <p><strong>🔸 English:</strong> Choose your favorite store. Add items to cart. Then fill out your name, WhatsApp number, and preferred delivery date/time.</p>
+
+    <p>Click <strong>“📄 Copy Order”</strong> and paste it into the Fillout Form. Then click <strong>“🚀 Checkout”</strong> to send via WhatsApp and Fillout form.</p>
+
+    <p>📞 Need help? Message us here: <a href="https://wa.me/63XXXXXXXXXX" target="_blank" style="color:#007bff;">WhatsApp 63XXXXXXXXXX</a></p>
+
+    <button onclick="closePopup()" style="
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">✅ Got it!</button>
+  </div>
+</div>
+
+<script>
+  // Show only once using localStorage
+  window.onload = function() {
+    if (!localStorage.getItem('popupShown')) {
+      document.getElementById('order-popup').style.display = 'flex';
+      localStorage.setItem('popupShown', 'true');
+    }
+  };
+
+  function closePopup() {
+    document.getElementById('order-popup').style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
