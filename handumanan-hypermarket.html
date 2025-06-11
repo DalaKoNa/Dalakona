@@ -80,7 +80,6 @@
     <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
 </section>
-
 <script>
   const cart = {};
   const serviceFee = 29.99;
@@ -91,6 +90,13 @@
     updateCartDisplay();
   }
 
+  function removeFromCart(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) delete cart[item];
+      updateCartDisplay();
+    }
+  }
   function autoSetTime() {
     const dateInput = document.getElementById("delivery-date");
     const timeInput = document.getElementById("delivery-time");
