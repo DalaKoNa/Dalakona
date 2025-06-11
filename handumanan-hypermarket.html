@@ -118,85 +118,88 @@
 
     updateCartDisplay();
   }
+function updateCartDisplay() {
+  const cartList = document.getElementById("cart-list");
+  const cartTotal = document.getElementById("cart-total");
+  const cartCount = document.getElementById("cart-count");
+  const orderSummary = document.getElementById("order-summary");
 
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const orderSummary = document.getElementById("order-summary");
+  const customerName = document.getElementById("customer-name").value.trim();
+  const customerEmail = document.getElementById("customer-email").value.trim();
+  const customerPhone = document.getElementById("customer-phone").value.trim();
+  const deliveryDate = document.getElementById("delivery-date").value;
+  const deliveryTime = document.getElementById("delivery-time").value;
+  const customizationNotes = document.getElementById("customization-notes").value.trim();
 
-    const customerName = document.getElementById("customer-name").value.trim();
-    const customerEmail = document.getElementById("customer-email").value.trim();
-    const customerPhone = document.getElementById("customer-phone").value.trim();
-    const deliveryDate = document.getElementById("delivery-date").value;
-    const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value.trim();
+  cartList.innerHTML = "";
+  let totalQty = 0;
+  let subtotal = 0;
 
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
+  for (let item in cart) {
+    const entry = cart[item];
+    totalQty += entry.qty;
+    subtotal += entry.price * entry.qty;
 
-    for (let item in cart) {
-      const entry = cart[item];
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
-      const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-      cartList.appendChild(li);
-    }
-
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
-    }
-
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.textContent = totalQty;
-
-    const merchantName = "Handumanan Hypermarket";
-    const summaryText = [
-      `Merchant: ${merchantName}`,
-      `🙋 Name: ${customerName}`,
-      `📧 Email: ${customerEmail}`,
-      `📱 WhatsApp: ${customerPhone}`,
-      ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
-      ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
-      `Total: ₱${finalTotal.toFixed(2)}`,
-      deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
-      deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Notes: ${customizationNotes}` : ''
-    ].filter(Boolean).join("\n");
-
-    orderSummary.value = summaryText;
-
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with WhatsApp number
-    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
-
-    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?customerName=${encodeURIComponent(customerName)}` +
-      `&customerEmail=${encodeURIComponent(customerEmail)}` +
-      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
-      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
-      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
-      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
-      `&cartSummary=${encodeURIComponent(summaryText)}`;
-
-    document.getElementById("checkout-btn").onclick = () => {
-      if (!customerName || !customerPhone) {
-        alert("❗ Please enter your name and WhatsApp number.");
-        return;
-      }
-      window.open(filloutURL, '_blank');
-      window.open(waMerchant, '_blank');
-      window.open(waAdmin, '_blank');
-    };
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+      <button onclick="addToCart('${item}', ${entry.price})">➕</button>
+      <button onclick="removeFromCart('${item}')">➖</button>
+    `;
+    cartList.appendChild(li);
   }
 
+  if (subtotal > 0) {
+    const feeLine = document.createElement("li");
+    feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+    cartList.appendChild(feeLine);
+  }
+
+  const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+  cartTotal.textContent = finalTotal.toFixed(2);
+  cartCount.textContent = totalQty;
+
+  const merchantName = "Handumanan Hypermarket";
+  const summaryText = [
+    `Merchant: ${merchantName}`,
+    `🙋 Name: ${customerName}`,
+    `📧 Email: ${customerEmail}`,
+    `📱 WhatsApp: ${customerPhone}`,
+    ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
+    ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
+    `Total: ₱${finalTotal.toFixed(2)}`,
+    deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
+    deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
+    customizationNotes ? `📝 Notes: ${customizationNotes}` : ''
+  ].filter(Boolean).join("\n");
+
+  orderSummary.value = summaryText;
+
+  const merchantNumber = "63XXXXXXXXXX"; // Replace with WhatsApp number
+  const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
+
+  const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+  const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
+  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+    `?customerName=${encodeURIComponent(customerName)}` +
+    `&customerEmail=${encodeURIComponent(customerEmail)}` +
+    `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
+    `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+    `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+    `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+    `&cartSummary=${encodeURIComponent(summaryText)}`;
+
+  document.getElementById("checkout-btn").onclick = () => {
+    if (!customerName || !customerPhone) {
+      alert("❗ Please enter your name and WhatsApp number.");
+      return;
+    }
+    window.open(filloutURL, '_blank');
+    window.open(waMerchant, '_blank');
+    window.open(waAdmin, '_blank');
+  };
+}
   function copySummary() {
     const textarea = document.getElementById("order-summary");
     textarea.select();
