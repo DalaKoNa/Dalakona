@@ -11,27 +11,43 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: #f4f4f4;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 1em;
+  background-color: #222;
+  color: white;
+}
+
+.nav-left, .nav-center, .nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.nav-center {
+  justify-content: center;
+}
+
+.nav-left {
+  justify-content: flex-start;
+}
+
+.nav-right {
+  justify-content: flex-end;
 }
 
 .hamburger {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   background: none;
   border: none;
+  color: white;
   cursor: pointer;
 }
 
 .title {
+  font-size: 1.5em;
   text-decoration: none;
-  font-weight: bold;
-  color: #000;
-  font-size: 1.2rem;
+  color: white;
+  text-align: center;
 }
-
 .cart {
   font-size: 1rem;
 }
