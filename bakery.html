@@ -3,133 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bakery </title>
+  <title>Bakery</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-      background: #fffaf5;
+      font-family: sans-serif;
+      margin: 20px;
+      max-width: 800px;
     }
-    h1 {
-      text-align: center;
-      color: #d2691e;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      font-size: 1em;
-    }
-    .cart {
-      font-size: 0.9em;
-      background: #fdf1e7;
-      padding: 15px;
-      margin-top: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    .button-group {
+    .product {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+    .cart-summary {
+      font-size: 0.9rem;
+      background: #f9f9f9;
+      padding: 10px;
       margin-top: 20px;
     }
-    button {
-      padding: 12px;
-      font-size: 1em;
-      background-color: #d2691e;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    .input-group {
+      margin: 10px 0;
     }
-    button:hover {
-      background-color: #b3591a;
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-top: 5px;
+    }
+    .actions {
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
+
   <h1>Bakery</h1>
 
-  <label for="customerName">Name</label>
-  <input type="text" id="customerName" placeholder="Your full name" required>
+  <div id="product-list">
+    <div class="product">
+      <span>Bread Loaf (₱80)</span>
+      <button onclick="addToCart('Bread Loaf', 80)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <span>Ensaymada (₱45)</span>
+      <button onclick="addToCart('Ensaymada', 45)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <span>Spanish Bread (₱40)</span>
+      <button onclick="addToCart('Spanish Bread', 40)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <span>Pandesal (12 pcs) (₱60)</span>
+      <button onclick="addToCart('Pandesal (12 pcs)', 60)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <span>Chocolate Chip Cookies (6 pcs) (₱120)</span>
+      <button onclick="addToCart('Chocolate Chip Cookies (6 pcs)', 120)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <span>Banana Bread (₱95)</span>
+      <button onclick="addToCart('Banana Bread', 95)">Add to Cart</button>
+    </div>
+  </div>
 
-  <label for="customerEmail">Email</label>
-  <input type="email" id="customerEmail" placeholder="you@example.com" required>
+  <div class="cart-summary" id="cart-summary">
+    <strong>Cart:</strong> Empty<br>
+    <strong>Total:</strong> ₱0
+  </div>
 
-  <label for="customerPhone">Phone Number</label>
-  <input type="tel" id="customerPhone" placeholder="09XXXXXXXXX" required>
+  <div class="input-group">
+    <label>Customer Name</label>
+    <input type="text" id="customerName" />
+  </div>
+  <div class="input-group">
+    <label>Customer Email</label>
+    <input type="email" id="customerEmail" />
+  </div>
+  <div class="input-group">
+    <label>Customer Phone</label>
+    <input type="tel" id="customerPhone" />
+  </div>
+  <div class="input-group">
+    <label>WhatsApp Number</label>
+    <input type="tel" id="whatsappNumber" />
+  </div>
+  <div class="input-group">
+    <label>Delivery Date</label>
+    <input type="date" id="deliveryDate" />
+  </div>
+  <div class="input-group">
+    <label>Delivery Time</label>
+    <input type="time" id="deliveryTime" />
+  </div>
+  <div class="input-group">
+    <label>Customization / Special Instructions</label>
+    <textarea id="customizationNotes"></textarea>
+  </div>
 
-  <label for="whatsappNumber">WhatsApp Number</label>
-  <input type="tel" id="whatsappNumber" placeholder="09XXXXXXXXX" required>
-
-  <label for="deliveryDate">Delivery Date</label>
-  <input type="date" id="deliveryDate" required>
-
-  <label for="deliveryTime">Delivery Time</label>
-  <input type="time" id="deliveryTime" required>
-
-  <label for="customizationNotes">Special Instructions</label>
-  <textarea id="customizationNotes" rows="3" placeholder="e.g., Chocolate message on cake, no onions, etc."></textarea>
-
-  <label for="cart">Cart Summary</label>
-  <textarea id="cart" class="cart" rows="5" placeholder="- Item A\n- Item B\n- Quantity: 2\nSubtotal: ₱199.00" required></textarea>
-
-  <div class="button-group">
-    <button onclick="sendToFillout()">Submit to Fillout</button>
-    <button onclick="sendWhatsApp()">Send WhatsApp to Merchant</button>
-    <button onclick="sendWhatsAppToAdmin()">Send WhatsApp to Admin</button>
+  <div class="actions">
+    <button onclick="openPrefilledForm()">Submit via Fillout</button>
+    <button onclick="sendWhatsApp()">Send via WhatsApp</button>
   </div>
 
   <script>
-    const filloutBase = "https://forms.fillout.com/t/oMZACWUnvFus";
-    const merchantNumber = "MERCHANT_PHONE_HERE";
-    const adminNumber = "ADMIN_PHONE_HERE";
+    let cart = {};
+    const serviceFee = 29.99;
 
-    function encodeCartText(text) {
-      return encodeURIComponent(text.replace(/\n/g, "%0A"));
+    function addToCart(item, price) {
+      if (!cart[item]) {
+        cart[item] = { price: price, quantity: 1 };
+      } else {
+        cart[item].quantity += 1;
+      }
+      updateCartSummary();
     }
 
-    function getFormData() {
-      return {
-        customerName: document.getElementById("customerName").value.trim(),
-        customerEmail: document.getElementById("customerEmail").value.trim(),
-        customerPhone: document.getElementById("customerPhone").value.trim(),
-        whatsappNumber: document.getElementById("whatsappNumber").value.trim(),
-        deliveryDate: document.getElementById("deliveryDate").value,
-        deliveryTime: document.getElementById("deliveryTime").value,
-        customizationNotes: document.getElementById("customizationNotes").value.trim(),
-        cartSummary: document.getElementById("cart").value.trim()
-      };
+    function updateCartSummary() {
+      const summaryEl = document.getElementById('cart-summary');
+      let summary = '';
+      let total = serviceFee;
+
+      for (let item in cart) {
+        const line = `${item} x${cart[item].quantity} - ₱${cart[item].price * cart[item].quantity}`;
+        summary += line + '<br>';
+        total += cart[item].price * cart[item].quantity;
+      }
+
+      if (summary === '') {
+        summary = 'Empty<br>';
+        total = 0;
+      }
+
+      summary += `<strong>Service Fee:</strong> ₱${serviceFee.toFixed(2)}<br>`;
+      summary += `<strong>Total:</strong> ₱${total.toFixed(2)}`;
+      summaryEl.innerHTML = `<strong>Cart:</strong><br>${summary}`;
     }
 
-    function sendToFillout() {
-      const data = getFormData();
-      const url = `${filloutBase}?customerName=${encodeURIComponent(data.customerName)}&customerEmail=${encodeURIComponent(data.customerEmail)}&customerPhone=${encodeURIComponent(data.customerPhone)}&whatsappNumber=${encodeURIComponent(data.whatsappNumber)}&deliveryDate=${encodeURIComponent(data.deliveryDate)}&deliveryTime=${encodeURIComponent(data.deliveryTime)}&customizationNotes=${encodeURIComponent(data.customizationNotes)}&cartSummary=${encodeURIComponent(data.cartSummary)}`;
-      window.open(url, "_blank");
+    function getCartText() {
+      return Object.entries(cart).map(([item, data]) => `${item} x${data.quantity}`).join(', ');
+    }
+
+    function openPrefilledForm() {
+      const base = "https://forms.fillout.com/t/oMZACWUnvFus";
+      const params = new URLSearchParams({
+        customerName: document.getElementById('customerName').value,
+        customerEmail: document.getElementById('customerEmail').value,
+        customerPhone: document.getElementById('customerPhone').value,
+        whatsappNumber: document.getElementById('whatsappNumber').value,
+        cartSummary: getCartText(),
+        customizationNotes: document.getElementById('customizationNotes').value,
+        deliveryDate: document.getElementById('deliveryDate').value,
+        deliveryTime: document.getElementById('deliveryTime').value
+      });
+      window.open(`${base}?${params.toString()}`, '_blank');
     }
 
     function sendWhatsApp() {
-      const data = getFormData();
-      const message = `*New Order - Bakery*\n\nName: ${data.customerName}\nEmail: ${data.customerEmail}\nPhone: ${data.customerPhone}\nWhatsApp: ${data.whatsappNumber}\n\nDelivery Date: ${data.deliveryDate}\nDelivery Time: ${data.deliveryTime}\n\nSpecial Instructions:\n${data.customizationNotes || 'None'}\n\nCart:\n${data.cartSummary}\n\nService Fee: ₱29.99`;
-      const url = `https://wa.me/${merchantNumber}?text=${encodeCartText(message)}`;
-      window.open(url, "_blank");
-    }
+      const phone = document.getElementById('whatsappNumber').value.replace(/\D/g, '');
+      const message = `
+*New Bakery Order*
+Name: ${document.getElementById('customerName').value}
+Email: ${document.getElementById('customerEmail').value}
+Phone: ${document.getElementById('customerPhone').value}
+Order: ${getCartText()}
+Delivery: ${document.getElementById('deliveryDate').value} at ${document.getElementById('deliveryTime').value}
+Notes: ${document.getElementById('customizationNotes').value}
+      `.trim();
 
-    function sendWhatsAppToAdmin() {
-      const data = getFormData();
-      const message = `*New Order - Bakery (Admin Copy)*\n\nName: ${data.customerName}\nEmail: ${data.customerEmail}\nPhone: ${data.customerPhone}\nWhatsApp: ${data.whatsappNumber}\n\nDelivery Date: ${data.deliveryDate}\nDelivery Time: ${data.deliveryTime}\n\nSpecial Instructions:\n${data.customizationNotes || 'None'}\n\nCart:\n${data.cartSummary}\n\nService Fee: ₱29.99`;
-      const url = `https://wa.me/${adminNumber}?text=${encodeCartText(message)}`;
-      window.open(url, "_blank");
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
     }
   </script>
+
 </body>
 </html>
