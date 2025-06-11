@@ -8,6 +8,56 @@
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar fix */
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar .hamburger {
+      font-size: 1.5em;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .navbar .title {
+      font-size: 1.2em;
+      text-decoration: none;
+      color: white;
+      flex-grow: 1;
+      text-align: center;
+      margin: 0 1em;
+    }
+
+    .navbar .cart {
+      font-size: 1em;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    @media (max-width: 480px) {
+      .navbar .title {
+        font-size: 1em;
+      }
+      .navbar .cart {
+        font-size: 0.9em;
+      }
+    }
+  </style>
 </head>
 <body>
 
