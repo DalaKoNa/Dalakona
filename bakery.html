@@ -45,6 +45,168 @@
     <div class="product"><p>Sourdough Slice – ₱45</p><button onclick="addToCart('Sourdough Slice', 45)">Add</button></div>
   </div>
 </section>
+<section class="cart-section">
+  <div>
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p>Total: ₱<span id="cart-total">0</span></p>
 
-<!-- Cart section, form, and script logic will be inherited directly from Ellen's Cakes template -->
-<!-- Will duplicate the rest of the cart and automation code in next step -->
+    <label for="customer-name">🙋 Customer Name:</label>
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
+
+    <label for="customer-email">📧 Email Address:</label>
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
+
+    <label for="customer-phone">📱 WhatsApp Number:</label>
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
+
+    <label for="delivery-date">📅 Preferred Delivery Date:</label>
+    <input type="date" id="delivery-date" onchange="autoSetTime()" />
+
+    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
+    <input type="time" id="delivery-time" />
+
+    <label for="customization-notes">📝 Special Instructions (e.g. sliced, toasted, no sugar):</label>
+<textarea id="customization-notes" placeholder="Ex. Sliced loaf, lightly toasted, no sugar on top, etc."></textarea>
+
+    <div class="warning" id="warning"></div>
+
+    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
+    <textarea id="order-summary" readonly></textarea>
+    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
+
+    <br />
+    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  </div>
+<script>
+  const cart = {};
+  const serviceFee = 29.99;
+
+  function addToCart(item, price) {
+    if (cart[item]) cart[item].qty += 1;
+    else cart[item] = { price, qty: 1 };
+    updateCartDisplay();
+  }
+
+  function removeFromCart(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) delete cart[item];
+      updateCartDisplay();
+    }
+  }
+
+  function autoSetTime() {
+    const dateInput = document.getElementById("delivery-date");
+    const timeInput = document.getElementById("delivery-time");
+    const warning = document.getElementById("warning");
+
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+
+    if (selectedDate.toDateString() === today.toDateString()) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 80);
+      timeInput.value = now.toTimeString().slice(0, 5);
+
+      warning.textContent = now.getHours() >= 18
+        ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
+        : "";
+    } else {
+      warning.textContent = "";
+    }
+
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
+
+    const customerName = document.getElementById("customer-name").value.trim();
+    const customerEmail = document.getElementById("customer-email").value.trim();
+    const customerPhone = document.getElementById("customer-phone").value.trim();
+    const deliveryDate = document.getElementById("delivery-date").value;
+    const deliveryTime = document.getElementById("delivery-time").value;
+    const customizationNotes = document.getElementById("customization-notes").value.trim();
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">+</button>
+        <button onclick="removeFromCart('${item}')">–</button>
+      `;
+      cartList.appendChild(li);
+    }
+
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
+
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
+
+    const merchantName = "Bakery";
+    const summaryText = [
+      `Merchant: ${merchantName}`,
+      `🙋 Name: ${customerName}`,
+      `📧 Email: ${customerEmail}`,
+      `📱 WhatsApp: ${customerPhone}`,
+      ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
+      ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
+      `Total: ₱${finalTotal.toFixed(2)}`,
+      deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
+      deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
+      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+    ].filter(Boolean).join("\n");
+
+    orderSummary.value = summaryText;
+
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
+
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?customerName=${encodeURIComponent(customerName)}` +
+      `&customerEmail=${encodeURIComponent(customerEmail)}` +
+      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
+      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+      `&cartSummary=${encodeURIComponent(summaryText)}`;
+
+    document.getElementById("checkout-btn").onclick = () => {
+      if (!customerName || !customerPhone) {
+        alert("❗ Please enter your name and WhatsApp number.");
+        return;
+      }
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
+  }
+
+  function copySummary() {
+    const textarea = document.getElementById("order-summary");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+  }
+</script>
