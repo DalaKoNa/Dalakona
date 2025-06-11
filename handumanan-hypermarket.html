@@ -16,7 +16,8 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    textarea, input { width: 100%; max-width: 500px; padding: 10px; font-size: 1em; margin-top: 5px; }
+    textarea { height: 120px; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
     input, textarea { font-family: 'Cinzel', serif; }
@@ -44,6 +45,22 @@
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
+
+    <label>🙋 Customer Name:
+      <input type="text" id="customer-name" required />
+    </label><br /><br />
+
+    <label>📧 Customer Email:
+      <input type="email" id="customer-email" required />
+    </label><br /><br />
+
+    <label>📱 WhatsApp Number:
+      <input type="tel" id="whatsapp-number" required />
+    </label><br /><br />
+
+    <label>📞 Phone Number:
+      <input type="tel" id="customer-phone" required />
+    </label><br /><br />
 
     <label>📆 Delivery Date:
       <input type="date" id="delivery-date" onchange="handleDateChange()" required />
@@ -120,6 +137,10 @@
     cartCount.textContent = totalQty;
 
     const merchantName = "Handumanan Hypermarket";
+    const customerName = document.getElementById("customer-name")?.value || "Not provided";
+    const customerEmail = document.getElementById("customer-email")?.value || "Not provided";
+    const whatsappNumber = document.getElementById("whatsapp-number")?.value || "Not provided";
+    const customerPhone = document.getElementById("customer-phone")?.value || "Not provided";
     const deliveryDate = document.getElementById("delivery-date")?.value || "Not specified";
     const deliveryTime = document.getElementById("delivery-time")?.value || "Not specified";
     const customizationNotes = document.getElementById("customization-notes")?.value || "None";
@@ -141,12 +162,25 @@
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX"; // Replace
-    const adminNumber = "63YYYYYYYYYY";    // Replace
-    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with actual merchant number
+    const adminNumber = "63YYYYYYYYYY";    // Replace with actual admin number
 
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summaryText)}&deliveryDate=${encodeURIComponent(deliveryDate)}&deliveryTime=${encodeURIComponent(deliveryTime)}&customizationNotes=${encodeURIComponent(customizationNotes)}`;
+    const waMessage = `Hello! New order from ${merchantName}:\n\n` +
+      summaryText + "\n\n" +
+      `🙋 Name: ${customerName}\n📱 WhatsApp: ${whatsappNumber}\n📧 Email: ${customerEmail}\n📞 Phone: ${customerPhone}`;
+
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(waMessage)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - " + waMessage)}`;
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?customerName=${encodeURIComponent(customerName)}` +
+      `&whatsappNumber=${encodeURIComponent(whatsappNumber)}` +
+      `&cartSummary=${encodeURIComponent(summaryText)}` +
+      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+      `&customerEmail=${encodeURIComponent(customerEmail)}` +
+      `&customerPhone=${encodeURIComponent(customerPhone)}`;
 
     document.getElementById("checkout-btn").onclick = () => {
       window.open(filloutURL, '_blank');
