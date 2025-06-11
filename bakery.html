@@ -2,201 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bakery | Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bakery Orders</title>
   <style>
-    body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
-    .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
-    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
-    .cart { font-size: 1.2em; }
-    .merchant-detail { padding: 1em; }
-    .product { margin-bottom: 1em; }
-    .product button { margin-right: 0.5em; }
-    .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
-    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
-    .checkout-btn:hover { background-color: #333; }
-    textarea, input { width: 100%; max-width: 500px; margin-top: 10px; padding: 10px; font-size: 1em; }
-    button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
-    button.copy-btn:hover { background-color: #666; }
-    .warning { color: red; font-weight: bold; margin-top: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      background: #fffaf5;
+    }
+    h1 {
+      text-align: center;
+      color: #d2691e;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    .cart {
+      font-size: 0.9em;
+      background: #fdf1e7;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px;
+      font-size: 1em;
+      background-color: #d2691e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #b3591a;
+    }
   </style>
 </head>
 <body>
-
-<header class="navbar">
-  <a href="index.html" class="title">Dala🚲Na | Bakery</a>
-  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-</header>
-
-<section class="merchant-detail">
   <h1>Bakery</h1>
-  <div class="product-list">
-    <div class="product"><p>Sample Bread – ₱100</p><button onclick="addToCart('Sample Bread', 100)">Add</button></div>
-    <div class="product"><p>Sample Pastry – ₱120</p><button onclick="addToCart('Sample Pastry', 120)">Add</button></div>
+
+  <label for="customerName">Name</label>
+  <input type="text" id="customerName" placeholder="Your full name" required>
+
+  <label for="customerEmail">Email</label>
+  <input type="email" id="customerEmail" placeholder="you@example.com" required>
+
+  <label for="customerPhone">Phone Number</label>
+  <input type="tel" id="customerPhone" placeholder="09XXXXXXXXX" required>
+
+  <label for="whatsappNumber">WhatsApp Number</label>
+  <input type="tel" id="whatsappNumber" placeholder="09XXXXXXXXX" required>
+
+  <label for="deliveryDate">Delivery Date</label>
+  <input type="date" id="deliveryDate" required>
+
+  <label for="deliveryTime">Delivery Time</label>
+  <input type="time" id="deliveryTime" required>
+
+  <label for="customizationNotes">Special Instructions</label>
+  <textarea id="customizationNotes" rows="3" placeholder="e.g., Chocolate message on cake, no onions, etc."></textarea>
+
+  <label for="cart">Cart Summary</label>
+  <textarea id="cart" class="cart" rows="5" placeholder="- Item A\n- Item B\n- Quantity: 2\nSubtotal: ₱199.00" required></textarea>
+
+  <div class="button-group">
+    <button onclick="sendToFillout()">Submit to Fillout</button>
+    <button onclick="sendWhatsApp()">Send WhatsApp to Merchant</button>
+    <button onclick="sendWhatsAppToAdmin()">Send WhatsApp to Admin</button>
   </div>
-</section>
 
-<section class="cart-section">
-  <div>
-    <h2>🛒 Your Cart</h2>
-    <ul id="cart-list"></ul>
-    <p>Total: ₱<span id="cart-total">0</span></p>
+  <script>
+    const filloutBase = "https://forms.fillout.com/t/oMZACWUnvFus";
+    const merchantNumber = "MERCHANT_PHONE_HERE";
+    const adminNumber = "ADMIN_PHONE_HERE";
 
-<label>🙋 Customer Name:
-  <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
-</label><br /><br />
-
-<label>📧 Email Address:
-  <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
-</label><br /><br />
-
-<label>📱 WhatsApp Number:
-  <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
-</label><br /><br />
-
-<label>📅 Preferred Delivery Date:
-  <input type="date" id="delivery-date" onchange="autoSetTime()" />
-</label><br /><br />
-
-<label>⏰ Preferred Delivery Time:
-  <input type="time" id="delivery-time" />
-</label><br /><br />
-
-<label>📝 Special Instructions / Customization:
-  <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc."></textarea>
-</label><br /><br />
-
-    <div class="warning" id="warning"></div>
-
-    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
-    <textarea id="order-summary" readonly></textarea>
-    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
-
-    <br />
-    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
-  </div>
-</section>
-
-<script>
-  const cart = {};
-  const serviceFee = 29.99;
-
-  function addToCart(item, price) {
-    if (cart[item]) cart[item].qty += 1;
-    else cart[item] = { price, qty: 1 };
-    updateCartDisplay();
-  }
-
-  function autoSetTime() {
-    const dateInput = document.getElementById("delivery-date");
-    const timeInput = document.getElementById("delivery-time");
-    const warning = document.getElementById("warning");
-
-    const selectedDate = new Date(dateInput.value);
-    const today = new Date();
-
-    if (selectedDate.toDateString() === today.toDateString()) {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 80);
-      timeInput.value = now.toTimeString().slice(0,5);
-
-      warning.textContent = now.getHours() >= 18
-        ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
-        : "";
-    } else {
-      warning.textContent = "";
+    function encodeCartText(text) {
+      return encodeURIComponent(text.replace(/\n/g, "%0A"));
     }
 
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const orderSummary = document.getElementById("order-summary");
-
-    const customerName = document.getElementById("customer-name").value.trim();
-    const customerEmail = document.getElementById("customer-email").value.trim();
-    const customerPhone = document.getElementById("customer-phone").value.trim();
-    const deliveryDate = document.getElementById("delivery-date").value;
-    const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value.trim();
-
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
-
-    for (let item in cart) {
-      const entry = cart[item];
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
-      const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-      cartList.appendChild(li);
+    function getFormData() {
+      return {
+        customerName: document.getElementById("customerName").value.trim(),
+        customerEmail: document.getElementById("customerEmail").value.trim(),
+        customerPhone: document.getElementById("customerPhone").value.trim(),
+        whatsappNumber: document.getElementById("whatsappNumber").value.trim(),
+        deliveryDate: document.getElementById("deliveryDate").value,
+        deliveryTime: document.getElementById("deliveryTime").value,
+        customizationNotes: document.getElementById("customizationNotes").value.trim(),
+        cartSummary: document.getElementById("cart").value.trim()
+      };
     }
 
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
+    function sendToFillout() {
+      const data = getFormData();
+      const url = `${filloutBase}?customerName=${encodeURIComponent(data.customerName)}&customerEmail=${encodeURIComponent(data.customerEmail)}&customerPhone=${encodeURIComponent(data.customerPhone)}&whatsappNumber=${encodeURIComponent(data.whatsappNumber)}&deliveryDate=${encodeURIComponent(data.deliveryDate)}&deliveryTime=${encodeURIComponent(data.deliveryTime)}&customizationNotes=${encodeURIComponent(data.customizationNotes)}&cartSummary=${encodeURIComponent(data.cartSummary)}`;
+      window.open(url, "_blank");
     }
 
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.textContent = totalQty;
+    function sendWhatsApp() {
+      const data = getFormData();
+      const message = `*New Order - Bakery*\n\nName: ${data.customerName}\nEmail: ${data.customerEmail}\nPhone: ${data.customerPhone}\nWhatsApp: ${data.whatsappNumber}\n\nDelivery Date: ${data.deliveryDate}\nDelivery Time: ${data.deliveryTime}\n\nSpecial Instructions:\n${data.customizationNotes || 'None'}\n\nCart:\n${data.cartSummary}\n\nService Fee: ₱29.99`;
+      const url = `https://wa.me/${merchantNumber}?text=${encodeCartText(message)}`;
+      window.open(url, "_blank");
+    }
 
-    const merchantName = "Bakery";
-    const summaryText = [
-      `Merchant: ${merchantName}`,
-      `🙋 Name: ${customerName}`,
-      `📧 Email: ${customerEmail}`,
-      `📱 WhatsApp: ${customerPhone}`,
-      ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
-      ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
-      `Total: ₱${finalTotal.toFixed(2)}`,
-      deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
-      deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
-    ].filter(Boolean).join("\n");
-
-    orderSummary.value = summaryText;
-
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
-    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
-
-    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?customerName=${encodeURIComponent(customerName)}` +
-      `&customerEmail=${encodeURIComponent(customerEmail)}` +
-      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
-      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
-      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
-      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
-      `&cartSummary=${encodeURIComponent(summaryText)}`;
-
-    document.getElementById("checkout-btn").onclick = () => {
-      if (!customerName || !customerPhone) {
-        alert("❗ Please enter your name and WhatsApp number.");
-        return;
-      }
-      window.open(filloutURL, '_blank');
-      window.open(waMerchant, '_blank');
-      window.open(waAdmin, '_blank');
-    };
-  }
-
-  function copySummary() {
-    const textarea = document.getElementById("order-summary");
-    textarea.select();
-    textarea.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
-  }
-</script>
-
+    function sendWhatsAppToAdmin() {
+      const data = getFormData();
+      const message = `*New Order - Bakery (Admin Copy)*\n\nName: ${data.customerName}\nEmail: ${data.customerEmail}\nPhone: ${data.customerPhone}\nWhatsApp: ${data.whatsappNumber}\n\nDelivery Date: ${data.deliveryDate}\nDelivery Time: ${data.deliveryTime}\n\nSpecial Instructions:\n${data.customizationNotes || 'None'}\n\nCart:\n${data.cartSummary}\n\nService Fee: ₱29.99`;
+      const url = `https://wa.me/${adminNumber}?text=${encodeCartText(message)}`;
+      window.open(url, "_blank");
+    }
+  </script>
 </body>
 </html>
