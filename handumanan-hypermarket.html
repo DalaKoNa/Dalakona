@@ -16,11 +16,11 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea, input { width: 100%; max-width: 500px; padding: 10px; font-size: 1em; margin-top: 5px; }
-    textarea { height: 120px; }
+    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
-    input, textarea { font-family: 'Cinzel', serif; }
+    .warning { color: red; font-weight: bold; margin-top: 10px; }
+    input, textarea { display: block; margin-top: 10px; max-width: 500px; padding: 10px; width: 100%; font-size: 1em; }
   </style>
 </head>
 <body>
@@ -33,47 +33,48 @@
 <section class="merchant-detail">
   <h1>Handumanan Hypermarket</h1>
   <div class="product-list">
-    <div class="product"><p>Rice (5kg) – ₱300</p><button onclick="addToCart('Rice (5kg)', 300)">Add</button></div>
-    <div class="product"><p>Canned Sardines (3 pcs) – ₱90</p><button onclick="addToCart('Canned Sardines (3 pcs)', 90)">Add</button></div>
-    <div class="product"><p>Cooking Oil (1L) – ₱160</p><button onclick="addToCart('Cooking Oil (1L)', 160)">Add</button></div>
-    <div class="product"><p>Detergent Powder (1kg) – ₱120</p><button onclick="addToCart('Detergent Powder (1kg)', 120)">Add</button></div>
+    <div class="product"><p>Rice 5kg – ₱300</p><button onclick="addToCart('Rice 5kg', 300)">Add</button></div>
+    <div class="product"><p>Cooking Oil 1L – ₱120</p><button onclick="addToCart('Cooking Oil 1L', 120)">Add</button></div>
+    <div class="product"><p>Toothpaste Twin Pack – ₱95</p><button onclick="addToCart('Toothpaste Twin Pack', 95)">Add</button></div>
+    <div class="product"><p>Laundry Detergent 1kg – ₱110</p><button onclick="addToCart('Laundry Detergent 1kg', 110)">Add</button></div>
+    <div class="product"><p>Bath Soap (3 bars) – ₱75</p><button onclick="addToCart('Bath Soap (3 bars)', 75)">Add</button></div>
+    <div class="product"><p>Instant Noodles 6-pack – ₱80</p><button onclick="addToCart('Instant Noodles 6-pack', 80)">Add</button></div>
+    <div class="product"><p>Canned Tuna – ₱45</p><button onclick="addToCart('Canned Tuna', 45)">Add</button></div>
+    <div class="product"><p>Eggs (1 dozen) – ₱90</p><button onclick="addToCart('Eggs (1 dozen)', 90)">Add</button></div>
+    <div class="product"><p>Drinking Water 6L – ₱65</p><button onclick="addToCart('Drinking Water 6L', 65)">Add</button></div>
+    <div class="product"><p>Soy Sauce 500ml – ₱40</p><button onclick="addToCart('Soy Sauce 500ml', 40)">Add</button></div>
   </div>
 </section>
+
 <section class="cart-section">
   <div>
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
 
-    <label>🙋 Customer Name:
-  <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
-</label><br /><br />
+    <label for="customer-name">🙋 Customer Name:</label>
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
 
-<label>📧 Email Address:
-  <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
-</label><br /><br />
+    <label for="customer-email">📧 Email Address:</label>
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
 
-<label>📱 WhatsApp Number:
-  <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
-</label><br /><br />
+    <label for="customer-phone">📱 WhatsApp Number:</label>
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
 
-<label>📅 Preferred Delivery Date:
-  <input type="date" id="delivery-date" onchange="autoSetTime()" />
-</label><br /><br />
+    <label for="delivery-date">📅 Preferred Delivery Date:</label>
+    <input type="date" id="delivery-date" onchange="autoSetTime()" />
 
-<label>⏰ Preferred Delivery Time:
-  <input type="time" id="delivery-time" />
-</label><br /><br />
+    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
+    <input type="time" id="delivery-time" />
 
-<label>📝 Special Instructions / Customization:
-  <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc."></textarea>
-</label><br /><br />
+    <label for="customization-notes">📝 Special Instructions / Notes:</label>
+    <textarea id="customization-notes" placeholder="Ex. Replace canned tuna if unavailable."></textarea>
 
     <div class="warning" id="warning"></div>
 
-    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
+    <h3>📋 Copy your order and paste in Fillout form:</h3>
     <textarea id="order-summary" readonly></textarea>
-    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
+    <button class="copy-btn" onclick="copySummary()">📄 Copy Order</button>
 
     <br />
     <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
@@ -102,7 +103,6 @@
       const now = new Date();
       now.setMinutes(now.getMinutes() + 80);
       timeInput.value = now.toTimeString().slice(0,5);
-
       warning.textContent = now.getHours() >= 18
         ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
         : "";
@@ -160,12 +160,12 @@
       `Total: ₱${finalTotal.toFixed(2)}`,
       deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
       deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+      customizationNotes ? `📝 Notes: ${customizationNotes}` : ''
     ].filter(Boolean).join("\n");
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with WhatsApp number
     const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
@@ -196,7 +196,7 @@
     textarea.select();
     textarea.setSelectionRange(0, 99999);
     document.execCommand("copy");
-    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+    alert("✔️ Order copied! Paste it in the Fillout Form.");
   }
 </script>
 
