@@ -8,19 +8,18 @@
   <style>
     body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
     .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
-    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
+    .title { font-size: 1.5em; text-decoration: none; color: white; }
     .cart { font-size: 1.2em; }
     .merchant-detail { padding: 1em; }
     .product { margin-bottom: 1em; }
-    .product button { margin-right: 0.5em; }
+    .product button { margin-left: 0.5em; }
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
-    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
+    .checkout-btn { margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    textarea, input, select { width: 100%; max-width: 500px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    .small-label { margin-top: 15px; font-weight: bold; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
-    .warning { color: red; font-weight: bold; margin-top: 10px; }
-    input, textarea { display: block; margin-top: 10px; max-width: 500px; padding: 10px; width: 100%; font-size: 1em; }
   </style>
 </head>
 <body>
@@ -33,37 +32,32 @@
 <section class="merchant-detail">
   <h1>Bakery</h1>
   <div class="product-list">
-    <div class="product"><p>Banana Bread – ₱150</p><button onclick="addToCart('Banana Bread', 150)">Add</button></div>
-    <div class="product"><p>Blueberry Muffin – ₱120</p><button onclick="addToCart('Blueberry Muffin', 120)">Add</button></div>
-    <div class="product"><p>Croissant – ₱130</p><button onclick="addToCart('Croissant', 130)">Add</button></div>
-    <div class="product"><p>Cinnamon Roll – ₱140</p><button onclick="addToCart('Cinnamon Roll', 140)">Add</button></div>
+    <div class="product"><p>Pandesal (10 pcs) – ₱40</p><button onclick="addToCart('Pandesal (10 pcs)', 40)">Add</button></div>
+    <div class="product"><p>Spanish Bread (5 pcs) – ₱35</p><button onclick="addToCart('Spanish Bread (5 pcs)', 35)">Add</button></div>
+    <div class="product"><p>Ensaymada – ₱25</p><button onclick="addToCart('Ensaymada', 25)">Add</button></div>
+    <div class="product"><p>Ube Cheese Pandesal – ₱60</p><button onclick="addToCart('Ube Cheese Pandesal', 60)">Add</button></div>
   </div>
 </section>
 
 <section class="cart-section">
-  <div>
-    <h2>🛒 Your Cart</h2>
-    <ul id="cart-list"></ul>
-    <p>Total: ₱<span id="cart-total">0</span></p>
+  <h2>🛒 Your Cart</h2>
+  <ul id="cart-list"></ul>
+  <p>Total: ₱<span id="cart-total">0</span></p>
 
-    <label for="delivery-date">📅 Preferred Delivery Date:</label>
-    <input type="date" id="delivery-date" onchange="autoSetTime()" />
+  <label class="small-label">🎂 Customization / Special Instructions:</label>
+  <textarea id="customizationNotes" placeholder="e.g. No sugar toppings, add birthday message, etc."></textarea>
 
-    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
-    <input type="time" id="delivery-time" />
+  <label class="small-label">📆 Delivery Date:</label>
+  <input type="date" id="deliveryDate" />
 
-    <label for="customization-notes">📝 Special Instructions / Customization:</label>
-    <textarea id="customization-notes" placeholder="Ex. Gift packaging, less sugar, etc."></textarea>
+  <label class="small-label">⏰ Delivery Time:</label>
+  <input type="time" id="deliveryTime" />
 
-    <div class="warning" id="warning"></div>
+  <label class="small-label">📋 Order Summary:</label>
+  <textarea id="order-summary" readonly></textarea>
+  <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
 
-    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
-    <textarea id="order-summary" readonly></textarea>
-    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
-
-    <br />
-    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
-  </div>
+  <button id="checkout-btn" class="checkout-btn">🚀 Checkout</button>
 </section>
 
 <script>
@@ -76,40 +70,11 @@
     updateCartDisplay();
   }
 
-  function autoSetTime() {
-    const dateInput = document.getElementById("delivery-date");
-    const timeInput = document.getElementById("delivery-time");
-    const warning = document.getElementById("warning");
-
-    const selectedDate = new Date(dateInput.value);
-    const today = new Date();
-
-    if (selectedDate.toDateString() === today.toDateString()) {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 80);
-      const autoTime = now.toTimeString().slice(0, 5);
-      timeInput.value = autoTime;
-
-      if (now.getHours() >= 18) {
-        warning.textContent = "⚠️ Orders past 6 PM might not be accepted for same-day delivery.";
-      } else {
-        warning.textContent = "";
-      }
-    } else {
-      warning.textContent = "";
-    }
-    updateCartDisplay();
-  }
-
   function updateCartDisplay() {
     const cartList = document.getElementById("cart-list");
     const cartTotal = document.getElementById("cart-total");
     const cartCount = document.getElementById("cart-count");
     const orderSummary = document.getElementById("order-summary");
-
-    const deliveryDate = document.getElementById("delivery-date").value;
-    const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value;
 
     cartList.innerHTML = "";
     let totalQty = 0;
@@ -134,37 +99,13 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const merchantName = "Bakery";
-    const summaryText = [`Merchant: ${merchantName}`]
+    const summaryText = [`Merchant: Bakery`]
       .concat(Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`))
       .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
       .concat([`Total: ₱${finalTotal.toFixed(2)}`])
-      .concat([
-        deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
-        deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-        customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
-      ])
       .join("\n");
 
     orderSummary.value = summaryText;
-
-    const merchantNumber = "63XXXXXXXXXX"; // Replace
-    const adminNumber = "63YYYYYYYYYY"; // Replace
-
-    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?customerName=${encodeURIComponent(merchantName)}` +
-      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
-      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
-      `&customizationNotes=${encodeURIComponent(customizationNotes)}`;
-
-    document.getElementById("checkout-btn").onclick = () => {
-      window.open(filloutURL, '_blank');
-      window.open(waMerchant, '_blank');
-      window.open(waAdmin, '_blank');
-    };
   }
 
   function copySummary() {
@@ -174,6 +115,28 @@
     document.execCommand("copy");
     alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
   }
+
+  document.getElementById("checkout-btn").onclick = function () {
+    const customerName = prompt("Ibutang imo ngalan:");
+    const whatsappNumber = prompt("Ibutang imo WhatsApp number:");
+
+    const cartSummary = encodeURIComponent(document.getElementById("order-summary").value);
+    const customizationNotes = encodeURIComponent(document.getElementById("customizationNotes").value || "-");
+    const deliveryDate = encodeURIComponent(document.getElementById("deliveryDate").value || "-");
+    const deliveryTime = encodeURIComponent(document.getElementById("deliveryTime").value || "-");
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${customerName}&whatsappNumber=${whatsappNumber}&cartSummary=${cartSummary}&customizationNotes=${customizationNotes}&deliveryDate=${deliveryDate}&deliveryTime=${deliveryTime}`;
+
+    const merchantNumber = "63XXXXXXXXXX";
+    const adminNumber = "63YYYYYYYYYY";
+
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("New Bakery order:\n" + document.getElementById("order-summary").value)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Bakery order:\n" + document.getElementById("order-summary").value)}`;
+
+    window.open(filloutURL, "_blank");
+    window.open(waMerchant, "_blank");
+    window.open(waAdmin, "_blank");
+  };
 </script>
 
 </body>
