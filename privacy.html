@@ -1,41 +1,171 @@
-<!-- PRIVACY PAGE -->
-<!-- privacy.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Privacy Policy | Dala🚲na</title>
+  <title>Pharmacy | Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Cinzel', serif;
-      margin: 2em;
-      color: #333;
-      background: #fefefe;
-    }
-    h1 {
-      text-align: center;
-      color: #222;
-      margin-bottom: 1em;
-    }
-    ul, p {
-      max-width: 700px;
-      margin: 0 auto 1.5em auto;
-      font-size: 1em;
-      line-height: 1.6em;
-      color: #555;
-    }
+    body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
+    .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
+    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
+    .cart { font-size: 1.2em; }
+    .merchant-detail { padding: 1em; }
+    .product { margin-bottom: 1em; }
+    .product button { margin-right: 0.5em; }
+    .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
+    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
+    .checkout-btn:hover { background-color: #333; }
+    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
+    button.copy-btn:hover { background-color: #666; }
+    input, textarea { font-family: 'Cinzel', serif; }
   </style>
 </head>
 <body>
-  <h1>Privacy Policy</h1>
-  <p>Your data is important to us.</p>
-  <p>Ginaprotektahan namon ang imo data.</p>
-  <ul>
-    <li>We do not sell your personal information. / Indi namon ginabaligya ang imo impormasyon.</li>
-    <li>Your contact details are only used for deliveries. / Para lang sa delivery ang gamiton sang imo data.</li>
-    <li>You may request data deletion. / Pwede ka mangayo nga i-delete ang imo record.</li>
-  </ul>
+
+<header class="navbar">
+  <a href="index.html" class="title">Dala🚲Na | Pharmacy</a>
+  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
+</header>
+
+<section class="merchant-detail">
+  <h1>Pharmacy</h1>
+  <div class="product-list">
+    <div class="product"><p>Paracetamol 500mg (10 tablets) – ₱40</p><button onclick="addToCart('Paracetamol 500mg (10 tablets)', 40)">Add</button></div>
+    <div class="product"><p>Loperamide (Anti-diarrhea) – ₱25</p><button onclick="addToCart('Loperamide (Anti-diarrhea)', 25)">Add</button></div>
+    <div class="product"><p>Antacid Chewables – ₱30</p><button onclick="addToCart('Antacid Chewables', 30)">Add</button></div>
+    <div class="product"><p>Vitamin C 500mg (30 tablets) – ₱120</p><button onclick="addToCart('Vitamin C 500mg (30 tablets)', 120)">Add</button></div>
+    <div class="product"><p>Cough Syrup – ₱85</p><button onclick="addToCart('Cough Syrup', 85)">Add</button></div>
+    <div class="product"><p>Oral Rehydration Salts (ORS) – ₱18</p><button onclick="addToCart('Oral Rehydration Salts (ORS)', 18)">Add</button></div>
+    <div class="product"><p>Eye Drops – ₱70</p><button onclick="addToCart('Eye Drops', 70)">Add</button></div>
+  </div>
+</section>
+
+<section class="cart-section">
+  <div>
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-list"></ul>
+    <p>Total: ₱<span id="cart-total">0</span></p>
+
+    <label>📆 Delivery Date:
+      <input type="date" id="delivery-date" onchange="handleDateChange()" required />
+    </label><br /><br />
+
+    <label>⏰ Delivery Time:
+      <input type="time" id="delivery-time" required />
+    </label><br /><br />
+
+    <label>📝 Special Instructions:
+      <textarea id="customization-notes" placeholder="e.g. No sugar syrup, specific brand, etc."></textarea>
+    </label><br /><br />
+
+    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
+    <textarea id="order-summary" readonly></textarea>
+    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
+    <br />
+    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
+  </div>
+</section>
+
+<script>
+  const cart = {};
+  const serviceFee = 29.99;
+
+  function addToCart(item, price) {
+    if (cart[item]) cart[item].qty += 1;
+    else cart[item] = { price, qty: 1 };
+    updateCartDisplay();
+  }
+
+  function handleDateChange() {
+    const dateInput = document.getElementById("delivery-date");
+    const timeInput = document.getElementById("delivery-time");
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+    const isToday = selectedDate.toDateString() === today.toDateString();
+
+    if (isToday) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 80);
+      const pad = n => n.toString().padStart(2, '0');
+      timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById("cart-list");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+    const orderSummary = document.getElementById("order-summary");
+
+    cartList.innerHTML = "";
+    let totalQty = 0;
+    let subtotal = 0;
+
+    for (let item in cart) {
+      const entry = cart[item];
+      totalQty += entry.qty;
+      subtotal += entry.price * entry.qty;
+      const li = document.createElement("li");
+      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      cartList.appendChild(li);
+    }
+
+    if (subtotal > 0) {
+      const feeLine = document.createElement("li");
+      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
+      cartList.appendChild(feeLine);
+    }
+
+    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
+    cartTotal.textContent = finalTotal.toFixed(2);
+    cartCount.textContent = totalQty;
+
+    const merchantName = "Pharmacy";
+    const deliveryDate = document.getElementById("delivery-date")?.value || "Not specified";
+    const deliveryTime = document.getElementById("delivery-time")?.value || "Not specified";
+    const customizationNotes = document.getElementById("customization-notes")?.value || "None";
+
+    const summaryText = [`Merchant: ${merchantName}`]
+      .concat(
+        Object.entries(cart).map(
+          ([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`
+        )
+      )
+      .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
+      .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+      .concat([
+        `Delivery Date: ${deliveryDate}`,
+        `Delivery Time: ${deliveryTime}`,
+        `Customization / Notes: ${customizationNotes}`
+      ])
+      .join("\n");
+
+    orderSummary.value = summaryText;
+
+    const merchantNumber = "63XXXXXXXXXX"; // Replace
+    const adminNumber = "63YYYYYYYYYY";    // Replace
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summaryText)}&deliveryDate=${encodeURIComponent(deliveryDate)}&deliveryTime=${encodeURIComponent(deliveryTime)}&customizationNotes=${encodeURIComponent(customizationNotes)}`;
+
+    document.getElementById("checkout-btn").onclick = () => {
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
+  }
+
+  function copySummary() {
+    const textarea = document.getElementById("order-summary");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+  }
+</script>
+
 </body>
 </html>
