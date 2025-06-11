@@ -36,6 +36,11 @@
     .actions {
       margin-top: 20px;
     }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -74,6 +79,9 @@
     <strong>Total:</strong> ₱0
   </div>
 
+  <textarea id="order-summary" rows="10" style="width:100%; margin-top:10px;"></textarea>
+  <button onclick="copySummary()">Copy Order Summary</button>
+
   <div class="input-group">
     <label>Customer Name</label>
     <input type="text" id="customerName" />
@@ -104,77 +112,110 @@
   </div>
 
   <div class="actions">
-    <button onclick="openPrefilledForm()">Submit via Fillout</button>
-    <button onclick="sendWhatsApp()">Send via WhatsApp</button>
+    <button id="checkout-btn">Submit Order</button>
   </div>
 
   <script>
-    let cart = {};
+    const merchantName = "Bakery";
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";    // Replace with admin WhatsApp
     const serviceFee = 29.99;
+
+    let cart = {};
 
     function addToCart(item, price) {
       if (!cart[item]) {
-        cart[item] = { price: price, quantity: 1 };
+        cart[item] = { price, qty: 1 };
       } else {
-        cart[item].quantity += 1;
+        cart[item].qty++;
       }
       updateCartSummary();
     }
 
+    function removeFromCart(item) {
+      if (cart[item]) {
+        cart[item].qty--;
+        if (cart[item].qty <= 0) delete cart[item];
+        updateCartSummary();
+      }
+    }
+
     function updateCartSummary() {
       const summaryEl = document.getElementById('cart-summary');
-      let summary = '';
-      let total = serviceFee;
+      let html = '';
+      let subtotal = 0;
 
       for (let item in cart) {
-        const line = `${item} x${cart[item].quantity} - ₱${cart[item].price * cart[item].quantity}`;
-        summary += line + '<br>';
-        total += cart[item].price * cart[item].quantity;
+        const line = `<div class='cart-item'>${item} x${cart[item].qty} – ₱${cart[item].price * cart[item].qty} <button onclick=\"removeFromCart('${item}')\">❌</button></div>`;
+        html += line;
+        subtotal += cart[item].price * cart[item].qty;
       }
 
-      if (summary === '') {
-        summary = 'Empty<br>';
-        total = 0;
+      const finalTotal = subtotal > 0 ? subtotal + serviceFee : 0;
+
+      summaryEl.innerHTML = `<strong>Cart:</strong><br>${html || 'Empty'}<br><strong>Service Fee:</strong> ₱${subtotal > 0 ? serviceFee.toFixed(2) : '0'}<br><strong>Total:</strong> ₱${finalTotal.toFixed(2)}`;
+
+      // Update order summary textarea
+      const customerName = document.getElementById("customerName").value;
+      const customerEmail = document.getElementById("customerEmail").value;
+      const customerPhone = document.getElementById("customerPhone").value;
+      const deliveryDate = document.getElementById("deliveryDate").value;
+      const deliveryTime = document.getElementById("deliveryTime").value;
+      const customizationNotes = document.getElementById("customizationNotes").value;
+
+      const summaryText = [
+        `Merchant: ${merchantName}`,
+        `🙋 Name: ${customerName}`,
+        `📧 Email: ${customerEmail}`,
+        `📱 WhatsApp: ${customerPhone}`,
+        ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
+        ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
+        `Total: ₱${finalTotal.toFixed(2)}`,
+        deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
+        deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
+        customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+      ].filter(Boolean).join("\n");
+
+      document.getElementById("order-summary").value = summaryText;
+    }
+
+    document.getElementById("checkout-btn").onclick = () => {
+      const customerName = document.getElementById("customerName").value;
+      const customerEmail = document.getElementById("customerEmail").value;
+      const customerPhone = document.getElementById("customerPhone").value;
+      const whatsappNumber = document.getElementById("whatsappNumber").value;
+      const deliveryDate = document.getElementById("deliveryDate").value;
+      const deliveryTime = document.getElementById("deliveryTime").value;
+      const customizationNotes = document.getElementById("customizationNotes").value;
+      const summaryText = document.getElementById("order-summary").value;
+
+      if (!customerName || !customerPhone) {
+        alert("❗ Please enter your name and WhatsApp number.");
+        return;
       }
 
-      summary += `<strong>Service Fee:</strong> ₱${serviceFee.toFixed(2)}<br>`;
-      summary += `<strong>Total:</strong> ₱${total.toFixed(2)}`;
-      summaryEl.innerHTML = `<strong>Cart:</strong><br>${summary}`;
-    }
+      const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+      const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+      const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+        `?customerName=${encodeURIComponent(customerName)}` +
+        `&customerEmail=${encodeURIComponent(customerEmail)}` +
+        `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
+        `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
+        `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
+        `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
+        `&cartSummary=${encodeURIComponent(summaryText)}`;
 
-    function getCartText() {
-      return Object.entries(cart).map(([item, data]) => `${item} x${data.quantity}`).join(', ');
-    }
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
 
-    function openPrefilledForm() {
-      const base = "https://forms.fillout.com/t/oMZACWUnvFus";
-      const params = new URLSearchParams({
-        customerName: document.getElementById('customerName').value,
-        customerEmail: document.getElementById('customerEmail').value,
-        customerPhone: document.getElementById('customerPhone').value,
-        whatsappNumber: document.getElementById('whatsappNumber').value,
-        cartSummary: getCartText(),
-        customizationNotes: document.getElementById('customizationNotes').value,
-        deliveryDate: document.getElementById('deliveryDate').value,
-        deliveryTime: document.getElementById('deliveryTime').value
-      });
-      window.open(`${base}?${params.toString()}`, '_blank');
-    }
-
-    function sendWhatsApp() {
-      const phone = document.getElementById('whatsappNumber').value.replace(/\D/g, '');
-      const message = `
-*New Bakery Order*
-Name: ${document.getElementById('customerName').value}
-Email: ${document.getElementById('customerEmail').value}
-Phone: ${document.getElementById('customerPhone').value}
-Order: ${getCartText()}
-Delivery: ${document.getElementById('deliveryDate').value} at ${document.getElementById('deliveryTime').value}
-Notes: ${document.getElementById('customizationNotes').value}
-      `.trim();
-
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
+    function copySummary() {
+      const textarea = document.getElementById("order-summary");
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
     }
   </script>
 
