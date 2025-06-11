@@ -85,6 +85,14 @@
     updateCartDisplay();
   }
 
+  function removeFromCart(item) {
+    if (cart[item]) {
+      cart[item].qty -= 1;
+      if (cart[item].qty <= 0) delete cart[item];
+      updateCartDisplay();
+    }
+  }
+
   function autoSetTime() {
     const dateInput = document.getElementById("delivery-date");
     const timeInput = document.getElementById("delivery-time");
@@ -96,7 +104,7 @@
     if (selectedDate.toDateString() === today.toDateString()) {
       const now = new Date();
       now.setMinutes(now.getMinutes() + 80);
-      timeInput.value = now.toTimeString().slice(0,5);
+      timeInput.value = now.toTimeString().slice(0, 5);
 
       warning.textContent = now.getHours() >= 18
         ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
@@ -129,8 +137,13 @@
       const entry = cart[item];
       totalQty += entry.qty;
       subtotal += entry.price * entry.qty;
+
       const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">+</button>
+        <button onclick="removeFromCart('${item}')">–</button>
+      `;
       cartList.appendChild(li);
     }
 
@@ -194,6 +207,3 @@
     alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
   }
 </script>
-
-</body>
-</html>
