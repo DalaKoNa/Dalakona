@@ -16,11 +16,11 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea, input { width: 100%; max-width: 500px; padding: 10px; font-size: 1em; margin-top: 5px; }
-    textarea { height: 120px; }
+    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
-    input, textarea { font-family: 'Cinzel', serif; }
+    .warning { color: red; font-weight: bold; margin-top: 10px; }
+    input, textarea { display: block; margin-top: 10px; max-width: 500px; padding: 10px; width: 100%; font-size: 1em; }
   </style>
 </head>
 <body>
@@ -33,42 +33,42 @@
 <section class="merchant-detail">
   <h1>Pharmacy</h1>
   <div class="product-list">
-    <div class="product"><p>Paracetamol (10 tablets) – ₱50</p><button onclick="addToCart('Paracetamol (10 tablets)', 50)">Add</button></div>
-    <div class="product"><p>Vitamin C (30 tablets) – ₱120</p><button onclick="addToCart('Vitamin C (30 tablets)', 120)">Add</button></div>
-    <div class="product"><p>Cough Syrup – ₱180</p><button onclick="addToCart('Cough Syrup', 180)">Add</button></div>
-    <div class="product"><p>First Aid Kit – ₱450</p><button onclick="addToCart('First Aid Kit', 450)">Add</button></div>
+    <div class="product"><p>Paracetamol 500mg (10s) – ₱25</p><button onclick="addToCart('Paracetamol 500mg (10s)', 25)">Add</button></div>
+    <div class="product"><p>Loperamide Capsule (4s) – ₱30</p><button onclick="addToCart('Loperamide Capsule (4s)', 30)">Add</button></div>
+    <div class="product"><p>Cetirizine 10mg (10s) – ₱40</p><button onclick="addToCart('Cetirizine 10mg (10s)', 40)">Add</button></div>
+    <div class="product"><p>Oral Rehydration Salts (ORS) – ₱15</p><button onclick="addToCart('Oral Rehydration Salts (ORS)', 15)">Add</button></div>
+    <div class="product"><p>Betadine Solution 30ml – ₱65</p><button onclick="addToCart('Betadine Solution 30ml', 65)">Add</button></div>
+    <div class="product"><p>Alcohol 70% Solution 250ml – ₱50</p><button onclick="addToCart('Alcohol 70% Solution 250ml', 50)">Add</button></div>
+    <div class="product"><p>Face Mask (Pack of 10) – ₱20</p><button onclick="addToCart('Face Mask (Pack of 10)', 20)">Add</button></div>
+    <div class="product"><p>Vitamin C 500mg (10s) – ₱45</p><button onclick="addToCart('Vitamin C 500mg (10s)', 45)">Add</button></div>
+    <div class="product"><p>Digital Thermometer – ₱150</p><button onclick="addToCart('Digital Thermometer', 150)">Add</button></div>
+    <div class="product"><p>Cough Syrup 60ml – ₱75</p><button onclick="addToCart('Cough Syrup 60ml', 75)">Add</button></div>
   </div>
 </section>
-  
+
 <section class="cart-section">
   <div>
     <h2>🛒 Your Cart</h2>
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
 
-    <label>🙋 Customer Name:
-  <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
-</label><br /><br />
+    <label for="customer-name">🙋 Customer Name:</label>
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
 
-<label>📧 Email Address:
-  <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
-</label><br /><br />
+    <label for="customer-email">📧 Email Address:</label>
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
 
-<label>📱 WhatsApp Number:
-  <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
-</label><br /><br />
+    <label for="customer-phone">📱 WhatsApp Number:</label>
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
 
-<label>📅 Preferred Delivery Date:
-  <input type="date" id="delivery-date" onchange="autoSetTime()" />
-</label><br /><br />
+    <label for="delivery-date">📅 Preferred Delivery Date:</label>
+    <input type="date" id="delivery-date" onchange="autoSetTime()" />
 
-<label>⏰ Preferred Delivery Time:
-  <input type="time" id="delivery-time" />
-</label><br /><br />
+    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
+    <input type="time" id="delivery-time" />
 
-<label>📝 Special Instructions / Customization:
-  <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc."></textarea>
-</label><br /><br />
+    <label for="customization-notes">📝 Prescription Instructions / Special Notes:</label>
+    <textarea id="customization-notes" placeholder="Ex. Take 1 tablet every 6 hours. Include Rx photo if needed."></textarea>
 
     <div class="warning" id="warning"></div>
 
@@ -161,13 +161,13 @@
       `Total: ₱${finalTotal.toFixed(2)}`,
       deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
       deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+      customizationNotes ? `📝 Instructions: ${customizationNotes}` : ''
     ].filter(Boolean).join("\n");
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
-    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with actual merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with actual admin WhatsApp
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
     const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
