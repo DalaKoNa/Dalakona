@@ -141,8 +141,13 @@
       const entry = cart[item];
       totalQty += entry.qty;
       subtotal += entry.price * entry.qty;
+
       const li = document.createElement("li");
-      li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      li.innerHTML = `
+        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
+        <button onclick="addToCart('${item}', ${entry.price})">+</button>
+        <button onclick="removeFromCart('${item}')">–</button>
+      `;
       cartList.appendChild(li);
     }
 
@@ -156,7 +161,7 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const merchantName = "Pharmacy";
+    const merchantName = "Bakery";
     const summaryText = [
       `Merchant: ${merchantName}`,
       `🙋 Name: ${customerName}`,
@@ -167,13 +172,13 @@
       `Total: ₱${finalTotal.toFixed(2)}`,
       deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
       deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Instructions: ${customizationNotes}` : ''
+      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
     ].filter(Boolean).join("\n");
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with actual merchant WhatsApp
-    const adminNumber = "63YYYYYYYYYY";   // Replace with actual admin WhatsApp
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
     const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
@@ -197,7 +202,6 @@
       window.open(waAdmin, '_blank');
     };
   }
-
   function copySummary() {
     const textarea = document.getElementById("order-summary");
     textarea.select();
