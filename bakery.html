@@ -43,14 +43,14 @@
     <ul id="cart-list"></ul>
     <p>Total: ₱<span id="cart-total">0</span></p>
 
-    <label for="customer-name">👤 Your Name:</label>
-    <input type="text" id="customer-name" placeholder="Juan Dela Cruz" />
+    <label for="customer-name">🙋 Customer Name:</label>
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
 
-    <label for="customer-email">📧 Email:</label>
-    <input type="email" id="customer-email" placeholder="juan@example.com" />
+    <label for="customer-email">📧 Email Address:</label>
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
 
-    <label for="customer-phone">📱 Phone Number:</label>
-    <input type="tel" id="customer-phone" placeholder="09171234567" />
+    <label for="customer-phone">📱 WhatsApp Number:</label>
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
 
     <label for="delivery-date">📅 Preferred Delivery Date:</label>
     <input type="date" id="delivery-date" onchange="autoSetTime()" />
@@ -59,7 +59,7 @@
     <input type="time" id="delivery-time" />
 
     <label for="customization-notes">📝 Special Instructions / Customization:</label>
-    <textarea id="customization-notes" placeholder="Ex. No sugar, sliced bread, etc."></textarea>
+    <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc."></textarea>
 
     <div class="warning" id="warning"></div>
 
@@ -93,17 +93,15 @@
     if (selectedDate.toDateString() === today.toDateString()) {
       const now = new Date();
       now.setMinutes(now.getMinutes() + 80);
-      const autoTime = now.toTimeString().slice(0,5);
-      timeInput.value = autoTime;
+      timeInput.value = now.toTimeString().slice(0,5);
 
-      if (now.getHours() >= 18) {
-        warning.textContent = "⚠️ Orders past 6 PM might not be accepted for same-day delivery.";
-      } else {
-        warning.textContent = "";
-      }
+      warning.textContent = now.getHours() >= 18
+        ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
+        : "";
     } else {
       warning.textContent = "";
     }
+
     updateCartDisplay();
   }
 
@@ -113,12 +111,12 @@
     const cartCount = document.getElementById("cart-count");
     const orderSummary = document.getElementById("order-summary");
 
-    const name = document.getElementById("customer-name").value;
-    const email = document.getElementById("customer-email").value;
-    const phone = document.getElementById("customer-phone").value;
+    const customerName = document.getElementById("customer-name").value.trim();
+    const customerEmail = document.getElementById("customer-email").value.trim();
+    const customerPhone = document.getElementById("customer-phone").value.trim();
     const deliveryDate = document.getElementById("delivery-date").value;
     const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value;
+    const customizationNotes = document.getElementById("customization-notes").value.trim();
 
     cartList.innerHTML = "";
     let totalQty = 0;
@@ -143,35 +141,42 @@
     cartTotal.textContent = finalTotal.toFixed(2);
     cartCount.textContent = totalQty;
 
-    const merchantName = "Bakery";
+    const merchantName = "Ellen's Cake";
     const summaryText = [
       `Merchant: ${merchantName}`,
-      `👤 Name: ${name}`,
-      `📧 Email: ${email}`,
-      `📱 Phone: ${phone}`,
+      `🙋 Name: ${customerName}`,
+      `📧 Email: ${customerEmail}`,
+      `📱 WhatsApp: ${customerPhone}`,
       ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
       ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
       `Total: ₱${finalTotal.toFixed(2)}`,
       deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
       deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
       customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
-    ].join("\n");
+    ].filter(Boolean).join("\n");
 
     orderSummary.value = summaryText;
 
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
+
+    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
+    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
+
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?customerName=${encodeURIComponent(name)}` +
-      `&customerEmail=${encodeURIComponent(email)}` +
-      `&customerPhone=${encodeURIComponent(phone)}` +
+      `?customerName=${encodeURIComponent(customerName)}` +
+      `&customerEmail=${encodeURIComponent(customerEmail)}` +
+      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
       `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
       `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
       `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
       `&cartSummary=${encodeURIComponent(summaryText)}`;
 
-    const waMerchant = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent("Hello! New order from " + name + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/63YYYYYYYYYY?text=${encodeURIComponent("Admin copy - Order from " + name + ":\n" + summaryText)}`;
-
     document.getElementById("checkout-btn").onclick = () => {
+      if (!customerName || !customerPhone) {
+        alert("❗ Please enter your name and WhatsApp number.");
+        return;
+      }
       window.open(filloutURL, '_blank');
       window.open(waMerchant, '_blank');
       window.open(waAdmin, '_blank');
