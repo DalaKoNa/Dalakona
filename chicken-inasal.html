@@ -16,10 +16,11 @@
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
     .checkout-btn { margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .checkout-btn:hover { background-color: #333; }
-    textarea, input, select { width: 100%; max-width: 500px; margin-top: 10px; padding: 10px; font-size: 1em; }
+    textarea, input { width: 100%; max-width: 500px; margin-top: 10px; padding: 10px; font-size: 1em; }
     .small-label { margin-top: 15px; font-weight: bold; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
+    .warning { color: red; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -44,14 +45,25 @@
   <ul id="cart-list"></ul>
   <p>Total: ₱<span id="cart-total">0</span></p>
 
-  <label class="small-label">🍗 Special Instructions:</label>
+  <label class="small-label">🙋‍♂️ Name:</label>
+  <input type="text" id="customerName" placeholder="Full Name" />
+
+  <label class="small-label">📧 Email:</label>
+  <input type="email" id="customerEmail" placeholder="Email Address" />
+
+  <label class="small-label">📱 Phone Number:</label>
+  <input type="tel" id="customerPhone" placeholder="09XXXXXXXXX" />
+
+  <label class="small-label">📝 Special Instructions:</label>
   <textarea id="customizationNotes" placeholder="e.g. Spicy pls, extra garlic sauce, etc."></textarea>
 
   <label class="small-label">📆 Delivery Date:</label>
-  <input type="date" id="deliveryDate" />
+  <input type="date" id="deliveryDate" onchange="autoSetTime()" />
 
   <label class="small-label">⏰ Delivery Time:</label>
   <input type="time" id="deliveryTime" />
+
+  <div class="warning" id="warning"></div>
 
   <label class="small-label">📋 Order Summary:</label>
   <textarea id="order-summary" readonly></textarea>
@@ -70,11 +82,34 @@
     updateCartDisplay();
   }
 
+  function autoSetTime() {
+    const dateInput = document.getElementById("deliveryDate");
+    const timeInput = document.getElementById("deliveryTime");
+    const warning = document.getElementById("warning");
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+
+    if (selectedDate.toDateString() === today.toDateString()) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 80);
+      const autoTime = now.toTimeString().slice(0,5);
+      timeInput.value = autoTime;
+      warning.textContent = (now.getHours() >= 18) ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery." : "";
+    } else {
+      warning.textContent = "";
+    }
+    updateCartDisplay();
+  }
+
   function updateCartDisplay() {
     const cartList = document.getElementById("cart-list");
     const cartTotal = document.getElementById("cart-total");
     const cartCount = document.getElementById("cart-count");
     const orderSummary = document.getElementById("order-summary");
+
+    const deliveryDate = document.getElementById("deliveryDate").value;
+    const deliveryTime = document.getElementById("deliveryTime").value;
+    const customizationNotes = document.getElementById("customizationNotes").value;
 
     cartList.innerHTML = "";
     let totalQty = 0;
@@ -103,6 +138,11 @@
       .concat(Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`))
       .concat(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : [])
       .concat([`Total: ₱${finalTotal.toFixed(2)}`])
+      .concat([
+        deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
+        deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
+        customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
+      ])
       .join("\n");
 
     orderSummary.value = summaryText;
@@ -117,18 +157,25 @@
   }
 
   document.getElementById("checkout-btn").onclick = function () {
-    const customerName = prompt("Ibutang imo ngalan:");
-    const whatsappNumber = prompt("Ibutang imo WhatsApp number:");
-
-    const cartSummary = encodeURIComponent(document.getElementById("order-summary").value);
-    const customizationNotes = encodeURIComponent(document.getElementById("customizationNotes").value || "-");
+    const name = encodeURIComponent(document.getElementById("customerName").value || "-");
+    const email = encodeURIComponent(document.getElementById("customerEmail").value || "-");
+    const phone = encodeURIComponent(document.getElementById("customerPhone").value || "-");
     const deliveryDate = encodeURIComponent(document.getElementById("deliveryDate").value || "-");
     const deliveryTime = encodeURIComponent(document.getElementById("deliveryTime").value || "-");
+    const notes = encodeURIComponent(document.getElementById("customizationNotes").value || "-");
+    const cartSummary = encodeURIComponent(document.getElementById("order-summary").value);
 
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${customerName}&whatsappNumber=${whatsappNumber}&cartSummary=${cartSummary}&customizationNotes=${customizationNotes}&deliveryDate=${deliveryDate}&deliveryTime=${deliveryTime}`;
+    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
+      `?customerName=${name}` +
+      `&customerEmail=${email}` +
+      `&customerPhone=${phone}` +
+      `&deliveryDate=${deliveryDate}` +
+      `&deliveryTime=${deliveryTime}` +
+      `&customizationNotes=${notes}` +
+      `&cartSummary=${cartSummary}`;
 
-    const merchantNumber = "63XXXXXXXXXX";
-    const adminNumber = "63YYYYYYYYYY";
+    const merchantNumber = "63XXXXXXXXXX"; // Replace
+    const adminNumber = "63YYYYYYYYYY";   // Replace
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("New Chicken Inasal order:\n" + document.getElementById("order-summary").value)}`;
     const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Chicken Inasal order:\n" + document.getElementById("order-summary").value)}`;
