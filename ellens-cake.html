@@ -47,23 +47,23 @@
     <p>Total: ₱<span id="cart-total">0</span></p>
 
     <label for="customer-name">🙋 Customer Name:</label>
-    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" />
+    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" oninput="updateCartDisplay()" />
 
     <label for="customer-email">📧 Email Address:</label>
-    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" />
+    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" oninput="updateCartDisplay()" />
 
     <label for="customer-phone">📱 WhatsApp Number:</label>
-    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" />
+    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" oninput="updateCartDisplay()" />
 
     <label for="delivery-date">📅 Preferred Delivery Date:</label>
     <input type="date" id="delivery-date" onchange="autoSetTime()" />
 
     <label for="delivery-time">⏰ Preferred Delivery Time:</label>
-    <input type="time" id="delivery-time" />
+    <input type="time" id="delivery-time" oninput="updateCartDisplay()" />
 
-    <label for="customization-notes">📝 Special Instructions / Customization:</label>
-    <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc."></textarea>
-
+    <label for="customization-notes">📝 Special Instructions / Notes:</label>
+    <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc." oninput="updateCartDisplay()"></textarea>
+    
     <div class="warning" id="warning"></div>
 
     <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
