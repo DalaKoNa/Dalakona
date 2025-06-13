@@ -156,7 +156,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
-<!-- 📱 Popup Container -->
+<!-- 📱 WhatsApp Reminder Popup -->
 <div id="order-popup" style="
   display: none;
   position: fixed;
@@ -165,26 +165,26 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  padding: 1rem;
 ">
   <div style="
     background: #fff;
-    padding: 16px;
-    max-width: 90%;
-    border-radius: 8px;
-    font-size: 0.9em;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    max-width: 380px;
+    width: 100%;
+    font-size: 0.95em;
+    line-height: 1.4;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   ">
     <h3 style="margin-top: 0; font-size: 1.1em;">📱 Kinahanglan may WhatsApp ka</h3>
-    <p>Antes mag-order, dapat may WhatsApp app ka. Amo ni gamiton para sa order confirmation kag updates.</p>
-
-    <p><strong>Paano mag-order:</strong></p>
-    <ul style="padding-left: 18px; margin-top: 0;">
-      <li>Pilia items kag i-add sa cart</li>
-      <li>Fill-out imo pangalan, WhatsApp number, kag delivery schedule</li>
-      <li>“📄 Kopyaha” order → i-paste sa Fillout Form</li>
-      <li>“🚀 Checkout” para i-send sa WhatsApp</li>
+    <p>Antes mag-order, siguraduhon nga may WhatsApp app ka para sa order confirmation.</p>
+    <ul style="padding-left: 1.2rem;">
+      <li>Pilia ang imo items kag i-add sa cart</li>
+      <li>Pun-a ang imo pangalan, WhatsApp number kag delivery schedule</li>
+      <li>I-klik ang <strong>“📄 Kopyaha”</strong> kag i-paste sa Fillout Form</li>
+      <li>Dayon, <strong>“🚀 Checkout”</strong> para ma-send sa WhatsApp</li>
     </ul>
-
     <button onclick="closePopup()" style="
       margin-top: 10px;
       padding: 8px 16px;
@@ -192,15 +192,15 @@
       color: white;
       border: none;
       border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9em;
-    ">✅ Okay, gets ko!</button>
+      width: 100%;
+      font-size: 1em;
+    ">✅ Gets ko!</button>
   </div>
 </div>
 
 <script>
-  // Show only once using localStorage
-  window.onload = function() {
+  window.onload = function () {
+    // Only show once per user
     if (!localStorage.getItem('popupShown')) {
       document.getElementById('order-popup').style.display = 'flex';
       localStorage.setItem('popupShown', 'true');
