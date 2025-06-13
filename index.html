@@ -175,33 +175,35 @@
     font-size: 0.95em;
     line-height: 1.4;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    text-align: center;
   ">
-    <!-- POPUP -->
-  <div id="order-popup">
-    <div class="popup-content">
-      <h2>📲 Kinahanglan may WhatsApp ka</h2>
-      <p><strong>🔸 Hiligaynon:</strong> Antes mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
-      <p><strong>🔸 English:</strong> Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
-      <button onclick="closePopup()">✅ Got it!</button>
-    </div>
+    <h2 style="margin-top: 0;">📲 Kinahanglan may WhatsApp ka</h2>
+    <p><strong>🔸 Hiligaynon:</strong> Antes mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
+    <p><strong>🔸 English:</strong> Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
+    <button onclick="closePopup()" style="
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">✅ Got it!</button>
   </div>
+</div>
 
-  <!-- SCRIPT -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (!localStorage.getItem('popupShown')) {
-        document.getElementById('order-popup').style.display = 'flex';
-        localStorage.setItem('popupShown', 'true');
-      }
-    });
-
-    function closePopup() {
-      document.getElementById('order-popup').style.display = 'none';
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!localStorage.getItem('popupShown')) {
+      document.getElementById('order-popup').style.display = 'flex';
+      localStorage.setItem('popupShown', 'true');
     }
-  </script>
+  });
 
-</body>
-</html>
+  function closePopup() {
+    document.getElementById('order-popup').style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
