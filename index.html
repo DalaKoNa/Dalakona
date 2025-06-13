@@ -176,40 +176,32 @@
     line-height: 1.4;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   ">
-    <h3 style="margin-top: 0; font-size: 1.1em;">📱 Kinahanglan may WhatsApp ka</h3>
-    <p>Antes mag-order, siguraduhon nga may WhatsApp app ka para sa order confirmation.</p>
-    <ul style="padding-left: 1.2rem;">
-      <li>Pilia ang imo items kag i-add sa cart</li>
-      <li>Pun-a ang imo pangalan, WhatsApp number kag delivery schedule</li>
-      <li>I-klik ang <strong>“📄 Kopyaha”</strong> kag i-paste sa Fillout Form</li>
-      <li>Dayon, <strong>“🚀 Checkout”</strong> para ma-send sa WhatsApp</li>
-    </ul>
-    <button onclick="closePopup()" style="
-      margin-top: 10px;
-      padding: 8px 16px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
-      font-size: 1em;
-    ">✅ Gets ko!</button>
+    <!-- POPUP -->
+  <div id="order-popup">
+    <div class="popup-content">
+      <h2>📲 Kinahanglan may WhatsApp ka</h2>
+      <p><strong>🔸 Hiligaynon:</strong> Antes mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
+      <p><strong>🔸 English:</strong> Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
+      <button onclick="closePopup()">✅ Got it!</button>
+    </div>
   </div>
-</div>
 
-<script>
-  window.onload = function () {
-    // Only show once per user
-    if (!localStorage.getItem('popupShown')) {
-      document.getElementById('order-popup').style.display = 'flex';
-      localStorage.setItem('popupShown', 'true');
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!localStorage.getItem('popupShown')) {
+        document.getElementById('order-popup').style.display = 'flex';
+        localStorage.setItem('popupShown', 'true');
+      }
+    });
+
+    function closePopup() {
+      document.getElementById('order-popup').style.display = 'none';
     }
-  };
+  </script>
 
-  function closePopup() {
-    document.getElementById('order-popup').style.display = 'none';
-  }
-</script>
+</body>
+</html>
 
 </body>
 </html>
