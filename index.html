@@ -155,7 +155,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
-<!-- 📲 WhatsApp + How to Order Popup -->
+<!-- 📲 WhatsApp Reminder Popup -->
 <div id="order-popup" style="
   display: none;
   position: fixed;
@@ -170,29 +170,19 @@
     background: #fff;
     padding: 1rem;
     border-radius: 10px;
-    max-width: 380px;
+    max-width: 360px;
     width: 100%;
     font-size: 0.95em;
     line-height: 1.4;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    text-align: left;
-    overflow-y: auto;
-    max-height: 90vh;
   ">
-    <h2 style="margin-top: 0;">📲 Kinahanglan may WhatsApp ka</h2>
-    <p><strong>🔸 Hiligaynon:</strong> Antes mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
-    <p><strong>🔸 English:</strong> Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
+    <h3 style="margin-top: 0;">📲 Kinahanglan may WhatsApp ka</h3>
+    <p>Antes ka mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
+    <p>Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
 
-    <hr style="margin: 1em 0;">
-
-    <h2 style="margin-top: 0;">📦 Paano mag-order? / How to Order?</h2>
-    <p><strong>🔸 Hiligaynon:</strong> Pilia ang imo paborito nga tindahan. Idugang sa cart ang mga items. Sunod, pun-a ang imo pangalan, WhatsApp number, kag petsa/time sang delivery.</p>
-    <p>I-klik ang <strong>“📄 Kopyaha ang Order”</strong> kag i-paste ini sa Fillout Form. Dayon i-klik ang <strong>“🚀 Checkout”</strong> para ma-send sa WhatsApp kag sa form.</p>
-
-    <p><strong>🔸 English:</strong> Choose your favorite store. Add items to cart. Then fill out your name, WhatsApp number, and preferred delivery date/time.</p>
-    <p>Click <strong>“📄 Copy Order”</strong> and paste it into the Fillout Form. Then click <strong>“🚀 Checkout”</strong> to send via WhatsApp and Fillout form.</p>
-
-    <p>📞 Need help? Message us here: <a href="https://wa.me/63XXXXXXXXXX" target="_blank" style="color:#007bff;">WhatsApp 63XXXXXXXXXX</a></p>
+    <h4 style="margin-top: 1em;">📦 Paano mag-order?</h4>
+    <p>Pilia ang imo tindahan, idugang ang items sa cart, kag pun-a ang imo ngalan, numero, kag petsa/time sang delivery.</p>
+    <p>Choose your store, add items to cart, and fill in your name, number, and delivery date/time.</p>
 
     <button onclick="closePopup()" style="
       margin-top: 15px;
@@ -202,21 +192,19 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: 100%;
     ">✅ Got it!</button>
   </div>
 </div>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
-    const now = new Date().toDateString(); // e.g. "Wed Jun 11 2025"
+    const today = new Date().toDateString();
 
-    if (lastSeen !== now) {
+    if (lastSeen !== today) {
       setTimeout(() => {
         document.getElementById('order-popup').style.display = 'flex';
-        localStorage.setItem('whatsappPopupLastSeen', now);
-      }, 2000); // 2000ms = 2 seconds
+        localStorage.setItem('whatsappPopupLastSeen', today);
+      }, 2000); // Delay of 2 seconds
     }
   });
 
