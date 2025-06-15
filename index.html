@@ -12,7 +12,6 @@
       padding: 0;
       display: flex;
       height: 100vh;
-      overflow: hidden;
     }
 
     .split-left, .split-right {
@@ -21,7 +20,6 @@
       justify-content: center;
       align-items: center;
       padding: 2rem;
-      animation: fadeIn 1s ease-in;
     }
 
     .split-left {
@@ -52,11 +50,6 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    button:hover {
-      transform: scale(1.03);
     }
 
     .google-btn {
@@ -74,19 +67,9 @@
       color: white;
     }
 
-    .browse-btn {
-      background-color: #888;
-      color: white;
-    }
-
     .auth-container {
       width: 100%;
       max-width: 300px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -104,14 +87,12 @@
       <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
       <button class="facebook-btn" onclick="facebookLogin()">Continue with Facebook</button>
       <button class="email-btn" onclick="emailLogin()">Login with Email</button>
-      <button class="browse-btn" onclick="browseAsGuest()">Browse without Signing In</button>
     </div>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
@@ -126,44 +107,40 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function logToAirtable(user) {
-      fetch('https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer YOUR_AIRTABLE_API_KEY',
-          'Content-Type': 'application/json'
-        },
+    function sendToAirtable(user, provider) {
+      fetch("https://hook.us2.make.com/i402qq7vnykmfv8uxa7hopcecbno2ik5", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fields: {
-            Name: user.displayName || user.email,
-            Email: user.email || '',
-            UID: user.uid,
-            Provider: user.providerData[0]?.providerId
-          }
+          name: user.displayName || "Anonymous",
+          email: user.email,
+          authProvider: provider,
+          uid: user.uid,
+          loginTime: new Date().toISOString()
         })
-      });
+      })
+      .then(res => console.log("Sent to Airtable"))
+      .catch(err => console.error("Make webhook error:", err));
     }
 
     function googleLogin() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
-          logToAirtable(result.user);
-          alert(`Welcome, ${result.user.displayName}`);
-          window.location.href = 'select-store.html';
+          sendToAirtable(result.user, "Google");
+          window.location.href = "select-store.html";
         })
-        .catch(error => console.error(error));
+        .catch(console.error);
     }
 
     function facebookLogin() {
       const provider = new firebase.auth.FacebookAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
-          logToAirtable(result.user);
-          alert(`Welcome, ${result.user.displayName}`);
-          window.location.href = 'select-store.html';
+          sendToAirtable(result.user, "Facebook");
+          window.location.href = "select-store.html";
         })
-        .catch(error => console.error(error));
+        .catch(console.error);
     }
 
     function emailLogin() {
@@ -171,26 +148,21 @@
       const password = prompt("Enter your password:");
       auth.signInWithEmailAndPassword(email, password)
         .then(result => {
-          logToAirtable(result.user);
-          alert(`Welcome, ${result.user.email}`);
-          window.location.href = 'select-store.html';
+          sendToAirtable(result.user, "Email/Password");
+          window.location.href = "select-store.html";
         })
         .catch(error => {
           if (error.code === 'auth/user-not-found') {
             auth.createUserWithEmailAndPassword(email, password)
               .then(result => {
-                logToAirtable(result.user);
-                alert("Account created! Welcome!");
-                window.location.href = 'select-store.html';
-              });
+                sendToAirtable(result.user, "Email/Password");
+                window.location.href = "select-store.html";
+              })
+              .catch(console.error);
           } else {
             console.error(error);
           }
         });
-    }
-
-    function browseAsGuest() {
-      window.location.href = 'select-store.html';
     }
   </script>
 </body>
