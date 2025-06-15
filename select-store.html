@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Select Store - Dala🚲na</title>
+  <title>Select a Store - Dala🚲na</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <style>
@@ -10,62 +10,90 @@
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 2rem;
-      background: #fefefe;
+      background-color: #f7f7f7;
+      color: #333;
     }
 
     h1 {
-      font-size: 2rem;
-      text-align: center;
-    }
-
-    .user-info {
       text-align: center;
       margin-bottom: 2rem;
-      font-size: 1rem;
-      color: #444;
     }
 
-    .store-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+    #userInfo {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .store-card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 1rem;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
       text-align: center;
-      width: 200px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.2s ease;
-      background-color: #fff;
     }
 
     .store-card:hover {
-      transform: translateY(-5px);
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
     }
 
     .store-card a {
       text-decoration: none;
-      color: #222;
+      color: #333;
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: block;
+    }
+
+    .logout-btn {
+      display: block;
+      margin: 2rem auto;
+      padding: 10px 20px;
+      background-color: #db4437;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .logout-btn:hover {
+      background-color: #c13224;
     }
   </style>
 </head>
 <body>
-  <h1>Select a Store</h1>
-  <div class="user-info" id="user-info">Loading...</div>
+  <h1>Select Your Store</h1>
+  <div id="userInfo">Loading user info...</div>
 
-  <div class="store-list">
-    <div class="store-card"><a href="ellens-cakes.html">🎂 Ellen's Cakes</a></div>
-    <div class="store-card"><a href="bakery.html">🍞 Bakery</a></div>
-    <div class="store-card"><a href="chicken-inasal.html">🍗 Chicken Inasal</a></div>
-    <div class="store-card"><a href="handumanan-hypermarket.html">🛒 Handumanan Market</a></div>
-    <div class="store-card"><a href="pharmacy.html">💊 Pharmacy</a></div>
-    <!-- Add more stores here -->
+  <div class="store-grid">
+    <div class="store-card">
+      <a href="ellens-cakes.html">Ellen's Cakes</a>
+    </div>
+    <div class="store-card">
+      <a href="bakery.html">Bakery</a>
+    </div>
+    <div class="store-card">
+      <a href="chicken-inasal.html">Chicken Inasal</a>
+    </div>
+    <div class="store-card">
+      <a href="handumanan-hypermarket.html">Handumanan Hypermarket</a>
+    </div>
+    <div class="store-card">
+      <a href="pharmacy.html">Pharmacy</a>
+    </div>
   </div>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
@@ -86,12 +114,18 @@
 
     auth.onAuthStateChanged(user => {
       if (user) {
-        const name = user.displayName || user.email;
-        document.getElementById('user-info').textContent = `Welcome, ${name}`;
+        const name = user.displayName || user.email || "User";
+        document.getElementById("userInfo").innerText = `Welcome, ${name}!`;
       } else {
-        window.location.href = "index.html"; // Redirect to login if not logged in
+        window.location.href = "index.html";
       }
     });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
   </script>
 </body>
 </html>
