@@ -14,19 +14,21 @@
     }
 
     .navbar {
-      background-color: #222;
+      background-color: #111;
       color: white;
       padding: 1em;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 1.2em;
     }
 
-    .title {
-      font-size: 1.4em;
+    .navbar .title {
       cursor: pointer;
-      text-decoration: none;
-      color: white;
+    }
+
+    .navbar .cart {
+      cursor: pointer;
     }
 
     .cart-page {
@@ -35,168 +37,146 @@
       margin: auto;
     }
 
-    h1 {
-      font-size: 1.5em;
-      text-align: center;
-    }
-
     ul {
-      list-style-type: none;
-      padding: 0;
+      padding-left: 1em;
     }
 
-    li {
-      padding: 0.5em 0;
-      border-bottom: 1px solid #ccc;
-    }
-
-    #total-price {
-      font-weight: bold;
-      text-align: right;
-      margin-top: 1em;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 1em;
-      font-family: 'Cinzel', serif;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button, .checkout-btn {
-      display: inline-block;
+    button {
       padding: 10px 20px;
       font-size: 1em;
       background-color: #000;
       color: white;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
-      margin-top: 1em;
-      text-align: center;
+      border-radius: 6px;
+      font-family: 'Cinzel', serif;
     }
 
-    button:hover, .checkout-btn:hover {
-      background-color: #333;
+    button:hover {
+      background-color: #444;
     }
 
-    /* Modal styles */
-    .modal {
+    /* Modal styling */
+    #cart-modal {
       display: none;
       position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
     }
 
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 1em;
-      border-radius: 8px;
-      max-width: 500px;
+    #cart-modal .modal-content {
+      background: #fff;
+      padding: 1.5em;
+      border-radius: 12px;
       width: 90%;
+      max-width: 420px;
       position: relative;
     }
 
-    .close {
+    #cart-modal .close {
       position: absolute;
-      top: 0.5em;
-      right: 1em;
-      font-size: 1.5em;
-      color: #333;
+      top: 10px; right: 15px;
+      font-size: 1.2em;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    iframe {
-      width: 100%;
-      height: 500px;
-      border: none;
+    #cart-modal ul {
+      list-style: none;
+      padding: 0;
     }
 
-    @media screen and (max-width: 600px) {
-      .modal-content {
-        margin-top: 20%;
-      }
+    #cart-modal h2 {
+      margin-top: 0;
     }
+
   </style>
 </head>
 <body>
 
   <header class="navbar">
-    <a class="title" href="index.html">Dala🚲na.</a>
-    <div>Your Cart 🛒</div>
+    <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
+    <div class="cart" onclick="openCartModal()">🛒 Dala-Cart</div>
   </header>
 
   <section class="cart-page">
     <h1>Review Your Cart</h1>
     <ul id="cart-list"></ul>
     <p id="total-price">Total: ₱0</p>
-
-    <h3>📋 Order Summary:</h3>
-    <textarea id="summary-box" readonly></textarea>
-
-    <button class="checkout-btn" onclick="openModal()">🚀 Proceed to Checkout</button>
+    <button id="checkout-btn" onclick="goToForm()">🚀 Checkout</button>
   </section>
 
   <!-- Modal -->
-  <div id="checkout-modal" class="modal">
+  <div id="cart-modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 style="text-align:center">Fillout Checkout Form</h2>
-      <iframe src="https://forms.fillout.com/t/oMZACWUnvFus"></iframe>
+      <span class="close" onclick="closeCartModal()">✖</span>
+      <h2>Your Dala-Cart</h2>
+      <ul id="modal-cart-list"></ul>
+      <p>Total: ₱<span id="modal-total">0</span></p>
+      <button onclick="checkoutFromModal()">🚀 Checkout</button>
     </div>
   </div>
 
   <script>
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const totalPriceDisplay = document.getElementById("total-price");
-    const summaryBox = document.getElementById("summary-box");
+    const cart = JSON.parse(localStorage.getItem('cart')) || {};
 
     function renderCart() {
       const list = document.getElementById("cart-list");
+      const totalDisplay = document.getElementById("total-price");
       list.innerHTML = "";
+
       let total = 0;
-
-      cart.forEach(item => {
+      for (let item in cart) {
+        const entry = cart[item];
+        total += entry.price * entry.qty;
         const li = document.createElement("li");
-        li.textContent = `${item.itemName} (${item.merchant}) – ₱${item.price}`;
+        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
         list.appendChild(li);
-        total += item.price;
-      });
+      }
 
-      totalPriceDisplay.textContent = `Total: ₱${total}`;
-      summaryBox.value = cart.map(item =>
-        `${item.itemName} (${item.merchant}) – ₱${item.price}`
-      ).join("\n") + `\nTotal: ₱${total}`;
+      totalDisplay.textContent = `Total: ₱${total.toFixed(2)}`;
+    }
+
+    function renderModalCart() {
+      const list = document.getElementById("modal-cart-list");
+      const totalDisplay = document.getElementById("modal-total");
+      list.innerHTML = "";
+
+      let total = 0;
+      for (let item in cart) {
+        const entry = cart[item];
+        total += entry.price * entry.qty;
+        const li = document.createElement("li");
+        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+        list.appendChild(li);
+      }
+
+      totalDisplay.textContent = total.toFixed(2);
+    }
+
+    function openCartModal() {
+      document.getElementById("cart-modal").style.display = "flex";
+      renderModalCart();
+    }
+
+    function closeCartModal() {
+      document.getElementById("cart-modal").style.display = "none";
+    }
+
+    function checkoutFromModal() {
+      closeCartModal();
+      document.getElementById("checkout-btn").click();
+    }
+
+    function goToForm() {
+      window.open("https://forms.fillout.com/t/oMZACWUnvFus", "_blank");
     }
 
     renderCart();
-
-    function openModal() {
-      document.getElementById("checkout-modal").style.display = "block";
-    }
-
-    function closeModal() {
-      document.getElementById("checkout-modal").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      const modal = document.getElementById("checkout-modal");
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    }
   </script>
-
 </body>
 </html>
