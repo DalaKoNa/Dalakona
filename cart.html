@@ -1,16 +1,17 @@
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Your Dala-Cart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
+      background-color: #fafafa;
     }
 
     .navbar {
@@ -28,11 +29,24 @@
     }
 
     .cart-page {
-      padding: 1em;
+      max-width: 600px;
+      margin: auto;
+      padding: 2em;
     }
 
-    ul {
-      padding-left: 1em;
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em;
+      margin-bottom: 0.5em;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .cart-item span {
+      font-weight: 500;
     }
 
     textarea {
@@ -41,6 +55,9 @@
       margin: 10px 0;
       padding: 10px;
       font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Cinzel', serif;
     }
 
     button {
@@ -51,6 +68,7 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      font-family: 'Cinzel', serif;
     }
 
     button:hover {
@@ -66,11 +84,43 @@
   </header>
 
   <section class="cart-page">
-    <h1>Review Your Cart</h1>
-    <ul id="cart-list"></ul>
-    <p id="total-price"></p>
+    <h1 style="font-size: 2em; margin-bottom: 1em;">🛒 Your Cart</h1>
 
-      totalPriceDisplay.textContent = `Total: ₱${total}`;
+    <div id="cart-list" style="margin-bottom: 1em;"></div>
+
+    <div style="padding: 1em; background: #f5f5f5; border-radius: 8px; margin-bottom: 1em;">
+      <strong style="font-size: 1.2em;">Total: ₱<span id="total-price">0</span></strong>
+    </div>
+
+    <textarea id="order-summary" readonly placeholder="Your order summary will appear here..."></textarea>
+
+    <button onclick="goToForm()">📝 Fill Out Order Form</button>
+  </section>
+
+  <script>
+    const cart = [
+      { itemName: "Half Lechon Manok", price: 160, merchant: "Chicken Inasal" },
+      { itemName: "Coke 1.5L", price: 60, merchant: "Handumanan Hypermarket" }
+    ];
+
+    function renderCart() {
+      const list = document.getElementById("cart-list");
+      const summaryBox = document.getElementById("order-summary");
+      const totalDisplay = document.getElementById("total-price");
+
+      let total = 0;
+      list.innerHTML = "";
+
+      cart.forEach(item => {
+        total += item.price;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `<span>${item.itemName} (${item.merchant})</span><span>₱${item.price}</span>`;
+        list.appendChild(div);
+      });
+
+      totalDisplay.textContent = total;
       summaryBox.value = cart.map(item =>
         `${item.itemName} (${item.merchant}) – ₱${item.price}`
       ).join("\n") + `\nTotal: ₱${total}`;
@@ -79,6 +129,8 @@
     function goToForm() {
       window.open("https://forms.fillout.com/t/oMZACWUnvFus", "_blank");
     }
+
+    window.onload = renderCart;
   </script>
 
 </body>
