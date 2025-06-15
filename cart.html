@@ -10,7 +10,7 @@
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      background: #f5f5f5;
+      background: #f8f8f8;
     }
 
     .navbar {
@@ -20,163 +20,190 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.2em;
     }
 
     .navbar .title {
       cursor: pointer;
     }
 
-    .navbar .cart {
-      cursor: pointer;
-    }
-
-    .cart-page {
-      padding: 1em;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    ul {
-      padding-left: 1em;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #000;
+    #floating-cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #111;
       color: white;
       border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5em;
       cursor: pointer;
-      border-radius: 6px;
-      font-family: 'Cinzel', serif;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 10000;
     }
 
-    button:hover {
-      background-color: #444;
-    }
-
-    /* Modal styling */
-    #cart-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #cart-modal .modal-content {
-      background: #fff;
-      padding: 1.5em;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 420px;
-      position: relative;
-    }
-
-    #cart-modal .close {
+    #floating-cart span.badge {
       position: absolute;
-      top: 10px; right: 15px;
-      font-size: 1.2em;
-      cursor: pointer;
-      font-weight: bold;
+      top: 5px;
+      right: 5px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.75em;
     }
 
-    #cart-modal ul {
-      list-style: none;
-      padding: 0;
+    #cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 90%;
+      max-width: 400px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      transition: right 0.3s ease;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
     }
 
-    #cart-modal h2 {
+    #cart-drawer.active {
+      right: 0;
+    }
+
+    #cart-drawer h2 {
       margin-top: 0;
     }
 
+    #cart-drawer .close-btn {
+      align-self: flex-end;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    #drawer-cart-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #drawer-cart-list li {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: red;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    #cart-drawer .total {
+      font-weight: bold;
+      margin-top: 1em;
+      font-size: 1.2em;
+    }
+
+    #cart-drawer button.checkout {
+      background-color: black;
+      color: white;
+      padding: 12px;
+      border: none;
+      font-family: 'Cinzel', serif;
+      font-size: 1em;
+      border-radius: 8px;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    #cart-drawer button.checkout:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
-
   <header class="navbar">
     <div class="title" onclick="window.location.href='index.html'">Dala🚲na.</div>
-    <div class="cart" onclick="openCartModal()">🛒 Dala-Cart</div>
+    <div class="cart-label">Shop with Ease</div>
   </header>
 
-  <section class="cart-page">
-    <h1>Review Your Cart</h1>
-    <ul id="cart-list"></ul>
-    <p id="total-price">Total: ₱0</p>
-    <button id="checkout-btn" onclick="goToForm()">🚀 Checkout</button>
-  </section>
+  <button id="floating-cart" onclick="toggleCartDrawer()">
+    🛒
+    <span class="badge" id="cart-count">0</span>
+  </button>
 
-  <!-- Modal -->
-  <div id="cart-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCartModal()">✖</span>
-      <h2>Your Dala-Cart</h2>
-      <ul id="modal-cart-list"></ul>
-      <p>Total: ₱<span id="modal-total">0</span></p>
-      <button onclick="checkoutFromModal()">🚀 Checkout</button>
-    </div>
+  <div id="cart-drawer">
+    <div class="close-btn" onclick="toggleCartDrawer()">✖</div>
+    <h2>Your Cart</h2>
+    <ul id="drawer-cart-list"></ul>
+    <p class="total">Total: ₱<span id="drawer-total">0.00</span></p>
+    <button class="checkout" onclick="goToForm()">🚀 Checkout</button>
   </div>
 
   <script>
-    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
-    function renderCart() {
-      const list = document.getElementById("cart-list");
-      const totalDisplay = document.getElementById("total-price");
+    function renderDrawerCart() {
+      const list = document.getElementById("drawer-cart-list");
+      const totalDisplay = document.getElementById("drawer-total");
+      const countBadge = document.getElementById("cart-count");
       list.innerHTML = "";
 
       let total = 0;
+      let itemCount = 0;
+
       for (let item in cart) {
         const entry = cart[item];
-        total += entry.price * entry.qty;
+        const itemTotal = entry.price * entry.qty;
+        total += itemTotal;
+        itemCount += entry.qty;
+
         const li = document.createElement("li");
-        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
-        list.appendChild(li);
-      }
-
-      totalDisplay.textContent = `Total: ₱${total.toFixed(2)}`;
-    }
-
-    function renderModalCart() {
-      const list = document.getElementById("modal-cart-list");
-      const totalDisplay = document.getElementById("modal-total");
-      list.innerHTML = "";
-
-      let total = 0;
-      for (let item in cart) {
-        const entry = cart[item];
-        total += entry.price * entry.qty;
-        const li = document.createElement("li");
-        li.textContent = `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+        li.innerHTML = `${item} × ${entry.qty} – ₱${itemTotal.toFixed(2)} <button class='remove-btn' onclick='removeFromCart("${item}")'>❌</button>`;
         list.appendChild(li);
       }
 
       totalDisplay.textContent = total.toFixed(2);
+      countBadge.textContent = itemCount;
     }
 
-    function openCartModal() {
-      document.getElementById("cart-modal").style.display = "flex";
-      renderModalCart();
+    function toggleCartDrawer() {
+      const drawer = document.getElementById("cart-drawer");
+      drawer.classList.toggle("active");
+      renderDrawerCart();
     }
 
-    function closeCartModal() {
-      document.getElementById("cart-modal").style.display = "none";
-    }
-
-    function checkoutFromModal() {
-      closeCartModal();
-      document.getElementById("checkout-btn").click();
+    function removeFromCart(item) {
+      delete cart[item];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderDrawerCart();
     }
 
     function goToForm() {
-      window.open("https://forms.fillout.com/t/oMZACWUnvFus", "_blank");
+      const name = prompt("Enter your name (optional)");
+      const phone = prompt("Enter your phone number (optional)");
+
+      let cartSummary = Object.entries(cart).map(([item, entry]) => {
+        return `${item} × ${entry.qty} – ₱${entry.price * entry.qty}`;
+      }).join("\n");
+
+      let total = Object.values(cart).reduce((sum, entry) => sum + entry.price * entry.qty, 0);
+
+      const url = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&cartSummary=${encodeURIComponent(cartSummary)}&deliveryDate=NA&deliveryTime=NA&customizationNotes=NA&customerEmail=NA&customerPhone=${encodeURIComponent(phone)}&total=${total}`;
+
+      window.open(url, "_blank");
     }
 
-    renderCart();
+    renderDrawerCart();
   </script>
 </body>
 </html>
