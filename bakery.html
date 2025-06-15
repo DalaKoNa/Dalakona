@@ -14,8 +14,8 @@
     .product { margin-bottom: 1em; }
     .product button { margin-right: 0.5em; }
     .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
-    .checkout-btn, .fillout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
-    .checkout-btn:hover, .fillout-btn:hover { background-color: #333; }
+    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
+    .checkout-btn:hover { background-color: #333; }
     textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
     button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
     button.copy-btn:hover { background-color: #666; }
@@ -67,7 +67,7 @@
     <input type="time" id="delivery-time" oninput="updateCartDisplay()" />
 
     <label for="customization-notes">📝 Cake Notes / Special Requests:</label>
-    <textarea id="customization-notes" placeholder="Ex. Chocolate flavor, 2 candles, greeting: Happy Birthday!" oninput="updateCartDisplay()"></textarea>
+<textarea id="customization-notes" placeholder="Ex. Chocolate flavor, 2 candles, greeting: Happy Birthday!" oninput="updateCartDisplay()"></textarea>
 
     <div class="warning" id="warning"></div>
 
@@ -76,10 +76,8 @@
     <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
 
     <br />
-    <button class="fillout-btn" onclick="openFilloutForm()">📄 Fill Out Form</button>
-    <a id="whatsapp-btn" class="checkout-btn" style="display: none" target="_blank">🚀 Send via WhatsApp</a>
+    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
   </div>
-
 <script>
   const cart = {};
   const serviceFee = 29.99;
@@ -178,36 +176,11 @@
 
     orderSummary.value = summaryText;
 
-    const merchantNumber = "63XXXXXXXXXX";
-    const adminNumber = "63YYYYYYYYYY";
+    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
+    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
 
     const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
     const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-    document.getElementById("whatsapp-btn").href = waMerchant;
-
-    // Save admin copy separately if needed
-    localStorage.setItem("adminWA", waAdmin);
-  }
-
-  function copySummary() {
-    const textarea = document.getElementById("order-summary");
-    textarea.select();
-    textarea.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
-  }
-
-  function openFilloutForm() {
-    localStorage.setItem("filloutVisited", "true");
-    updateCartDisplay();
-    const customerName = document.getElementById("customer-name").value.trim();
-    const customerEmail = document.getElementById("customer-email").value.trim();
-    const customerPhone = document.getElementById("customer-phone").value.trim();
-    const deliveryDate = document.getElementById("delivery-date").value;
-    const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value.trim();
-    const summaryText = document.getElementById("order-summary").value;
 
     const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
       `?customerName=${encodeURIComponent(customerName)}` +
@@ -218,15 +191,22 @@
       `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
       `&cartSummary=${encodeURIComponent(summaryText)}`;
 
-    window.open(filloutURL, '_blank');
-    setTimeout(() => {
-      document.getElementById("whatsapp-btn").style.display = "inline-block";
-    }, 2000);
+    document.getElementById("checkout-btn").onclick = () => {
+      if (!customerName || !customerPhone) {
+        alert("❗ Please enter your name and WhatsApp number.");
+        return;
+      }
+      window.open(filloutURL, '_blank');
+      window.open(waMerchant, '_blank');
+      window.open(waAdmin, '_blank');
+    };
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("filloutVisited")) {
-      document.getElementById("whatsapp-btn").style.display = "inline-block";
-    }
-  });
+  function copySummary() {
+    const textarea = document.getElementById("order-summary");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
+  }
 </script>
