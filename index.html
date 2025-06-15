@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na - Your Local Ordering Hub</title>
+  <title>My Dala Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <style>
@@ -10,21 +10,9 @@
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
+      display: flex;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background-color: #222;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .main-content {
-      flex: 1;
-      display: flex;
+      overflow: hidden;
     }
 
     .split-left, .split-right {
@@ -33,6 +21,7 @@
       justify-content: center;
       align-items: center;
       padding: 2rem;
+      animation: fadeIn 1s ease-in;
     }
 
     .split-left {
@@ -63,6 +52,11 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
     }
 
     .google-btn {
@@ -80,39 +74,44 @@
       color: white;
     }
 
+    .browse-btn {
+      background-color: #888;
+      color: white;
+    }
+
     .auth-container {
       width: 100%;
       max-width: 300px;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Dala🚲na</h1>
-    <p>Your community delivery service at your fingertips.</p>
-  </header>
-
-  <div class="main-content">
-    <div class="split-left">
-      <div>
-        <h1>Welcome!</h1>
-        <p>Order from your local favorites. Sign in to get started.</p>
-      </div>
+  <div class="split-left">
+    <div>
+      <h1>Welcome to Dala🚲na</h1>
+      <p>Fast, personalized ordering at your fingertips. Sign in to access your cart and favorite stores.</p>
     </div>
+  </div>
 
-    <div class="split-right">
-      <div class="auth-container">
-        <h1>Login to My Dala Hub</h1>
-        <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
-        <button class="facebook-btn" onclick="facebookLogin()">Continue with Facebook</button>
-        <button class="email-btn" onclick="emailLogin()">Login with Email</button>
-      </div>
+  <div class="split-right">
+    <div class="auth-container">
+      <h1>Login to My Dala Hub</h1>
+      <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
+      <button class="facebook-btn" onclick="facebookLogin()">Continue with Facebook</button>
+      <button class="email-btn" onclick="emailLogin()">Login with Email</button>
+      <button class="browse-btn" onclick="browseAsGuest()">Browse without Signing In</button>
     </div>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
@@ -127,10 +126,29 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    function logToAirtable(user) {
+      fetch('https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer YOUR_AIRTABLE_API_KEY',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fields: {
+            Name: user.displayName || user.email,
+            Email: user.email || '',
+            UID: user.uid,
+            Provider: user.providerData[0]?.providerId
+          }
+        })
+      });
+    }
+
     function googleLogin() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
+          logToAirtable(result.user);
           alert(`Welcome, ${result.user.displayName}`);
           window.location.href = 'select-store.html';
         })
@@ -141,6 +159,7 @@
       const provider = new firebase.auth.FacebookAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
+          logToAirtable(result.user);
           alert(`Welcome, ${result.user.displayName}`);
           window.location.href = 'select-store.html';
         })
@@ -152,6 +171,7 @@
       const password = prompt("Enter your password:");
       auth.signInWithEmailAndPassword(email, password)
         .then(result => {
+          logToAirtable(result.user);
           alert(`Welcome, ${result.user.email}`);
           window.location.href = 'select-store.html';
         })
@@ -159,6 +179,7 @@
           if (error.code === 'auth/user-not-found') {
             auth.createUserWithEmailAndPassword(email, password)
               .then(result => {
+                logToAirtable(result.user);
                 alert("Account created! Welcome!");
                 window.location.href = 'select-store.html';
               });
@@ -166,6 +187,10 @@
             console.error(error);
           }
         });
+    }
+
+    function browseAsGuest() {
+      window.location.href = 'select-store.html';
     }
   </script>
 </body>
