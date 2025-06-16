@@ -1,169 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Ellen's Cakes - Dala🚲na</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      display: flex;
-      flex-direction: row;
-      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
     }
-
+    header {
+      background: #ff4081;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
     .product-grid {
       flex: 3;
-      padding: 2rem;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 20px;
     }
-
     .product-card {
       background: white;
-      padding: 1rem;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 1rem;
       text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-
     .product-card img {
       width: 100%;
-      height: 150px;
-      object-fit: cover;
       border-radius: 8px;
     }
-
-    .product-name {
-      font-weight: 600;
-      margin: 0.5rem 0 0.2rem;
-    }
-
-    .product-desc {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 0.5rem;
-    }
-
-    .product-price {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-
     .product-card button {
-      background: #1e88e5;
+      margin-top: 10px;
+      padding: 10px;
+      background: #00c853;
       color: white;
-      padding: 0.5rem 1rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
-
-    .cart-sidebar {
+    .cart-section {
       flex: 1;
-      background: white;
-      border-left: 1px solid #ddd;
-      padding: 1.5rem;
-      min-width: 300px;
+      background: #fff;
+      margin-left: 20px;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-height: 500px;
+      overflow-y: auto;
     }
-
     .cart-item {
       margin-bottom: 10px;
-      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
     .cart-item button {
       margin-left: 5px;
-      font-size: 0.8rem;
     }
-
     .checkout-btn {
       width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background: #28a745;
+      padding: 12px;
+      background: #2962ff;
       color: white;
       border: none;
       border-radius: 8px;
-      cursor: pointer;
       margin-top: 1rem;
+      cursor: pointer;
     }
-
-    .checkout-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
     #fillout-modal {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
     }
-
     #fillout-modal iframe {
       width: 90%;
-      height: 90%;
+      height: 80vh;
       border: none;
       border-radius: 12px;
     }
-
-    #close-fillout {
+    #fillout-modal .close-btn {
       position: absolute;
       top: 20px;
       right: 30px;
+      font-size: 24px;
       background: white;
-      border: none;
-      font-size: 1.2rem;
-      padding: 0.5rem;
+      border-radius: 50%;
+      padding: 5px 10px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <header>Ellen's Cakes 🍰</header>
+  <div class="container">
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="images/choco-cake.jpg" alt="Chocolate Cake">
+        <h3>Chocolate Cake</h3>
+        <p>Rich and moist chocolate cake</p>
+        <p><strong>₱350</strong></p>
+        <button onclick="addToCart({ name: 'Chocolate Cake', price: 350 })">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/redvelvet.jpg" alt="Red Velvet Cake">
+        <h3>Red Velvet</h3>
+        <p>Classic layered red velvet cake</p>
+        <p><strong>₱420</strong></p>
+        <button onclick="addToCart({ name: 'Red Velvet', price: 420 })">Add to Cart</button>
+      </div>
+      <!-- Add more products below as needed -->
+    </div>
 
-  <!-- Product List -->
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="assets/ellens.jpg" alt="Chocolate Cake">
-      <div class="product-name">Chocolate Cake</div>
-      <div class="product-desc">Moist and rich 6-inch chocolate cake.</div>
-      <div class="product-price">₱499</div>
-      <button onclick="addToCart({name: 'Chocolate Cake', price: 499})">Add to Cart</button>
+    <div class="cart-section">
+      <h3>Your Cart</h3>
+      <div id="cart-items"></div>
+      <p id="cart-total">Total: ₱0.00</p>
+      <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
     </div>
-    <div class="product-card">
-      <img src="assets/ellens.jpg" alt="Vanilla Cupcakes">
-      <div class="product-name">Vanilla Cupcakes</div>
-      <div class="product-desc">Box of 6 soft vanilla cupcakes.</div>
-      <div class="product-price">₱299</div>
-      <button onclick="addToCart({name: 'Vanilla Cupcakes', price: 299})">Add to Cart</button>
-    </div>
-    <!-- Add more products here -->
   </div>
 
-  <!-- Cart Sidebar -->
-  <div class="cart-sidebar">
-    <h3>Your Cart</h3>
-    <div id="cart-items"></div>
-    <p id="cart-total">Total: ₱0.00</p>
-    <button id="checkout-btn" class="checkout-btn" disabled>Proceed to Checkout</button>
-  </div>
-
-  <!-- Fillout Modal -->
   <div id="fillout-modal">
-    <button id="close-fillout" onclick="closeFilloutModal()">✖</button>
+    <span class="close-btn" onclick="closeFilloutModal()">×</span>
     <iframe id="fillout-iframe"></iframe>
   </div>
 
-  <!-- Scripts -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
-  <script src="dalacart.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
+      authDomain: "dalahub-f8268.firebaseapp.com",
+      projectId: "dalahub-f8268",
+      storageBucket: "dalahub-f8268.appspot.com",
+      messagingSenderId: "1043572992249",
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="js/dalacart.js"></script>
 </body>
 </html>
