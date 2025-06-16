@@ -2,208 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ellen's Cakes | Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: 'Cinzel', serif; margin: 0; padding: 0; }
-    .navbar { background-color: #222; color: white; padding: 1em; display: flex; justify-content: space-between; align-items: center; }
-    .title { font-size: 1.5em; text-decoration: none; color: white; cursor: pointer; }
-    .cart { font-size: 1.2em; }
-    .merchant-detail { padding: 1em; }
-    .product { margin-bottom: 1em; }
-    .product button { margin-right: 0.5em; }
-    .cart-section { background: #f9f9f9; padding: 1em; border-top: 1px solid #ddd; }
-    .checkout-btn { display: inline-block; margin-top: 1em; padding: 0.75em 1.5em; background-color: #000; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; }
-    .checkout-btn:hover { background-color: #333; }
-    textarea { width: 100%; max-width: 500px; height: 120px; margin-top: 10px; padding: 10px; font-size: 1em; }
-    button.copy-btn { margin-top: 10px; padding: 0.5em 1em; border: none; background-color: #444; color: white; cursor: pointer; border-radius: 4px; }
-    button.copy-btn:hover { background-color: #666; }
-    .warning { color: red; font-weight: bold; margin-top: 10px; }
-    input, textarea { display: block; margin-top: 10px; max-width: 500px; padding: 10px; width: 100%; font-size: 1em; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ellen's Cakes</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script defer src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script defer src="dalacart.js"></script>
+  <script defer src="firebase-init.js"></script>
 </head>
-<body>
+<body class="bg-pink-50 font-sans">
+  <div class="max-w-4xl mx-auto py-8">
+    <h1 class="text-3xl font-bold text-center mb-6">Ellen's Cakes 🎂</h1>
 
-<header class="navbar">
-  <a href="index.html" class="title">Dala🚲Na | Ellen's Cakes</a>
-  <div class="cart">🛒 Cart (<span id="cart-count">0</span>)</div>
-</header>
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Example product -->
+      <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center">
+        <img src="cake1.jpg" alt="Chocolate Cake" class="w-full h-40 object-cover rounded-xl mb-4">
+        <h2 class="text-xl font-semibold">Chocolate Cake</h2>
+        <p class="text-sm text-gray-600">Rich and moist 8" chocolate cake with buttercream.</p>
+        <p class="text-lg font-bold mt-2">₱499</p>
+        <button onclick="addToCart('Chocolate Cake', 499)" class="mt-4 bg-pink-500 text-white px-4 py-2 rounded-xl hover:bg-pink-600">Add to Cart</button>
+      </div>
+      <!-- Add more products like the one above -->
+    </div>
 
-<section class="merchant-detail">
-  <h1>Ellen's Cakes</h1>
-  <div class="product-list">
-    <div class="product"><p>Chocolate Moist Cake – ₱550</p><button onclick="addToCart('Chocolate Moist Cake', 550)">Add</button></div>
-    <div class="product"><p>Ube Macapuno Cake – ₱580</p><button onclick="addToCart('Ube Macapuno Cake', 580)">Add</button></div>
-    <div class="product"><p>Red Velvet Cake – ₱600</p><button onclick="addToCart('Red Velvet Cake', 600)">Add</button></div>
-    <div class="product"><p>Mini Cupcakes (Box of 6) – ₱250</p><button onclick="addToCart('Mini Cupcakes (Box of 6)', 250)">Add</button></div>
+    <div class="mt-10 text-center">
+      <button onclick="checkout()" class="bg-green-500 text-white px-6 py-3 text-lg rounded-xl hover:bg-green-600">Checkout</button>
+      <p id="cart-summary" class="mt-4 text-gray-700"></p>
+    </div>
+
+    <!-- Modal for Fillout Form -->
+    <div id="fillout-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+      <div class="bg-white rounded-2xl w-full max-w-2xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold">Complete Your Order</h2>
+          <button onclick="closeModal()" class="text-red-500 font-bold text-lg">✖</button>
+        </div>
+        <iframe id="fillout-frame" src="" class="w-full h-96 rounded-xl" frameborder="0"></iframe>
+      </div>
+    </div>
   </div>
-</section>
-
-<section class="cart-section">
-  <div>
-    <h2>🛒 Your Cart</h2>
-    <ul id="cart-list"></ul>
-    <p>Total: ₱<span id="cart-total">0</span></p>
-
-    <label for="customer-name">🙋 Customer Name:</label>
-    <input type="text" id="customer-name" placeholder="Ex. Juan Dela Cruz" oninput="updateCartDisplay()" />
-
-    <label for="customer-email">📧 Email Address:</label>
-    <input type="email" id="customer-email" placeholder="Ex. juan@example.com" oninput="updateCartDisplay()" />
-
-    <label for="customer-phone">📱 WhatsApp Number:</label>
-    <input type="tel" id="customer-phone" placeholder="Ex. 639XXXXXXXXX" oninput="updateCartDisplay()" />
-
-    <label for="delivery-date">📅 Preferred Delivery Date:</label>
-    <input type="date" id="delivery-date" onchange="autoSetTime()" />
-
-    <label for="delivery-time">⏰ Preferred Delivery Time:</label>
-    <input type="time" id="delivery-time" oninput="updateCartDisplay()" />
-
-    <label for="customization-notes">📝 Special Instructions / Notes:</label>
-    <textarea id="customization-notes" placeholder="Ex. Layered cake, Happy Birthday design, etc." oninput="updateCartDisplay()"></textarea>
-    
-    <div class="warning" id="warning"></div>
-
-    <h3>📋 Palihug kopyaha ang imo order kag i-paste ini sa sunod nga page (Fillout Form):</h3>
-    <textarea id="order-summary" readonly></textarea>
-    <button class="copy-btn" onclick="copySummary()">📄 Kopyaha ang Order</button>
-
-    <br />
-    <a id="checkout-btn" class="checkout-btn" target="_blank">🚀 Checkout</a>
-  </div>
-</section>
-
-<script>
-  const cart = {};
-  const serviceFee = 29.99;
-
-  function addToCart(item, price) {
-    if (cart[item]) cart[item].qty += 1;
-    else cart[item] = { price, qty: 1 };
-    updateCartDisplay();
-  }
-
-  function removeFromCart(item) {
-    if (cart[item]) {
-      cart[item].qty -= 1;
-      if (cart[item].qty <= 0) delete cart[item];
-      updateCartDisplay();
-    }
-  }
-
-  function autoSetTime() {
-    const dateInput = document.getElementById("delivery-date");
-    const timeInput = document.getElementById("delivery-time");
-    const warning = document.getElementById("warning");
-
-    const selectedDate = new Date(dateInput.value);
-    const today = new Date();
-
-    if (selectedDate.toDateString() === today.toDateString()) {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 80);
-      timeInput.value = now.toTimeString().slice(0, 5);
-
-      warning.textContent = now.getHours() >= 18
-        ? "⚠️ Orders past 6 PM might not be accepted for same-day delivery."
-        : "";
-    } else {
-      warning.textContent = "";
-    }
-
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartList = document.getElementById("cart-list");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const orderSummary = document.getElementById("order-summary");
-
-    const customerName = document.getElementById("customer-name").value.trim();
-    const customerEmail = document.getElementById("customer-email").value.trim();
-    const customerPhone = document.getElementById("customer-phone").value.trim();
-    const deliveryDate = document.getElementById("delivery-date").value;
-    const deliveryTime = document.getElementById("delivery-time").value;
-    const customizationNotes = document.getElementById("customization-notes").value.trim();
-
-    cartList.innerHTML = "";
-    let totalQty = 0;
-    let subtotal = 0;
-
-    for (let item in cart) {
-      const entry = cart[item];
-      totalQty += entry.qty;
-      subtotal += entry.price * entry.qty;
-
-      const li = document.createElement("li");
-      li.innerHTML = `
-        ${item} × ${entry.qty} – ₱${entry.price * entry.qty}
-        <button onclick="addToCart('${item}', ${entry.price})">+</button>
-        <button onclick="removeFromCart('${item}')">–</button>
-      `;
-      cartList.appendChild(li);
-    }
-
-    if (subtotal > 0) {
-      const feeLine = document.createElement("li");
-      feeLine.textContent = `Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`;
-      cartList.appendChild(feeLine);
-    }
-
-    const finalTotal = subtotal + (subtotal > 0 ? serviceFee : 0);
-    cartTotal.textContent = finalTotal.toFixed(2);
-    cartCount.textContent = totalQty;
-
-    const merchantName = "Ellen's Cake";
-    const summaryText = [
-      `Merchant: ${merchantName}`,
-      `🙋 Name: ${customerName}`,
-      `📧 Email: ${customerEmail}`,
-      `📱 WhatsApp: ${customerPhone}`,
-      ...Object.entries(cart).map(([item, data]) => `${item} × ${data.qty} – ₱${data.price * data.qty}`),
-      ...(subtotal > 0 ? [`Service & Delivery Fee – ₱${serviceFee.toFixed(2)}`] : []),
-      `Total: ₱${finalTotal.toFixed(2)}`,
-      deliveryDate ? `📅 Delivery Date: ${deliveryDate}` : '',
-      deliveryTime ? `⏰ Delivery Time: ${deliveryTime}` : '',
-      customizationNotes ? `📝 Special Instructions: ${customizationNotes}` : ''
-    ].filter(Boolean).join("\n");
-
-    orderSummary.value = summaryText;
-
-    const merchantNumber = "63XXXXXXXXXX"; // Replace with merchant WhatsApp
-    const adminNumber = "63YYYYYYYYYY";   // Replace with admin WhatsApp
-
-    const waMerchant = `https://wa.me/${merchantNumber}?text=${encodeURIComponent("Hello! New order from " + merchantName + ":\n" + summaryText)}`;
-    const waAdmin = `https://wa.me/${adminNumber}?text=${encodeURIComponent("Admin copy - Order from " + merchantName + ":\n" + summaryText)}`;
-
-    const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus` +
-      `?customerName=${encodeURIComponent(customerName)}` +
-      `&customerEmail=${encodeURIComponent(customerEmail)}` +
-      `&whatsappNumber=${encodeURIComponent(customerPhone)}` +
-      `&deliveryDate=${encodeURIComponent(deliveryDate)}` +
-      `&deliveryTime=${encodeURIComponent(deliveryTime)}` +
-      `&customizationNotes=${encodeURIComponent(customizationNotes)}` +
-      `&cartSummary=${encodeURIComponent(summaryText)}`;
-
-    document.getElementById("checkout-btn").onclick = () => {
-      if (!customerName || !customerPhone) {
-        alert("❗ Please enter your name and WhatsApp number.");
-        return;
-      }
-      window.open(filloutURL, '_blank');
-      window.open(waMerchant, '_blank');
-      window.open(waAdmin, '_blank');
-    };
-  }
-
-  function copySummary() {
-    const textarea = document.getElementById("order-summary");
-    textarea.select();
-    textarea.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    alert("✔️ Nakopya na ang imo order! I-paste ini sa Fillout Form.");
-  }
-</script>
+</body>
+</html>
