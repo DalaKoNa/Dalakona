@@ -2,168 +2,215 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Dala Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city.">
+  <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
+  <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      display: flex;
-      height: 100vh;
     }
 
-    .split-left, .split-right {
-      flex: 1;
+    /* Navbar fix */
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 1em;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      padding: 2rem;
+      flex-wrap: wrap;
     }
 
-    .split-left {
-      background-color: #f0f0f0;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .split-right {
-      background-color: #ffffff;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      max-width: 400px;
-      margin: 0 auto 2rem;
-    }
-
-    button {
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      font-size: 1em;
+    .navbar .hamburger {
+      font-size: 1.5em;
+      background: none;
       border: none;
-      border-radius: 8px;
+      color: white;
       cursor: pointer;
     }
 
-    .google-btn {
-      background-color: #db4437;
+    .navbar .title {
+      font-size: 1.2em;
+      text-decoration: none;
       color: white;
+      flex-grow: 1;
+      text-align: center;
+      margin: 0 1em;
     }
 
-    .facebook-btn {
-      background-color: #4267B2;
-      color: white;
+    .navbar .cart {
+      font-size: 1em;
+      white-space: nowrap;
+      margin-left: auto;
     }
 
-    .email-btn {
-      background-color: #555;
-      color: white;
-    }
-
-    .auth-container {
-      width: 100%;
-      max-width: 300px;
+    @media (max-width: 480px) {
+      .navbar .title {
+        font-size: 1em;
+      }
+      .navbar .cart {
+        font-size: 0.9em;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="split-left">
-    <div>
-      <h1>Welcome to Dala🚲na</h1>
-      <p>Fast, personalized ordering at your fingertips. Sign in to access your cart and favorite stores.</p>
-    </div>
-  </div>
 
-  <div class="split-right">
-    <div class="auth-container">
-      <h1>Login to My Dala Hub</h1>
-      <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
-      <button class="facebook-btn" onclick="facebookLogin()">Continue with Facebook</button>
-      <button class="email-btn" onclick="emailLogin()">Login with Email</button>
-    </div>
-  </div>
+  <!-- Sidebar (Hamburger Nav) -->
+  <nav id="sidebar" class="sidebar" aria-hidden="true">
+    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
+    <a href="#partners">Our Partner Merchants</a>
+  </nav>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
+  <header class="navbar">
+  <div class="nav-left">
+    <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
+  </div>
+  <div class="nav-center">
+    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
+  </div>
+  <div class="nav-right">
+    <div class="cart">🛒 dala-Cart</div>
+  </div>
+</header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img 
+      src="bike-hero.jpg" 
+      alt="Bike with grocery basket at night" 
+      class="hero-img" 
+      loading="lazy"
+    />
+    <div class="hero-text">
+      <h1>Dala Ko na.</h1>
+      <h2>Subong dayon!</h2>
+      <p>Delivering daily essentials with love & speed</p>
+    </div>
+  </section>
+
+  <!-- Merchants -->
+  <section class="partners" id="partners">
+    <h2>Our Merchants</h2>
+    <div class="merchant-scroll">
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Facebook">FB</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Instagram">IG</a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on X">X</a>
+      </div>
+      <p>dala🚲na hasta sa FB, IG, X</p>
+    </div>
+
+    <nav class="footer-right" aria-label="Footer navigation">
+      <a href="careers.html">Careers / Trabaho</a>
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
+      <p class="copyright">© 2025 Dala🚲na. All rights reserved.</p>
+    </nav>
+  </footer>
+
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
-      authDomain: "dalahub-f8268.firebaseapp.com",
-      projectId: "dalahub-f8268",
-      storageBucket: "dalahub-f8268.appspot.com",
-      messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
-    };
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    hamburger.addEventListener("click", () => {
+      sidebar.style.width = "250px";
+    });
 
-    function sendToAirtable(user, provider) {
-      fetch("https://hook.us2.make.com/i402qq7vnykmfv8uxa7hopcecbno2ik5", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: user.displayName || "Anonymous",
-          email: user.email,
-          authProvider: provider,
-          uid: user.uid,
-          loginTime: new Date().toISOString()
-        })
-      })
-      .then(res => console.log("Sent to Airtable"))
-      .catch(err => console.error("Make webhook error:", err));
-    }
+    closeBtn.addEventListener("click", () => {
+      sidebar.style.width = "0";
+    });
 
-    function googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          sendToAirtable(result.user, "Google");
-          window.location.href = "select-store.html";
-        })
-        .catch(console.error);
-    }
+    const sidebarLinks = sidebar.querySelectorAll("a");
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.style.width = "0";
+      });
+    });
 
-    function facebookLogin() {
-      const provider = new firebase.auth.FacebookAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          sendToAirtable(result.user, "Facebook");
-          window.location.href = "select-store.html";
-        })
-        .catch(console.error);
-    }
-
-    function emailLogin() {
-      const email = prompt("Enter your email:");
-      const password = prompt("Enter your password:");
-      auth.signInWithEmailAndPassword(email, password)
-        .then(result => {
-          sendToAirtable(result.user, "Email/Password");
-          window.location.href = "select-store.html";
-        })
-        .catch(error => {
-          if (error.code === 'auth/user-not-found') {
-            auth.createUserWithEmailAndPassword(email, password)
-              .then(result => {
-                sendToAirtable(result.user, "Email/Password");
-                window.location.href = "select-store.html";
-              })
-              .catch(console.error);
-          } else {
-            console.error(error);
-          }
-        });
+    function scrollToTop(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
+<!-- 📲 WhatsApp Reminder Popup -->
+<div id="order-popup" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+">
+  <div style="
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    max-width: 360px;
+    width: 100%;
+    font-size: 0.95em;
+    line-height: 1.4;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  ">
+    <h3 style="margin-top: 0;">📲 Kinahanglan may WhatsApp ka</h3>
+    <p>Antes ka mag-order, siguraduhon nga may WhatsApp app ikaw para maka-receive sang order confirmation.</p>
+    <p>Before ordering, make sure you have the WhatsApp app so you can receive your order confirmation.</p>
+
+    <h4 style="margin-top: 1em;">📦 Paano mag-order?</h4>
+    <p>Pilia ang imo tindahan, idugang ang items sa cart, kag pun-a ang imo ngalan, numero, kag petsa/time sang delivery.</p>
+    <p>Choose your store, add items to cart, and fill in your name, number, and delivery date/time.</p>
+
+    <button onclick="closePopup()" style="
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    ">✅ Got it!</button>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
+    const today = new Date().toDateString();
+
+    if (lastSeen !== today) {
+      setTimeout(() => {
+        document.getElementById('order-popup').style.display = 'flex';
+        localStorage.setItem('whatsappPopupLastSeen', today);
+      }, 2000); // Delay of 2 seconds
+    }
+  });
+
+  function closePopup() {
+    document.getElementById('order-popup').style.display = 'none';
+  }
+</script>
 </body>
 </html>
