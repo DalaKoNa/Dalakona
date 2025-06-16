@@ -10,25 +10,24 @@
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background: #f9f9f9;
     }
 
     .auth-container {
-      background: #fff;
+      text-align: center;
+      max-width: 400px;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
+      background-color: white;
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
 
@@ -40,27 +39,25 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s ease;
     }
 
     .google-btn { background-color: #db4437; color: white; }
     .facebook-btn { background-color: #4267B2; color: white; }
     .email-btn { background-color: #555; color: white; }
-
-    .logout-btn { margin-top: 1em; background-color: #888; color: white; }
-    #welcome-msg { margin-top: 1em; font-size: 1.1em; }
+    .logout-btn { background-color: #999; color: white; }
+    .welcome-msg { margin-top: 1em; font-size: 1.2em; }
   </style>
 </head>
 <body>
   <div class="auth-container">
-    <h1>Welcome to Dala🚲na</h1>
+    <h1>Welcome to My Dala Hub</h1>
     <div id="auth-buttons">
       <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
       <button class="facebook-btn" onclick="facebookLogin()">Continue with Facebook</button>
       <button class="email-btn" onclick="emailLogin()">Login with Email</button>
     </div>
-    <div id="user-info" style="display: none;">
-      <p id="welcome-msg"></p>
+    <div id="user-info" style="display:none">
+      <p class="welcome-msg" id="welcome-msg"></p>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </div>
@@ -68,7 +65,6 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
@@ -76,24 +72,24 @@
       projectId: "dalahub-f8268",
       storageBucket: "dalahub-f8268.appspot.com",
       messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
+      measurementId: "G-1H5FRQWS2R"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     function showUser(user) {
-      document.getElementById("auth-buttons").style.display = "none";
-      document.getElementById("user-info").style.display = "block";
-      document.getElementById("welcome-msg").textContent = `Hi, ${user.displayName || user.email}!`;
+      document.getElementById('auth-buttons').style.display = 'none';
+      document.getElementById('user-info').style.display = 'block';
+      document.getElementById('welcome-msg').textContent = `Hi, ${user.displayName || user.email}!`;
 
-      // Redirect after short delay
+      // Redirect to select-store.html
       setTimeout(() => {
         window.location.href = "select-store.html";
       }, 1500);
     }
 
-    // Check if already logged in
     auth.onAuthStateChanged(user => {
       if (user) showUser(user);
     });
@@ -102,14 +98,14 @@
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => showUser(result.user))
-        .catch(console.error);
+        .catch(error => console.error(error));
     }
 
     function facebookLogin() {
       const provider = new firebase.auth.FacebookAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => showUser(result.user))
-        .catch(console.error);
+        .catch(error => console.error(error));
     }
 
     function emailLogin() {
@@ -120,8 +116,7 @@
         .catch(error => {
           if (error.code === 'auth/user-not-found') {
             auth.createUserWithEmailAndPassword(email, password)
-              .then(result => showUser(result.user))
-              .catch(console.error);
+              .then(result => showUser(result.user));
           } else {
             console.error(error);
           }
@@ -129,7 +124,9 @@
     }
 
     function logout() {
-      auth.signOut().then(() => location.reload());
+      auth.signOut().then(() => {
+        location.reload();
+      });
     }
   </script>
 </body>
