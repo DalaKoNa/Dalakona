@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bakery - DalaὪNa</title>
+  <title>Bakery - Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      background: #fffaf2;
+      background: #fff8f0;
     }
     header {
-      background: #d2691e;
+      background: #ff6f00;
       color: white;
-      padding: 1rem;
-      text-align: center;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    #cart-summary {
+      font-size: 1rem;
     }
     .product-grid {
       display: grid;
@@ -31,31 +41,28 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      text-align: center;
+      padding: 1rem;
     }
     .product-card img {
       width: 100%;
       height: 150px;
       object-fit: cover;
+      border-radius: 8px;
     }
-    .product-info {
-      padding: 1rem;
-      flex-grow: 1;
+    .product-card h4 {
+      margin: 0.5rem 0 0.2rem;
     }
-    .product-info h4 {
-      margin: 0 0 0.5rem;
-      font-size: 1rem;
-    }
-    .product-info p {
-      margin: 0 0 1rem;
+    .product-card p {
       font-size: 0.9rem;
       color: #555;
     }
-    .product-info button {
-      width: 100%;
-      padding: 0.6rem;
-      background: #d2691e;
+    .product-card button {
+      margin-top: auto;
+      background: #ff6f00;
       color: white;
       border: none;
+      padding: 0.6rem;
       border-radius: 8px;
       cursor: pointer;
     }
@@ -64,9 +71,14 @@
       background: white;
       margin: 1rem;
       border-radius: 12px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .cart-item {
-      margin: 0.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
     }
     #fillout-modal {
       position: fixed;
@@ -86,31 +98,39 @@
 </head>
 <body>
   <header>
-    <h1>Bakery</h1>
+    <h1>Bakery 🧀</h1>
+    <div id="cart-summary">Cart: <span id="cart-count">0</span> items - ₱<span id="cart-total-summary">0.00</span></div>
   </header>
 
   <div class="product-grid">
     <div class="product-card">
       <img src="https://via.placeholder.com/300x150?text=Pandesal" alt="Pandesal">
-      <div class="product-info">
-        <h4>Pandesal</h4>
-        <p>Soft Filipino bread rolls. Pack of 10.</p>
-        <button onclick='addToCart({ name: "Pandesal", price: 40 })'>Add to Cart - ₱40</button>
-      </div>
+      <h4>Pandesal (10 pcs)</h4>
+      <p>Soft and warm morning staple.</p>
+      <button onclick='addToCart({ name: "Pandesal", price: 30 })'>Add to Cart - ₱30</button>
     </div>
     <div class="product-card">
       <img src="https://via.placeholder.com/300x150?text=Ensaymada" alt="Ensaymada">
-      <div class="product-info">
-        <h4>Ensaymada</h4>
-        <p>Buttery sweet brioche topped with cheese. 1 piece.</p>
-        <button onclick='addToCart({ name: "Ensaymada", price: 30 })'>Add to Cart - ₱30</button>
-      </div>
+      <h4>Ensaymada</h4>
+      <p>Fluffy with butter and cheese topping.</p>
+      <button onclick='addToCart({ name: "Ensaymada", price: 25 })'>Add to Cart - ₱25</button>
     </div>
-    <!-- Add more bakery items here -->
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Spanish+Bread" alt="Spanish Bread">
+      <h4>Spanish Bread</h4>
+      <p>Sweet rolled bread with filling.</p>
+      <button onclick='addToCart({ name: "Spanish Bread", price: 20 })'>Add to Cart - ₱20</button>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Cheese+Roll" alt="Cheese Roll">
+      <h4>Cheese Roll</h4>
+      <p>Cheesy and soft, freshly baked.</p>
+      <button onclick='addToCart({ name: "Cheese Roll", price: 28 })'>Add to Cart - ₱28</button>
+    </div>
   </div>
 
   <div id="cart">
-    <h3>Cart</h3>
+    <h3>Your Cart</h3>
     <div id="cart-items"></div>
     <p id="cart-total">Total: ₱0.00</p>
     <button id="checkout-btn" disabled>Checkout</button>
@@ -120,7 +140,6 @@
     <iframe id="fillout-iframe"></iframe>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
@@ -130,11 +149,10 @@
       projectId: "dalahub-f8268",
       storageBucket: "dalahub-f8268.appspot.com",
       messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-  <script src="dalacart.js"></script>
+  <script src="js/dalacart.js"></script>
 </body>
 </html>
