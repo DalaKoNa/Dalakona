@@ -3,280 +3,195 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy - DalaNa</title>
+  <title>Pharmacy - Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: #f4f4f4;
-    }
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
     header {
-      background: #008060;
-      color: white;
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #008060; color: white; padding: 1rem; text-align: center; position: relative;
     }
     .back-arrow {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
+      position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem; color: white; text-decoration: none;
     }
-    .cart-btn {
-      position: relative;
-      background: white;
-      color: #008060;
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 1.5rem;
-      cursor: pointer;
+    .cart-icon {
+      position: absolute; right: 1rem; top: 1rem; width: 32px; height: 32px;
+      background: white; color: #008060; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; cursor: pointer; position: relative;
     }
     .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: red;
-      color: white;
-      font-size: 0.7rem;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: absolute; top: -6px; right: -6px;
+      background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px;
+    }
+    .search-container {
+      padding: 1rem; display: flex; justify-content: center; gap: 0.5rem;
+    }
+    .search-container input { padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px; }
+    .search-container button {
+      background: #008060; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px;
     }
     .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; padding: 1rem;
     }
     .product-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;
     }
-    .product-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .product-info {
-      padding: 1rem;
-    }
-    .product-info h4 {
-      margin: 0 0 0.5rem;
-    }
-    .product-info p {
-      margin: 0 0 1rem;
-      font-size: 0.9rem;
-      color: #555;
-    }
+    .product-card img { width: 100%; height: 150px; object-fit: cover; }
+    .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .product-info h4 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .product-info p { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
     .quantity-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 5px;
+      display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
     }
     .quantity-controls button {
-      width: 32px;
-      height: 32px;
-      border: none;
-      border-radius: 6px;
-      background: #008060;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      background: #008060; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px;
     }
-    .cart-panel {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 360px;
-      background: white;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      z-index: 99;
+    .quantity-controls span { min-width: 24px; text-align: center; }
+    #cart-panel {
+      position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: white;
+      box-shadow: -2px 0 12px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 1rem; overflow-y: auto; z-index: 100;
     }
-    .cart-panel.open {
-      transform: translateX(0);
+    #cart-panel.open { right: 0; }
+    #cart-items .item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    #cart-total { margin-top: 1rem; font-weight: bold; }
+    #checkout-btn {
+      margin-top: 1rem; padding: 0.8rem; background: #008060; color: white; border: none; width: 100%; border-radius: 8px;
     }
-    .cart-panel-header {
-      padding: 1rem;
-      background: #008060;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    #fillout-modal {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
     }
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
+    #fillout-modal iframe {
+      width: 90vw; height: 90vh; border: none; border-radius: 12px;
     }
-    .cart-item {
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 0.5rem;
+    .payment-methods {
+      margin-top: 1rem;
     }
-    .cart-summary {
-      padding: 1rem;
-      border-top: 1px solid #ddd;
-    }
-    .checkout-btn {
-      width: 100%;
-      padding: 0.75rem;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 0.5rem;
-    }
-    #modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    #modal iframe {
-      width: 95vw;
-      height: 95vh;
-      border: none;
-      border-radius: 12px;
-    }
+    .payment-methods label { display: block; margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
   <header>
-    <a class="back-arrow" href="index.html">←</a>
-    <h2>Pharmacy</h2>
-    <button class="cart-btn" onclick="toggleCart()">
+    <a href="index.html" class="back-arrow">←</a>
+    <h1>Pharmacy</h1>
+    <div class="cart-icon" onclick="toggleCart()">
       🛒<span class="cart-count" id="cart-count">0</span>
-    </button>
+    </div>
   </header>
 
-  <div class="product-grid" id="product-grid"></div>
-
-  <div class="cart-panel" id="cart-panel">
-    <div class="cart-panel-header">
-      <h3>Dala Cart</h3>
-      <button onclick="toggleCart()">✕</button>
-    </div>
-    <div class="cart-items" id="cart-items"></div>
-    <div class="cart-summary">
-      <p>Subtotal: ₱<span id="subtotal">0.00</span></p>
-      <p>Service Fee: ₱<span id="service-fee">29.99</span></p>
-      <p>VAT (12%): ₱<span id="vat">0.00</span></p>
-      <h4>Total: ₱<span id="total">0.00</span></h4>
-      <button class="checkout-btn" onclick="openModal()">Checkout</button>
-    </div>
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search products...">
+    <button onclick="searchProducts()">Search</button>
   </div>
 
-  <div id="modal">
-    <iframe id="fillout-iframe" src=""></iframe>
+  <div class="product-grid" id="product-grid">
+    <!-- Products will be injected here by JS -->
   </div>
+
+  <div id="cart-panel">
+    <h3>Your Dala🚲Cart</h3>
+    <div id="cart-items"></div>
+    <div class="payment-methods">
+      <label><input type="radio" name="payment" value="COD" checked> Cash on Delivery</label>
+      <label><input type="radio" name="payment" value="PayMaya"> PayMaya (Send via 09XXXXXXXXX)</label>
+      <label><input type="radio" name="payment" value="Bank Transfer"> Bank Transfer (Details on request)</label>
+    </div>
+    <div id="cart-total"></div>
+    <button id="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+
+  <div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
 
   <script>
     const products = [
-      { name: "Paracetamol", price: 35 },
-      { name: "Hydrite", price: 15 },
-      { name: "Biogesic", price: 30 },
-      { name: "Decolgen", price: 28 },
-      { name: "Alaxan FR", price: 40 },
-      { name: "Neozep", price: 25 },
-      { name: "Diatabs", price: 22 },
-      { name: "Loperamide", price: 20 },
-      { name: "Kremil-S", price: 18 },
-      { name: "Antacid Tabs", price: 19 },
+      { name: "Paracetamol 500mg", price: 35, desc: "Fever and pain relief", image: "https://via.placeholder.com/300x150?text=Paracetamol" },
+      { name: "Hydrite", price: 15, desc: "Oral rehydration salts", image: "https://via.placeholder.com/300x150?text=Hydrite" },
+      { name: "Biogesic", price: 30, desc: "Headache and fever relief", image: "https://via.placeholder.com/300x150?text=Biogesic" },
+      { name: "Decolgen", price: 28, desc: "Cold and flu relief", image: "https://via.placeholder.com/300x150?text=Decolgen" },
+      { name: "Alaxan FR", price: 40, desc: "Body pain relief", image: "https://via.placeholder.com/300x150?text=Alaxan+FR" },
+      { name: "Neozep", price: 25, desc: "Cold symptom relief", image: "https://via.placeholder.com/300x150?text=Neozep" },
+      { name: "Diatabs", price: 22, desc: "Anti-diarrheal", image: "https://via.placeholder.com/300x150?text=Diatabs" },
+      { name: "Loperamide", price: 20, desc: "Diarrhea control", image: "https://via.placeholder.com/300x150?text=Loperamide" },
+      { name: "Kremil-S", price: 18, desc: "Stomach relief", image: "https://via.placeholder.com/300x150?text=Kremil-S" },
+      { name: "Antacid Tabs", price: 19, desc: "Indigestion relief", image: "https://via.placeholder.com/300x150?text=Antacid+Tabs" }
     ];
-    const cart = {};
 
-    function renderProducts() {
+    let cart = {};
+
+    function renderProducts(filter = "") {
       const grid = document.getElementById('product-grid');
-      grid.innerHTML = '';
-      products.forEach((item, i) => {
+      grid.innerHTML = "";
+      products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach((p, i) => {
+        const qty = cart[p.name]?.qty || 0;
         grid.innerHTML += `
-        <div class="product-card">
-          <img src="https://via.placeholder.com/300x150?text=${item.name}" alt="${item.name}">
-          <div class="product-info">
-            <h4>${item.name}</h4>
-            <p>₱${item.price.toFixed(2)}</p>
-            <div class="quantity-controls">
-              <button onclick="decreaseQuantity('${item.name}', ${item.price})">-</button>
-              <span id="qty-${item.name}">0</span>
-              <button onclick="increaseQuantity('${item.name}', ${item.price})">+</button>
+          <div class="product-card">
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-info">
+              <h4>${p.name}</h4>
+              <p>${p.desc}</p>
+              <div class="quantity-controls">
+                <button onclick='decreaseQty("${p.name}")'>–</button>
+                <span>${qty}</span>
+                <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
+              </div>
             </div>
-          </div>
-        </div>`;
+          </div>`;
       });
     }
 
-    function increaseQuantity(name, price) {
-      if (!cart[name]) cart[name] = { price, qty: 0 };
-      cart[name].qty++;
+    function increaseQty(name, price) {
+      if (!cart[name]) cart[name] = { qty: 1, price };
+      else cart[name].qty++;
       updateCart();
     }
-    function decreaseQuantity(name, price) {
+
+    function decreaseQty(name) {
       if (cart[name]) {
         cart[name].qty--;
         if (cart[name].qty <= 0) delete cart[name];
-        updateCart();
       }
+      updateCart();
     }
+
     function updateCart() {
-      let items = '';
-      let subtotal = 0;
-      let count = 0;
-      for (const [name, item] of Object.entries(cart)) {
-        items += `<div class="cart-item">${item.qty}x ${name} - ₱${(item.qty * item.price).toFixed(2)}</div>`;
-        document.getElementById(`qty-${name}`).innerText = item.qty;
-        subtotal += item.qty * item.price;
-        count += item.qty;
+      const container = document.getElementById('cart-items');
+      container.innerHTML = "";
+      let subtotal = 0, totalItems = 0;
+      for (let name in cart) {
+        const item = cart[name];
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+        container.innerHTML += `<div class="item">${item.qty}x ${name} <b>₱${item.price * item.qty}</b></div>`;
       }
       const vat = subtotal * 0.12;
-      const service = 29.99;
-      const total = subtotal + vat + service;
-
-      document.getElementById('cart-items').innerHTML = items || '<p>No items yet.</p>';
-      document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-      document.getElementById('vat').innerText = vat.toFixed(2);
-      document.getElementById('total').innerText = total.toFixed(2);
-      document.getElementById('cart-count').innerText = count;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      document.getElementById('cart-total').innerHTML = `
+        Subtotal: ₱${subtotal.toFixed(2)}<br>
+        VAT (12%): ₱${vat.toFixed(2)}<br>
+        Service Fee: ₱${fee.toFixed(2)}<br>
+        <b>Total: ₱${total.toFixed(2)}</b>`;
+      document.getElementById('cart-count').innerText = totalItems;
+      renderProducts(document.getElementById('search-input').value);
     }
 
     function toggleCart() {
-      document.getElementById('cart-panel').classList.toggle('open');
+      const cartPanel = document.getElementById('cart-panel');
+      cartPanel.classList.toggle('open');
     }
 
-    function openModal() {
-      let summary = '';
-      for (const [name, item] of Object.entries(cart)) {
-        summary += `${item.qty}x ${name} - ₱${(item.qty * item.price).toFixed(2)}\n`;
-      }
-      const url = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summary)}&paymentMethod=Select&deliveryTime=&customerName=&customerPhone=&customerEmail=`;
-      document.getElementById('fillout-iframe').src = url;
-      document.getElementById('modal').style.display = 'flex';
+    function checkout() {
+      const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
+      const method = document.querySelector('input[name="payment"]:checked').value;
+      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
+      document.getElementById('fillout-iframe').src = filloutUrl;
+      document.getElementById('fillout-modal').style.display = 'flex';
     }
 
-    window.onload = renderProducts;
+    function searchProducts() {
+      renderProducts(document.getElementById('search-input').value);
+    }
+
+    renderProducts();
   </script>
 </body>
 </html>
