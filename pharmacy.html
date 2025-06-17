@@ -63,15 +63,10 @@
     #fillout-modal iframe {
       width: 90vw; height: 90vh; border: none; border-radius: 12px;
     }
-    .payment-methods, .customer-info, .delivery-info {
-      margin-top: 1rem;
+    .cart-inputs input, .cart-inputs select {
+      width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
     }
-    .payment-methods label, .delivery-info label, .customer-info label {
-      display: block; margin-bottom: 0.5rem;
-    }
-    .customer-info input, .delivery-info input {
-      width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
-    }
+    .cart-inputs label { font-size: 0.9rem; margin-top: 1rem; display: block; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -93,47 +88,128 @@
   <div id="cart-panel">
     <h3>Your Dala🚲Cart</h3>
     <div id="cart-items"></div>
-
-    <div class="payment-methods">
-      <label><input type="radio" name="payment" value="COD" checked> Cash on Delivery</label>
-      <label><input type="radio" name="payment" value="PayMaya"> PayMaya (Send via 09XXXXXXXXX)</label>
-      <label><input type="radio" name="payment" value="Bank Transfer"> Bank Transfer (Details on request)</label>
-    </div>
-
-    <div class="delivery-info">
-      <label>Delivery Date: <input type="date" id="delivery-date"></label>
-      <label>Delivery Time: <input type="time" id="delivery-time"></label>
-    </div>
-
-    <div class="customer-info">
-      <label>Name: <input type="text" id="customer-name" placeholder="Full Name"></label>
-      <label>Email: <input type="email" id="customer-email" placeholder="Email"></label>
-      <label>Phone: <input type="tel" id="customer-phone" placeholder="Phone Number"></label>
-    </div>
-
     <div id="cart-total"></div>
+
+    <div class="cart-inputs">
+      <label for="payment-method">Payment Method</label>
+      <select id="payment-method">
+        <option value="COD">Cash on Delivery</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+      </select>
+      <label for="delivery-date">Delivery Date</label>
+      <input type="date" id="delivery-date">
+      <label for="delivery-time">Delivery Time</label>
+      <input type="time" id="delivery-time">
+      <label for="customer-name">Your Name</label>
+      <input type="text" id="customer-name">
+      <label for="customer-phone">Phone</label>
+      <input type="tel" id="customer-phone">
+      <label for="customer-email">Email</label>
+      <input type="email" id="customer-email">
+    </div>
+
     <button id="checkout-btn" onclick="checkout()">Checkout</button>
   </div>
 
   <div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
 
   <script>
-    // keep script as is, and add to checkout() logic below:
+    const products = [
+      { name: "Paracetamol 500mg", price: 35, desc: "Fever and pain relief", image: "https://via.placeholder.com/300x150?text=Paracetamol" },
+      { name: "Hydrite", price: 15, desc: "Oral rehydration salts", image: "https://via.placeholder.com/300x150?text=Hydrite" },
+      { name: "Biogesic", price: 30, desc: "Headache and fever relief", image: "https://via.placeholder.com/300x150?text=Biogesic" },
+      { name: "Decolgen", price: 28, desc: "Cold and flu relief", image: "https://via.placeholder.com/300x150?text=Decolgen" },
+      { name: "Alaxan FR", price: 40, desc: "Body pain relief", image: "https://via.placeholder.com/300x150?text=Alaxan+FR" },
+      { name: "Neozep", price: 25, desc: "Cold symptom relief", image: "https://via.placeholder.com/300x150?text=Neozep" },
+      { name: "Diatabs", price: 22, desc: "Anti-diarrheal", image: "https://via.placeholder.com/300x150?text=Diatabs" },
+      { name: "Loperamide", price: 20, desc: "Diarrhea control", image: "https://via.placeholder.com/300x150?text=Loperamide" },
+      { name: "Kremil-S", price: 18, desc: "Stomach relief", image: "https://via.placeholder.com/300x150?text=Kremil-S" },
+      { name: "Antacid Tabs", price: 19, desc: "Indigestion relief", image: "https://via.placeholder.com/300x150?text=Antacid+Tabs" }
+    ];
+
+    let cart = {};
+
+    function renderProducts(filter = "") {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = "";
+      products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach((p, i) => {
+        const qty = cart[p.name]?.qty || 0;
+        grid.innerHTML += `
+          <div class="product-card">
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-info">
+              <h4>${p.name}</h4>
+              <p>${p.desc}</p>
+              <div class="quantity-controls">
+                <button onclick='decreaseQty("${p.name}")'>–</button>
+                <span>${qty}</span>
+                <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+
+    function increaseQty(name, price) {
+      if (!cart[name]) cart[name] = { qty: 1, price };
+      else cart[name].qty++;
+      updateCart();
+    }
+
+    function decreaseQty(name) {
+      if (cart[name]) {
+        cart[name].qty--;
+        if (cart[name].qty <= 0) delete cart[name];
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const container = document.getElementById('cart-items');
+      container.innerHTML = "";
+      let subtotal = 0, totalItems = 0;
+      for (let name in cart) {
+        const item = cart[name];
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+        container.innerHTML += `<div class="item">${item.qty}x ${name} <b>₱${item.price * item.qty}</b></div>`;
+      }
+      const vat = subtotal * 0.12;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      document.getElementById('cart-total').innerHTML = `
+        Subtotal: ₱${subtotal.toFixed(2)}<br>
+        VAT (12%): ₱${vat.toFixed(2)}<br>
+        Service Fee: ₱${fee.toFixed(2)}<br>
+        <b>Total: ₱${total.toFixed(2)}</b>`;
+      document.getElementById('cart-count').innerText = totalItems;
+      renderProducts(document.getElementById('search-input').value);
+    }
+
+    function toggleCart() {
+      const cartPanel = document.getElementById('cart-panel');
+      cartPanel.classList.toggle('open');
+    }
+
     function checkout() {
       const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
-      const method = document.querySelector('input[name="payment"]:checked').value;
-      const name = document.getElementById('customer-name').value;
-      const email = document.getElementById('customer-email').value;
-      const phone = document.getElementById('customer-phone').value;
-      const date = document.getElementById('delivery-date').value;
-      const time = document.getElementById('delivery-time').value;
-      const status = method === 'COD' ? 'Unpaid' : 'Pending';
-
-      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${status}&customerName=${encodeURIComponent(name)}&customerEmail=${encodeURIComponent(email)}&customerPhone=${encodeURIComponent(phone)}&deliveryDate=${date}&deliveryTime=${time}`;
-
+      const method = document.getElementById("payment-method").value;
+      const name = document.getElementById("customer-name").value;
+      const phone = document.getElementById("customer-phone").value;
+      const email = document.getElementById("customer-email").value;
+      const date = document.getElementById("delivery-date").value;
+      const time = document.getElementById("delivery-time").value;
+      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
       document.getElementById('fillout-iframe').src = filloutUrl;
       document.getElementById('fillout-modal').style.display = 'flex';
     }
+
+    function searchProducts() {
+      renderProducts(document.getElementById('search-input').value);
+    }
+
+    renderProducts();
   </script>
 </body>
 </html>
