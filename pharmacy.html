@@ -280,17 +280,39 @@ Payment: ${method}`;
       window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`);
     }
 
-    window.onload = () => {
-      renderProducts();
-      const today = new Date();
-      const localDate = today.toISOString().split('T')[0];
-      const deliveryDate = document.getElementById('delivery-date');
-      deliveryDate.value = localDate;
+    <script>
+  window.onload = () => {
+    renderProducts();
 
-      const time = new Date(today.getTime() + 70 * 60000);
-      document.getElementById('delivery-time').value = time.toTimeString().slice(0, 5);
-    }
-  </script>
+    const today = new Date();
+    const localDate = today.toISOString().split('T')[0];
+
+    const deliveryDate = document.getElementById('delivery-date');
+    const deliveryTime = document.getElementById('delivery-time');
+    const deliveryNote = document.getElementById('delivery-note');
+
+    deliveryDate.value = localDate;
+
+    const updateTimeField = () => {
+      const selectedDate = new Date(deliveryDate.value);
+      const currentDate = new Date();
+
+      if (selectedDate.toDateString() === currentDate.toDateString()) {
+        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+        deliveryTime.disabled = true;
+        deliveryNote.style.display = "block";
+      } else {
+        deliveryTime.disabled = false;
+        deliveryNote.style.display = "none";
+      }
+    };
+
+    updateTimeField(); // Set on load
+    deliveryDate.addEventListener('change', updateTimeField); // Update on date change
+  };
+</script>
+
 </body>
 
 </html>
