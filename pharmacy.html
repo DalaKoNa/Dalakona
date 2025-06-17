@@ -1,135 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> Pharmacy </title>
+  <title>Pharmacy</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background: #fdfdfd;
-      padding: 1rem;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .back-btn {
-      font-size: 1.5rem;
-      color: #333;
-      text-decoration: none;
-    }
-    .cart-btn {
-      position: relative;
-      font-size: 1.5rem;
-      color: #333;
-      cursor: pointer;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fdfdfd; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
     .cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      font-size: 0.7rem;
-      width: 16px;
-      height: 16px;
-      text-align: center;
-      line-height: 16px;
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-    }
+    h1 { text-align: center; margin-bottom: 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      text-align: center;
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
     }
-    .card img {
-      max-width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
     .qty-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0.5rem 0;
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
     .qty-controls button {
-      background: #333;
-      color: white;
-      border: none;
-      padding: 0.3rem 0.6rem;
-      margin: 0 0.5rem;
-      cursor: pointer;
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
     .cart-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      width: 90%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      border-radius: 20px;
-      z-index: 9999;
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
     }
-    .cart-modal .close-btn {
-      text-align: right;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .form-section, .cart-summary {
-      margin-top: 1rem;
-    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
     .form-section input, .form-section select {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
     }
     .checkout-btn {
-      margin-top: 1rem;
-      background: green;
-      color: white;
-      padding: 0.8rem;
-      width: 100%;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
     }
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
   </style>
 </head>
 
@@ -158,6 +78,9 @@
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
       <input type="time" id="delivery-time">
+      <div id="delivery-note" style="display: none;" class="text-xs text-gray-600 italic mt-1">
+        ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
+      </div>
 
       <h3>Payment</h3>
       <select id="payment-method">
@@ -167,10 +90,10 @@
       </select>
 
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-  ✅ I accept the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>, 
-  including our <strong>Cancellation Policy</strong>: Orders are final once submitted. 
-  Cancellations are not allowed after confirmation.
-</div>
+        ✅ I accept the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>, 
+        including our <strong>Cancellation Policy</strong>: Orders are final once submitted. 
+        Cancellations are not allowed after confirmation.
+      </div>
 
       <button class="checkout-btn" onclick="submitOrder()">Checkout via WhatsApp</button>
     </div>
@@ -197,16 +120,16 @@
       list.innerHTML = '';
       products.forEach((item, index) => {
         list.innerHTML += `
-        <div class="card">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price.toFixed(2)}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${index})">-</button>
-            <span id="qty-${index}">0</span>
-            <button onclick="increaseQty(${index})">+</button>
-          </div>
-        </div>`;
+          <div class="card">
+            <img src="${item.image}" alt="${item.name}">
+            <h4>${item.name}</h4>
+            <p>₱${item.price.toFixed(2)}</p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
       });
     }
 
@@ -280,39 +203,34 @@ Payment: ${method}`;
       window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`);
     }
 
-    <script>
-  window.onload = () => {
-    renderProducts();
+    window.onload = () => {
+      renderProducts();
+      const today = new Date();
+      const localDate = today.toISOString().split('T')[0];
+      const deliveryDate = document.getElementById('delivery-date');
+      const deliveryTime = document.getElementById('delivery-time');
+      const deliveryNote = document.getElementById('delivery-note');
 
-    const today = new Date();
-    const localDate = today.toISOString().split('T')[0];
+      deliveryDate.value = localDate;
 
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+      const updateTimeField = () => {
+        const selectedDate = new Date(deliveryDate.value);
+        const currentDate = new Date();
 
-    deliveryDate.value = localDate;
+        if (selectedDate.toDateString() === currentDate.toDateString()) {
+          const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+          deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+          deliveryTime.disabled = true;
+          deliveryNote.style.display = "block";
+        } else {
+          deliveryTime.disabled = false;
+          deliveryNote.style.display = "none";
+        }
+      };
 
-    const updateTimeField = () => {
-      const selectedDate = new Date(deliveryDate.value);
-      const currentDate = new Date();
-
-      if (selectedDate.toDateString() === currentDate.toDateString()) {
-        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
-        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-        deliveryTime.disabled = true;
-        deliveryNote.style.display = "block";
-      } else {
-        deliveryTime.disabled = false;
-        deliveryNote.style.display = "none";
-      }
+      updateTimeField();
+      deliveryDate.addEventListener('change', updateTimeField);
     };
-
-    updateTimeField(); // Set on load
-    deliveryDate.addEventListener('change', updateTimeField); // Update on date change
-  };
-</script>
-
+  </script>
 </body>
-
 </html>
