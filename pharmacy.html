@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy - Dala🚲Na</title>
+  <title>Pharmacy - DalaὪNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -13,9 +13,9 @@
       background: #f7f7f7;
     }
     header {
-      background: #008060;
+      background: #00695c;
       color: white;
-      padding: 1rem;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -26,11 +26,12 @@
     }
     .cart-toggle {
       background: white;
-      color: #008060;
-      padding: 0.4rem 0.8rem;
+      color: #00695c;
+      border: none;
+      padding: 0.5rem 1rem;
       border-radius: 20px;
-      cursor: pointer;
       font-weight: bold;
+      cursor: pointer;
     }
     .product-grid {
       display: grid;
@@ -76,23 +77,21 @@
     #cart {
       position: fixed;
       top: 0;
-      right: -400px;
-      width: 350px;
+      right: 0;
+      width: 300px;
       height: 100%;
       background: white;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
       padding: 1rem;
-      transition: right 0.3s ease;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
       z-index: 1000;
     }
     #cart.open {
-      right: 0;
+      transform: translateX(0);
     }
     .cart-item {
       margin: 0.5rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
     #fillout-modal {
       position: fixed;
@@ -113,7 +112,7 @@
 <body>
   <header>
     <h1>Pharmacy</h1>
-    <div class="cart-toggle" onclick="toggleCart()">🛒 Dala-Cart (<span id="cart-count">0</span>)</div>
+    <button class="cart-toggle" onclick="toggleCart()">🧾 Dala-Cart (<span id="cart-count">0</span>)</button>
   </header>
 
   <div class="product-grid">
@@ -133,7 +132,71 @@
         <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart - ₱15</button>
       </div>
     </div>
-    <!-- Add more pharmacy items here -->
+    <!-- Additional 10 products -->
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Ibuprofen" alt="Ibuprofen">
+      <div class="product-info">
+        <h4>Ibuprofen</h4>
+        <p>Pain and inflammation relief. 200mg tablets.</p>
+        <button onclick='addToCart({ name: "Ibuprofen", price: 45 })'>Add to Cart - ₱45</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Loperamide" alt="Loperamide">
+      <div class="product-info">
+        <h4>Loperamide</h4>
+        <p>Anti-diarrheal medicine. Pack of 10 tablets.</p>
+        <button onclick='addToCart({ name: "Loperamide", price: 40 })'>Add to Cart - ₱40</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Antacid" alt="Antacid">
+      <div class="product-info">
+        <h4>Antacid</h4>
+        <p>Relieves heartburn and indigestion. 10 tablets.</p>
+        <button onclick='addToCart({ name: "Antacid", price: 30 })'>Add to Cart - ₱30</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Betadine" alt="Betadine">
+      <div class="product-info">
+        <h4>Betadine Solution</h4>
+        <p>Antiseptic for minor wounds. 60ml bottle.</p>
+        <button onclick='addToCart({ name: "Betadine", price: 60 })'>Add to Cart - ₱60</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Vitamins+C" alt="Vitamin C">
+      <div class="product-info">
+        <h4>Vitamin C</h4>
+        <p>Boosts immune system. 500mg tablets.</p>
+        <button onclick='addToCart({ name: "Vitamin C", price: 55 })'>Add to Cart - ₱55</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Cetirizine" alt="Cetirizine">
+      <div class="product-info">
+        <h4>Cetirizine</h4>
+        <p>Allergy relief antihistamine. 10 tablets.</p>
+        <button onclick='addToCart({ name: "Cetirizine", price: 35 })'>Add to Cart - ₱35</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Calamine" alt="Calamine Lotion">
+      <div class="product-info">
+        <h4>Calamine Lotion</h4>
+        <p>Skin irritation relief. 100ml bottle.</p>
+        <button onclick='addToCart({ name: "Calamine Lotion", price: 70 })'>Add to Cart - ₱70</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Salbutamol" alt="Salbutamol">
+      <div class="product-info">
+        <h4>Salbutamol</h4>
+        <p>Asthma and bronchospasm relief. Inhaler.</p>
+        <button onclick='addToCart({ name: "Salbutamol", price: 150 })'>Add to Cart - ₱150</button>
+      </div>
+    </div>
   </div>
 
   <div id="cart">
@@ -144,7 +207,7 @@
   </div>
 
   <div id="fillout-modal">
-    <iframe id="fillout-iframe"></iframe>
+    <iframe id="fillout-iframe" src="https://forms.fillout.com/t/oMZACWUnvFus"></iframe>
   </div>
 
   <!-- Firebase SDK -->
@@ -157,17 +220,10 @@
       projectId: "dalahub-f8268",
       storageBucket: "dalahub-f8268.appspot.com",
       messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
     };
     firebase.initializeApp(firebaseConfig);
   </script>
   <script src="dalacart.js"></script>
-  <script>
-    function toggleCart() {
-      const cartPanel = document.getElementById("cart");
-      cartPanel.classList.toggle("open");
-    }
-  </script>
 </body>
 </html>
