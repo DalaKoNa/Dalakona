@@ -1,248 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy - DalaὪNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Pharmacy - Dala🚲Na</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: sans-serif;
       margin: 0;
       padding: 0;
-      background: #f7f7f7;
     }
     header {
-      background: #008060;
-      color: white;
+      display: flex;
+      justify-content: space-between;
       padding: 1rem;
-      text-align: center;
-      position: relative;
-    }
-    .back-arrow {
-      position: absolute;
-      left: 1rem;
-      top: 1rem;
-      font-size: 1.5rem;
+      background-color: #2c3e50;
       color: white;
-      text-decoration: none;
     }
     .cart-icon {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      background: white;
-      color: #008060;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
       cursor: pointer;
     }
-    .product-grid {
+    .products {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 1rem;
       padding: 1rem;
     }
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .product-info {
+    .product {
+      border: 1px solid #ccc;
       padding: 1rem;
-      flex-grow: 1;
-    }
-    .product-info h4 {
-      margin: 0 0 0.5rem;
-      font-size: 1rem;
-    }
-    .product-info p {
-      margin: 0 0 1rem;
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .product-info button {
-      width: 100%;
-      padding: 0.6rem;
-      background: #008060;
-      color: white;
-      border: none;
+      text-align: center;
       border-radius: 8px;
+      background: #fefefe;
+    }
+    .product img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .product button {
+      margin-top: 0.5rem;
+      background-color: #27ae60;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
     }
-    #cart-drawer {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 100%;
-      max-width: 400px;
-      height: 100%;
-      background: white;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-      padding: 1rem;
-      transition: right 0.3s ease;
-      z-index: 1001;
-      overflow-y: auto;
-    }
-    #cart-drawer.open {
-      right: 0;
-    }
     #cart-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
       display: none;
-    }
-    #cart-overlay.active {
-      display: block;
-    }
-    #fillout-modal {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1100;
+      z-index: 1000;
+      justify-content: flex-end;
     }
-    #fillout-modal iframe {
-      width: 90vw;
-      height: 90vh;
+    #cart-panel {
+      width: 300px;
+      height: 100%;
+      background: white;
+      padding: 1rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+    #cart-panel.show {
+      transform: translateX(0);
+    }
+    #cart-items .cart-item {
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    #checkout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #2980b9;
+      color: white;
       border: none;
-      border-radius: 12px;
+      margin-top: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-arrow">←</a>
-    <h1>Pharmacy</h1>
-    <div class="cart-icon" onclick="toggleCart()">🛒</div>
-  </header>
 
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Paracetamol" alt="Paracetamol">
-      <div class="product-info">
-        <h4>Paracetamol 500mg</h4>
-        <p>Fever and pain relief. 10 tablets per pack.</p>
-        <button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add to Cart - ₱35</button>
-      </div>
+<header>
+  <a href="index.html">← Back</a>
+  <div class="cart-icon" onclick="openCart()">🛒0</div>
+</header>
+
+<main>
+  <div class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Paracetamol">
+      <h4>Paracetamol</h4>
+      <p>₱35</p>
+      <button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Hydrite" alt="Hydrite">
-      <div class="product-info">
-        <h4>Hydrite</h4>
-        <p>Oral rehydration salts. 1 sachet.</p>
-        <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart - ₱15</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Ibuprofen">
+      <h4>Ibuprofen</h4>
+      <p>₱40</p>
+      <button onclick='addToCart({ name: "Ibuprofen", price: 40 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Biogesic" alt="Biogesic">
-      <div class="product-info">
-        <h4>Biogesic</h4>
-        <p>Relieves headaches and fever.</p>
-        <button onclick='addToCart({ name: "Biogesic", price: 30 })'>Add to Cart - ₱30</button>
-      </div>
+    <!-- Add 8 more product cards like below -->
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Antacid">
+      <h4>Antacid</h4>
+      <p>₱30</p>
+      <button onclick='addToCart({ name: "Antacid", price: 30 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Decolgen" alt="Decolgen">
-      <div class="product-info">
-        <h4>Decolgen</h4>
-        <p>Cold and flu relief.</p>
-        <button onclick='addToCart({ name: "Decolgen", price: 28 })'>Add to Cart - ₱28</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Cough Syrup">
+      <h4>Cough Syrup</h4>
+      <p>₱70</p>
+      <button onclick='addToCart({ name: "Cough Syrup", price: 70 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Alaxan+FR" alt="Alaxan FR">
-      <div class="product-info">
-        <h4>Alaxan FR</h4>
-        <p>For body pain and inflammation.</p>
-        <button onclick='addToCart({ name: "Alaxan FR", price: 40 })'>Add to Cart - ₱40</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Loperamide">
+      <h4>Loperamide</h4>
+      <p>₱25</p>
+      <button onclick='addToCart({ name: "Loperamide", price: 25 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Neozep" alt="Neozep">
-      <div class="product-info">
-        <h4>Neozep</h4>
-        <p>Relieves cold symptoms.</p>
-        <button onclick='addToCart({ name: "Neozep", price: 25 })'>Add to Cart - ₱25</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Cetirizine">
+      <h4>Cetirizine</h4>
+      <p>₱20</p>
+      <button onclick='addToCart({ name: "Cetirizine", price: 20 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Diatabs" alt="Diatabs">
-      <div class="product-info">
-        <h4>Diatabs</h4>
-        <p>Anti-diarrheal tablets.</p>
-        <button onclick='addToCart({ name: "Diatabs", price: 22 })'>Add to Cart - ₱22</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Multivitamins">
+      <h4>Multivitamins</h4>
+      <p>₱60</p>
+      <button onclick='addToCart({ name: "Multivitamins", price: 60 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Loperamide" alt="Loperamide">
-      <div class="product-info">
-        <h4>Loperamide</h4>
-        <p>For diarrhea control.</p>
-        <button onclick='addToCart({ name: "Loperamide", price: 20 })'>Add to Cart - ₱20</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Hydrite">
+      <h4>Hydrite</h4>
+      <p>₱15</p>
+      <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Kremil-S" alt="Kremil-S">
-      <div class="product-info">
-        <h4>Kremil-S</h4>
-        <p>For stomach relief.</p>
-        <button onclick='addToCart({ name: "Kremil-S", price: 18 })'>Add to Cart - ₱18</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Mefenamic Acid">
+      <h4>Mefenamic Acid</h4>
+      <p>₱30</p>
+      <button onclick='addToCart({ name: "Mefenamic Acid", price: 30 })'>Add to Cart</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Antacid+Tabs" alt="Antacid">
-      <div class="product-info">
-        <h4>Antacid Tablets</h4>
-        <p>Relieves indigestion and acidity.</p>
-        <button onclick='addToCart({ name: "Antacid Tabs", price: 19 })'>Add to Cart - ₱19</button>
-      </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Oral Rehydration Salts">
+      <h4>ORS (Oral Rehydration Salts)</h4>
+      <p>₱20</p>
+      <button onclick='addToCart({ name: "ORS", price: 20 })'>Add to Cart</button>
     </div>
   </div>
+</main>
 
-  <div id="cart-overlay" onclick="toggleCart()"></div>
-  <div id="cart-drawer">
+<!-- Slide Cart Panel -->
+<div id="cart-overlay">
+  <div id="cart-panel">
     <h3>Your Dala-Cart</h3>
     <div id="cart-items"></div>
-    <p id="cart-total">Total: ₱0.00</p>
+    <div id="cart-total" style="margin-top:1rem;"></div>
     <button id="checkout-btn" disabled>Checkout</button>
   </div>
+</div>
 
-  <div id="fillout-modal">
-    <iframe id="fillout-iframe"></iframe>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
-      authDomain: "dalahub-f8268.firebaseapp.com",
-      projectId: "dalahub-f8268",
-      storageBucket: "dalahub-f8268.appspot.com",
-      messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
-  <script src="dalacart.js"></script>
+<script src="dalacart.js"></script>
 </body>
 </html>
