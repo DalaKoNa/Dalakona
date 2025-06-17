@@ -1,80 +1,73 @@
-let cart = [];
+// dalacart.js
 
-function addToCart(product) {
-  const existing = cart.find(item => item.name === product.name);
+let cart = JSON.parse(localStorage.getItem("dalaCart")) || [];
+
+function saveCart() {
+  localStorage.setItem("dalaCart", JSON.stringify(cart));
+  renderCart();
+}
+
+function addToCart(item) {
+  const existing = cart.find((i) => i.name === item.name);
   if (existing) {
-    existing.quantity++;
+    existing.qty += 1;
   } else {
-    cart.push({ ...product, quantity: 1 });
+    cart.push({ ...item, qty: 1 });
   }
-  updateCartDisplay();
-  openCart();
+  saveCart();
 }
 
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCartDisplay();
+function removeFromCart(name) {
+  cart = cart.filter((item) => item.name !== name);
+  saveCart();
 }
 
-function updateCartDisplay() {
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartTotal = document.getElementById('cart-total');
-  const checkoutBtn = document.getElementById('checkout-btn');
-  const cartIcon = document.querySelector('.cart-icon');
+function toggleCart() {
+  document.getElementById("cartDrawer").classList.toggle("open");
+}
 
-  cartItemsContainer.innerHTML = '';
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  if (!container) return;
+  container.innerHTML = "";
+
   let subtotal = 0;
 
-  cart.forEach((item, index) => {
-    const itemTotal = item.price * item.quantity;
-    subtotal += itemTotal;
-    const el = document.createElement('div');
-    el.className = 'cart-item';
-    el.innerHTML = `
-      ${item.name} x ${item.quantity} - ₱${itemTotal.toFixed(2)}
-      <button onclick="removeFromCart(${index})">❌</button>
+  cart.forEach((item) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+    itemDiv.innerHTML = `
+      <span>${item.name} x${item.qty}</span>
+      <span>₱${(item.price * item.qty).toFixed(2)}</span>
     `;
-    cartItemsContainer.appendChild(el);
+    container.appendChild(itemDiv);
+    subtotal += item.price * item.qty;
   });
 
+  document.getElementById("subtotal").textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
   const vat = subtotal * 0.12;
-  const serviceFee = 29.99;
-  const total = subtotal + vat + serviceFee;
-
-  cartTotal.innerHTML = `
-    <p>Subtotal: ₱${subtotal.toFixed(2)}</p>
-    <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-    <p>Service Fee: ₱${serviceFee.toFixed(2)}</p>
-    <strong>Total: ₱${total.toFixed(2)}</strong>
-  `;
-
-  cartIcon.textContent = `🛒${cart.length}`;
-  checkoutBtn.disabled = cart.length === 0;
+  document.getElementById("vat").textContent = `₱${vat.toFixed(2)}`;
+  const total = subtotal + 29.99 + vat;
+  document.getElementById("total").textContent = `₱${total.toFixed(2)}`;
 }
 
-function openCart() {
-  const overlay = document.getElementById('cart-overlay');
-  const panel = document.getElementById('cart-panel');
-  if (overlay && panel) {
-    overlay.style.display = 'flex';
-    setTimeout(() => panel.classList.add('show'), 10);
-  }
+function checkout() {
+  if (cart.length === 0) return;
+
+  const cartSummary = cart
+    .map((item) => `${item.name} x${item.qty} = ₱${(item.qty * item.price).toFixed(2)}`)
+    .join("%0A");
+
+  const totalAmount = document.getElementById("total").textContent;
+  const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(
+    cartSummary
+  )}&totalAmount=${encodeURIComponent(totalAmount)}`;
+
+  const iframe = document.getElementById("fillout-frame");
+  iframe.src = filloutURL;
+  iframe.style.display = "block";
+  toggleCart();
 }
 
-function closeCart() {
-  const overlay = document.getElementById('cart-overlay');
-  const panel = document.getElementById('cart-panel');
-  if (overlay && panel) {
-    panel.classList.remove('show');
-    setTimeout(() => overlay.style.display = 'none', 300);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay = document.getElementById('cart-overlay');
-  if (overlay) {
-    overlay.addEventListener('click', (e) => {
-      if (e.target.id === 'cart-overlay') closeCart();
-    });
-  }
-});
+// Initial load
+renderCart();
