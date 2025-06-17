@@ -15,31 +15,30 @@
     header {
       background: #ff4081;
       color: white;
-      padding: 1rem;
-      text-align: center;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 1.5rem;
-      position: relative;
     }
-    #cart-summary-top {
-      position: absolute;
-      top: 10px;
-      right: 20px;
+    .dala-cart-summary {
       background: white;
       color: #333;
       padding: 0.5rem 1rem;
       border-radius: 8px;
-      font-size: 0.9rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .container {
       display: flex;
-      flex-direction: column;
-      padding: 1rem;
+      flex-wrap: wrap;
+      padding: 20px;
     }
     .product-grid {
+      flex: 1;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
     }
     .product-card {
       background: white;
@@ -51,8 +50,6 @@
     .product-card img {
       width: 100%;
       border-radius: 8px;
-      height: 140px;
-      object-fit: cover;
     }
     .product-card button {
       margin-top: 10px;
@@ -62,32 +59,25 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      width: 100%;
-    }
-    .cart-section {
-      background: #fff;
-      margin-top: 2rem;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .cart-item {
-      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
     }
     .cart-item button {
       margin-left: 5px;
     }
     .checkout-btn {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       background: #2962ff;
       color: white;
       border: none;
       border-radius: 8px;
-      margin-top: 1rem;
+      margin-top: 10px;
       cursor: pointer;
     }
     #fillout-modal {
@@ -118,23 +108,24 @@
       cursor: pointer;
     }
     @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
       .container {
-        padding: 0.5rem;
-      }
-      .product-card {
-        padding: 0.5rem;
-      }
-      #cart-summary-top {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.6rem;
+        flex-direction: column;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    Ellen's Cakes 🍰
-    <div id="cart-summary-top">Total: ₱0.00</div>
+    <span>Ellen's Cakes 🍰</span>
+    <div class="dala-cart-summary">
+      <div id="cart-items"></div>
+      <p id="cart-total">Total: ₱0.00</p>
+      <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
+    </div>
   </header>
   <div class="container">
     <div class="product-grid">
@@ -152,27 +143,7 @@
         <p><strong>₱420</strong></p>
         <button onclick="addToCart({ name: 'Red Velvet', price: 420 })">Add to Cart</button>
       </div>
-      <div class="product-card">
-        <img src="images/ube-cake.jpg" alt="Ube Cake">
-        <h3>Ube Cake</h3>
-        <p>Soft ube chiffon with creamy icing</p>
-        <p><strong>₱380</strong></p>
-        <button onclick="addToCart({ name: 'Ube Cake', price: 380 })">Add to Cart</button>
-      </div>
-      <div class="product-card">
-        <img src="images/mocha-cake.jpg" alt="Mocha Cake">
-        <h3>Mocha Cake</h3>
-        <p>Light mocha flavor with buttercream</p>
-        <p><strong>₱360</strong></p>
-        <button onclick="addToCart({ name: 'Mocha Cake', price: 360 })">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="cart-section">
-      <h3>Your Cart</h3>
-      <div id="cart-items"></div>
-      <p id="cart-total">Total: ₱0.00</p>
-      <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
+      <!-- Add more products below as needed -->
     </div>
   </div>
 
@@ -181,6 +152,7 @@
     <iframe id="fillout-iframe"></iframe>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
