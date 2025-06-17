@@ -92,14 +92,14 @@
 </head>
 <body>
   <header>
+  <div class="header-flex">
     <a href="index.html" class="back-arrow">←</a>
-    <div class="header-flex">
-      <h1 style="margin: 0;">Pharmacy</h1>
-      <div class="cart-icon" onclick="toggleCart()">
-        🛒<span class="cart-count" id="cart-count">0</span>
-      </div>
+    <h1 style="margin: 0; flex-grow: 1;">Pharmacy</h1>
+    <div class="cart-icon" onclick="toggleCart()">
+      🛒<span class="cart-count" id="cart-count">0</span>
     </div>
-  </header>
+  </div>
+</header>
 
   <div class="search-container">
     <input type="text" id="search-input" placeholder="Search products...">
