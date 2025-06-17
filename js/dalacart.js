@@ -1,80 +1,78 @@
-// dalacart.js (shared cart logic)
+// dalacart.js
+
 let cart = [];
 
-function addToCart(item) {
-  const existingItem = cart.find(i => i.name === item.name);
-  if (existingItem) {
-    existingItem.quantity++;
+function addToCart(product) {
+  const existing = cart.find(item => item.name === product.name);
+  if (existing) {
+    existing.qty += 1;
   } else {
-    cart.push({ ...item, quantity: 1 });
+    cart.push({ ...product, qty: 1 });
   }
-  renderCart();
+  updateCartUI();
 }
 
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  renderCart();
+function removeFromCart(productName) {
+  cart = cart.filter(item => item.name !== productName);
+  updateCartUI();
 }
 
-function updateQuantity(index, amount) {
-  cart[index].quantity += amount;
-  if (cart[index].quantity <= 0) cart.splice(index, 1);
-  renderCart();
-}
+function updateCartUI() {
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+  const cartIcon = document.querySelector('.cart-icon');
+  if (cartIcon) cartIcon.innerHTML = `🛒${cartCount}`;
 
-function renderCart() {
-  const cartContainer = document.getElementById('cart-items');
-  const totalPriceContainer = document.getElementById('cart-total');
-  cartContainer.innerHTML = '';
+  const cartItems = document.getElementById('cart-items');
+  cartItems.innerHTML = '';
+
   let total = 0;
-
-  cart.forEach((item, index) => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-    cartContainer.innerHTML += `
-      <div class="cart-item">
-        <span>${item.name} (₱${item.price}) x ${item.quantity}</span>
-        <button onclick="updateQuantity(${index}, -1)">−</button>
-        <button onclick="updateQuantity(${index}, 1)">+</button>
-        <button onclick="removeFromCart(${index})">Remove</button>
-      </div>
+  cart.forEach(item => {
+    const subtotal = item.price * item.qty;
+    total += subtotal;
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <strong>${item.name}</strong> x${item.qty} - ₱${subtotal.toFixed(2)}
+      <button onclick="removeFromCart('${item.name}')">❌</button>
     `;
+    cartItems.appendChild(div);
   });
 
-  total += 29.99; // service fee
-  totalPriceContainer.textContent = `Total: ₱${total.toFixed(2)} (₱29.99 service fee included)`;
+  const vat = total * 0.12;
+  const serviceFee = 14.99;
+  const grandTotal = total + vat + serviceFee;
 
-  document.getElementById("checkout-btn").disabled = cart.length === 0;
+  document.getElementById('cart-total').innerHTML = `
+    <p>Subtotal: ₱${total.toFixed(2)}</p>
+    <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+    <p>Service Fee: ₱${serviceFee.toFixed(2)}</p>
+    <hr />
+    <strong>Total: ₱${grandTotal.toFixed(2)}</strong>
+  `;
+
+  const checkoutBtn = document.getElementById('checkout-btn');
+  checkoutBtn.disabled = cart.length === 0;
 }
 
-function getCartSummary() {
-  return cart.map(i => `${i.name} x ${i.quantity}`).join(', ');
+// Slide in/out logic
+const cartOverlay = document.getElementById('cart-overlay');
+const cartPanel = document.getElementById('cart-panel');
+
+function openCart() {
+  cartOverlay.style.display = 'flex';
+  setTimeout(() => cartPanel.classList.add('show'), 10);
 }
 
-function onCheckoutClick() {
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      openFilloutModal(user);
-    } else {
-      alert("Please log in first.");
-      window.location.href = "mydalahub.html";
-    }
-  });
+function closeCart() {
+  cartPanel.classList.remove('show');
+  setTimeout(() => cartOverlay.style.display = 'none', 300);
 }
 
-function openFilloutModal(user) {
-  const summary = encodeURIComponent(getCartSummary());
-  const prefillUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(user.displayName || "")}&whatsappNumber=&cartSummary=${summary}&customizationNotes=&deliveryDate=&deliveryTime=&customerEmail=${encodeURIComponent(user.email)}&customerPhone=`;
+// Attach openCart to cart icon
+const cartIcon = document.querySelector('.cart-icon');
+if (cartIcon) cartIcon.addEventListener('click', openCart);
 
-  document.getElementById("fillout-iframe").src = prefillUrl;
-  document.getElementById("fillout-modal").style.display = "block";
-}
-
-function closeFilloutModal() {
-  document.getElementById("fillout-modal").style.display = "none";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const checkoutBtn = document.getElementById("checkout-btn");
-  if (checkoutBtn) checkoutBtn.addEventListener("click", onCheckoutClick);
+// Attach closeCart to overlay click
+if (cartOverlay) cartOverlay.addEventListener('click', (e) => {
+  if (e.target === cartOverlay) closeCart();
 });
