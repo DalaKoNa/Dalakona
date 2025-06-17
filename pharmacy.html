@@ -6,6 +6,9 @@
   <title>Pharmacy - DalaὪNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -16,31 +19,43 @@
       background: #008060;
       color: white;
       padding: 1rem;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       position: relative;
     }
     .back-arrow {
-      position: absolute;
-      left: 1rem;
-      top: 1rem;
-      font-size: 1.5rem;
       color: white;
+      font-size: 1.5rem;
       text-decoration: none;
     }
     .cart-icon {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
       background: white;
       color: #008060;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       cursor: pointer;
+      position: relative;
+    }
+    .cart-icon::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: red;
+      color: white;
+      font-size: 0.75rem;
+      padding: 2px 5px;
+      border-radius: 12px;
+      display: none;
+    }
+    .cart-icon[data-count]:not([data-count="0"])::after {
+      display: inline-block;
     }
     .product-grid {
       display: grid;
@@ -83,148 +98,104 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    #cart {
-      padding: 1rem;
-      background: white;
-      margin: 1rem;
-      border-radius: 12px;
-    }
-    .cart-item {
-      margin: 0.5rem 0;
-    }
-    #fillout-modal {
+    #cart-modal {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 360px;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+    #cart-modal.open {
+      transform: translateX(0);
+    }
+    #cart-modal header {
+      background: #008060;
+      color: white;
+      padding: 1rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
     }
-    #fillout-modal iframe {
-      width: 90vw;
-      height: 90vh;
+    #cart-items {
+      flex-grow: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .cart-item {
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    #cart-summary {
+      padding: 1rem;
+      border-top: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+    #cart-summary p {
+      margin: 0.3rem 0;
+    }
+    #checkout-btn {
+      margin: 1rem;
+      padding: 0.8rem;
+      background: #008060;
+      color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: calc(100% - 2rem);
     }
   </style>
 </head>
 <body>
   <header>
     <a href="index.html" class="back-arrow">←</a>
-    <h1>Pharmacy</h1>
-    <div class="cart-icon" onclick="document.getElementById('cart').scrollIntoView()">🛒</div>
+    <h2 style="margin: 0;">Pharmacy</h2>
+    <div class="cart-icon" data-count="0" onclick="toggleCart()">🛒</div>
   </header>
 
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Paracetamol" alt="Paracetamol">
-      <div class="product-info">
-        <h4>Paracetamol 500mg</h4>
-        <p>Fever and pain relief. 10 tablets per pack.</p>
-        <button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add to Cart - ₱35</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Hydrite" alt="Hydrite">
-      <div class="product-info">
-        <h4>Hydrite</h4>
-        <p>Oral rehydration salts. 1 sachet.</p>
-        <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart - ₱15</button>
-      </div>
-    </div>
-    <!-- Added 10 more classic pharmacy items -->
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Biogesic" alt="Biogesic">
-      <div class="product-info">
-        <h4>Biogesic</h4>
-        <p>Relieves headaches and fever.</p>
-        <button onclick='addToCart({ name: "Biogesic", price: 30 })'>Add to Cart - ₱30</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Decolgen" alt="Decolgen">
-      <div class="product-info">
-        <h4>Decolgen</h4>
-        <p>Cold and flu relief.</p>
-        <button onclick='addToCart({ name: "Decolgen", price: 28 })'>Add to Cart - ₱28</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Alaxan+FR" alt="Alaxan FR">
-      <div class="product-info">
-        <h4>Alaxan FR</h4>
-        <p>For body pain and inflammation.</p>
-        <button onclick='addToCart({ name: "Alaxan FR", price: 40 })'>Add to Cart - ₱40</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Neozep" alt="Neozep">
-      <div class="product-info">
-        <h4>Neozep</h4>
-        <p>Relieves cold symptoms.</p>
-        <button onclick='addToCart({ name: "Neozep", price: 25 })'>Add to Cart - ₱25</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Diatabs" alt="Diatabs">
-      <div class="product-info">
-        <h4>Diatabs</h4>
-        <p>Anti-diarrheal tablets.</p>
-        <button onclick='addToCart({ name: "Diatabs", price: 22 })'>Add to Cart - ₱22</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Loperamide" alt="Loperamide">
-      <div class="product-info">
-        <h4>Loperamide</h4>
-        <p>For diarrhea control.</p>
-        <button onclick='addToCart({ name: "Loperamide", price: 20 })'>Add to Cart - ₱20</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Kremil-S" alt="Kremil-S">
-      <div class="product-info">
-        <h4>Kremil-S</h4>
-        <p>For stomach relief.</p>
-        <button onclick='addToCart({ name: "Kremil-S", price: 18 })'>Add to Cart - ₱18</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Antacid+Tabs" alt="Antacid">
-      <div class="product-info">
-        <h4>Antacid Tablets</h4>
-        <p>Relieves indigestion and acidity.</p>
-        <button onclick='addToCart({ name: "Antacid Tabs", price: 19 })'>Add to Cart - ₱19</button>
-      </div>
-    </div>
+  <div class="product-grid" id="product-grid">
+    <!-- Product cards inserted here -->
   </div>
 
-  <div id="cart">
-    <h3>Your Dala-Cart</h3>
+  <div id="cart-modal">
+    <header>
+      <span>Your Dala-Cart</span>
+      <button onclick="toggleCart()" style="background:none; border:none; color:white; font-size:1.2rem;">&times;</button>
+    </header>
     <div id="cart-items"></div>
-    <p id="cart-total">Total: ₱0.00</p>
-    <button id="checkout-btn" disabled>Checkout</button>
+    <div id="cart-summary">
+      <p>Subtotal: <span id="subtotal">₱0.00</span></p>
+      <p>Service Fee: ₱14.99</p>
+      <p>Estimated Delivery Fee: ₱29.99</p>
+      <p><strong>Total: <span id="total">₱0.00</span></strong></p>
+      <p><em>Status: Preparing → Picked Up → Delivered</em></p>
+    </div>
+    <button id="checkout-btn">Proceed to Checkout</button>
   </div>
 
-  <div id="fillout-modal">
-    <iframe id="fillout-iframe"></iframe>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
-      authDomain: "dalahub-f8268.firebaseapp.com",
-      projectId: "dalahub-f8268",
-      storageBucket: "dalahub-f8268.appspot.com",
-      messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
   <script src="dalacart.js"></script>
+  <script>
+    const cartIcon = document.querySelector('.cart-icon');
+    const cartModal = document.getElementById('cart-modal');
+
+    function toggleCart() {
+      cartModal.classList.toggle('open');
+    }
+
+    function updateCartCount(count) {
+      cartIcon.setAttribute('data-count', count);
+    }
+
+    // You can populate the product grid dynamically or manually insert items here
+  </script>
 </body>
 </html>
