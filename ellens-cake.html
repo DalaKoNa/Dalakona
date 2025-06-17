@@ -21,13 +21,15 @@
       align-items: center;
       font-size: 1.5rem;
     }
-    .dala-cart-summary {
-      background: white;
-      color: #333;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
       font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: white;
+      color: #ff4081;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
     }
     .container {
       display: flex;
@@ -60,24 +62,39 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    #cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      z-index: 999;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    #cart-modal h3 {
+      margin-top: 0;
+    }
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
+      margin-bottom: 10px;
     }
     .cart-item button {
       margin-left: 5px;
     }
     .checkout-btn {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: #2962ff;
       color: white;
       border: none;
       border-radius: 8px;
-      margin-top: 10px;
+      margin-top: 1rem;
       cursor: pointer;
     }
     #fillout-modal {
@@ -107,26 +124,14 @@
       padding: 5px 10px;
       cursor: pointer;
     }
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .container {
-        flex-direction: column;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
-    <span>Ellen's Cakes 🍰</span>
-    <div class="dala-cart-summary">
-      <div id="cart-items"></div>
-      <p id="cart-total">Total: ₱0.00</p>
-      <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
-    </div>
+    Ellen's Cakes 🍰
+    <div class="cart-icon" onclick="toggleCartModal()">🧾 Dala-Cart (<span id="cart-count">0</span>)</div>
   </header>
+
   <div class="container">
     <div class="product-grid">
       <div class="product-card">
@@ -145,6 +150,13 @@
       </div>
       <!-- Add more products below as needed -->
     </div>
+  </div>
+
+  <div id="cart-modal">
+    <h3>Your Dala-Cart</h3>
+    <div id="cart-items"></div>
+    <p id="cart-total">Total: ₱0.00</p>
+    <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
   </div>
 
   <div id="fillout-modal">
@@ -167,5 +179,11 @@
     firebase.initializeApp(firebaseConfig);
   </script>
   <script src="js/dalacart.js"></script>
+  <script>
+    function toggleCartModal() {
+      const modal = document.getElementById("cart-modal");
+      modal.style.display = modal.style.display === "block" ? "none" : "block";
+    }
+  </script>
 </body>
 </html>
