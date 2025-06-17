@@ -9,37 +9,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* Pastel gradient background */
     body {
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      background-color: #fff8f4;
+      background: linear-gradient(180deg, #fff9f6, #e0f7fa, #fce4ec);
+      background-attachment: fixed;
       color: #333;
     }
 
+    /* Semi-transparent section overlay */
+    header.navbar, section, footer {
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
     .navbar {
-      background-color: #ffe4e1;
-      color: #333;
       padding: 1em;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
     .navbar .hamburger {
       font-size: 1.5em;
       background: none;
       border: none;
-      color: #333;
+      color: #d06c8c;
       cursor: pointer;
     }
 
     .navbar .title {
       font-size: 1.2em;
-      text-decoration: none;
       color: #333;
+      text-decoration: none;
       flex-grow: 1;
       text-align: center;
       margin: 0 1em;
@@ -47,17 +52,12 @@
 
     .navbar .cart {
       font-size: 1em;
-      white-space: nowrap;
-      margin-left: auto;
+      color: #d06c8c;
     }
 
     @media (max-width: 480px) {
-      .navbar .title {
-        font-size: 1em;
-      }
-      .navbar .cart {
-        font-size: 0.9em;
-      }
+      .navbar .title { font-size: 1em; }
+      .navbar .cart { font-size: 0.9em; }
     }
 
     .hero {
@@ -72,13 +72,14 @@
     }
 
     .hero-text h1, .hero-text h2, .hero-text p {
+      color: #333;
       margin: 0.5em 0;
     }
 
     .partners {
-      padding: 2rem;
-      background-color: #faf0e6;
+      padding: 2rem 1rem;
       text-align: center;
+      background: #faf0e6;
     }
 
     .merchant-scroll {
@@ -96,17 +97,15 @@
       text-decoration: none;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
+      transition: transform 0.2s ease;
     }
 
-    .merchant-card:hover {
-      transform: translateY(-3px);
-    }
+    .merchant-card:hover { transform: translateY(-3px); }
 
     .footer {
       background-color: #ffe4e1;
       color: #333;
-      padding: 2rem;
+      padding: 2rem 1rem;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -125,18 +124,120 @@
 
     .footer a {
       display: block;
-      margin: 0.25rem 0;
       color: #555;
       text-decoration: none;
+      margin: 0.25rem 0;
     }
 
-    .footer a:hover {
-      text-decoration: underline;
-    }
+    .footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <!-- The rest of your body content remains unchanged -->
-  <!-- Keep all sections: sidebar nav, header, hero, merchants, footer, scripts, etc. -->
+
+  <!-- Sidebar (Hamburger Nav) -->
+  <nav id="sidebar" class="sidebar" aria-hidden="true">
+    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
+    <a href="#partners">Our Partner Merchants</a>
+  </nav>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
+    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
+    <div class="cart">🛒 dala‑Cart</div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img src="bike-hero.jpg" alt="Bike with grocery basket at night" class="hero-img" loading="lazy"/>
+    <div class="hero-text">
+      <h1>Dala Ko na.</h1>
+      <h2>Subong dayon!</h2>
+      <p>Delivering daily essentials with love & speed</p>
+    </div>
+  </section>
+
+  <!-- Merchants Section -->
+  <section class="partners" id="partners">
+    <h2>Our Merchants</h2>
+    <div class="merchant-scroll">
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
+        <a href="https://x.com" target="_blank" aria-label="X">X</a>
+      </div>
+      <p>dala🚲na hasta sa FB, IG, X</p>
+    </div>
+    <nav class="footer-right" aria-label="Footer navigation">
+      <a href="careers.html">Careers / Trabaho</a>
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </nav>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById("hamburger").addEventListener("click", () => {
+      document.getElementById("sidebar").style.width = "250px";
+    });
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      document.getElementById("sidebar").style.width = "0";
+    });
+    document.getElementById("sidebar").querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("sidebar").style.width = "0";
+      });
+    });
+    function scrollToTop(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+  <!-- WhatsApp Reminder Popup -->
+  <div id="order-popup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:9999;padding:1rem;">
+    <div style="background:#fffafc;color:#333;padding:1rem;border-radius:10px;max-width:360px;width:100%;font-size:0.95em;box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+      <h3>📲 Kinahanglan may WhatsApp ka</h3>
+      <p>Siguraduhon nga may WhatsApp ka para maka-receive sang order confirmation.</p>
+      <p>Make sure you have WhatsApp installed before ordering.</p>
+      <h4>📦 Paano mag-order?</h4>
+      <p>Pilia ang tindahan, idugang ang items sa cart, pun-a ang ngalan, numero, kag petsa/time.</p>
+      <p>Choose store, add items to cart, and fill in name, number, and delivery date/time.</p>
+      <button onclick="closePopup()">✅ Got it!</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
+      const today = new Date().toDateString();
+      if (lastSeen !== today) {
+        setTimeout(() => {
+          document.getElementById('order-popup').style.display = 'flex';
+          localStorage.setItem('whatsappPopupLastSeen', today);
+        }, 2000);
+      }
+    });
+    function closePopup() {
+      document.getElementById('order-popup').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
