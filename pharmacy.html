@@ -10,50 +10,50 @@
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
+      background: #f7f7f7;
     }
     header {
       background: #008060;
       color: white;
       padding: 1rem;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 {
-      margin: 0 auto;
       text-align: center;
-      font-size: 1.2rem;
+      position: relative;
     }
     .back-arrow {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
       color: white;
       text-decoration: none;
-      font-size: 1.5rem;
     }
     .cart-icon {
-      font-size: 1.5rem;
-      background: white;
-      color: #008060;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
-    .search-bar {
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
+    .cart-icon img {
+      width: 100%;
     }
-    .search-bar input {
-      width: 80%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: red;
+      color: white;
+      font-size: 12px;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .product-grid {
       display: grid;
@@ -64,96 +64,99 @@
     .product-card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      padding: 1rem;
     }
     .product-card img {
       width: 100%;
       height: 150px;
       object-fit: cover;
-      border-radius: 8px;
     }
     .product-info {
-      margin-top: 1rem;
+      padding: 1rem;
+      flex-grow: 1;
     }
     .product-info h4 {
-      margin: 0 0 0.25rem;
+      margin: 0 0 0.5rem;
       font-size: 1rem;
     }
     .product-info p {
-      font-size: 0.875rem;
+      margin: 0 0 1rem;
+      font-size: 0.9rem;
       color: #555;
     }
-    .qty-controls {
+    .quantity-controls {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       margin-top: 0.5rem;
     }
-    .qty-controls button {
-      padding: 0.3rem 0.7rem;
-      font-size: 1rem;
-      border: none;
+    .quantity-controls button {
+      padding: 0.2rem 0.6rem;
       background: #008060;
       color: white;
+      border: none;
       border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
     }
-    .cart-panel {
+    .quantity-controls span {
+      margin: 0 0.5rem;
+    }
+    #cart {
       position: fixed;
-      right: -100%;
       top: 0;
-      width: 90%;
-      max-width: 400px;
+      right: -100%;
+      width: 320px;
       height: 100%;
       background: white;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.2);
-      transition: right 0.3s ease-in-out;
-      display: flex;
-      flex-direction: column;
-      z-index: 1000;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      transition: right 0.3s ease;
+      z-index: 999;
     }
-    .cart-panel.open {
+    #cart.open {
       right: 0;
     }
-    .cart-header {
-      padding: 1rem;
-      background: #008060;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .cart-body {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
+    #cart h3 {
+      margin-top: 0;
     }
     .cart-item {
-      margin-bottom: 0.75rem;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.5rem;
-    }
-    .cart-footer {
-      padding: 1rem;
-      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
     }
     #fillout-modal {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 1000;
     }
     #fillout-modal iframe {
       width: 90vw;
       height: 90vh;
-      border-radius: 10px;
       border: none;
+      border-radius: 12px;
+    }
+    #search-bar {
+      margin: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    #search-input {
+      padding: 0.5rem;
+      width: 80%;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -161,30 +164,27 @@
   <header>
     <a href="index.html" class="back-arrow">←</a>
     <h1>Pharmacy</h1>
-    <div class="cart-icon" onclick="toggleCart()">🛒</div>
+    <div class="cart-icon" onclick="toggleCart()">
+      🛒<div class="cart-count" id="cart-count">0</div>
+    </div>
   </header>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search medicine..." oninput="filterProducts()" />
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="Search medicines..." oninput="filterProducts()">
   </div>
 
-  <div class="product-grid" id="productGrid">
-    <!-- JS will populate products -->
+  <div class="product-grid" id="product-grid">
+    <!-- Product cards will be inserted here by JS -->
   </div>
 
-  <div class="cart-panel" id="cartPanel">
-    <div class="cart-header">
-      <strong>Your Cart</strong>
-      <button onclick="toggleCart()">✖</button>
-    </div>
-    <div class="cart-body" id="cartItems"></div>
-    <div class="cart-footer">
-      <p>Subtotal: ₱<span id="subtotal">0.00</span></p>
-      <p>VAT (12%): ₱<span id="vat">0.00</span></p>
-      <p>Delivery Fee: ₱<span id="delivery">29.99</span></p>
-      <h4>Total: ₱<span id="total">0.00</span></h4>
-      <button onclick="checkout()" style="width:100%;padding:0.6rem;background:#008060;color:white;border:none;border-radius:8px;">Checkout</button>
-    </div>
+  <div id="cart">
+    <h3>Your Dala-Cart</h3>
+    <div id="cart-items"></div>
+    <p id="cart-subtotal">Subtotal: ₱0.00</p>
+    <p id="cart-vat">VAT (12%): ₱0.00</p>
+    <p id="cart-fee">Delivery Fee: ₱29.99</p>
+    <p><strong id="cart-total">Total: ₱0.00</strong></p>
+    <button onclick="checkout()">Checkout</button>
   </div>
 
   <div id="fillout-modal">
@@ -193,106 +193,91 @@
 
   <script>
     const products = [
-      { name: "Paracetamol 500mg", desc: "Fever and pain relief. 10 tablets.", price: 35 },
-      { name: "Hydrite", desc: "Oral rehydration salts. 1 sachet.", price: 15 },
-      { name: "Biogesic", desc: "Relieves headaches and fever.", price: 30 },
-      { name: "Decolgen", desc: "Cold and flu relief.", price: 28 },
-      { name: "Alaxan FR", desc: "Body pain and inflammation.", price: 40 },
-      { name: "Neozep", desc: "Relieves cold symptoms.", price: 25 },
-      { name: "Diatabs", desc: "Anti-diarrheal tablets.", price: 22 },
-      { name: "Loperamide", desc: "For diarrhea control.", price: 20 },
-      { name: "Kremil-S", desc: "For stomach relief.", price: 18 },
-      { name: "Antacid Tabs", desc: "Relieves acidity.", price: 19 },
+      { name: "Paracetamol", description: "Fever and pain relief. 10 tablets.", price: 35 },
+      { name: "Hydrite", description: "Oral rehydration salts.", price: 15 },
+      { name: "Biogesic", description: "Headaches and fever.", price: 30 },
+      { name: "Decolgen", description: "Cold and flu relief.", price: 28 },
+      { name: "Alaxan FR", description: "Body pain relief.", price: 40 },
+      { name: "Neozep", description: "Cold symptom relief.", price: 25 },
+      { name: "Diatabs", description: "Anti-diarrheal.", price: 22 },
+      { name: "Loperamide", description: "For diarrhea.", price: 20 },
+      { name: "Kremil-S", description: "Stomach relief.", price: 18 },
+      { name: "Antacid Tabs", description: "Indigestion relief.", price: 19 }
     ];
 
     const cart = {};
 
     function renderProducts() {
-      const grid = document.getElementById('productGrid');
+      const grid = document.getElementById('product-grid');
       grid.innerHTML = '';
-      products.forEach((prod, i) => {
-        const qty = cart[prod.name]?.qty || 0;
+      products.forEach((product, index) => {
         grid.innerHTML += `
-          <div class="product-card">
-            <img src="https://via.placeholder.com/300x150?text=${encodeURIComponent(prod.name)}" alt="${prod.name}">
+          <div class="product-card" data-name="${product.name.toLowerCase()}">
+            <img src="https://via.placeholder.com/300x150?text=${encodeURIComponent(product.name)}" alt="${product.name}">
             <div class="product-info">
-              <h4>${prod.name}</h4>
-              <p>${prod.desc}</p>
-              <div class="qty-controls">
-                <button onclick='updateQty("${prod.name}", -1)'>-</button>
-                <span>${qty}</span>
-                <button onclick='updateQty("${prod.name}", 1)'>+</button>
+              <h4>${product.name}</h4>
+              <p>${product.description}</p>
+              <div class="quantity-controls">
+                <button onclick="updateCart('${product.name}', -1)">-</button>
+                <span id="qty-${index}">0</span>
+                <button onclick="updateCart('${product.name}', 1)">+</button>
               </div>
+              <p><strong>₱${product.price}</strong></p>
             </div>
           </div>
         `;
       });
     }
 
-    function updateQty(name, change) {
-      const prod = products.find(p => p.name === name);
-      if (!cart[name]) cart[name] = { ...prod, qty: 0 };
-      cart[name].qty = Math.max(0, cart[name].qty + change);
-      if (cart[name].qty === 0) delete cart[name];
-      renderProducts();
+    function updateCart(name, change) {
+      const product = products.find(p => p.name === name);
+      if (!product) return;
+      cart[name] = (cart[name] || 0) + change;
+      if (cart[name] < 1) delete cart[name];
       renderCart();
     }
 
     function renderCart() {
-      const itemsDiv = document.getElementById('cartItems');
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
       let subtotal = 0;
-      itemsDiv.innerHTML = '';
-      Object.values(cart).forEach(item => {
-        const total = item.price * item.qty;
-        subtotal += total;
-        itemsDiv.innerHTML += `<div class="cart-item">${item.name} x${item.qty} - ₱${total.toFixed(2)}</div>`;
+      let itemCount = 0;
+      products.forEach((p, i) => {
+        const qty = cart[p.name] || 0;
+        document.getElementById(`qty-${i}`).textContent = qty;
+        if (qty > 0) {
+          const total = p.price * qty;
+          subtotal += total;
+          itemCount += qty;
+          cartItems.innerHTML += `<div class="cart-item">${qty} × ${p.name} - ₱${total.toFixed(2)}</div>`;
+        }
       });
       const vat = subtotal * 0.12;
-      const delivery = 29.99;
+      const delivery = subtotal > 0 ? 29.99 : 0;
       const total = subtotal + vat + delivery;
-      document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-      document.getElementById('vat').innerText = vat.toFixed(2);
-      document.getElementById('delivery').innerText = delivery.toFixed(2);
-      document.getElementById('total').innerText = total.toFixed(2);
+      document.getElementById('cart-subtotal').textContent = `Subtotal: ₱${subtotal.toFixed(2)}`;
+      document.getElementById('cart-vat').textContent = `VAT (12%): ₱${vat.toFixed(2)}`;
+      document.getElementById('cart-fee').textContent = `Delivery Fee: ₱${delivery.toFixed(2)}`;
+      document.getElementById('cart-total').textContent = `Total: ₱${total.toFixed(2)}`;
+      document.getElementById('cart-count').textContent = itemCount;
     }
 
     function toggleCart() {
-      document.getElementById('cartPanel').classList.toggle('open');
+      document.getElementById('cart').classList.toggle('open');
     }
 
     function checkout() {
-      const summary = encodeURIComponent(
-        Object.values(cart)
-          .map(item => `${item.name} x${item.qty} = ₱${(item.qty * item.price).toFixed(2)}`)
-          .join("\n")
-      );
-      const total = document.getElementById('total').innerText;
-      const filloutURL = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${summary}&totalAmount=₱${total}`;
-      document.getElementById('fillout-iframe').src = filloutURL;
+      const summary = Object.entries(cart).map(([name, qty]) => `${qty}x ${name}`).join(', ');
+      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summary)}`;
+      document.getElementById('fillout-iframe').src = filloutUrl;
       document.getElementById('fillout-modal').style.display = 'flex';
     }
 
     function filterProducts() {
-      const val = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(val));
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      filtered.forEach(prod => {
-        const qty = cart[prod.name]?.qty || 0;
-        grid.innerHTML += `
-          <div class="product-card">
-            <img src="https://via.placeholder.com/300x150?text=${encodeURIComponent(prod.name)}" alt="${prod.name}">
-            <div class="product-info">
-              <h4>${prod.name}</h4>
-              <p>${prod.desc}</p>
-              <div class="qty-controls">
-                <button onclick='updateQty("${prod.name}", -1)'>-</button>
-                <span>${qty}</span>
-                <button onclick='updateQty("${prod.name}", 1)'>+</button>
-              </div>
-            </div>
-          </div>
-        `;
+      const query = document.getElementById('search-input').value.toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card => {
+        const name = card.dataset.name;
+        card.style.display = name.includes(query) ? 'block' : 'none';
       });
     }
 
