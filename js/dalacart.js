@@ -1,78 +1,80 @@
-// dalacart.js
-
 let cart = [];
 
 function addToCart(product) {
   const existing = cart.find(item => item.name === product.name);
   if (existing) {
-    existing.qty += 1;
+    existing.quantity++;
   } else {
-    cart.push({ ...product, qty: 1 });
+    cart.push({ ...product, quantity: 1 });
   }
-  updateCartUI();
+  updateCartDisplay();
+  openCart();
 }
 
-function removeFromCart(productName) {
-  cart = cart.filter(item => item.name !== productName);
-  updateCartUI();
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCartDisplay();
 }
 
-function updateCartUI() {
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+function updateCartDisplay() {
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout-btn');
   const cartIcon = document.querySelector('.cart-icon');
-  if (cartIcon) cartIcon.innerHTML = `🛒${cartCount}`;
 
-  const cartItems = document.getElementById('cart-items');
-  cartItems.innerHTML = '';
+  cartItemsContainer.innerHTML = '';
+  let subtotal = 0;
 
-  let total = 0;
-  cart.forEach(item => {
-    const subtotal = item.price * item.qty;
-    total += subtotal;
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.innerHTML = `
-      <strong>${item.name}</strong> x${item.qty} - ₱${subtotal.toFixed(2)}
-      <button onclick="removeFromCart('${item.name}')">❌</button>
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    const el = document.createElement('div');
+    el.className = 'cart-item';
+    el.innerHTML = `
+      ${item.name} x ${item.quantity} - ₱${itemTotal.toFixed(2)}
+      <button onclick="removeFromCart(${index})">❌</button>
     `;
-    cartItems.appendChild(div);
+    cartItemsContainer.appendChild(el);
   });
 
-  const vat = total * 0.12;
-  const serviceFee = 14.99;
-  const grandTotal = total + vat + serviceFee;
+  const vat = subtotal * 0.12;
+  const serviceFee = 29.99;
+  const total = subtotal + vat + serviceFee;
 
-  document.getElementById('cart-total').innerHTML = `
-    <p>Subtotal: ₱${total.toFixed(2)}</p>
+  cartTotal.innerHTML = `
+    <p>Subtotal: ₱${subtotal.toFixed(2)}</p>
     <p>VAT (12%): ₱${vat.toFixed(2)}</p>
     <p>Service Fee: ₱${serviceFee.toFixed(2)}</p>
-    <hr />
-    <strong>Total: ₱${grandTotal.toFixed(2)}</strong>
+    <strong>Total: ₱${total.toFixed(2)}</strong>
   `;
 
-  const checkoutBtn = document.getElementById('checkout-btn');
+  cartIcon.textContent = `🛒${cart.length}`;
   checkoutBtn.disabled = cart.length === 0;
 }
 
-// Slide in/out logic
-const cartOverlay = document.getElementById('cart-overlay');
-const cartPanel = document.getElementById('cart-panel');
-
 function openCart() {
-  cartOverlay.style.display = 'flex';
-  setTimeout(() => cartPanel.classList.add('show'), 10);
+  const overlay = document.getElementById('cart-overlay');
+  const panel = document.getElementById('cart-panel');
+  if (overlay && panel) {
+    overlay.style.display = 'flex';
+    setTimeout(() => panel.classList.add('show'), 10);
+  }
 }
 
 function closeCart() {
-  cartPanel.classList.remove('show');
-  setTimeout(() => cartOverlay.style.display = 'none', 300);
+  const overlay = document.getElementById('cart-overlay');
+  const panel = document.getElementById('cart-panel');
+  if (overlay && panel) {
+    panel.classList.remove('show');
+    setTimeout(() => overlay.style.display = 'none', 300);
+  }
 }
 
-// Attach openCart to cart icon
-const cartIcon = document.querySelector('.cart-icon');
-if (cartIcon) cartIcon.addEventListener('click', openCart);
-
-// Attach closeCart to overlay click
-if (cartOverlay) cartOverlay.addEventListener('click', (e) => {
-  if (e.target === cartOverlay) closeCart();
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('cart-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target.id === 'cart-overlay') closeCart();
+    });
+  }
 });
