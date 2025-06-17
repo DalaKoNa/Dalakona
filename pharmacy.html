@@ -181,41 +181,48 @@
     }
 
     function submitOrder() {
-      const name = document.getElementById('customer-name').value;
-      const phone = document.getElementById('customer-phone').value;
-      const email = document.getElementById('customer-email').value;
-      const date = document.getElementById('delivery-date').value;
-      const time = document.getElementById('delivery-time').value;
-      const method = document.getElementById('payment-method').value;
+  const name = document.getElementById('customer-name').value;
+  const phone = document.getElementById('customer-phone').value;
+  const email = document.getElementById('customer-email').value;
+  const date = document.getElementById('delivery-date').value;
+  const time = document.getElementById('delivery-time').value;
+  const method = document.getElementById('payment-method').value;
 
-      const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-      const summary = document.getElementById('cart-summary').innerText;
+  const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+  const summary = document.getElementById('cart-summary').innerText;
 
-      const message = `New Order:
-Name: ${name}
-Phone: ${phone}
-Email: ${email}
-Items: ${items}
-${summary}
-Delivery: ${date} ${time}
-Payment: ${method}`;
+  const merchantName = "Pharmacy"; // auto merchant name
 
-      // Replace with actual numbers
-const merchantNumber = '63XXXXXXXXXX';
-const adminNumber = '63YYYYYYYYYY';
-const driverNumber = '63ZZZZZZZZZZ'; // Optional driver
+  const message = `🛒 New Order from ${merchantName}:
+👤 Name: ${name}
+📞 Phone: ${phone}
+📧 Email: ${email}
+🛍️ Items: ${items}
 
-const waMessage = encodeURIComponent(message);
+🧾 ${summary}
 
-// Send to merchant
-window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+📅 Delivery: ${date} at ${time}
+💳 Payment: ${method}`;
 
-// Send to admin
-window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+  // ✅ Hardcoded WhatsApp numbers
+  const merchantNumber = '639171234567'; // Replace with real merchant number
+  const adminNumber = '639189876543';    // Replace with real admin number
+  const driverNumber = '639162222222';   // Optional driver
 
-// Optional: Send to driver
-window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+  const waMessage = encodeURIComponent(message);
 
+  // Send to merchant
+  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+
+  // Send to admin
+  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+
+  // Optional: Send to driver
+  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank`);
+
+  // Optional: Close cart modal after submission
+  document.getElementById('cart-modal').classList.add('hidden');
+ }
     window.onload = () => {
       renderProducts();
       const today = new Date();
