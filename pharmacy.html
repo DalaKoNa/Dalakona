@@ -100,159 +100,154 @@
   </div>
 
   <script>
-    const products = [
-      { name: "Paracetamol", price: 5, image: "https://via.placeholder.com/100" },
-      { name: "Biogesic", price: 6, image: "https://via.placeholder.com/100" },
-      { name: "Amoxicillin", price: 10, image: "https://via.placeholder.com/100" },
-      { name: "Loperamide", price: 4, image: "https://via.placeholder.com/100" },
-      { name: "Vitamin C", price: 3, image: "https://via.placeholder.com/100" },
-      { name: "Betadine", price: 20, image: "https://via.placeholder.com/100" },
-      { name: "Hydrite", price: 8, image: "https://via.placeholder.com/100" },
-      { name: "Salonpas", price: 12, image: "https://via.placeholder.com/100" },
-      { name: "Alaxan FR", price: 7, image: "https://via.placeholder.com/100" },
-      { name: "Neozep", price: 6, image: "https://via.placeholder.com/100" }
-    ];
+  const products = [
+    { name: "Paracetamol", price: 5, image: "https://via.placeholder.com/100" },
+    { name: "Biogesic", price: 6, image: "https://via.placeholder.com/100" },
+    { name: "Amoxicillin", price: 10, image: "https://via.placeholder.com/100" },
+    { name: "Loperamide", price: 4, image: "https://via.placeholder.com/100" },
+    { name: "Vitamin C", price: 3, image: "https://via.placeholder.com/100" },
+    { name: "Betadine", price: 20, image: "https://via.placeholder.com/100" },
+    { name: "Hydrite", price: 8, image: "https://via.placeholder.com/100" },
+    { name: "Salonpas", price: 12, image: "https://via.placeholder.com/100" },
+    { name: "Alaxan FR", price: 7, image: "https://via.placeholder.com/100" },
+    { name: "Neozep", price: 6, image: "https://via.placeholder.com/100" }
+  ];
 
-    const cart = {};
+  const cart = {};
 
-    function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card">
-            <img src="${item.image}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>₱${item.price.toFixed(2)}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
-            </div>
-          </div>`;
-      });
+  function renderProducts() {
+    const list = document.getElementById('product-list');
+    list.innerHTML = '';
+    products.forEach((item, index) => {
+      list.innerHTML += `
+        <div class="card">
+          <img src="${item.image}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>₱${item.price.toFixed(2)}</p>
+          <div class="qty-controls">
+            <button onclick="decreaseQty(${index})">-</button>
+            <span id="qty-${index}">0</span>
+            <button onclick="increaseQty(${index})">+</button>
+          </div>
+        </div>`;
+    });
+  }
+
+  function increaseQty(i) {
+    const item = products[i];
+    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+    cart[item.name].qty++;
+    updateQty(i);
+  }
+
+  function decreaseQty(i) {
+    const item = products[i];
+    if (cart[item.name]) {
+      cart[item.name].qty--;
+      if (cart[item.name].qty <= 0) delete cart[item.name];
     }
+    updateQty(i);
+  }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
-    }
+  function updateQty(i) {
+    const item = products[i];
+    const qty = cart[item.name]?.qty || 0;
+    document.getElementById(`qty-${i}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    updateCartSummary();
+  }
 
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  function updateCartSummary() {
+    let html = '<h3>Receipt Summary</h3><ul>';
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
+      html += `<li>${line}</li>`;
+      total += item.qty * item.price;
+    });
+    const vat = total * 0.12;
+    const fee = 29.99;
+    const grand = total + vat + fee;
+    html += `</ul>
+      <p>Subtotal: ₱${total.toFixed(2)}</p>
+      <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+      <p>Service Fee: ₱${fee.toFixed(2)}</p>
+      <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+    document.getElementById('cart-summary').innerHTML = html;
+  }
+
+  function submitOrder() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
+
+    const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+    const summary = document.getElementById('cart-summary').innerText;
+
+    const message = `New Order from Dala🚲Na Pharmacy:
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+Items: ${items}
+${summary}
+Delivery: ${date} ${time}
+Payment Method: ${method}`;
+
+    const waMessage = encodeURIComponent(message);
+    
+    // Replace with real numbers
+    const merchantNumber = '63XXXXXXXXXX';
+    const adminNumber = '63YYYYYYYYYY';
+    const driverNumber = '63ZZZZZZZZZZ'; // Optional
+
+    // Send messages
+    window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+    window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+    window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+
+    toggleCart(); // Close cart after sending
+  }
+
+  // Load products and set delivery defaults
+  window.onload = () => {
+    renderProducts();
+    const today = new Date();
+    const localDate = today.toISOString().split('T')[0];
+    const deliveryDate = document.getElementById('delivery-date');
+    const deliveryTime = document.getElementById('delivery-time');
+    const deliveryNote = document.getElementById('delivery-note');
+
+    deliveryDate.value = localDate;
+
+    const updateTimeField = () => {
+      const selectedDate = new Date(deliveryDate.value);
+      const currentDate = new Date();
+
+      if (selectedDate.toDateString() === currentDate.toDateString()) {
+        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+        deliveryTime.disabled = true;
+        deliveryNote.style.display = "block";
+      } else {
+        deliveryTime.disabled = false;
+        deliveryNote.style.display = "none";
       }
-      updateQty(i);
-    }
-
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-    }
-
-    function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('hidden');
-    }
-
-    function updateCartSummary() {
-      let html = '<h3>Receipt Summary</h3><ul>';
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
-        html += `<li>${line}</li>`;
-        total += item.qty * item.price;
-      });
-      const vat = total * 0.12;
-      const fee = 29.99;
-      const grand = total + vat + fee;
-      html += `</ul>
-        <p>Subtotal: ₱${total.toFixed(2)}</p>
-        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-        <p>Service Fee: ₱${fee.toFixed(2)}</p>
-        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-      document.getElementById('cart-summary').innerHTML = html;
-    }
-
-    function submitOrder() {
-  const name = document.getElementById('customer-name').value;
-  const phone = document.getElementById('customer-phone').value;
-  const email = document.getElementById('customer-email').value;
-  const date = document.getElementById('delivery-date').value;
-  const time = document.getElementById('delivery-time').value;
-  const method = document.getElementById('payment-method').value;
-
-  const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-  const summary = document.getElementById('cart-summary').innerText;
-
-  const merchantName = "Pharmacy"; // auto merchant name
-
-  const message = `🛒 New Order from ${merchantName}:
-👤 Name: ${name}
-📞 Phone: ${phone}
-📧 Email: ${email}
-🛍️ Items: ${items}
-
-🧾 ${summary}
-
-📅 Delivery: ${date} at ${time}
-💳 Payment: ${method}`;
-
-  // ✅ Hardcoded WhatsApp numbers
-  const merchantNumber = '639171234567'; // Replace with real merchant number
-  const adminNumber = '639189876543';    // Replace with real admin number
-  const driverNumber = '639162222222';   // Optional driver
-
-  const waMessage = encodeURIComponent(message);
-
-  // Send to merchant
-  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-
-  // Send to admin
-  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-
-  // Optional: Send to driver
-  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank`);
-
-  // Optional: Close cart modal after submission
-  document.getElementById('cart-modal').classList.add('hidden');
- }
-    window.onload = () => {
-      renderProducts();
-      const today = new Date();
-      const localDate = today.toISOString().split('T')[0];
-      const deliveryDate = document.getElementById('delivery-date');
-      const deliveryTime = document.getElementById('delivery-time');
-      const deliveryNote = document.getElementById('delivery-note');
-
-      deliveryDate.value = localDate;
-
-      const updateTimeField = () => {
-        const selectedDate = new Date(deliveryDate.value);
-        const currentDate = new Date();
-
-        if (selectedDate.toDateString() === currentDate.toDateString()) {
-          const autoTime = new Date(currentDate.getTime() + 70 * 60000);
-          deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-          deliveryTime.disabled = true;
-          deliveryNote.style.display = "block";
-        } else {
-          deliveryTime.disabled = false;
-          deliveryNote.style.display = "none";
-        }
-      };
-
-      updateTimeField();
-      deliveryDate.addEventListener('change', updateTimeField);
     };
-  </script>
+
+    updateTimeField();
+    deliveryDate.addEventListener('change', updateTimeField);
+  };
+</script>
+
 <script>
+  // Validate form before enabling checkout
   const requiredFields = [
     'customer-name',
     'customer-phone',
@@ -275,5 +270,6 @@
     document.getElementById('checkout-btn').disabled = !isValid;
   }
 </script>
+
 </body>
 </html>
