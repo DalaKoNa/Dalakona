@@ -3,187 +3,239 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Handumanan Hypermarket</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="dalacart.js"></script>
+  <title>Handumanan Hypermarket - Dala🚲Na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      background: #f8f8f8;
-    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
     header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: #008060; color: white; padding: 1rem; display: flex;
+      align-items: center; justify-content: space-between;
     }
-    .header-flex {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .back-arrow { color: white; text-decoration: none; font-size: 1.5rem; }
+    .cart-icon {
+      background: white; color: #008060; border-radius: 50%; padding: 0.5rem;
+      width: 40px; height: 40px; display: flex; align-items: center;
+      justify-content: center; position: relative; cursor: pointer;
     }
-    .back-arrow {
-      font-size: 1.5rem;
-      color: white;
-      text-decoration: none;
+    .cart-count {
+      position: absolute; top: -6px; right: -6px;
+      background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px;
+    }
+    .search-container { padding: 1rem; display: flex; justify-content: center; gap: 0.5rem; }
+    .search-container input {
+      padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;
+    }
+    .search-container button {
+      background: #008060; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px;
     }
     .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;
       padding: 1rem;
     }
     .product-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden; display: flex; flex-direction: column;
     }
-    .product-card img {
-      max-width: 100%;
-      border-radius: 6px;
+    .product-card img { width: 100%; height: 150px; object-fit: cover; }
+    .product-info { padding: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .quantity-controls {
+      display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
     }
-    .cart {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 100%;
-      max-width: 420px;
-      background: #fff;
-      height: 100%;
-      padding: 1rem;
-      box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 9999;
+    .quantity-controls button {
+      background: #008060; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px;
     }
-    .cart.open {
-      transform: translateX(0);
+    .quantity-controls span {
+      min-width: 24px; text-align: center; font-weight: bold;
     }
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.25rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
+
+    /* Cart modal */
+    #cart-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none;
+      background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;
     }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px dashed #ccc;
-      padding: 0.75rem 0;
+    #cart-box {
+      background: white; width: 90%; max-width: 800px; max-height: 90vh;
+      border-radius: 16px; display: flex; flex-direction: row; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     }
-    .cart-summary {
-      border-top: 1px solid #ddd;
-      margin-top: auto;
-      padding-top: 1rem;
+    @media (max-width: 768px) {
+      #cart-box { flex-direction: column; height: auto; }
     }
-    .cart-summary div {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.25rem 0;
+    .cart-left, .cart-right {
+      padding: 1rem; overflow-y: auto;
     }
-    .checkout-button {
-      width: 100%;
-      background: #22c55e;
-      color: white;
-      font-size: 1.1rem;
-      padding: 0.75rem;
-      margin-top: 1rem;
-      border: none;
-      border-radius: 8px;
+    .cart-left {
+      flex: 1; border-right: 1px solid #eee;
     }
-    .terms {
-      margin-top: 0.75rem;
-      font-size: 0.85rem;
-      text-align: center;
-      color: #555;
+    .cart-right {
+      flex: 1.2; background: #fefefe;
     }
-    .close-cart {
-      font-size: 1.25rem;
-      cursor: pointer;
+    .cart-item { margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-size: 0.9rem; }
+    .cart-total { margin-top: 1rem; font-weight: bold; font-size: 0.9rem; }
+    .cart-right input, .cart-right select {
+      width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
     }
-    @media (max-width: 500px) {
-      .cart {
-        width: 100%;
-        border-radius: 0;
-      }
+    .cart-right label { font-size: 0.9rem; margin-top: 0.8rem; display: block; font-weight: bold; }
+    .terms-link {
+      margin-top: 1rem; font-size: 0.8rem; color: #444; text-align: center;
+    }
+    .terms-link a { color: #008060; text-decoration: underline; }
+    .close-cart-btn {
+      position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: white; cursor: pointer;
+    }
+    #checkout-btn {
+      margin-top: 1rem; padding: 0.8rem; background: #008060; color: white; border: none;
+      width: 100%; border-radius: 8px; font-size: 1rem;
+    }
+    #checkout-btn:disabled {
+      background: #ccc; cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <header class="header-flex">
-    <a href="index.html" class="back-arrow">⬅</a>
-    <h1>Handumanan Hypermarket</h1>
-    <button id="openCart">🛒 <span id="cartCount">0</span></button>
+  <header>
+    <a href="index.html" class="back-arrow">←</a>
+    <h1 style="margin: 0; font-size: 1.2rem;">Handumanan Hypermarket</h1>
+    <div class="cart-icon" onclick="toggleCart()">
+      🛒<span class="cart-count" id="cart-count">0</span>
+    </div>
   </header>
 
-  <div class="product-grid" id="productGrid">
-    <!-- Product Cards Injected Here -->
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search products...">
+    <button onclick="searchProducts()">Search</button>
   </div>
 
-  <div class="cart" id="cart">
-    <div class="cart-header">
-      <span>Your Cart</span>
-      <span class="close-cart" id="closeCart">✕</span>
+  <div class="product-grid" id="product-grid"></div>
+
+  <div id="cart-modal">
+    <div id="cart-box">
+      <div class="cart-left">
+        <h3>🧾 Receipt</h3>
+        <div id="cart-items"></div>
+        <div class="cart-total" id="cart-total"></div>
+      </div>
+      <div class="cart-right">
+        <h3>🛵 Delivery Details</h3>
+        <label>Payment Method</label>
+        <select id="payment-method">
+          <option value="COD">Cash on Delivery</option>
+          <option value="PayMaya">PayMaya</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+        <label>Delivery Date</label>
+        <input type="date" id="delivery-date">
+        <label>Delivery Time</label>
+        <input type="time" id="delivery-time">
+        <label>Your Name</label>
+        <input type="text" id="customer-name">
+        <label>Phone</label>
+        <input type="tel" id="customer-phone">
+        <label>Email</label>
+        <input type="email" id="customer-email">
+
+        <button id="checkout-btn" onclick="checkout()" disabled>Checkout</button>
+        <div class="terms-link">
+          By checking out, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
+        </div>
+      </div>
     </div>
-    <div id="cartItems"></div>
-    <div class="cart-summary">
-      <div><span>Subtotal</span><span id="subtotal">₱0.00</span></div>
-      <div><span>VAT (12%)</span><span id="vat">₱0.00</span></div>
-      <div><span>Service Fee</span><span>₱29.99</span></div>
-      <div><strong>Total</strong><strong id="total">₱0.00</strong></div>
-      <button class="checkout-button" id="checkoutButton">Checkout</button>
-      <div class="terms">By checking out, you agree to our Terms and Conditions.</div>
-    </div>
+    <button class="close-cart-btn" onclick="toggleCart()">×</button>
   </div>
 
   <script>
-    const products = [
-      { name: "Rice 5kg", price: 320, img: "https://via.placeholder.com/160?text=Rice" },
-      { name: "Canned Sardines", price: 25, img: "https://via.placeholder.com/160?text=Sardines" },
-      { name: "Cooking Oil 1L", price: 105, img: "https://via.placeholder.com/160?text=Oil" },
-      { name: "Laundry Detergent", price: 85, img: "https://via.placeholder.com/160?text=Detergent" },
-      { name: "Toilet Paper (4 rolls)", price: 60, img: "https://via.placeholder.com/160?text=Tissue" },
-      { name: "Bath Soap", price: 25, img: "https://via.placeholder.com/160?text=Soap" },
-      { name: "Shampoo Sachets", price: 12, img: "https://via.placeholder.com/160?text=Shampoo" },
-      { name: "Coffee 3-in-1", price: 10, img: "https://via.placeholder.com/160?text=Coffee" },
-      { name: "Instant Noodles", price: 12, img: "https://via.placeholder.com/160?text=Noodles" },
-      { name: "Eggs (1 dozen)", price: 90, img: "https://via.placeholder.com/160?text=Eggs" },
-      { name: "Bread Loaf", price: 55, img: "https://via.placeholder.com/160?text=Bread" },
-      { name: "Hotdog 1kg", price: 160, img: "https://via.placeholder.com/160?text=Hotdog" },
-      { name: "Corned Beef", price: 52, img: "https://via.placeholder.com/160?text=Corned+Beef" },
-      { name: "Milk Powder", price: 180, img: "https://via.placeholder.com/160?text=Milk" },
-      { name: "Sugar 1kg", price: 55, img: "https://via.placeholder.com/160?text=Sugar" },
-      { name: "Vinegar 350ml", price: 18, img: "https://via.placeholder.com/160?text=Vinegar" },
-      { name: "Soy Sauce 350ml", price: 22, img: "https://via.placeholder.com/160?text=Soy+Sauce" },
-      { name: "Garlic", price: 30, img: "https://via.placeholder.com/160?text=Garlic" },
-      { name: "Onion", price: 45, img: "https://via.placeholder.com/160?text=Onion" },
-      { name: "Pancit Canton", price: 15, img: "https://via.placeholder.com/160?text=Pancit+Canton" },
-      // Add 10 more later if needed
-    ];
+    const products = Array.from({length: 20}, (_, i) => ({
+      name: `Item ${i+1}`,
+      price: 20 + i * 3,
+      desc: `Essential grocery item ${i+1}`,
+      image: `https://via.placeholder.com/300x150?text=Item+${i+1}`
+    }));
+    let cart = {};
 
-    const grid = document.getElementById('productGrid');
-    products.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <img src="${p.img}" alt="${p.name}" />
-        <h3>${p.name}</h3>
-        <p>₱${p.price.toFixed(2)}</p>
-        <button onclick='addToCart("${p.name}", ${p.price})'>Add to Cart</button>
-      `;
-      grid.appendChild(card);
+    function renderProducts(filter = "") {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = "";
+      products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
+        const qty = cart[p.name]?.qty || 0;
+        grid.innerHTML += `
+          <div class="product-card">
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-info">
+              <h4>${p.name}</h4>
+              <p>${p.desc}</p>
+              <div class="quantity-controls">
+                <button onclick='decreaseQty("${p.name}")'>–</button>
+                <span>${qty}</span>
+                <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cart-modal');
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function increaseQty(name, price) {
+      if (!cart[name]) cart[name] = { qty: 1, price };
+      else cart[name].qty++;
+      updateCart();
+    }
+
+    function decreaseQty(name) {
+      if (cart[name]) {
+        cart[name].qty--;
+        if (cart[name].qty <= 0) delete cart[name];
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const items = document.getElementById('cart-items');
+      items.innerHTML = "";
+      let subtotal = 0, count = 0;
+      for (let name in cart) {
+        const item = cart[name];
+        subtotal += item.price * item.qty;
+        count += item.qty;
+        items.innerHTML += `<div class="cart-item">${item.qty}x ${name} <b>₱${(item.price * item.qty).toFixed(2)}</b></div>`;
+      }
+      const vat = subtotal * 0.12;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      document.getElementById('cart-total').innerHTML = `
+        Subtotal: ₱${subtotal.toFixed(2)}<br>
+        VAT (12%): ₱${vat.toFixed(2)}<br>
+        Service Fee: ₱${fee.toFixed(2)}<br>
+        <b>Total: ₱${total.toFixed(2)}</b>`;
+      document.getElementById('cart-count').innerText = count;
+      renderProducts(document.getElementById('search-input').value);
+      validateCheckoutFields();
+    }
+
+    function searchProducts() {
+      renderProducts(document.getElementById('search-input').value);
+    }
+
+    function validateCheckoutFields() {
+      const required = ["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time", "payment-method"];
+      const allFilled = required.every(id => document.getElementById(id).value.trim() !== "");
+      document.getElementById('checkout-btn').disabled = !allFilled;
+    }
+
+    ["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time", "payment-method"].forEach(id => {
+      document.getElementById(id).addEventListener('input', validateCheckoutFields);
     });
+
+    function checkout() {
+      alert("Order confirmed!");
+      toggleCart();
+    }
+
+    renderProducts();
   </script>
 </body>
 </html>
