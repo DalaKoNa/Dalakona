@@ -2,165 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na | Pharmacy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pharmacy - DalaὪNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background: #f8f9fa;
+      padding: 0;
+      background: #f7f7f7;
     }
-
-    h1 {
+    header {
+      background: #008060;
+      color: white;
+      padding: 1rem;
       text-align: center;
-      margin: 20px 0;
     }
-
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1rem;
       padding: 1rem;
-      max-width: 1000px;
-      margin: auto;
     }
-
-    .product {
+    .product-card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      padding: 1rem;
-      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-
-    .product img {
+    .product-card img {
       width: 100%;
-      max-height: 150px;
-      object-fit: contain;
-      margin-bottom: 10px;
+      height: 150px;
+      object-fit: cover;
     }
-
-    .product button {
-      background: #007bff;
+    .product-info {
+      padding: 1rem;
+      flex-grow: 1;
+    }
+    .product-info h4 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+    .product-info p {
+      margin: 0 0 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .product-info button {
+      width: 100%;
+      padding: 0.6rem;
+      background: #008060;
       color: white;
       border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
     }
-
     #cart {
-      max-width: 600px;
-      margin: 2rem auto;
-      background: white;
       padding: 1rem;
+      background: white;
+      margin: 1rem;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-
     .cart-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
+      margin: 0.5rem 0;
     }
-
     #fillout-modal {
-      display: none;
       position: fixed;
-      inset: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.6);
-      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
     }
-
-    #fillout-content {
-      background: white;
-      width: 90%;
-      max-width: 600px;
-      margin: 5% auto;
-      padding: 1rem;
-      border-radius: 8px;
-      position: relative;
-    }
-
-    #fillout-content iframe {
-      width: 100%;
-      height: 500px;
+    #fillout-modal iframe {
+      width: 90vw;
+      height: 90vh;
       border: none;
-    }
-
-    #fillout-content button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-size: 16px;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
-  <h1>🩺 Dala🚲na Pharmacy</h1>
+  <header>
+    <h1>Pharmacy</h1>
+  </header>
 
   <div class="product-grid">
-    <div class="product">
-      <img src="https://via.placeholder.com/150?text=Paracetamol" alt="Paracetamol">
-      <h3>Paracetamol</h3>
-      <p>500mg Tablets (10s)</p>
-      <p>₱25.00</p>
-      <button onclick="addToCart({name: 'Paracetamol', price: 25})">Add to Cart</button>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Paracetamol" alt="Paracetamol">
+      <div class="product-info">
+        <h4>Paracetamol 500mg</h4>
+        <p>Fever and pain relief. 10 tablets per pack.</p>
+        <button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add to Cart - ₱35</button>
+      </div>
     </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/150?text=Biogesic" alt="Biogesic">
-      <h3>Biogesic</h3>
-      <p>For headache and fever relief</p>
-      <p>₱30.00</p>
-      <button onclick="addToCart({name: 'Biogesic', price: 30})">Add to Cart</button>
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300x150?text=Hydrite" alt="Hydrite">
+      <div class="product-info">
+        <h4>Hydrite</h4>
+        <p>Oral rehydration salts. 1 sachet.</p>
+        <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart - ₱15</button>
+      </div>
     </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/150?text=Salinase" alt="Salinase">
-      <h3>Salinase Nasal Spray</h3>
-      <p>Decongestant nasal spray</p>
-      <p>₱60.00</p>
-      <button onclick="addToCart({name: 'Salinase', price: 60})">Add to Cart</button>
-    </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/150?text=Hydrite" alt="Hydrite">
-      <h3>Hydrite</h3>
-      <p>Oral Rehydration Salts (ORS)</p>
-      <p>₱15.00</p>
-      <button onclick="addToCart({name: 'Hydrite', price: 15})">Add to Cart</button>
-    </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/150?text=Neozep" alt="Neozep">
-      <h3>Neozep Forte</h3>
-      <p>For cold and flu relief</p>
-      <p>₱28.00</p>
-      <button onclick="addToCart({name: 'Neozep Forte', price: 28})">Add to Cart</button>
-    </div>
-    <!-- Add more items as needed -->
+    <!-- Add more pharmacy items here -->
   </div>
 
   <div id="cart">
-    <h2>🛒 Cart</h2>
+    <h3>Cart</h3>
     <div id="cart-items"></div>
     <p id="cart-total">Total: ₱0.00</p>
     <button id="checkout-btn" disabled>Checkout</button>
   </div>
 
-  <!-- Fillout Modal -->
   <div id="fillout-modal">
-    <div id="fillout-content">
-      <button onclick="closeFilloutModal()">×</button>
-      <iframe id="fillout-iframe" src=""></iframe>
-    </div>
+    <iframe id="fillout-iframe"></iframe>
   </div>
 
-  <!-- Firebase & Cart Logic -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
@@ -168,7 +128,10 @@
       apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
       authDomain: "dalahub-f8268.firebaseapp.com",
       projectId: "dalahub-f8268",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
+      storageBucket: "dalahub-f8268.appspot.com",
+      messagingSenderId: "1043572992249",
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
+      measurementId: "G-1H5FRQWS2R"
     };
     firebase.initializeApp(firebaseConfig);
   </script>
