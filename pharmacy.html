@@ -85,6 +85,9 @@
       color: #008060;
       text-decoration: underline;
     }
+    .close-cart-btn {
+      background: transparent; border: none; color: #888; font-size: 1.2rem; position: absolute; top: 10px; right: 10px; cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -106,6 +109,7 @@
   <div class="product-grid" id="product-grid"></div>
 
   <div id="cart-panel">
+    <button class="close-cart-btn" onclick="toggleCart()">×</button>
     <h3>Your Dala🚲Cart</h3>
     <div id="cart-items"></div>
     <div id="cart-total"></div>
@@ -234,6 +238,8 @@
     function checkout() {
       if (document.getElementById("checkout-btn").disabled) return;
 
+      toggleCart(); // Auto-close cart
+
       const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
       const method = document.getElementById("payment-method").value;
       const name = document.getElementById("customer-name").value;
@@ -241,9 +247,19 @@
       const email = document.getElementById("customer-email").value;
       const date = document.getElementById("delivery-date").value;
       const time = document.getElementById("delivery-time").value;
+
       const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
       document.getElementById('fillout-iframe').src = filloutUrl;
       document.getElementById('fillout-modal').style.display = 'flex';
+
+      const msg = `New Order from ${name}\n📱 ${phone}\n✉️ ${email}\n🛒 ${summary}\n📅 ${date} ${time}\n💳 ${method} - ${method === 'COD' ? 'Unpaid' : 'Pending'}`;
+
+      const merchantNumber = '63XXXXXXXXXX';
+      const adminNumber = '63YYYYYYYYYY';
+      window.open(`https://wa.me/${merchantNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+      setTimeout(() => {
+        window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+      }, 1000);
     }
 
     function searchProducts() {
