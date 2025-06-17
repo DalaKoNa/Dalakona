@@ -1,142 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bakery - Dala🚲na</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fdfdfd; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
     }
-    header {
-      background: #ff7043;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.2rem;
+    h1 { text-align: center; margin-bottom: 1rem; }
+    .search-bar { margin-bottom: 1rem; text-align: center; }
+    .search-bar input {
+      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
     }
-    .cart-summary {
-      background: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .card {
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
     }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
+    .qty-controls {
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
-    .product-grid {
-      flex: 3;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+    .qty-controls button {
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    .cart-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
     }
-    .product-card img {
-      width: 100%;
-      border-radius: 8px;
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
     }
-    .product-card button {
-      margin-top: 10px;
-      padding: 10px;
-      background: #00c853;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+    .checkout-btn {
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
     }
-    #fillout-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-    #fillout-modal iframe {
-      width: 90%;
-      height: 80vh;
-      border: none;
-      border-radius: 12px;
-    }
-    #fillout-modal .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 24px;
-      background: white;
-      border-radius: 50%;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
   </style>
 </head>
 <body>
   <header>
-    <div>Bakery 🥐</div>
-    <div class="cart-summary">
-      <strong>Your Dala-Cart 🧾</strong>
-      <div id="cart-items"></div>
-      <p id="cart-total">Total: ₱0.00</p>
-      <button id="checkout-btn" disabled>Checkout</button>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h1>Dala🚲Na Bakery</h1>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
-
-  <div class="container">
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="images/pandesal.jpg" alt="Pandesal">
-        <h3>Pandesal</h3>
-        <p>Classic Filipino breakfast bread.</p>
-        <p><strong>₱5</strong></p>
-        <button onclick="addToCart({ name: 'Pandesal', price: 5 })">Add to Cart</button>
+  <div class="search-bar">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
+  </div>
+  <div class="grid" id="product-list"></div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
+    <div class="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required>
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+      <input type="email" id="customer-email" placeholder="Email Address" required>
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date">
+      <input type="time" id="delivery-time">
+      <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
+        ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
       </div>
-      <div class="product-card">
-        <img src="images/spanish-bread.jpg" alt="Spanish Bread">
-        <h3>Spanish Bread</h3>
-        <p>Sweet rolled bread with buttery filling.</p>
-        <p><strong>₱10</strong></p>
-        <button onclick="addToCart({ name: 'Spanish Bread', price: 10 })">Add to Cart</button>
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="COD">Cash on Delivery</option>
+      </select>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
       </div>
-      <!-- Add more bakery items here -->
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
     </div>
   </div>
-
-  <div id="fillout-modal">
-    <span class="close-btn" onclick="closeFilloutModal()">×</span>
-    <iframe id="fillout-iframe"></iframe>
-  </div>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
-      authDomain: "dalahub-f8268.firebaseapp.com",
-      projectId: "dalahub-f8268",
-      storageBucket: "dalahub-f8268.appspot.com",
-      messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
-    };
-    firebase.initializeApp(firebaseConfig);
+    const products = [
+      { name: "Pandesal", price: 2, image: "https://via.placeholder.com/100" },
+      { name: "Ensaymada", price: 12, image: "https://via.placeholder.com/100" },
+      { name: "Spanish Bread", price: 8, image: "https://via.placeholder.com/100" },
+      { name: "Cheese Roll", price: 15, image: "https://via.placeholder.com/100" },
+      { name: "Mamon", price: 10, image: "https://via.placeholder.com/100" },
+      { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
+      { name: "Crinkles", price: 5, image: "https://via.placeholder.com/100" },
+      { name: "Taisan", price: 18, image: "https://via.placeholder.com/100" }
+    ];
   </script>
-  <script src="js/dalacart.js"></script>
+  <script src="dalacart.js"></script>
 </body>
 </html>
