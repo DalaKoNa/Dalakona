@@ -6,7 +6,6 @@
   <title>Bakery</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fdfdfd; padding: 1rem; }
@@ -66,48 +65,218 @@
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
+
   <div class="search-bar">
     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
   </div>
+
   <div class="grid" id="product-list"></div>
+
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
+
     <div class="form-section">
       <h3>Customer Info</h3>
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
+
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
       <input type="time" id="delivery-time">
       <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
         ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
       </div>
+
       <h3>Payment</h3>
       <select id="payment-method">
         <option value="GCash">GCash</option>
         <option value="PayMaya">PayMaya</option>
         <option value="COD">Cash on Delivery</option>
       </select>
+
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
       </div>
-      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
+
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
+        Checkout via WhatsApp
+      </button>
     </div>
   </div>
-  <script>
-    const products = [
-      { name: "Pandesal", price: 2, image: "https://via.placeholder.com/100" },
-      { name: "Ensaymada", price: 12, image: "https://via.placeholder.com/100" },
-      { name: "Spanish Bread", price: 8, image: "https://via.placeholder.com/100" },
-      { name: "Cheese Roll", price: 15, image: "https://via.placeholder.com/100" },
-      { name: "Mamon", price: 10, image: "https://via.placeholder.com/100" },
-      { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
-      { name: "Crinkles", price: 5, image: "https://via.placeholder.com/100" },
-      { name: "Taisan", price: 18, image: "https://via.placeholder.com/100" }
-    ];
-  </script>
-  <script src="dalacart.js"></script>
+
+<script>
+const products = [
+  { name: "Pandesal (5pcs)", price: 15, image: "https://via.placeholder.com/100" },
+  { name: "Spanish Bread", price: 12, image: "https://via.placeholder.com/100" },
+  { name: "Ensaymada", price: 18, image: "https://via.placeholder.com/100" },
+  { name: "Cheese Bread", price: 20, image: "https://via.placeholder.com/100" },
+  { name: "Monay", price: 10, image: "https://via.placeholder.com/100" },
+  { name: "Ube Cheese Pandesal", price: 25, image: "https://via.placeholder.com/100" }
+];
+
+const cart = {};
+
+function renderProducts() {
+  const list = document.getElementById('product-list');
+  list.innerHTML = '';
+  products.forEach((item, index) => {
+    list.innerHTML += `
+      <div class="card" data-name="${item.name.toLowerCase()}">
+        <img src="${item.image}" alt="${item.name}">
+        <h4>${item.name}</h4>
+        <p>₱${item.price.toFixed(2)}</p>
+        <div class="qty-controls">
+          <button onclick="decreaseQty(${index})">-</button>
+          <span id="qty-${index}">0</span>
+          <button onclick="increaseQty(${index})">+</button>
+        </div>
+      </div>`;
+  });
+}
+
+function filterProducts() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
+  });
+}
+
+function increaseQty(i) {
+  const item = products[i];
+  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+  cart[item.name].qty++;
+  updateQty(i);
+}
+
+function decreaseQty(i) {
+  const item = products[i];
+  if (cart[item.name]) {
+    cart[item.name].qty--;
+    if (cart[item.name].qty <= 0) delete cart[item.name];
+  }
+  updateQty(i);
+}
+
+function updateQty(i) {
+  const item = products[i];
+  const qty = cart[item.name]?.qty || 0;
+  document.getElementById(`qty-${i}`).innerText = qty;
+  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  updateCartSummary();
+  validateForm();
+}
+
+function toggleCart() {
+  document.getElementById('cart-modal').classList.toggle('hidden');
+}
+
+function updateCartSummary() {
+  let html = '<h3>Receipt Summary - Dala🚲Na Bakery</h3><ul>';
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
+    html += `<li>${line}</li>`;
+    total += item.qty * item.price;
+  });
+  const vat = total * 0.12;
+  const fee = 29.99;
+  const grand = total + vat + fee;
+  html += `</ul>
+    <p>Subtotal: ₱${total.toFixed(2)}</p>
+    <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+    <p>Service Fee: ₱${fee.toFixed(2)}</p>
+    <div class="line-break"></div>
+    <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+  document.getElementById('cart-summary').innerHTML = html;
+}
+
+function submitOrder() {
+  const name = document.getElementById('customer-name').value.trim();
+  const phone = document.getElementById('customer-phone').value.trim();
+  const email = document.getElementById('customer-email').value.trim();
+  const date = document.getElementById('delivery-date').value;
+  const time = document.getElementById('delivery-time').value;
+  const method = document.getElementById('payment-method').value;
+  const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+  const summary = document.getElementById('cart-summary').innerText;
+
+  const message = `New Order from Dala🚲Na Bakery:\nMerchant: Dala🚲Na Bakery\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment Method: ${method}`;
+
+  const waMessage = encodeURIComponent(message);
+  const merchantNumber = '63XXXXXXXXXX';
+  const adminNumber = '63YYYYYYYYYY';
+  const driverNumber = '63ZZZZZZZZZZ';
+
+  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+
+  toggleCart();
+}
+
+window.onload = () => {
+  renderProducts();
+  const today = new Date();
+  const localDate = today.toISOString().split('T')[0];
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
+
+  deliveryDate.value = localDate;
+
+  const updateTimeField = () => {
+    const selectedDate = new Date(deliveryDate.value);
+    const currentDate = new Date();
+
+    if (selectedDate.toDateString() === currentDate.toDateString()) {
+      const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+      deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+      deliveryTime.disabled = true;
+      deliveryNote.style.display = "block";
+    } else {
+      deliveryTime.disabled = false;
+      deliveryNote.style.display = "none";
+    }
+  };
+
+  updateTimeField();
+  deliveryDate.addEventListener('change', updateTimeField);
+};
+
+const requiredFields = [
+  'customer-name',
+  'customer-phone',
+  'customer-email',
+  'delivery-date',
+  'delivery-time',
+  'payment-method'
+];
+
+requiredFields.forEach(id => {
+  document.getElementById(id).addEventListener('input', validateForm);
+});
+
+function validateForm() {
+  const allFilled = requiredFields.every(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  });
+
+  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  if (allFilled && cartHasItems) {
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+  } else {
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+  }
+}
+</script>
 </body>
 </html>
