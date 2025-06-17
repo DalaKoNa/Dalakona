@@ -3,80 +3,201 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Privacy Policy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+  <title>Pharmacy - Dala🚲Na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 1.5rem;
-      max-width: 800px;
-      margin: auto;
-      background-color: #fefefe;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f4f4;
     }
-    h1, h2 {
-      font-family: 'Cinzel', serif;
-      color: #2c3e50;
+    header {
+      background: #008060;
+      color: white;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 1.5rem;
-    }
-    p {
-      margin: 0.4rem 0;
-    }
-    ul {
-      margin-left: 1.2rem;
-    }
-    a.button {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 10px 16px;
-      background-color: #007bff;
-      color: #fff;
+    .back-arrow {
+      color: white;
       text-decoration: none;
+      font-size: 1.5rem;
+    }
+    .cart-icon {
+      position: relative;
+      background: white;
+      color: #008060;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 0.8rem;
+      flex-grow: 1;
+    }
+    .product-info h4 {
+      margin: 0 0 0.4rem;
+      font-size: 1rem;
+    }
+    .product-info p {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 0.6rem;
+    }
+    .product-info button {
+      width: 100%;
+      padding: 0.6rem;
+      background: #008060;
+      color: white;
+      border: none;
       border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #cartDrawer {
+      position: fixed;
+      right: -100%;
+      top: 0;
+      width: 320px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      transition: right 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+    }
+    #cartDrawer.open {
+      right: 0;
+    }
+    #cartDrawer header {
+      background: #008060;
+      color: white;
+      padding: 1rem;
       font-weight: bold;
     }
-    a.button:hover {
-      background-color: #0056b3;
+    #cart-items {
+      padding: 1rem;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+    }
+    #cartDrawer footer {
+      padding: 1rem;
+      border-top: 1px solid #ddd;
+    }
+    #cartDrawer footer p {
+      margin: 0.4rem 0;
+      font-size: 0.9rem;
+    }
+    #cartDrawer footer button {
+      width: 100%;
+      padding: 0.6rem;
+      background: #008060;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    #fillout-frame {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      z-index: 9999;
     }
   </style>
 </head>
 <body>
-  <h1>🔐 Privacy Policy / Palisiya sang Pagpanalipod sang Imo Datos</h1>
 
-  <h2>1. Ano ang among ginatipon?</h2>
-  <p>Ginatipon namon ang imo pangalan, email, numero sang WhatsApp, kag order details.</p>
-  <p><em>We collect your name, email, WhatsApp number, and order details.</em></p>
+<header>
+  <a href="index.html" class="back-arrow">←</a>
+  <h2 style="margin: 0;">Pharmacy</h2>
+  <div class="cart-icon" onclick="toggleCart()">🛒</div>
+</header>
 
-  <h2>2. Paano namon ini ginagamit?</h2>
-  <ul>
-    <li>Para maproseso kag makumpirmar ang imo order paagi sa WhatsApp</li>
-    <li>Para mahatag sa merchant ang imo order kag delivery info</li>
-    <li>Para mapaayo ang serbisyo kag suporta</li>
-  </ul>
-  <p><em>We use this to process your order, notify the merchant, and improve our service.</em></p>
+<div class="product-grid">
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Paracetamol"><div class="product-info"><h4>Paracetamol</h4><p>Fever and pain relief. 10 tablets.</p><button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add - ₱35</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Hydrite"><div class="product-info"><h4>Hydrite</h4><p>Oral rehydration salts.</p><button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add - ₱15</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Biogesic"><div class="product-info"><h4>Biogesic</h4><p>Headache relief.</p><button onclick='addToCart({ name: "Biogesic", price: 30 })'>Add - ₱30</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Decolgen"><div class="product-info"><h4>Decolgen</h4><p>Cold and flu remedy.</p><button onclick='addToCart({ name: "Decolgen", price: 28 })'>Add - ₱28</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Alaxan+FR"><div class="product-info"><h4>Alaxan FR</h4><p>Pain and inflammation.</p><button onclick='addToCart({ name: "Alaxan FR", price: 40 })'>Add - ₱40</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Neozep"><div class="product-info"><h4>Neozep</h4><p>Cold symptoms relief.</p><button onclick='addToCart({ name: "Neozep", price: 25 })'>Add - ₱25</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Diatabs"><div class="product-info"><h4>Diatabs</h4><p>Anti-diarrhea.</p><button onclick='addToCart({ name: "Diatabs", price: 22 })'>Add - ₱22</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Loperamide"><div class="product-info"><h4>Loperamide</h4><p>Diarrhea control.</p><button onclick='addToCart({ name: "Loperamide", price: 20 })'>Add - ₱20</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Kremil-S"><div class="product-info"><h4>Kremil-S</h4><p>Stomach relief.</p><button onclick='addToCart({ name: "Kremil-S", price: 18 })'>Add - ₱18</button></div></div>
+  <div class="product-card"><img src="https://via.placeholder.com/300x150?text=Antacid"><div class="product-info"><h4>Antacid Tabs</h4><p>Indigestion relief.</p><button onclick='addToCart({ name: "Antacid Tabs", price: 19 })'>Add - ₱19</button></div></div>
+</div>
 
-  <h2>3. Ginasugid bala ini sa iban?</h2>
-  <p>Ang imo impormasyon ginahatag lang sa tindahan nga imo gin-orderan. Indi namon ini ginabaligya sa iban.</p>
-  <p><em>Your info is only shared with the merchant you ordered from. We do not sell your data.</em></p>
+<!-- Slide-in Cart Drawer -->
+<div id="cartDrawer">
+  <header>Your Cart</header>
+  <div id="cart-items"></div>
+  <footer>
+    <p id="subtotal">Subtotal: ₱0.00</p>
+    <p>Service Fee: ₱29.99</p>
+    <p>VAT (12%): <span id="vat">₱0.00</span></p>
+    <h3>Total: <span id="total">₱0.00</span></h3>
+    <button onclick="checkout()">Checkout</button>
+  </footer>
+</div>
 
-  <h2>4. Diin ginatipigan ang imo impormasyon?</h2>
-  <p>Ginatipigan namon ini paagi sa Fillout, Airtable, kag Google Sheets nga may seguridad.</p>
-  <p><em>Your data is stored securely using Fillout, Airtable, and Google Sheets.</em></p>
+<!-- Fillout iframe -->
+<iframe id="fillout-frame"></iframe>
 
-  <h2>5. Ano ang imo mga katungdanan?</h2>
-  <p>Pwede ka magpangayo nga burahon ukon usison ang imo data. Kontaka lang kami sa WhatsApp.</p>
-  <p><em>You may request to delete or review your data anytime. Just message us via WhatsApp.</em></p>
+<!-- Firebase & Script -->
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCgv0s0WMMI0OpX7O42bb11VM2pttUF0Eg",
+    authDomain: "dalahub-f8268.firebaseapp.com",
+    projectId: "dalahub-f8268",
+    storageBucket: "dalahub-f8268.appspot.com",
+    messagingSenderId: "1043572992249",
+    appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
+    measurementId: "G-1H5FRQWS2R"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+<script src="dalacart.js"></script>
 
-  <p><strong>📞 May pamangkot ka?</strong> Kontaka kami sa: <a href="https://wa.me/63XXXXXXXXXX" target="_blank">WhatsApp 63XXXXXXXXXX</a></p>
-
-  <a href="index.html" class="button">⬅ Balik sa Main Page</a>
 </body>
 </html>
