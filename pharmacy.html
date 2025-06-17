@@ -113,6 +113,9 @@
 
     <button id="checkout-btn" onclick="checkout()">Checkout</button>
   </div>
+<div class="terms-link">
+  By checking out, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
+</div>
 
   <div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
 
@@ -194,24 +197,36 @@
       cartPanel.classList.toggle('open');
     }
 
-    function checkout() {
-      const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
-      const method = document.getElementById("payment-method").value;
-      const name = document.getElementById("customer-name").value;
-      const phone = document.getElementById("customer-phone").value;
-      const email = document.getElementById("customer-email").value;
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
-      document.getElementById('fillout-iframe').src = filloutUrl;
-      document.getElementById('fillout-modal').style.display = 'flex';
-    }
+    function validateCheckoutFields() {
+  const name = document.getElementById("customer-name").value.trim();
+  const phone = document.getElementById("customer-phone").value.trim();
+  const email = document.getElementById("customer-email").value.trim();
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+  const method = document.getElementById("payment-method").value;
 
-    function searchProducts() {
-      renderProducts(document.getElementById('search-input').value);
-    }
+  const isValid = name && phone && email && date && time && method;
+  document.getElementById("checkout-btn").disabled = !isValid;
+}
 
-    renderProducts();
+["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time", "payment-method"].forEach(id => {
+  document.getElementById(id).addEventListener('input', validateCheckoutFields);
+});
+
+function checkout() {
+  if (document.getElementById("checkout-btn").disabled) return;
+
+  const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
+  const method = document.getElementById("payment-method").value;
+  const name = document.getElementById("customer-name").value;
+  const phone = document.getElementById("customer-phone").value;
+  const email = document.getElementById("customer-email").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+  const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
+  document.getElementById('fillout-iframe').src = filloutUrl;
+  document.getElementById('fillout-modal').style.display = 'flex';
+}
   </script>
 </body>
 </html>
