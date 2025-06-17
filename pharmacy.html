@@ -1,3 +1,4 @@
+<!-- Filename: pharmacy.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,28 +7,18 @@
   <title>Pharmacy - Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    body { font-family: 'Inter', sans-serif; margin: 0; background: #f9f9f9; }
     header {
-      background: #008060; color: white; padding: 1rem; position: relative;
+      background: #008060; color: white; padding: 1rem;
+      display: flex; justify-content: space-between; align-items: center;
     }
-  .header-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
- }
-.back-arrow {
-  font-size: 1.5rem;
-  color: white;
-  text-decoration: none;
-}
+    .back-arrow {
+      font-size: 1.5rem; color: white; text-decoration: none;
+    }
     .cart-icon {
-      width: 36px; height: 36px;
-      background: white; color: #008060; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: bold; cursor: pointer;
-      border: 1px solid #ccc;
-      position: relative;
+      width: 36px; height: 36px; background: white; color: #008060;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; cursor: pointer; border: 1px solid #ccc; position: relative;
     }
     .cart-count {
       position: absolute; top: -6px; right: -6px;
@@ -36,105 +27,117 @@
     .search-container {
       padding: 1rem; display: flex; justify-content: center; gap: 0.5rem;
     }
-    .search-container input { padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px; }
+    .search-container input, .search-container button {
+      padding: 0.5rem; border-radius: 8px; border: 1px solid #ccc;
+    }
     .search-container button {
-      background: #008060; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px;
+      background: #008060; color: white; border: none;
     }
     .product-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; padding: 1rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem; padding: 1rem;
     }
     .product-card {
-      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;
+      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden; display: flex; flex-direction: column;
     }
     .product-card img { width: 100%; height: 150px; object-fit: cover; }
-    .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .product-info {
+      padding: 1rem; flex-grow: 1; display: flex; flex-direction: column;
+    }
     .product-info h4 { margin: 0 0 0.5rem; font-size: 1rem; }
     .product-info p { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
     .quantity-controls {
-      display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .quantity-controls button {
       background: #008060; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px;
     }
-    .quantity-controls span { min-width: 24px; text-align: center; }
-    #cart-panel {
-      position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: white;
-      box-shadow: -2px 0 12px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 1rem; overflow-y: auto; z-index: 100;
+
+    /* Modal Cart Style */
+    #cart-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+      z-index: 200;
     }
-    #cart-panel.open { right: 0; }
-    #cart-items .item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    #cart-total { margin-top: 1rem; font-weight: bold; font-size: 0.9rem; }
+    #cart-modal {
+      background: white; width: 90%; max-width: 400px; padding: 1rem;
+      border-radius: 12px; max-height: 90vh; overflow-y: auto; position: relative;
+    }
+    .close-cart-btn {
+      position: absolute; top: 10px; right: 10px; background: transparent; border: none; font-size: 1.2rem; color: #666;
+    }
+    #cart-items .item {
+      display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem;
+    }
+    #cart-total {
+      margin-top: 1rem; font-weight: bold; font-size: 0.9rem;
+    }
+    .cart-inputs label {
+      font-size: 0.85rem; font-weight: bold; margin-top: 0.5rem;
+    }
+    .cart-inputs input, .cart-inputs select {
+      width: 100%; padding: 0.5rem; margin-top: 0.3rem; border: 1px solid #ccc; border-radius: 6px;
+    }
     #checkout-btn {
       margin-top: 1rem; padding: 0.8rem; background: #008060; color: white; border: none; width: 100%; border-radius: 8px;
     }
-    #checkout-btn:disabled {
-      background: #ccc; cursor: not-allowed;
-    }
-    #fillout-modal {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
-    }
-    #fillout-modal iframe {
-      width: 90vw; height: 90vh; border: none; border-radius: 12px;
-    }
-    .cart-inputs input, .cart-inputs select {
-      width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
-    }
-    .cart-inputs label { font-size: 0.9rem; margin-top: 0.8rem; display: block; font-weight: bold; }
+    #checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
     .terms-link {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      color: #444;
-      text-align: center;
+      font-size: 0.75rem; text-align: center; margin-top: 1rem;
     }
-    .terms-link a {
-      color: #008060;
-      text-decoration: underline;
+
+    /* Fillout Modal */
+    #fillout-modal {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 300;
     }
-    .close-cart-btn {
-      background: transparent; border: none; color: #888; font-size: 1.2rem; position: absolute; top: 10px; right: 10px; cursor: pointer;
+    #fillout-iframe {
+      width: 90vw; height: 90vh; border: none; border-radius: 12px;
     }
   </style>
 </head>
 <body>
-  <header>
-  <div class="header-flex">
-    <a href="index.html" class="back-arrow">←</a>
-    <h1 style="margin: 0; flex-grow: 1;">Pharmacy</h1>
-    <div class="cart-icon" onclick="toggleCart()">
-      🛒<span class="cart-count" id="cart-count">0</span>
-    </div>
+
+<header>
+  <a href="index.html" class="back-arrow">←</a>
+  <h1 style="margin: 0;">Pharmacy</h1>
+  <div class="cart-icon" onclick="openCart()">
+    🛒<span class="cart-count" id="cart-count">0</span>
   </div>
 </header>
 
-  <div class="search-container">
-    <input type="text" id="search-input" placeholder="Search products...">
-    <button onclick="searchProducts()">Search</button>
-  </div>
+<div class="search-container">
+  <input type="text" id="search-input" placeholder="Search products...">
+  <button onclick="searchProducts()">Search</button>
+</div>
 
-  <div class="product-grid" id="product-grid"></div>
+<div class="product-grid" id="product-grid"></div>
 
-  <div id="cart-panel">
-    <button class="close-cart-btn" onclick="toggleCart()">×</button>
+<!-- Centered Cart Modal -->
+<div id="cart-overlay">
+  <div id="cart-modal">
+    <button class="close-cart-btn" onclick="closeCart()">×</button>
     <h3>Your Dala🚲Cart</h3>
     <div id="cart-items"></div>
     <div id="cart-total"></div>
 
     <div class="cart-inputs">
-      <label for="payment-method">Payment Method</label>
+      <label>Payment Method</label>
       <select id="payment-method">
         <option value="COD">Cash on Delivery</option>
         <option value="PayMaya">PayMaya</option>
         <option value="Bank Transfer">Bank Transfer</option>
       </select>
-      <label for="delivery-date">Delivery Date</label>
+      <label>Delivery Date</label>
       <input type="date" id="delivery-date">
-      <label for="delivery-time">Delivery Time</label>
+      <label>Delivery Time</label>
       <input type="time" id="delivery-time">
-      <label for="customer-name">Your Name</label>
+      <label>Your Name</label>
       <input type="text" id="customer-name">
-      <label for="customer-phone">Phone</label>
+      <label>Phone</label>
       <input type="tel" id="customer-phone">
-      <label for="customer-email">Email</label>
+      <label>Email</label>
       <input type="email" id="customer-email">
     </div>
 
@@ -143,135 +146,131 @@
       By checking out, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
     </div>
   </div>
+</div>
 
-  <div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
+<!-- Embedded Fillout -->
+<div id="fillout-modal">
+  <iframe id="fillout-iframe"></iframe>
+</div>
 
-  <script>
-    const products = [
-      { name: "Paracetamol 500mg", price: 35, desc: "Fever and pain relief", image: "https://via.placeholder.com/300x150?text=Paracetamol" },
-      { name: "Hydrite", price: 15, desc: "Oral rehydration salts", image: "https://via.placeholder.com/300x150?text=Hydrite" },
-      { name: "Biogesic", price: 30, desc: "Headache and fever relief", image: "https://via.placeholder.com/300x150?text=Biogesic" },
-      { name: "Decolgen", price: 28, desc: "Cold and flu relief", image: "https://via.placeholder.com/300x150?text=Decolgen" },
-      { name: "Alaxan FR", price: 40, desc: "Body pain relief", image: "https://via.placeholder.com/300x150?text=Alaxan+FR" },
-      { name: "Neozep", price: 25, desc: "Cold symptom relief", image: "https://via.placeholder.com/300x150?text=Neozep" },
-      { name: "Diatabs", price: 22, desc: "Anti-diarrheal", image: "https://via.placeholder.com/300x150?text=Diatabs" },
-      { name: "Loperamide", price: 20, desc: "Diarrhea control", image: "https://via.placeholder.com/300x150?text=Loperamide" },
-      { name: "Kremil-S", price: 18, desc: "Stomach relief", image: "https://via.placeholder.com/300x150?text=Kremil-S" },
-      { name: "Antacid Tabs", price: 19, desc: "Indigestion relief", image: "https://via.placeholder.com/300x150?text=Antacid+Tabs" }
-    ];
+<script>
+  const products = [
+    { name: "Paracetamol", price: 35, desc: "Fever and pain relief", image: "https://via.placeholder.com/300x150?text=Paracetamol" },
+    { name: "Hydrite", price: 15, desc: "Oral rehydration salts", image: "https://via.placeholder.com/300x150?text=Hydrite" },
+    { name: "Biogesic", price: 30, desc: "Headache relief", image: "https://via.placeholder.com/300x150?text=Biogesic" },
+    { name: "Decolgen", price: 28, desc: "Cold relief", image: "https://via.placeholder.com/300x150?text=Decolgen" },
+    { name: "Alaxan FR", price: 40, desc: "Body pain relief", image: "https://via.placeholder.com/300x150?text=Alaxan+FR" },
+    { name: "Neozep", price: 25, desc: "Cold symptoms", image: "https://via.placeholder.com/300x150?text=Neozep" },
+    { name: "Diatabs", price: 22, desc: "Anti-diarrheal", image: "https://via.placeholder.com/300x150?text=Diatabs" },
+    { name: "Loperamide", price: 20, desc: "Diarrhea control", image: "https://via.placeholder.com/300x150?text=Loperamide" },
+    { name: "Kremil-S", price: 18, desc: "Stomach relief", image: "https://via.placeholder.com/300x150?text=Kremil-S" },
+    { name: "Antacid Tabs", price: 19, desc: "Indigestion relief", image: "https://via.placeholder.com/300x150?text=Antacid+Tabs" }
+  ];
+  let cart = {};
 
-    let cart = {};
-
-    function renderProducts(filter = "") {
-      const grid = document.getElementById('product-grid');
-      grid.innerHTML = "";
-      products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach((p, i) => {
-        const qty = cart[p.name]?.qty || 0;
-        grid.innerHTML += `
-          <div class="product-card">
-            <img src="${p.image}" alt="${p.name}">
-            <div class="product-info">
-              <h4>${p.name}</h4>
-              <p>${p.desc}</p>
-              <div class="quantity-controls">
-                <button onclick='decreaseQty("${p.name}")'>–</button>
-                <span>${qty}</span>
-                <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
-              </div>
+  function renderProducts(filter = "") {
+    const grid = document.getElementById('product-grid');
+    grid.innerHTML = "";
+    products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
+      const qty = cart[p.name]?.qty || 0;
+      grid.innerHTML += `
+        <div class="product-card">
+          <img src="${p.image}" alt="${p.name}">
+          <div class="product-info">
+            <h4>${p.name}</h4>
+            <p>${p.desc}</p>
+            <div class="quantity-controls">
+              <button onclick='decreaseQty("${p.name}")'>–</button>
+              <span>${qty}</span>
+              <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
             </div>
-          </div>`;
-      });
-    }
-
-    function increaseQty(name, price) {
-      if (!cart[name]) cart[name] = { qty: 1, price };
-      else cart[name].qty++;
-      updateCart();
-    }
-
-    function decreaseQty(name) {
-      if (cart[name]) {
-        cart[name].qty--;
-        if (cart[name].qty <= 0) delete cart[name];
-      }
-      updateCart();
-    }
-
-    function updateCart() {
-      const container = document.getElementById('cart-items');
-      container.innerHTML = "";
-      let subtotal = 0, totalItems = 0;
-      for (let name in cart) {
-        const item = cart[name];
-        subtotal += item.price * item.qty;
-        totalItems += item.qty;
-        container.innerHTML += `<div class="item">${item.qty}x ${name} <b>₱${item.price * item.qty}</b></div>`;
-      }
-      const vat = subtotal * 0.12;
-      const fee = 29.99;
-      const total = subtotal + vat + fee;
-      document.getElementById('cart-total').innerHTML = `
-        Subtotal: ₱${subtotal.toFixed(2)}<br>
-        VAT (12%): ₱${vat.toFixed(2)}<br>
-        Service Fee: ₱${fee.toFixed(2)}<br>
-        <b>Total: ₱${total.toFixed(2)}</b>`;
-      document.getElementById('cart-count').innerText = totalItems;
-      renderProducts(document.getElementById('search-input').value);
-    }
-
-    function toggleCart() {
-      const cartPanel = document.getElementById('cart-panel');
-      cartPanel.classList.toggle('open');
-    }
-
-    function validateCheckoutFields() {
-      const name = document.getElementById("customer-name").value.trim();
-      const phone = document.getElementById("customer-phone").value.trim();
-      const email = document.getElementById("customer-email").value.trim();
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const method = document.getElementById("payment-method").value;
-
-      const isValid = name && phone && email && date && time && method;
-      document.getElementById("checkout-btn").disabled = !isValid;
-    }
-
-    ["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time", "payment-method"].forEach(id => {
-      document.getElementById(id).addEventListener('input', validateCheckoutFields);
+          </div>
+        </div>`;
     });
+  }
 
-    function checkout() {
-      if (document.getElementById("checkout-btn").disabled) return;
+  function increaseQty(name, price) {
+    if (!cart[name]) cart[name] = { qty: 1, price };
+    else cart[name].qty++;
+    updateCart();
+  }
 
-      toggleCart(); // Auto-close cart
-
-      const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
-      const method = document.getElementById("payment-method").value;
-      const name = document.getElementById("customer-name").value;
-      const phone = document.getElementById("customer-phone").value;
-      const email = document.getElementById("customer-email").value;
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-
-      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
-      document.getElementById('fillout-iframe').src = filloutUrl;
-      document.getElementById('fillout-modal').style.display = 'flex';
-
-      const msg = `New Order from ${name}\n📱 ${phone}\n✉️ ${email}\n🛒 ${summary}\n📅 ${date} ${time}\n💳 ${method} - ${method === 'COD' ? 'Unpaid' : 'Pending'}`;
-
-      const merchantNumber = '63XXXXXXXXXX';
-      const adminNumber = '63YYYYYYYYYY';
-      window.open(`https://wa.me/${merchantNumber}?text=${encodeURIComponent(msg)}`, '_blank');
-      setTimeout(() => {
-        window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(msg)}`, '_blank');
-      }, 1000);
+  function decreaseQty(name) {
+    if (cart[name]) {
+      cart[name].qty--;
+      if (cart[name].qty <= 0) delete cart[name];
     }
+    updateCart();
+  }
 
-    function searchProducts() {
-      renderProducts(document.getElementById('search-input').value);
+  function updateCart() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = "";
+    let subtotal = 0, count = 0;
+    for (let name in cart) {
+      const item = cart[name];
+      subtotal += item.price * item.qty;
+      count += item.qty;
+      container.innerHTML += `<div class="item">${item.qty}x ${name} <b>₱${item.price * item.qty}</b></div>`;
     }
+    const vat = subtotal * 0.12;
+    const fee = 29.99;
+    const total = subtotal + vat + fee;
+    document.getElementById('cart-total').innerHTML = `
+      Subtotal: ₱${subtotal.toFixed(2)}<br>
+      VAT (12%): ₱${vat.toFixed(2)}<br>
+      Service Fee: ₱${fee.toFixed(2)}<br>
+      <b>Total: ₱${total.toFixed(2)}</b>`;
+    document.getElementById('cart-count').innerText = count;
+    validateCheckoutFields();
+  }
 
-    renderProducts();
-  </script>
+  function searchProducts() {
+    renderProducts(document.getElementById('search-input').value);
+  }
+
+  function openCart() {
+    document.getElementById('cart-overlay').style.display = 'flex';
+  }
+
+  function closeCart() {
+    document.getElementById('cart-overlay').style.display = 'none';
+  }
+
+  function validateCheckoutFields() {
+    const valid = ["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time"].every(id =>
+      document.getElementById(id).value.trim() !== ""
+    );
+    document.getElementById("checkout-btn").disabled = !valid;
+  }
+
+  function checkout() {
+    if (document.getElementById("checkout-btn").disabled) return;
+
+    closeCart();
+    const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
+    const method = document.getElementById("payment-method").value;
+    const name = document.getElementById("customer-name").value;
+    const phone = document.getElementById("customer-phone").value;
+    const email = document.getElementById("customer-email").value;
+    const date = document.getElementById("delivery-date").value;
+    const time = document.getElementById("delivery-time").value;
+
+    const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
+    document.getElementById('fillout-iframe').src = filloutUrl;
+    document.getElementById('fillout-modal').style.display = 'flex';
+
+    const msg = `New Order from ${name}\n📱 ${phone}\n✉️ ${email}\n🛒 ${summary}\n📅 ${date} ${time}\n💳 ${method} - ${method === 'COD' ? 'Unpaid' : 'Pending'}`;
+    const merchantNumber = '63XXXXXXXXXX';
+    const adminNumber = '63YYYYYYYYYY';
+    window.open(`https://wa.me/${merchantNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+    }, 1000);
+  }
+
+  renderProducts();
+</script>
+
 </body>
 </html>
