@@ -95,7 +95,7 @@
         Cancellations are not allowed after confirmation.
       </div>
 
-      <button class="checkout-btn" onclick="submitOrder()">Checkout via WhatsApp</button>
+      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
     </div>
   </div>
 
@@ -200,8 +200,21 @@ ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}`;
 
-      window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`);
-    }
+      // Replace with actual numbers
+const merchantNumber = '63XXXXXXXXXX';
+const adminNumber = '63YYYYYYYYYY';
+const driverNumber = '63ZZZZZZZZZZ'; // Optional driver
+
+const waMessage = encodeURIComponent(message);
+
+// Send to merchant
+window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+
+// Send to admin
+window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+
+// Optional: Send to driver
+window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
 
     window.onload = () => {
       renderProducts();
@@ -232,5 +245,28 @@ Payment: ${method}`;
       deliveryDate.addEventListener('change', updateTimeField);
     };
   </script>
+<script>
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
+
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+
+  function validateForm() {
+    const isValid = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    document.getElementById('checkout-btn').disabled = !isValid;
+  }
+</script>
 </body>
 </html>
