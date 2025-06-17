@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pharmacy - Dala🚲na</title>
+  <title>Ellen's Cakes - Dala🚲na</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -10,133 +10,161 @@
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f7f7f7;
+      background: #f9f9f9;
     }
     header {
-      background: #008060;
+      background: #ff4081;
       color: white;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-    }
-    header h1 {
-      margin: 0;
       font-size: 1.5rem;
     }
-    .cart-summary {
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 1rem;
       background: white;
-      padding: 0.5rem 1rem;
+      color: #ff4081;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+    .product-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .product-card img {
+      width: 100%;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      font-size: 0.9rem;
-      color: #333;
     }
-    .cart-summary p {
-      margin: 0.25rem 0;
-    }
-    .cart-summary button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: #2962ff;
+    .product-card button {
+      margin-top: 10px;
+      padding: 10px;
+      background: #00c853;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .product-card {
+    #cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .product-info {
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      z-index: 999;
       padding: 1rem;
-      flex-grow: 1;
+      overflow-y: auto;
     }
-    .product-info h4 {
-      margin: 0 0 0.5rem;
-      font-size: 1rem;
+    #cart-modal h3 {
+      margin-top: 0;
     }
-    .product-info p {
-      margin: 0 0 1rem;
-      font-size: 0.9rem;
-      color: #555;
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
     }
-    .product-info button {
+    .cart-item button {
+      margin-left: 5px;
+    }
+    .checkout-btn {
       width: 100%;
-      padding: 0.6rem;
-      background: #008060;
+      padding: 12px;
+      background: #2962ff;
       color: white;
       border: none;
       border-radius: 8px;
+      margin-top: 1rem;
       cursor: pointer;
     }
     #fillout-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
     }
     #fillout-modal iframe {
-      width: 90vw;
-      height: 90vh;
+      width: 90%;
+      height: 80vh;
       border: none;
       border-radius: 12px;
+    }
+    #fillout-modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 24px;
+      background: white;
+      border-radius: 50%;
+      padding: 5px 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Pharmacy</h1>
-    <div class="cart-summary">
-      <h4>Your Dala-Cart 🧾</h4>
-      <div id="cart-items"></div>
-      <p id="cart-total">Total: ₱0.00</p>
-      <button id="checkout-btn" disabled>Checkout</button>
-    </div>
+    Ellen's Cakes 🍰
+    <div class="cart-icon" onclick="toggleCartModal()">🧾 Dala-Cart (<span id="cart-count">0</span>)</div>
   </header>
 
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Paracetamol" alt="Paracetamol">
-      <div class="product-info">
-        <h4>Paracetamol 500mg</h4>
-        <p>Fever and pain relief. 10 tablets per pack.</p>
-        <button onclick='addToCart({ name: "Paracetamol", price: 35 })'>Add to Cart - ₱35</button>
+  <div class="container">
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="images/choco-cake.jpg" alt="Chocolate Cake">
+        <h3>Chocolate Cake</h3>
+        <p>Rich and moist chocolate cake</p>
+        <p><strong>₱350</strong></p>
+        <button onclick="addToCart({ name: 'Chocolate Cake', price: 350 })">Add to Cart</button>
       </div>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x150?text=Hydrite" alt="Hydrite">
-      <div class="product-info">
-        <h4>Hydrite</h4>
-        <p>Oral rehydration salts. 1 sachet.</p>
-        <button onclick='addToCart({ name: "Hydrite", price: 15 })'>Add to Cart - ₱15</button>
+      <div class="product-card">
+        <img src="images/redvelvet.jpg" alt="Red Velvet Cake">
+        <h3>Red Velvet</h3>
+        <p>Classic layered red velvet cake</p>
+        <p><strong>₱420</strong></p>
+        <button onclick="addToCart({ name: 'Red Velvet', price: 420 })">Add to Cart</button>
       </div>
+      <!-- Add more products below as needed -->
     </div>
+  </div>
+
+  <div id="cart-modal">
+    <h3>Your Dala-Cart</h3>
+    <div id="cart-items"></div>
+    <p id="cart-total">Total: ₱0.00</p>
+    <button id="checkout-btn" class="checkout-btn" disabled>Checkout</button>
   </div>
 
   <div id="fillout-modal">
+    <span class="close-btn" onclick="closeFilloutModal()">×</span>
     <iframe id="fillout-iframe"></iframe>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
@@ -146,11 +174,16 @@
       projectId: "dalahub-f8268",
       storageBucket: "dalahub-f8268.appspot.com",
       messagingSenderId: "1043572992249",
-      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28",
-      measurementId: "G-1H5FRQWS2R"
+      appId: "1:1043572992249:web:90b9b4b41d338dc4e21a28"
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-  <script src="dalacart.js"></script>
+  <script src="js/dalacart.js"></script>
+  <script>
+    function toggleCartModal() {
+      const modal = document.getElementById("cart-modal");
+      modal.style.display = modal.style.display === "block" ? "none" : "block";
+    }
+  </script>
 </body>
 </html>
