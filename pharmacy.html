@@ -18,7 +18,7 @@
       border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; }
+    h1 { text-align: center; margin-bottom: 1rem; font-size: 1.3rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .card {
       background: white; border: 1px solid #ddd; border-radius: 12px;
@@ -99,99 +99,100 @@
     </div>
   </div>
 
+  <!-- All scripts placed at the end -->
   <script>
-  const products = [
-    { name: "Paracetamol", price: 5, image: "https://via.placeholder.com/100" },
-    { name: "Biogesic", price: 6, image: "https://via.placeholder.com/100" },
-    { name: "Amoxicillin", price: 10, image: "https://via.placeholder.com/100" },
-    { name: "Loperamide", price: 4, image: "https://via.placeholder.com/100" },
-    { name: "Vitamin C", price: 3, image: "https://via.placeholder.com/100" },
-    { name: "Betadine", price: 20, image: "https://via.placeholder.com/100" },
-    { name: "Hydrite", price: 8, image: "https://via.placeholder.com/100" },
-    { name: "Salonpas", price: 12, image: "https://via.placeholder.com/100" },
-    { name: "Alaxan FR", price: 7, image: "https://via.placeholder.com/100" },
-    { name: "Neozep", price: 6, image: "https://via.placeholder.com/100" }
-  ];
+    const products = [
+      { name: "Paracetamol", price: 5, image: "https://via.placeholder.com/100" },
+      { name: "Biogesic", price: 6, image: "https://via.placeholder.com/100" },
+      { name: "Amoxicillin", price: 10, image: "https://via.placeholder.com/100" },
+      { name: "Loperamide", price: 4, image: "https://via.placeholder.com/100" },
+      { name: "Vitamin C", price: 3, image: "https://via.placeholder.com/100" },
+      { name: "Betadine", price: 20, image: "https://via.placeholder.com/100" },
+      { name: "Hydrite", price: 8, image: "https://via.placeholder.com/100" },
+      { name: "Salonpas", price: 12, image: "https://via.placeholder.com/100" },
+      { name: "Alaxan FR", price: 7, image: "https://via.placeholder.com/100" },
+      { name: "Neozep", price: 6, image: "https://via.placeholder.com/100" }
+    ];
 
-  const cart = {};
+    const cart = {};
 
-  function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = '';
-    products.forEach((item, index) => {
-      list.innerHTML += `
-        <div class="card">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price.toFixed(2)}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${index})">-</button>
-            <span id="qty-${index}">0</span>
-            <button onclick="increaseQty(${index})">+</button>
-          </div>
-        </div>`;
-    });
-  }
-
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
-  }
-
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+          <div class="card">
+            <img src="${item.image}" alt="${item.name}">
+            <h4>${item.name}</h4>
+            <p>₱${item.price.toFixed(2)}</p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
+      });
     }
-    updateQty(i);
-  }
 
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-  }
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
+    }
 
-  function toggleCart() {
-    document.getElementById('cart-modal').classList.toggle('hidden');
-  }
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
+      }
+      updateQty(i);
+    }
 
-  function updateCartSummary() {
-    let html = '<h3>Receipt Summary</h3><ul>';
-    let total = 0;
-    Object.values(cart).forEach(item => {
-      const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
-      html += `<li>${line}</li>`;
-      total += item.qty * item.price;
-    });
-    const vat = total * 0.12;
-    const fee = 29.99;
-    const grand = total + vat + fee;
-    html += `</ul>
-      <p>Subtotal: ₱${total.toFixed(2)}</p>
-      <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-      <p>Service Fee: ₱${fee.toFixed(2)}</p>
-      <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-    document.getElementById('cart-summary').innerHTML = html;
-  }
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+    }
 
-  function submitOrder() {
-    const name = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
-    const email = document.getElementById('customer-email').value.trim();
-    const date = document.getElementById('delivery-date').value;
-    const time = document.getElementById('delivery-time').value;
-    const method = document.getElementById('payment-method').value;
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
 
-    const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-    const summary = document.getElementById('cart-summary').innerText;
+    function updateCartSummary() {
+      let html = '<h3>Receipt Summary</h3><ul>';
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
+        html += `<li>${line}</li>`;
+        total += item.qty * item.price;
+      });
+      const vat = total * 0.12;
+      const fee = 29.99;
+      const grand = total + vat + fee;
+      html += `</ul>
+        <p>Subtotal: ₱${total.toFixed(2)}</p>
+        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+        <p>Service Fee: ₱${fee.toFixed(2)}</p>
+        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
 
-    const message = `New Order from Dala🚲Na Pharmacy:
+    function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
+
+      const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+      const summary = document.getElementById('cart-summary').innerText;
+
+      const message = `New Order from Dala🚲Na Pharmacy:
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -200,76 +201,72 @@ ${summary}
 Delivery: ${date} ${time}
 Payment Method: ${method}`;
 
-    const waMessage = encodeURIComponent(message);
-    
-    // Replace with real numbers
-    const merchantNumber = '63XXXXXXXXXX';
-    const adminNumber = '63YYYYYYYYYY';
-    const driverNumber = '63ZZZZZZZZZZ'; // Optional
+      const waMessage = encodeURIComponent(message);
 
-    // Send messages
-    window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-    window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-    window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+      const merchantNumber = '63XXXXXXXXXX';
+      const adminNumber = '63YYYYYYYYYY';
+      const driverNumber = '63ZZZZZZZZZZ';
 
-    toggleCart(); // Close cart after sending
-  }
+      window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+      window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+      window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
 
-  // Load products and set delivery defaults
-  window.onload = () => {
-    renderProducts();
-    const today = new Date();
-    const localDate = today.toISOString().split('T')[0];
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+      toggleCart();
+    }
 
-    deliveryDate.value = localDate;
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
 
-    const updateTimeField = () => {
-      const selectedDate = new Date(deliveryDate.value);
-      const currentDate = new Date();
+      const today = new Date();
+      const localDate = today.toISOString().split('T')[0];
+      const deliveryDate = document.getElementById('delivery-date');
+      const deliveryTime = document.getElementById('delivery-time');
+      const deliveryNote = document.getElementById('delivery-note');
 
-      if (selectedDate.toDateString() === currentDate.toDateString()) {
-        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
-        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-        deliveryTime.disabled = true;
-        deliveryNote.style.display = "block";
-      } else {
-        deliveryTime.disabled = false;
-        deliveryNote.style.display = "none";
-      }
-    };
+      deliveryDate.value = localDate;
 
-    updateTimeField();
-    deliveryDate.addEventListener('change', updateTimeField);
-  };
-</script>
+      const updateTimeField = () => {
+        const selectedDate = new Date(deliveryDate.value);
+        const currentDate = new Date();
 
-<script>
-  // Validate form before enabling checkout
-  const requiredFields = [
-    'customer-name',
-    'customer-phone',
-    'customer-email',
-    'delivery-date',
-    'delivery-time',
-    'payment-method'
-  ];
+        if (selectedDate.toDateString() === currentDate.toDateString()) {
+          const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+          deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+          deliveryTime.disabled = true;
+          deliveryNote.style.display = "block";
+        } else {
+          deliveryTime.disabled = false;
+          deliveryNote.style.display = "none";
+        }
+      };
 
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
-
-  function validateForm() {
-    const isValid = requiredFields.every(id => {
-      const el = document.getElementById(id);
-      return el && el.value.trim() !== '';
+      updateTimeField();
+      deliveryDate.addEventListener('change', updateTimeField);
     });
 
-    document.getElementById('checkout-btn').disabled = !isValid;
-  }
-</script>
+    // Form validation
+    const requiredFields = [
+      'customer-name',
+      'customer-phone',
+      'customer-email',
+      'delivery-date',
+      'delivery-time',
+      'payment-method'
+    ];
 
+    requiredFields.forEach(id => {
+      document.getElementById(id).addEventListener('input', validateForm);
+    });
+
+    function validateForm() {
+      const isValid = requiredFields.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim() !== '';
+      });
+
+      document.getElementById('checkout-btn').disabled = !isValid;
+    }
+  </script>
 </body>
 </html>
