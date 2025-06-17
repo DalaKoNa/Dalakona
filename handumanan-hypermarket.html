@@ -3,296 +3,187 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Handumanan Hypermarket - Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Handumanan Hypermarket</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="dalacart.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
-    header { background: #008060; color: white; padding: 1rem; position: relative; }
-    .header-flex { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f8f8f8;
+    }
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     .back-arrow {
-      position: absolute; left: 1rem; top: 1rem;
-      font-size: 1.5rem; color: white; text-decoration: none;
-    }
-    .cart-icon {
-      position: absolute; right: 1rem; top: 1rem;
-      width: 36px; height: 36px;
-      background: white; color: #008060; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: bold; cursor: pointer; border: 1px solid #ccc;
-    }
-    .cart-count {
-      position: absolute; top: -6px; right: -6px;
-      background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px;
-    }
-    .search-container {
-      padding: 1rem; display: flex; justify-content: center; gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .search-container input {
-      padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px;
-    }
-    .search-container button {
-      background: #008060; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem; padding: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
     .product-card {
-      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .product-card img { width: 100%; height: 140px; object-fit: cover; }
-    .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
-    .product-info h4 { margin: 0 0 0.5rem; font-size: 1rem; }
-    .product-info p { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
-    .quantity-controls {
-      display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
+    .product-card img {
+      max-width: 100%;
+      border-radius: 6px;
     }
-    .quantity-controls button {
-      background: #008060; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px;
+    .cart {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      height: 100%;
+      padding: 1rem;
+      box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 9999;
     }
-    .quantity-controls span { min-width: 24px; text-align: center; }
-
-    #cart-panel {
-      position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: white;
-      box-shadow: -2px 0 12px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 1rem; overflow-y: auto; z-index: 100;
+    .cart.open {
+      transform: translateX(0);
     }
-    #cart-panel.open { right: 0; }
-    #cart-items .item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    #cart-total { margin-top: 1rem; font-weight: bold; font-size: 0.9rem; }
-    #checkout-btn {
-      margin-top: 1rem; padding: 0.8rem; background: #008060; color: white; border: none; width: 100%; border-radius: 8px;
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
-    #checkout-btn:disabled {
-      background: #ccc; cursor: not-allowed;
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #ccc;
+      padding: 0.75rem 0;
+    }
+    .cart-summary {
+      border-top: 1px solid #ddd;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+    .cart-summary div {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.25rem 0;
+    }
+    .checkout-button {
+      width: 100%;
+      background: #22c55e;
+      color: white;
+      font-size: 1.1rem;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+    }
+    .terms {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #555;
     }
     .close-cart {
-      position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-      font-size: 1.5rem; color: #333; cursor: pointer;
+      font-size: 1.25rem;
+      cursor: pointer;
     }
-    #fillout-modal {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
-    }
-    #fillout-modal iframe {
-      width: 90vw; height: 90vh; border: none; border-radius: 12px;
-    }
-    .cart-inputs input, .cart-inputs select {
-      width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
-    }
-    .cart-inputs label { font-size: 0.9rem; margin-top: 0.8rem; display: block; font-weight: bold; }
-    .terms-link {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      color: #444;
-      text-align: center;
-    }
-    .terms-link a {
-      color: #008060;
-      text-decoration: underline;
-    }
-    @media screen and (max-width: 600px) {
-      .product-card img { height: 120px; }
-      .header-flex h1 { font-size: 1.2rem; }
-      #cart-panel { max-width: 100vw; }
+    @media (max-width: 500px) {
+      .cart {
+        width: 100%;
+        border-radius: 0;
+      }
     }
   </style>
 </head>
 <body>
-<!-- PART 1 -->
-<div class="search-container">
-  <input type="text" id="search-input" placeholder="Search products...">
-  <button onclick="searchProducts()">Search</button>
-</div>
+  <header class="header-flex">
+    <a href="index.html" class="back-arrow">⬅</a>
+    <h1>Handumanan Hypermarket</h1>
+    <button id="openCart">🛒 <span id="cartCount">0</span></button>
+  </header>
 
-<div class="product-grid" id="product-grid"></div>
-
-<div id="cart-panel">
-  <div class="cart-header">
-    <h3>Your Dala🚲Cart</h3>
-    <button id="close-cart" onclick="toggleCart()">✕</button>
+  <div class="product-grid" id="productGrid">
+    <!-- Product Cards Injected Here -->
   </div>
 
-  <div id="cart-items"></div>
-  <div id="cart-total"></div>
-
-  <div class="cart-inputs">
-    <label for="payment-method">Payment Method</label>
-    <select id="payment-method">
-      <option value="COD">Cash on Delivery</option>
-      <option value="PayMaya">PayMaya</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-    </select>
-    <label for="delivery-date">Delivery Date</label>
-    <input type="date" id="delivery-date">
-    <label for="delivery-time">Delivery Time</label>
-    <input type="time" id="delivery-time">
-    <label for="customer-name">Your Name</label>
-    <input type="text" id="customer-name">
-    <label for="customer-phone">Phone</label>
-    <input type="tel" id="customer-phone">
-    <label for="customer-email">Email</label>
-    <input type="email" id="customer-email">
+  <div class="cart" id="cart">
+    <div class="cart-header">
+      <span>Your Cart</span>
+      <span class="close-cart" id="closeCart">✕</span>
+    </div>
+    <div id="cartItems"></div>
+    <div class="cart-summary">
+      <div><span>Subtotal</span><span id="subtotal">₱0.00</span></div>
+      <div><span>VAT (12%)</span><span id="vat">₱0.00</span></div>
+      <div><span>Service Fee</span><span>₱29.99</span></div>
+      <div><strong>Total</strong><strong id="total">₱0.00</strong></div>
+      <button class="checkout-button" id="checkoutButton">Checkout</button>
+      <div class="terms">By checking out, you agree to our Terms and Conditions.</div>
+    </div>
   </div>
 
-  <button id="checkout-btn" onclick="checkout()" disabled>Checkout</button>
+  <script>
+    const products = [
+      { name: "Rice 5kg", price: 320, img: "https://via.placeholder.com/160?text=Rice" },
+      { name: "Canned Sardines", price: 25, img: "https://via.placeholder.com/160?text=Sardines" },
+      { name: "Cooking Oil 1L", price: 105, img: "https://via.placeholder.com/160?text=Oil" },
+      { name: "Laundry Detergent", price: 85, img: "https://via.placeholder.com/160?text=Detergent" },
+      { name: "Toilet Paper (4 rolls)", price: 60, img: "https://via.placeholder.com/160?text=Tissue" },
+      { name: "Bath Soap", price: 25, img: "https://via.placeholder.com/160?text=Soap" },
+      { name: "Shampoo Sachets", price: 12, img: "https://via.placeholder.com/160?text=Shampoo" },
+      { name: "Coffee 3-in-1", price: 10, img: "https://via.placeholder.com/160?text=Coffee" },
+      { name: "Instant Noodles", price: 12, img: "https://via.placeholder.com/160?text=Noodles" },
+      { name: "Eggs (1 dozen)", price: 90, img: "https://via.placeholder.com/160?text=Eggs" },
+      { name: "Bread Loaf", price: 55, img: "https://via.placeholder.com/160?text=Bread" },
+      { name: "Hotdog 1kg", price: 160, img: "https://via.placeholder.com/160?text=Hotdog" },
+      { name: "Corned Beef", price: 52, img: "https://via.placeholder.com/160?text=Corned+Beef" },
+      { name: "Milk Powder", price: 180, img: "https://via.placeholder.com/160?text=Milk" },
+      { name: "Sugar 1kg", price: 55, img: "https://via.placeholder.com/160?text=Sugar" },
+      { name: "Vinegar 350ml", price: 18, img: "https://via.placeholder.com/160?text=Vinegar" },
+      { name: "Soy Sauce 350ml", price: 22, img: "https://via.placeholder.com/160?text=Soy+Sauce" },
+      { name: "Garlic", price: 30, img: "https://via.placeholder.com/160?text=Garlic" },
+      { name: "Onion", price: 45, img: "https://via.placeholder.com/160?text=Onion" },
+      { name: "Pancit Canton", price: 15, img: "https://via.placeholder.com/160?text=Pancit+Canton" },
+      // Add 10 more later if needed
+    ];
 
-  <div class="terms-link">
-    By checking out, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
-  </div>
-</div>
-
-<div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
-<script>
-  const products = [
-    { name: "Sinandomeng Rice 5kg", price: 320, image: "https://i.imgur.com/fkN7q1Z.jpg" },
-    { name: "Lucky Me Pancit Canton", price: 12, image: "https://i.imgur.com/dm6mML0.jpg" },
-    { name: "Argentina Corned Beef 150g", price: 38, image: "https://i.imgur.com/6vScpyJ.jpg" },
-    { name: "Milo Powder 300g", price: 85, image: "https://i.imgur.com/fZ3Hrx9.jpg" },
-    { name: "Bear Brand Powdered Milk 320g", price: 100, image: "https://i.imgur.com/13yUb4K.jpg" },
-    { name: "Surf Detergent Bar", price: 10, image: "https://i.imgur.com/sWGH8ar.jpg" },
-    { name: "Safeguard Soap 90g", price: 25, image: "https://i.imgur.com/OdM6a7g.jpg" },
-    { name: "Tide Powder 70g", price: 15, image: "https://i.imgur.com/XOnNlPh.jpg" },
-    { name: "Palmolive Shampoo Sachet", price: 7, image: "https://i.imgur.com/4xdQWSg.jpg" },
-    { name: "Colgate Toothpaste 35g", price: 28, image: "https://i.imgur.com/ohqW8Oj.jpg" },
-    { name: "Silver Swan Soy Sauce 1L", price: 58, image: "https://i.imgur.com/MRI12MJ.jpg" },
-    { name: "Datu Puti Vinegar 1L", price: 50, image: "https://i.imgur.com/G7yGgKU.jpg" },
-    { name: "Lucky Me Beef Cup Noodles", price: 18, image: "https://i.imgur.com/PIj1ePE.jpg" },
-    { name: "Piattos Cheese 85g", price: 33, image: "https://i.imgur.com/jvo5gfK.jpg" },
-    { name: "Clover Chips BBQ 85g", price: 30, image: "https://i.imgur.com/murJgA3.jpg" },
-    { name: "Nescafé 3-in-1 30g", price: 8, image: "https://i.imgur.com/n4C2peF.jpg" },
-    { name: "Energen Choco", price: 9, image: "https://i.imgur.com/CmJ8Qhf.jpg" },
-    { name: "Jack n Jill Chippy", price: 24, image: "https://i.imgur.com/OvHMF3S.jpg" },
-    { name: "C2 Green Tea Bottle", price: 20, image: "https://i.imgur.com/H96kMfF.jpg" },
-    { name: "Absolute Mineral Water 1L", price: 25, image: "https://i.imgur.com/gO5b8w7.jpg" },
-    { name: "Gardenia Classic Bread", price: 60, image: "https://i.imgur.com/RofWDNc.jpg" },
-    { name: "Eggs (1 dozen)", price: 90, image: "https://i.imgur.com/5JhSHlZ.jpg" },
-    { name: "Fresh Milk 1L", price: 90, image: "https://i.imgur.com/xvF80RW.jpg" },
-    { name: "Del Monte Pineapple Juice", price: 45, image: "https://i.imgur.com/hV9oQqA.jpg" },
-    { name: "Mang Tomas All-Around Sarsa", price: 32, image: "https://i.imgur.com/sW0dAWp.jpg" },
-    { name: "Century Tuna Flakes 180g", price: 50, image: "https://i.imgur.com/xo5hzwU.jpg" },
-    { name: "Magic Flakes Crackers", price: 12, image: "https://i.imgur.com/VgE0nWd.jpg" },
-    { name: "Johnson’s Baby Powder", price: 55, image: "https://i.imgur.com/9H5R8ja.jpg" },
-    { name: "Baby Wipes 80s", price: 65, image: "https://i.imgur.com/RT1EkfH.jpg" },
-    { name: "Sanicare Bathroom Tissue 2s", price: 35, image: "https://i.imgur.com/vNRyWpo.jpg" },
-  ];
-
-  const productGrid = document.getElementById('product-grid');
-  const cartItems = {};
-  const cartContainer = document.getElementById('cart-items');
-
-  function renderProducts() {
-    productGrid.innerHTML = '';
-    products.forEach((p, i) => {
+    const grid = document.getElementById('productGrid');
+    products.forEach(p => {
       const card = document.createElement('div');
       card.className = 'product-card';
       card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}">
-        <h4>${p.name}</h4>
+        <img src="${p.img}" alt="${p.name}" />
+        <h3>${p.name}</h3>
         <p>₱${p.price.toFixed(2)}</p>
-        <button onclick="addToCart(${i})">Add to Cart</button>
+        <button onclick='addToCart("${p.name}", ${p.price})'>Add to Cart</button>
       `;
-      productGrid.appendChild(card);
+      grid.appendChild(card);
     });
-  }
-
-  function addToCart(index) {
-    const product = products[index];
-    if (!cartItems[product.name]) {
-      cartItems[product.name] = { ...product, quantity: 1 };
-    } else {
-      cartItems[product.name].quantity += 1;
-    }
-    renderCart();
-    document.getElementById('checkout-btn').disabled = false;
-    document.getElementById('cart-panel').classList.add('open');
-  }
-
-  function updateQuantity(name, change) {
-    if (cartItems[name]) {
-      cartItems[name].quantity += change;
-      if (cartItems[name].quantity <= 0) delete cartItems[name];
-    }
-    renderCart();
-  }
-
-  function renderCart() {
-    cartContainer.innerHTML = '';
-    let subtotal = 0;
-    for (let key in cartItems) {
-      const item = cartItems[key];
-      subtotal += item.price * item.quantity;
-      const div = document.createElement('div');
-      div.className = 'cart-item';
-      div.innerHTML = `
-        <span>${item.name} (${item.quantity})</span>
-        <div>
-          <button onclick="updateQuantity('${item.name}', -1)">−</button>
-          <button onclick="updateQuantity('${item.name}', 1)">+</button>
-        </div>
-      `;
-      cartContainer.appendChild(div);
-    }
-
-    const serviceFee = 29.99;
-    const vat = 0.12 * subtotal;
-    const total = subtotal + vat + serviceFee;
-
-    document.getElementById('cart-total').innerHTML = `
-      <div>Subtotal: ₱${subtotal.toFixed(2)}</div>
-      <div>VAT (12%): ₱${vat.toFixed(2)}</div>
-      <div>Service Fee: ₱${serviceFee.toFixed(2)}</div>
-      <strong>Total: ₱${total.toFixed(2)}</strong>
-    `;
-  }
-
-  function toggleCart() {
-    document.getElementById('cart-panel').classList.toggle('open');
-  }
-
-  function searchProducts() {
-    const term = document.getElementById('search-input').value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(term));
-    productGrid.innerHTML = '';
-    filtered.forEach((p, i) => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}">
-        <h4>${p.name}</h4>
-        <p>₱${p.price.toFixed(2)}</p>
-        <button onclick="addToCart(${products.indexOf(p)})">Add to Cart</button>
-      `;
-      productGrid.appendChild(card);
-    });
-  }
-
-  function checkout() {
-    const summary = Object.values(cartItems)
-      .map(i => `${i.name} x${i.quantity}`)
-      .join(', ');
-    const name = document.getElementById('customer-name').value;
-    const phone = document.getElementById('customer-phone').value;
-    const email = document.getElementById('customer-email').value;
-    const method = document.getElementById('payment-method').value;
-    const date = document.getElementById('delivery-date').value;
-    const time = document.getElementById('delivery-time').value;
-
-    const message = `🛒 New Dala🚲Na Order
-Customer: ${name}
-Phone: ${phone}
-Email: ${email}
-Cart: ${summary}
-Payment: ${method}
-Delivery: ${date} at ${time}`;
-
-    const merchant = "63XXXXXXXXXX";
-    const admin = "63YYYYYYYYYY";
-    window.open(`https://wa.me/${merchant}?text=${encodeURIComponent(message)}`);
-    window.open(`https://wa.me/${admin}?text=${encodeURIComponent(message)}`);
-
-    document.getElementById('cart-panel').classList.remove('open');
-  }
-
-  renderProducts();
-</script>
+  </script>
+</body>
+</html>
