@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy - DalaᾪNa</title>
+  <title>Pharmacy - Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -16,13 +17,14 @@
       background: #008060;
       color: white;
       padding: 1rem;
-      text-align: center;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .back-arrow {
       position: absolute;
       left: 1rem;
-      top: 1rem;
       font-size: 1.5rem;
       color: white;
       text-decoration: none;
@@ -30,36 +32,26 @@
     .cart-icon {
       position: absolute;
       right: 1rem;
-      top: 1rem;
-      background: white;
-      color: #008060;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
+      font-size: 1.5rem;
       cursor: pointer;
-      font-size: 1.2rem;
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1rem;
       padding: 1rem;
     }
     .product-card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
     .product-card img {
       width: 100%;
-      height: 140px;
+      height: 150px;
       object-fit: cover;
     }
     .product-info {
@@ -85,19 +77,18 @@
       cursor: pointer;
     }
 
-    /* Cart drawer */
     #cart-drawer {
       position: fixed;
       top: 0;
-      right: -400px;
-      width: 100%;
-      max-width: 400px;
+      right: -100%;
+      width: 350px;
+      max-width: 100%;
       height: 100%;
-      background: white;
+      background: #fff;
       box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      padding: 1rem;
       transition: right 0.3s ease;
       z-index: 1000;
-      padding: 1rem;
       display: flex;
       flex-direction: column;
     }
@@ -108,38 +99,36 @@
       margin-top: 0;
     }
     .cart-item {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #ddd;
       padding: 0.5rem 0;
+      font-size: 0.9rem;
     }
-    .cart-summary {
+    .receipt {
       margin-top: auto;
+      border-top: 1px solid #ccc;
       padding-top: 1rem;
-      border-top: 2px solid #008060;
     }
-    #cart-backdrop {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 999;
+    .receipt p {
+      margin: 0.2rem 0;
+      display: flex;
+      justify-content: space-between;
     }
-    #cart-backdrop.active {
-      display: block;
-    }
-    #fillout-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1100;
-    }
-    #fillout-modal iframe {
-      width: 90vw;
-      height: 90vh;
+    .checkout-btn {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: #008060;
+      color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media (max-width: 500px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -150,24 +139,17 @@
     <div class="cart-icon" onclick="toggleCart()">🛒</div>
   </header>
 
-  <div class="product-grid">
-    <!-- Same 12 products here... you can paste all cards as-is -->
-  </div>
+  <div class="product-grid" id="product-grid"></div>
 
-  <!-- Cart Drawer -->
   <div id="cart-drawer">
-    <h3>Your Dala-Cart</h3>
+    <h3>Your Dala🚲Na Cart</h3>
     <div id="cart-items"></div>
-    <div class="cart-summary">
-      <p id="cart-fees"></p>
-      <p id="cart-total">Total: ₱0.00</p>
-      <button id="checkout-btn" disabled>Checkout</button>
+    <div class="receipt">
+      <p><span>Subtotal</span><span id="subtotal">₱0.00</span></p>
+      <p><span>Delivery Fee</span><span>₱29.99</span></p>
+      <p><strong>Total</strong><strong id="total">₱0.00</strong></p>
     </div>
-  </div>
-  <div id="cart-backdrop" onclick="toggleCart()"></div>
-
-  <div id="fillout-modal">
-    <iframe id="fillout-iframe"></iframe>
+    <button class="checkout-btn" onclick="proceedToCheckout()" id="checkout-btn" disabled>Proceed to Checkout</button>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
@@ -183,12 +165,67 @@
       measurementId: "G-1H5FRQWS2R"
     };
     firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="dalacart.js"></script>
+  <script>
+    const products = [
+      { name: "Paracetamol 500mg", price: 35, img: "https://via.placeholder.com/300x150?text=Paracetamol", desc: "Fever and pain relief." },
+      { name: "Hydrite", price: 15, img: "https://via.placeholder.com/300x150?text=Hydrite", desc: "Oral rehydration salts." },
+      { name: "Loperamide", price: 22, img: "https://via.placeholder.com/300x150?text=Loperamide", desc: "Anti-diarrheal capsule." },
+      { name: "Vitamin C", price: 40, img: "https://via.placeholder.com/300x150?text=Vitamin+C", desc: "Immune support tablets." },
+      { name: "Salbutamol Inhaler", price: 180, img: "https://via.placeholder.com/300x150?text=Inhaler", desc: "For asthma or bronchospasm." },
+      { name: "Cetirizine", price: 30, img: "https://via.placeholder.com/300x150?text=Cetirizine", desc: "Allergy relief." },
+      { name: "Antacid Tablets", price: 25, img: "https://via.placeholder.com/300x150?text=Antacid", desc: "For heartburn and indigestion." },
+      { name: "Mefenamic Acid", price: 28, img: "https://via.placeholder.com/300x150?text=Mefenamic+Acid", desc: "Pain reliever and anti-inflammatory." },
+      { name: "Oral Thermometer", price: 99, img: "https://via.placeholder.com/300x150?text=Thermometer", desc: "Digital oral thermometer." },
+      { name: "Alcohol 70%", price: 55, img: "https://via.placeholder.com/300x150?text=Alcohol", desc: "Disinfectant and sanitizer." }
+    ];
+
+    const grid = document.getElementById("product-grid");
+    products.forEach(prod => {
+      grid.innerHTML += `
+        <div class="product-card">
+          <img src="${prod.img}" alt="${prod.name}" />
+          <div class="product-info">
+            <h4>${prod.name}</h4>
+            <p>${prod.desc}</p>
+            <button onclick='addToCart({ name: "${prod.name}", price: ${prod.price} })'>Add to Cart - ₱${prod.price}</button>
+          </div>
+        </div>
+      `;
+    });
 
     function toggleCart() {
       document.getElementById('cart-drawer').classList.toggle('open');
-      document.getElementById('cart-backdrop').classList.toggle('active');
+    }
+    function updateCartUI(items) {
+      const cartItemsEl = document.getElementById('cart-items');
+      const subtotalEl = document.getElementById('subtotal');
+      const totalEl = document.getElementById('total');
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      cartItemsEl.innerHTML = '';
+      let subtotal = 0;
+
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerText = `${item.name} x${item.quantity} - ₱${(item.price * item.quantity).toFixed(2)}`;
+        cartItemsEl.appendChild(el);
+        subtotal += item.price * item.quantity;
+      });
+
+      subtotalEl.innerText = `₱${subtotal.toFixed(2)}`;
+      const deliveryFee = 29.99;
+      const total = subtotal + deliveryFee;
+      totalEl.innerText = `₱${total.toFixed(2)}`;
+
+      checkoutBtn.disabled = items.length === 0;
+    }
+    window.onCartUpdate = updateCartUI;
+    function proceedToCheckout() {
+      alert("Proceeding to checkout...");
     }
   </script>
-  <script src="dalacart.js"></script>
 </body>
 </html>
