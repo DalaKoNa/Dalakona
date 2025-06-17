@@ -102,8 +102,15 @@
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
       </div>
 
-      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
-    </div>
+      <button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  Checkout via WhatsApp
+     </button>
+
   </div>
 
   <script>
@@ -268,5 +275,50 @@
       document.getElementById('checkout-btn').disabled = !valid || Object.keys(cart).length === 0;
     }
   </script>
+<script>
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
+
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+
+  function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    if (allFilled && cartHasItems) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    }
+  }
+
+  // Ensure quantity change also re-validates form
+  function updateQty(i) {
+    const item = products[i];
+    const qty = cart[item.name]?.qty || 0;
+    document.getElementById(`qty-${i}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    updateCartSummary();
+    validateForm(); // ← call after every cart change
+  }
+</script>
+
 </body>
 </html>
