@@ -15,20 +15,31 @@
     header {
       background: #ff4081;
       color: white;
-      padding: 1rem 2rem;
+      padding: 1rem;
       text-align: center;
       font-size: 1.5rem;
+      position: relative;
+    }
+    #cart-summary-top {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .container {
       display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
+      flex-direction: column;
+      padding: 1rem;
     }
     .product-grid {
-      flex: 3;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
     }
     .product-card {
       background: white;
@@ -40,6 +51,8 @@
     .product-card img {
       width: 100%;
       border-radius: 8px;
+      height: 140px;
+      object-fit: cover;
     }
     .product-card button {
       margin-top: 10px;
@@ -49,16 +62,14 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      width: 100%;
     }
     .cart-section {
-      flex: 1;
       background: #fff;
-      margin-left: 20px;
+      margin-top: 2rem;
       padding: 1rem;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      max-height: 500px;
-      overflow-y: auto;
     }
     .cart-item {
       margin-bottom: 10px;
@@ -106,10 +117,25 @@
       padding: 5px 10px;
       cursor: pointer;
     }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.5rem;
+      }
+      .product-card {
+        padding: 0.5rem;
+      }
+      #cart-summary-top {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>Ellen's Cakes 🍰</header>
+  <header>
+    Ellen's Cakes 🍰
+    <div id="cart-summary-top">Total: ₱0.00</div>
+  </header>
   <div class="container">
     <div class="product-grid">
       <div class="product-card">
@@ -126,7 +152,20 @@
         <p><strong>₱420</strong></p>
         <button onclick="addToCart({ name: 'Red Velvet', price: 420 })">Add to Cart</button>
       </div>
-      <!-- Add more products below as needed -->
+      <div class="product-card">
+        <img src="images/ube-cake.jpg" alt="Ube Cake">
+        <h3>Ube Cake</h3>
+        <p>Soft ube chiffon with creamy icing</p>
+        <p><strong>₱380</strong></p>
+        <button onclick="addToCart({ name: 'Ube Cake', price: 380 })">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/mocha-cake.jpg" alt="Mocha Cake">
+        <h3>Mocha Cake</h3>
+        <p>Light mocha flavor with buttercream</p>
+        <p><strong>₱360</strong></p>
+        <button onclick="addToCart({ name: 'Mocha Cake', price: 360 })">Add to Cart</button>
+      </div>
     </div>
 
     <div class="cart-section">
@@ -142,7 +181,6 @@
     <iframe id="fillout-iframe"></iframe>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
   <script>
