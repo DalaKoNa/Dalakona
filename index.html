@@ -7,244 +7,303 @@
   <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(180deg, #fff9f6, #e0f7fa, #fce4ec);
-      color: #2d2d2d;
+      background: #fff;
+      color: #333;
     }
 
-    .navbar {
-      background-color: rgba(255, 255, 255, 0.9);
-      color: #2d2d2d;
+    header {
+      background: #ff4081;
+      color: white;
       padding: 1em;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .navbar .title {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #a0527b;
-      text-align: center;
-    }
-
-    .navbar .hamburger {
+    header h1 {
       font-size: 1.5em;
-      background: none;
-      border: none;
-      color: #444;
-      cursor: pointer;
+      margin: 0;
     }
 
-    .navbar .cart {
-      font-size: 1em;
-      color: #444;
-      white-space: nowrap;
+    .nav-links {
+      display: flex;
+      gap: 0.5em;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.95em;
     }
 
     .hero {
+      text-align: center;
+      padding: 4em 1em;
+      background: url('bg-market.jpg') no-repeat center center;
+      background-size: cover;
+      color: white;
       position: relative;
-      width: 100%;
     }
 
-    .hero-img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .hero-text {
+    .hero::before {
+      content: "";
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      padding: 1.2rem 2rem;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      max-width: 90%;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
     }
 
-    .hero-text h1, .hero-text h2, .hero-text p {
-      margin: 0.5em 0;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: auto;
     }
 
-    .partners {
-      padding: 2rem 1rem;
-      text-align: center;
+    .hero h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.4em;
     }
 
-    .merchant-scroll {
-      display: flex;
+    .hero p {
+      font-size: 1.2em;
+      margin-bottom: 1.2em;
+    }
+
+    .cta-btn {
+      background-color: #ff4081;
+      padding: 0.8em 1.4em;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1em;
+      transition: background 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background-color: #e91e63;
+    }
+
+    .merchant-carousel {
       overflow-x: auto;
-      gap: 1rem;
-      padding: 1rem 0.5rem;
+      display: flex;
+      gap: 1em;
+      padding: 1em;
       scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
     }
 
     .merchant-card {
       flex: 0 0 auto;
       scroll-snap-align: start;
+      width: 220px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      min-width: 200px;
-      max-width: 80%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       text-align: center;
-      transition: transform 0.2s ease;
-      color: #a0527b;
-      text-decoration: none;
+      padding: 1em;
     }
 
-    .merchant-card:hover {
-      transform: scale(1.03);
+    .merchant-card img {
+      width: 100%;
+      border-radius: 6px;
+      height: 130px;
+      object-fit: cover;
     }
 
-    .footer {
-      background: #f8f8f8;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.9rem;
-      color: #555;
+    .merchant-card h3 {
+      margin: 0.5em 0 0.3em;
+      font-size: 1.1em;
     }
 
-    .footer-left, .footer-right {
-      margin: 1rem 0;
-      text-align: center;
-    }
-
-    .footer .socials a {
-      margin: 0 0.5rem;
-      color: #a0527b;
-      text-decoration: none;
-    }
-
-    .footer a {
+    .merchant-card a {
       display: inline-block;
-      margin: 0.3rem 0;
-      color: #a0527b;
+      margin-top: 0.5em;
+      font-size: 0.9em;
       text-decoration: none;
+      color: #ff4081;
     }
 
-    .footer a:hover {
+    .benefits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2em 1em;
+      background: #fdf6f0;
+      text-align: center;
+    }
+
+    .benefit {
+      width: 250px;
+      margin: 1em;
+      background: #fff;
+      padding: 1.2em;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .benefit h4 {
+      margin-top: 0;
+      color: #e91e63;
+    }
+
+    .benefit p {
+      font-size: 0.95em;
+    }
+
+    footer {
+      background: #ff4081;
+      color: white;
+      text-align: center;
+      padding: 1.5em 1em;
+      margin-top: 2em;
+    }
+
+    footer a {
+      color: white;
       text-decoration: underline;
+      margin: 0 0.5em;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.8em;
+      }
 
-    @media (max-width: 480px) {
-      .navbar .title {
+      .hero p {
         font-size: 1em;
       }
-      .navbar .cart {
-        font-size: 0.9em;
+
+      .cta-btn {
+        font-size: 0.95em;
       }
-      .hero-text {
-        font-size: 0.9em;
-        padding: 1rem;
+
+      .merchant-card {
+        width: 180px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        margin-top: 0.5em;
+        flex-direction: column;
+        gap: 0.2em;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Sidebar (Hamburger Nav) -->
-  <nav id="sidebar" class="sidebar" aria-hidden="true">
-    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
-    <a href="#partners">Our Partner Merchants</a>
-  </nav>
+<header>
+  <h1>Dala🚲na</h1>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="careers.html">Join</a>
+  </div>
+</header>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
-    <div class="cart">🛒 dala‑Cart</div>
-  </header>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Dala Ko na.<br>Subong dayon!</h1>
+    <p>Delivering daily essentials with love & speed</p>
+    <a href="select-store.html" class="cta-btn">🛒 Order Now</a>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <img 
-      src="pastel-hero.jpg" 
-      alt="Dala Ko Na Pastel Background" 
-      class="hero-img" 
-      loading="lazy"
-    />
-    <div class="hero-text">
-      <h1>Dala Ko na.</h1>
-      <h2>Subong dayon!</h2>
-      <p>Delivering daily essentials with love & speed</p>
-    </div>
-  </section>
+<section class="merchant-carousel">
+  <div class="merchant-card">
+    <img src="bakery.jpg" alt="Bakery">
+    <h3>Bakery</h3>
+    <a href="bakery.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="pharmacy.jpg" alt="Pharmacy">
+    <h3>Pharmacy</h3>
+    <a href="pharmacy.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="chicken-inasal.jpg" alt="Chicken Inasal">
+    <h3>Chicken Inasal</h3>
+    <a href="chicken-inasal.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="grocery.jpg" alt="Hypermarket">
+    <h3>Hypermarket</h3>
+    <a href="handumanan-hypermarket.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="ellens-cakes.jpg" alt="Ellen's Cakes">
+    <h3>Ellen's Cakes</h3>
+    <a href="ellens-cakes.html">Order Now →</a>
+  </div>
 
-  <!-- Merchants Section -->
-  <section class="partners" id="partners">
-    <h2>Our Merchants</h2>
-    <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
-    </div>
-  </section>
+  <!-- Placeholder stores to edit -->
+  <div class="merchant-card">
+    <img src="store1.jpg" alt="Store 1">
+    <h3>Mini Mart</h3>
+    <a href="store1.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="store2.jpg" alt="Store 2">
+    <h3>Sari-Sari Store</h3>
+    <a href="store2.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="store3.jpg" alt="Store 3">
+    <h3>Fresh Veggies</h3>
+    <a href="store3.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="store4.jpg" alt="Store 4">
+    <h3>Meat Hub</h3>
+    <a href="store4.html">Order Now →</a>
+  </div>
+  <div class="merchant-card">
+    <img src="store5.jpg" alt="Store 5">
+    <h3>Water Station</h3>
+    <a href="store5.html">Order Now →</a>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-left">
-      <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
-        <a href="https://x.com" target="_blank" aria-label="X">X</a>
-      </div>
-      <p>dala🚲na hasta sa FB, IG, X</p>
-    </div>
-    <nav class="footer-right" aria-label="Footer navigation">
-      <a href="careers.html">Careers / Trabaho</a>
-      <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="offers.html">Offers / Mga Promos</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
-      <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </nav>
-  </footer>
+<section class="benefits">
+  <div class="benefit">
+    <h4>🚴 Fast Local Delivery</h4>
+    <p>We deliver within minutes using local riders. Dala Ko Na. Subong Dayon!</p>
+  </div>
+  <div class="benefit">
+    <h4>🛍️ Essentials Only</h4>
+    <p>From rice to medicines, we bring daily needs directly from trusted stores.</p>
+  </div>
+  <div class="benefit">
+    <h4>📍 Nearby Merchants</h4>
+    <p>Support your local bakery, pharmacy, and more — all in one tap.</p>
+  </div>
+  <div class="benefit">
+    <h4>💖 With Love & Speed</h4>
+    <p>We care for your family and deliver with heart. Always Dala🚲na style!</p>
+  </div>
+</section>
 
-  <!-- Scripts -->
-  <script>
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "250px";
-    });
-    document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "0";
-    });
-    document.getElementById("sidebar").querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("sidebar").style.width = "0";
-      });
-    });
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  </script>
+<footer>
+  <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
+  <p>
+    <a href="about.html">About</a> |
+    <a href="terms.html">Terms</a> |
+    <a href="mailto:dalakona.service@gmail.com">Contact Us</a>
+  </p>
+</footer>
+
 </body>
 </html>
