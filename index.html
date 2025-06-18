@@ -1,182 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city.">
   <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    :root {
+      --primary: #ff69b4;
+      --text-dark: #333;
+      --bg-light: #fef7f2;
+    }
+
     body {
-      font-family: 'Cinzel', serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #fff9f6, #e0f7fa, #fce4ec);
-      color: #2d2d2d; /* darker for contrast */
+      font-family: 'Cinzel', serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
     }
 
-    .navbar {
-      background-color: rgba(255, 255, 255, 0.9);
-      color: #2d2d2d;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-
-    .navbar .title {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #a0527b; /* pastel-accented heading */
+    header {
+      position: relative;
       text-align: center;
     }
 
-    .navbar .hamburger {
-      font-size: 1.5em;
-      background: none;
+    .hero-img {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: cover;
+      filter: brightness(0.7);
+    }
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+      font-size: 2em;
+      padding: 0 1em;
+      text-align: center;
+    }
+
+    .container {
+      padding: 1.5em;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin-top: 2em;
+      text-align: center;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      margin-top: 1em;
       border: none;
-      color: #444;
-      cursor: pointer;
-    }
-
-    .navbar .cart {
-      font-size: 1em;
-      color: #444;
-      white-space: nowrap;
-    }
-
-    a, .merchant-card {
-      color: #a0527b;
+      border-radius: 8px;
       text-decoration: none;
+      font-size: 1.1em;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .store-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1em;
+      margin-top: 1.5em;
     }
 
-    @media (max-width: 480px) {
-      .navbar .title {
-        font-size: 1em;
-      }
-      .navbar .cart {
-        font-size: 0.9em;
+    .store-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    footer {
+      margin-top: 3em;
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      .hero-text {
+        font-size: 1.4em;
       }
     }
   </style>
 </head>
+
 <body>
-
-  <!-- Sidebar (Hamburger Nav) -->
-  <nav id="sidebar" class="sidebar" aria-hidden="true">
-    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
-    <a href="#partners">Our Partner Merchants</a>
-  </nav>
-
-  <!-- Navbar -->
-  <header class="navbar">
-    <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
-    <div class="cart">🛒 dala‑Cart</div>
+  <header>
+    <img src="pastel-hero.jpg" alt="Dala Ko Na Pastel Background" class="hero-img" />
+    <div class="hero-text">
+      Dala Ko na. Subong dayon!
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <img 
-  src="pastel-hero.jpg" 
-  alt="Dala Ko Na Pastel Background" 
-  class="hero-img" 
-  loading="lazy"
-    />
-    <div class="hero-text">
-      <h1>Dala Ko na.</h1>
-      <h2>Subong dayon!</h2>
-      <p>Delivering daily essentials with love & speed</p>
-    </div>
-  </section>
+  <div class="container">
+    <section class="section">
+      <h2>Order Essentials, Fast & Local</h2>
+      <p>Grocery, Bakery, Inasal, Pharmacy, and more – delivered to your door by our Dala Riders.</p>
+      <a href="select-store.html" class="cta-btn">Start Ordering</a>
+    </section>
 
-  <!-- Merchants Section -->
-  <section class="partners" id="partners">
-    <h2>Our Merchants</h2>
-    <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-left">
-      <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
-        <a href="https://x.com" target="_blank" aria-label="X">X</a>
+    <section class="section">
+      <h3>Our Partner Stores</h3>
+      <div class="store-links">
+        <div class="store-card"><a href="handumanan-hypermarket.html">🛒 Hypermarket</a></div>
+        <div class="store-card"><a href="bakery.html">🍞 Bakery</a></div>
+        <div class="store-card"><a href="chicken-inasal.html">🍗 Chicken Inasal</a></div>
+        <div class="store-card"><a href="pharmacy.html">💊 Pharmacy</a></div>
+        <!-- Add more merchants as needed -->
       </div>
-      <p>dala🚲na hasta sa FB, IG, X</p>
-    </div>
-    <nav class="footer-right" aria-label="Footer navigation">
-      <a href="careers.html">Careers / Trabaho</a>
-      <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="offers.html">Offers / Mga Promos</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
-      <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </nav>
-  </footer>
+    </section>
 
-  <!-- Scripts -->
-  <script>
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "250px";
-    });
-    document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "0";
-    });
-    document.getElementById("sidebar").querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("sidebar").style.width = "0";
-      });
-    });
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  </script>
-
-  <!-- WhatsApp Reminder Popup -->
-  <div id="order-popup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:9999;padding:1rem;">
-    <div style="background:#fffafc;color:#333;padding:1rem;border-radius:10px;max-width:360px;width:100%;font-size:0.95em;box-shadow:0 4px 10px rgba(0,0,0,0.15);">
-      <h3>📲 Kinahanglan may WhatsApp ka</h3>
-      <p>Siguraduhon nga may WhatsApp ka para maka-receive sang order confirmation.</p>
-      <p>Make sure you have WhatsApp installed before ordering.</p>
-      <h4>📦 Paano mag-order?</h4>
-      <p>Pilia ang tindahan, idugang ang items sa cart, pun-a ang ngalan, numero, kag petsa/time.</p>
-      <p>Choose store, add items to cart, and fill in name, number, and delivery date/time.</p>
-      <button onclick="closePopup()">✅ Got it!</button>
-    </div>
+    <section class="section">
+      <h3>Want to Partner or Join Us?</h3>
+      <a href="careers.html" class="cta-btn">Careers</a>
+      <a href="about.html" class="cta-btn" style="margin-left: 0.5em;">About Us</a>
+    </section>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
-      const today = new Date().toDateString();
-      if (lastSeen !== today) {
-        setTimeout(() => {
-          document.getElementById('order-popup').style.display = 'flex';
-          localStorage.setItem('whatsappPopupLastSeen', today);
-        }, 2000);
-      }
-    });
-    function closePopup() {
-      document.getElementById('order-popup').style.display = 'none';
-    }
-  </script>
+  <footer>
+    <p>&copy; 2025 Dala Ko na. All rights reserved. | <a href="privacy.html">Privacy</a></p>
+  </footer>
 </body>
 </html>
