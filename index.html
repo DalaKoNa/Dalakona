@@ -7,303 +7,244 @@
   <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
-      background: #fff;
-      color: #333;
+      background: linear-gradient(180deg, #fff9f6, #e0f7fa, #fce4ec);
+      color: #2d2d2d;
     }
 
-    header {
-      background: #ff4081;
-      color: white;
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 1em;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    header h1 {
+    .navbar .title {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #a0527b;
+      text-align: center;
+    }
+
+    .navbar .hamburger {
       font-size: 1.5em;
-      margin: 0;
+      background: none;
+      border: none;
+      color: #444;
+      cursor: pointer;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 0.5em;
-    }
-
-    header a {
-      color: white;
-      text-decoration: none;
-      font-size: 0.95em;
+    .navbar .cart {
+      font-size: 1em;
+      color: #444;
     }
 
     .hero {
       text-align: center;
-      padding: 4em 1em;
-      background: url('bg-market.jpg') no-repeat center center;
-      background-size: cover;
-      color: white;
       position: relative;
     }
 
-    .hero::before {
-      content: "";
+    .hero-img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
+
+    .hero-text {
       position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+      border-radius: 10px;
+      max-width: 90%;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-      margin: auto;
+    .hero-text h1 {
+      margin: 0;
+      font-size: 2rem;
     }
 
-    .hero h1 {
-      font-size: 2.5em;
-      margin-bottom: 0.4em;
+    .hero-text h2 {
+      margin: 0;
+      font-size: 1.2rem;
     }
 
-    .hero p {
-      font-size: 1.2em;
-      margin-bottom: 1.2em;
-    }
-
-    .cta-btn {
-      background-color: #ff4081;
-      padding: 0.8em 1.4em;
-      border-radius: 6px;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1em;
-      transition: background 0.2s ease;
-    }
-
-    .cta-btn:hover {
-      background-color: #e91e63;
-    }
-
-    .merchant-carousel {
-      overflow-x: auto;
+    .merchant-scroll {
       display: flex;
-      gap: 1em;
-      padding: 1em;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem;
       scroll-snap-type: x mandatory;
     }
 
     .merchant-card {
       flex: 0 0 auto;
       scroll-snap-align: start;
-      width: 220px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
       background: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      min-width: 220px;
       text-align: center;
-      padding: 1em;
-    }
-
-    .merchant-card img {
-      width: 100%;
-      border-radius: 6px;
-      height: 130px;
-      object-fit: cover;
-    }
-
-    .merchant-card h3 {
-      margin: 0.5em 0 0.3em;
-      font-size: 1.1em;
-    }
-
-    .merchant-card a {
-      display: inline-block;
-      margin-top: 0.5em;
-      font-size: 0.9em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       text-decoration: none;
-      color: #ff4081;
+      color: #a0527b;
+      font-weight: bold;
     }
 
-    .benefits {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 2em 1em;
-      background: #fdf6f0;
-      text-align: center;
-    }
-
-    .benefit {
-      width: 250px;
-      margin: 1em;
-      background: #fff;
-      padding: 1.2em;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .benefit h4 {
-      margin-top: 0;
-      color: #e91e63;
-    }
-
-    .benefit p {
-      font-size: 0.95em;
-    }
-
-    footer {
-      background: #ff4081;
-      color: white;
-      text-align: center;
-      padding: 1.5em 1em;
-      margin-top: 2em;
-    }
-
-    footer a {
-      color: white;
+    a:hover {
       text-decoration: underline;
-      margin: 0 0.5em;
     }
 
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.8em;
-      }
+    .footer {
+      background: #fff;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
-      .hero p {
+    .footer-left {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .socials a {
+      margin-right: 1rem;
+      color: #a0527b;
+      text-decoration: none;
+    }
+
+    .footer-right {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-right a {
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      color: #333;
+    }
+
+    @media (max-width: 480px) {
+      .hero-text h1 {
+        font-size: 1.4rem;
+      }
+      .hero-text h2 {
+        font-size: 1rem;
+      }
+      .navbar .title {
         font-size: 1em;
-      }
-
-      .cta-btn {
-        font-size: 0.95em;
-      }
-
-      .merchant-card {
-        width: 180px;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        margin-top: 0.5em;
-        flex-direction: column;
-        gap: 0.2em;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Dala🚲na</h1>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="careers.html">Join</a>
-  </div>
+<!-- Navbar -->
+<header class="navbar">
+  <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
+  <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
+  <div class="cart">🛒 dala‑Cart</div>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
-  <div class="hero-content">
-    <h1>Dala Ko na.<br>Subong dayon!</h1>
+  <img src="pastel-hero.jpg" alt="Dala Ko Na Pastel Background" class="hero-img" loading="lazy"/>
+  <div class="hero-text">
+    <h1>Dala Ko na.</h1>
+    <h2>Subong dayon!</h2>
     <p>Delivering daily essentials with love & speed</p>
-    <a href="select-store.html" class="cta-btn">🛒 Order Now</a>
   </div>
 </section>
 
-<section class="merchant-carousel">
-  <div class="merchant-card">
-    <img src="bakery.jpg" alt="Bakery">
-    <h3>Bakery</h3>
-    <a href="bakery.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="pharmacy.jpg" alt="Pharmacy">
-    <h3>Pharmacy</h3>
-    <a href="pharmacy.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="chicken-inasal.jpg" alt="Chicken Inasal">
-    <h3>Chicken Inasal</h3>
-    <a href="chicken-inasal.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="grocery.jpg" alt="Hypermarket">
-    <h3>Hypermarket</h3>
-    <a href="handumanan-hypermarket.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="ellens-cakes.jpg" alt="Ellen's Cakes">
-    <h3>Ellen's Cakes</h3>
-    <a href="ellens-cakes.html">Order Now →</a>
-  </div>
-
-  <!-- Placeholder stores to edit -->
-  <div class="merchant-card">
-    <img src="store1.jpg" alt="Store 1">
-    <h3>Mini Mart</h3>
-    <a href="store1.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="store2.jpg" alt="Store 2">
-    <h3>Sari-Sari Store</h3>
-    <a href="store2.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="store3.jpg" alt="Store 3">
-    <h3>Fresh Veggies</h3>
-    <a href="store3.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="store4.jpg" alt="Store 4">
-    <h3>Meat Hub</h3>
-    <a href="store4.html">Order Now →</a>
-  </div>
-  <div class="merchant-card">
-    <img src="store5.jpg" alt="Store 5">
-    <h3>Water Station</h3>
-    <a href="store5.html">Order Now →</a>
+<!-- Merchants Section -->
+<section class="partners" id="partners">
+  <h2 style="text-align: center; margin-top: 2rem;">Our Merchants</h2>
+  <div class="merchant-scroll">
+    <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+    <a href="bakery.html" class="merchant-card">Bakery</a>
+    <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+    <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+    <a href="ellens-cakes.html" class="merchant-card">Ellen’s Cake</a>
+    <a href="sari-sari.html" class="merchant-card">Sari-Sari Store</a>
+    <a href="fresh-produce.html" class="merchant-card">Fresh Produce</a>
+    <a href="frozen-goods.html" class="merchant-card">Frozen Goods</a>
+    <a href="snacks-drinks.html" class="merchant-card">Snacks & Drinks</a>
+    <a href="pet-supplies.html" class="merchant-card">Pet Supplies</a>
   </div>
 </section>
 
-<section class="benefits">
-  <div class="benefit">
-    <h4>🚴 Fast Local Delivery</h4>
-    <p>We deliver within minutes using local riders. Dala Ko Na. Subong Dayon!</p>
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-left">
+    <p>@dalakona.subongdayon</p>
+    <div class="socials">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
+      <a href="https://x.com" target="_blank" aria-label="X">X</a>
+    </div>
+    <p>dala🚲na hasta sa FB, IG, X</p>
   </div>
-  <div class="benefit">
-    <h4>🛍️ Essentials Only</h4>
-    <p>From rice to medicines, we bring daily needs directly from trusted stores.</p>
-  </div>
-  <div class="benefit">
-    <h4>📍 Nearby Merchants</h4>
-    <p>Support your local bakery, pharmacy, and more — all in one tap.</p>
-  </div>
-  <div class="benefit">
-    <h4>💖 With Love & Speed</h4>
-    <p>We care for your family and deliver with heart. Always Dala🚲na style!</p>
-  </div>
-</section>
-
-<footer>
-  <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
-  <p>
-    <a href="about.html">About</a> |
-    <a href="terms.html">Terms</a> |
-    <a href="mailto:dalakona.service@gmail.com">Contact Us</a>
-  </p>
+  <nav class="footer-right" aria-label="Footer navigation">
+    <a href="careers.html">Careers / Trabaho</a>
+    <a href="about.html">About / Ang Istorya Naton</a>
+    <a href="offers.html">Offers / Mga Promos</a>
+    <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+    <a href="privacy.html">Privacy / Pribado nga Palisi</a>
+    <p>© 2025 Dala🚲na. All rights reserved.</p>
+  </nav>
 </footer>
+
+<!-- WhatsApp Popup (once per day) -->
+<div id="order-popup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:9999;padding:1rem;">
+  <div style="background:#fffafc;color:#333;padding:1rem;border-radius:10px;max-width:360px;width:100%;font-size:0.95em;box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+    <h3>📲 WhatsApp Required</h3>
+    <p>Please make sure you have WhatsApp installed to receive your order confirmation.</p>
+    <h4>📦 How to Order</h4>
+    <p>Select a store, add items to cart, and complete the checkout form.</p>
+    <button onclick="redirectToMerchants()">🛒 Choose Store</button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
+    const today = new Date().toDateString();
+    if (lastSeen !== today) {
+      setTimeout(() => {
+        document.getElementById('order-popup').style.display = 'flex';
+        localStorage.setItem('whatsappPopupLastSeen', today);
+      }, 2000);
+    }
+  });
+
+  function redirectToMerchants() {
+    document.getElementById('order-popup').style.display = 'none';
+    document.getElementById('partners').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function scrollToTop(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
 
 </body>
 </html>
