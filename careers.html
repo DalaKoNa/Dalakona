@@ -1,44 +1,132 @@
-<!-- CAREERS PAGE -->
-<!-- careers.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Careers | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Careers at Dala Ko na – Join our delivery or merchant team!">
+  <title>Careers – Dala🚲na</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
-      margin: 2em;
+      margin: 0;
+      padding: 0;
+      background-color: #fdf6f0;
       color: #333;
-      background: #fefefe;
     }
-    h1 {
+
+    .hero {
+      position: relative;
       text-align: center;
-      color: #222;
-      margin-bottom: 1em;
+      color: white;
     }
-    ul, p {
-      max-width: 700px;
-      margin: 0 auto 1.5em auto;
-      font-size: 1.1em;
-      color: #555;
+
+    .hero-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      filter: brightness(0.6);
     }
-    li {
-      margin-bottom: 0.6em;
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .hero-text h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 1em;
+      left: 1em;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .back-arrow:hover {
+      background-color: #fff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2em auto;
+      padding: 1.5em;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #5e3c58;
+      margin-top: 1.5em;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    .btn-apply {
+      display: inline-block;
+      margin-top: 1em;
+      background-color: #ff69b4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .btn-apply:hover {
+      background-color: #e95ca0;
     }
   </style>
 </head>
 <body>
-  <h1>Join the Dala🚲na Team</h1>
-  <p>We’re hiring! Check out our open positions below:</p>
-  <p>Nagapangita kami sang bag-o nga kaupod! Tan-awa ang mga bakante nga pwesto:</p>
-  <ul>
-    <li>Delivery Rider / Driver</li>
-    <li>Customer Support</li>
-    <li>Marketing Assistant</li>
-    <li>Junior Developer</li>
-  </ul>
+
+<!-- Hero Section -->
+<section class="hero">
+  <img 
+    src="pastel-hero.jpg" 
+    alt="Join the Dala Ko Na Team" 
+    class="hero-img" 
+    loading="lazy"
+  />
+  <a href="index.html" class="back-arrow">← Back to Home</a>
+  <div class="hero-text">
+    <h1>Join Our Team</h1>
+  </div>
+</section>
+
+<!-- Main Content -->
+<div class="container">
+  <h2>🚴 Become a Rider / Mangin Dala-Rider</h2>
+  <p><strong>English:</strong> Want to earn while helping your community? Dala🚲na riders deliver essentials with care. If you have a bike, scooter, or motorcycle—apply now!</p>
+  <p><em>Hiligaynon:</em> Gusto mo mag-income samtang naga-alagad sa komunidad? Ang Dala🚲na riders nagahatag sang serbisyo nga may paghigugma. Kung may bisikleta ka ukon motorsiklo—apply na!</p>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn-apply">Apply as Rider</a>
+
+  <h2>🏪 Become a Partner Merchant / Mangin Ka-Partner nga Tindahan</h2>
+  <p><strong>English:</strong> Dala🚲na partners with local stores, bakeries, eateries, and pharmacies. Want to grow your orders? Join our merchant program.</p>
+  <p><em>Hiligaynon:</em> Ang Dala🚲na naga-partner sa mga tindahan, panaderia, karinderya, kag botika. Gusto mo magdamo order mo? Mag-partner sa amon subong!</p>
+  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn-apply">Apply as Merchant</a>
+
+  <h2>💡 Other Roles? / May Iban ka nga Skills?</h2>
+  <p>Message us on Facebook or Email us at <a href="mailto:join@dalako.na">join@dalako.na</a>. We welcome creative, kind, and fast-moving team members.</p>
+</div>
+
 </body>
 </html>
