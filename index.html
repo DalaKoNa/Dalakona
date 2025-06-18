@@ -19,6 +19,7 @@
 
     .navbar {
       background-color: rgba(255, 255, 255, 0.9);
+      color: #2d2d2d;
       padding: 1em;
       display: flex;
       justify-content: space-between;
@@ -48,99 +49,103 @@
       white-space: nowrap;
     }
 
-    a, .merchant-card {
-      color: #a0527b;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
     .hero {
       position: relative;
-      text-align: center;
+      width: 100%;
     }
 
     .hero-img {
       width: 100%;
       height: auto;
-      max-height: 500px;
-      object-fit: cover;
+      display: block;
     }
 
     .hero-text {
       position: absolute;
-      top: 40%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.8);
-      padding: 1rem 2rem;
-      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 1.2rem 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      max-width: 90%;
+    }
+
+    .hero-text h1, .hero-text h2, .hero-text p {
+      margin: 0.5em 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
     }
 
     .partners {
-      padding: 2rem;
+      padding: 2rem 1rem;
       text-align: center;
     }
 
     .merchant-scroll {
       display: flex;
-      flex-direction: column;
-      gap: 1em;
-      max-width: 400px;
-      margin: 0 auto;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem 0.5rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
     }
 
     .merchant-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
       background: #fff;
-      padding: 1em;
-      border-radius: 8px;
+      padding: 1rem;
+      border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      min-width: 200px;
+      max-width: 80%;
+      text-align: center;
+      transition: transform 0.2s ease;
+      color: #a0527b;
+      text-decoration: none;
+    }
+
+    .merchant-card:hover {
+      transform: scale(1.03);
     }
 
     .footer {
+      background: #f8f8f8;
       padding: 2rem 1rem;
-      background-color: #fff7f9;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #555;
     }
 
-    .footer-left p, .footer-right a {
-      margin: 0.3rem 0;
+    .footer-left, .footer-right {
+      margin: 1rem 0;
+      text-align: center;
     }
 
-    .socials a {
-      margin-right: 0.5em;
-    }
-
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 999;
-      top: 0;
-      left: 0;
-      background-color: #fefefe;
-      overflow-x: hidden;
-      transition: 0.4s;
-      padding-top: 60px;
-    }
-
-    .sidebar a {
-      padding: 1em;
+    .footer .socials a {
+      margin: 0 0.5rem;
+      color: #a0527b;
       text-decoration: none;
-      font-size: 1.1em;
-      display: block;
-      color: #444;
     }
 
-    .sidebar .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 25px;
-      font-size: 36px;
+    .footer a {
+      display: inline-block;
+      margin: 0.3rem 0;
+      color: #a0527b;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 480px) {
@@ -151,15 +156,16 @@
         font-size: 0.9em;
       }
       .hero-text {
-        font-size: 0.8em;
-        padding: 0.8rem 1.2rem;
+        font-size: 0.9em;
+        padding: 1rem;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Sidebar Navigation -->
+  <!-- Sidebar (Hamburger Nav) -->
   <nav id="sidebar" class="sidebar" aria-hidden="true">
     <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
     <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
@@ -167,7 +173,7 @@
     <a href="#partners">Our Partner Merchants</a>
   </nav>
 
-  <!-- Header -->
+  <!-- Navbar -->
   <header class="navbar">
     <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
@@ -176,7 +182,12 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <img src="pastel-hero.jpg" alt="Dala Ko Na Pastel Background" class="hero-img" loading="lazy"/>
+    <img 
+      src="pastel-hero.jpg" 
+      alt="Dala Ko Na Pastel Background" 
+      class="hero-img" 
+      loading="lazy"
+    />
     <div class="hero-text">
       <h1>Dala Ko na.</h1>
       <h2>Subong dayon!</h2>
@@ -185,29 +196,29 @@
   </section>
 
   <!-- Merchants Section -->
- <section class="partners" id="partners">
-  <h2>Our Merchants</h2>
-  <div class="merchant-scroll">
-    <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-    <a href="bakery.html" class="merchant-card">Bakery</a>
-    <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-    <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-    <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
-  </div>
-</section>
+  <section class="partners" id="partners">
+    <h2>Our Merchants</h2>
+    <div class="merchant-scroll">
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
+        <a href="https://x.com" target="_blank" aria-label="X">X</a>
       </div>
       <p>dala🚲na hasta sa FB, IG, X</p>
     </div>
-    <nav class="footer-right">
+    <nav class="footer-right" aria-label="Footer navigation">
       <a href="careers.html">Careers / Trabaho</a>
       <a href="about.html">About / Ang Istorya Naton</a>
       <a href="offers.html">Offers / Mga Promos</a>
@@ -217,21 +228,6 @@
     </nav>
   </footer>
 
-  <!-- WhatsApp Reminder Popup -->
-  <div id="order-popup" style="display:none; position:fixed; bottom:20px; right:20px; background:#fff; border-radius:12px; padding:1rem; width:300px; box-shadow:0 2px 10px rgba(0,0,0,0.2); font-size:0.9em; z-index:9999;">
-    <div style="margin-bottom:0.5em;">
-      <strong>📲 Order Reminder</strong>
-    </div>
-    <p><strong>Need WhatsApp</strong> to receive confirmation.</p>
-    <p>🛒 Add items → Fill out info → Tap checkout.</p>
-    <p style="font-size:0.75em; color:#555;">
-      By ordering, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
-    </p>
-    <button onclick="goToMerchants()" style="margin-top:0.5em; padding:0.6em 1em; background-color:#a0527b; color:#fff; border:none; border-radius:6px; cursor:pointer;">
-      🛍️ Order Now
-    </button>
-  </div>
-
   <!-- Scripts -->
   <script>
     document.getElementById("hamburger").addEventListener("click", () => {
@@ -240,7 +236,7 @@
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "0";
     });
-    document.querySelectorAll("#sidebar a").forEach(link => {
+    document.getElementById("sidebar").querySelectorAll("a").forEach(link => {
       link.addEventListener("click", () => {
         document.getElementById("sidebar").style.width = "0";
       });
@@ -249,23 +245,6 @@
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    function goToMerchants() {
-      document.getElementById('order-popup').style.display = 'none';
-      document.getElementById('partners')?.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
-      const today = new Date().toDateString();
-      if (lastSeen !== today) {
-        setTimeout(() => {
-          document.getElementById('order-popup').style.display = 'block';
-          localStorage.setItem('whatsappPopupLastSeen', today);
-        }, 2000);
-      }
-    });
   </script>
-
 </body>
 </html>
