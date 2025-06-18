@@ -2,255 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy - Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Privacy Policy of Dala Ko na. Subong dayon!">
+  <title>Privacy Policy – Dala🚲na</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
-    header {
-      background: #008060; color: white; padding: 1rem; position: relative;
+    body {
+      font-family: 'Cinzel', serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fdf6f0; /* pastel background */
+      color: #333;
     }
-    .header-flex {
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .back-arrow {
-      position: absolute; left: 1rem; top: 1rem; font-size: 1.5rem; color: white; text-decoration: none;
-    }
-    .cart-icon {
-      width: 36px; height: 36px;
-      background: white; color: #008060; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: bold; cursor: pointer;
-      border: 1px solid #ccc;
+    .hero {
       position: relative;
-    }
-    .cart-count {
-      position: absolute; top: -6px; right: -6px;
-      background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px;
-    }
-    .search-container {
-      padding: 1rem; display: flex; justify-content: center; gap: 0.5rem;
-    }
-    .search-container input { padding: 0.5rem; width: 200px; border: 1px solid #ccc; border-radius: 8px; }
-    .search-container button {
-      background: #008060; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px;
-    }
-    .product-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; padding: 1rem;
-    }
-    .product-card {
-      background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;
-    }
-    .product-card img { width: 100%; height: 150px; object-fit: cover; }
-    .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
-    .product-info h4 { margin: 0 0 0.5rem; font-size: 1rem; }
-    .product-info p { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
-    .quantity-controls {
-      display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
-    }
-    .quantity-controls button {
-      background: #008060; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px;
-    }
-    .quantity-controls span { min-width: 24px; text-align: center; }
-    #cart-panel {
-      position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: white;
-      box-shadow: -2px 0 12px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 1rem; overflow-y: auto; z-index: 100;
-    }
-    #cart-panel.open { right: 0; }
-    #cart-items .item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    #cart-total { margin-top: 1rem; font-weight: bold; font-size: 0.9rem; }
-    #checkout-btn {
-      margin-top: 1rem; padding: 0.8rem; background: #008060; color: white; border: none; width: 100%; border-radius: 8px;
-    }
-    #checkout-btn:disabled {
-      background: #ccc; cursor: not-allowed;
-    }
-    #fillout-modal {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
-    }
-    #fillout-modal iframe {
-      width: 90vw; height: 90vh; border: none; border-radius: 12px;
-    }
-    .cart-inputs input, .cart-inputs select {
-      width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;
-    }
-    .cart-inputs label { font-size: 0.9rem; margin-top: 0.8rem; display: block; font-weight: bold; }
-    .terms-link {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      color: #444;
       text-align: center;
+      color: white;
     }
-    .terms-link a {
-      color: #008060;
-      text-decoration: underline;
+    .hero-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hero-text h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2em auto;
+      padding: 1em;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #5e3c58;
+    }
+    p {
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-arrow">←</a>
-    <div class="header-flex">
-      <h1 style="margin: 0;">Pharmacy</h1>
-      <div class="cart-icon" onclick="toggleCart()">
-        🛒<span class="cart-count" id="cart-count">0</span>
-      </div>
-    </div>
-  </header>
 
-  <div class="search-container">
-    <input type="text" id="search-input" placeholder="Search products...">
-    <button onclick="searchProducts()">Search</button>
+  <!-- Hero Section -->
+  <section class="hero">
+    <img 
+      src="pastel-hero.jpg" 
+      alt="Dala Ko Na Pastel Background" 
+      class="hero-img" 
+      loading="lazy"
+    />
+    <div class="hero-text">
+      <h1>Privacy Policy</h1>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="container">
+    <h2>👋 Welcome to our Privacy Policy</h2>
+    <p>Dala🚲na respects your privacy and values your trust. This page explains how we collect, use, and protect your personal information.</p>
+
+    <h2>📋 Information We Collect</h2>
+    <ul>
+      <li>Your name, phone number, and delivery address</li>
+      <li>Your email (optional)</li>
+      <li>Your cart orders and preferences</li>
+      <li>Login details if you use Google, Facebook, or Email</li>
+    </ul>
+
+    <h2>🔐 How We Use Your Info</h2>
+    <p>We use your information to:</p>
+    <ul>
+      <li>Process and deliver your orders</li>
+      <li>Send order confirmations via WhatsApp</li>
+      <li>Improve our service and recommendations</li>
+    </ul>
+
+    <h2>🤝 Who We Share It With</h2>
+    <p>We only share your info with:</p>
+    <ul>
+      <li>Merchants fulfilling your orders</li>
+      <li>Our delivery partners</li>
+      <li>No one else. We never sell your data.</li>
+    </ul>
+
+    <h2>🧼 Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Request a copy of your data</li>
+      <li>Correct any errors</li>
+      <li>Ask us to delete your info</li>
+    </ul>
+
+    <h2>📲 Contact Us</h2>
+    <p>If you have any questions or requests, message us on <a href="https://wa.me/63XXXXXXXXXX" target="_blank">WhatsApp</a> or email us at <a href="mailto:hello@dalana.com">hello@dalana.com</a>.</p>
+
+    <h2>📅 Updates</h2>
+    <p>This policy may change from time to time. We'll post updates on this page.</p>
+
+    <p><strong>Salamat gid sa pagsalig!</strong> – From the Dala🚲na Team</p>
   </div>
 
-  <div class="product-grid" id="product-grid"></div>
-
-  <div id="cart-panel">
-    <h3>Your Dala🚲Cart</h3>
-    <div id="cart-items"></div>
-    <div id="cart-total"></div>
-
-    <div class="cart-inputs">
-      <label for="payment-method">Payment Method</label>
-      <select id="payment-method">
-        <option value="COD">Cash on Delivery</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Bank Transfer">Bank Transfer</option>
-      </select>
-      <label for="delivery-date">Delivery Date</label>
-      <input type="date" id="delivery-date">
-      <label for="delivery-time">Delivery Time</label>
-      <input type="time" id="delivery-time">
-      <label for="customer-name">Your Name</label>
-      <input type="text" id="customer-name">
-      <label for="customer-phone">Phone</label>
-      <input type="tel" id="customer-phone">
-      <label for="customer-email">Email</label>
-      <input type="email" id="customer-email">
-    </div>
-
-    <button id="checkout-btn" onclick="checkout()" disabled>Checkout</button>
-    <div class="terms-link">
-      By checking out, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
-    </div>
-  </div>
-
-  <div id="fillout-modal"><iframe id="fillout-iframe"></iframe></div>
-
-  <script>
-    const products = [
-      { name: "Paracetamol 500mg", price: 35, desc: "Fever and pain relief", image: "https://via.placeholder.com/300x150?text=Paracetamol" },
-      { name: "Hydrite", price: 15, desc: "Oral rehydration salts", image: "https://via.placeholder.com/300x150?text=Hydrite" },
-      { name: "Biogesic", price: 30, desc: "Headache and fever relief", image: "https://via.placeholder.com/300x150?text=Biogesic" },
-      { name: "Decolgen", price: 28, desc: "Cold and flu relief", image: "https://via.placeholder.com/300x150?text=Decolgen" },
-      { name: "Alaxan FR", price: 40, desc: "Body pain relief", image: "https://via.placeholder.com/300x150?text=Alaxan+FR" },
-      { name: "Neozep", price: 25, desc: "Cold symptom relief", image: "https://via.placeholder.com/300x150?text=Neozep" },
-      { name: "Diatabs", price: 22, desc: "Anti-diarrheal", image: "https://via.placeholder.com/300x150?text=Diatabs" },
-      { name: "Loperamide", price: 20, desc: "Diarrhea control", image: "https://via.placeholder.com/300x150?text=Loperamide" },
-      { name: "Kremil-S", price: 18, desc: "Stomach relief", image: "https://via.placeholder.com/300x150?text=Kremil-S" },
-      { name: "Antacid Tabs", price: 19, desc: "Indigestion relief", image: "https://via.placeholder.com/300x150?text=Antacid+Tabs" }
-    ];
-
-    let cart = {};
-
-    function renderProducts(filter = "") {
-      const grid = document.getElementById('product-grid');
-      grid.innerHTML = "";
-      products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach((p, i) => {
-        const qty = cart[p.name]?.qty || 0;
-        grid.innerHTML += `
-          <div class="product-card">
-            <img src="${p.image}" alt="${p.name}">
-            <div class="product-info">
-              <h4>${p.name}</h4>
-              <p>${p.desc}</p>
-              <div class="quantity-controls">
-                <button onclick='decreaseQty("${p.name}")'>–</button>
-                <span>${qty}</span>
-                <button onclick='increaseQty("${p.name}", ${p.price})'>+</button>
-              </div>
-            </div>
-          </div>`;
-      });
-    }
-
-    function increaseQty(name, price) {
-      if (!cart[name]) cart[name] = { qty: 1, price };
-      else cart[name].qty++;
-      updateCart();
-    }
-
-    function decreaseQty(name) {
-      if (cart[name]) {
-        cart[name].qty--;
-        if (cart[name].qty <= 0) delete cart[name];
-      }
-      updateCart();
-    }
-
-    function updateCart() {
-      const container = document.getElementById('cart-items');
-      container.innerHTML = "";
-      let subtotal = 0, totalItems = 0;
-      for (let name in cart) {
-        const item = cart[name];
-        subtotal += item.price * item.qty;
-        totalItems += item.qty;
-        container.innerHTML += `<div class="item">${item.qty}x ${name} <b>₱${item.price * item.qty}</b></div>`;
-      }
-      const vat = subtotal * 0.12;
-      const fee = 29.99;
-      const total = subtotal + vat + fee;
-      document.getElementById('cart-total').innerHTML = `
-        Subtotal: ₱${subtotal.toFixed(2)}<br>
-        VAT (12%): ₱${vat.toFixed(2)}<br>
-        Service Fee: ₱${fee.toFixed(2)}<br>
-        <b>Total: ₱${total.toFixed(2)}</b>`;
-      document.getElementById('cart-count').innerText = totalItems;
-      renderProducts(document.getElementById('search-input').value);
-    }
-
-    function toggleCart() {
-      const cartPanel = document.getElementById('cart-panel');
-      cartPanel.classList.toggle('open');
-    }
-
-    function validateCheckoutFields() {
-      const name = document.getElementById("customer-name").value.trim();
-      const phone = document.getElementById("customer-phone").value.trim();
-      const email = document.getElementById("customer-email").value.trim();
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const method = document.getElementById("payment-method").value;
-
-      const isValid = name && phone && email && date && time && method;
-      document.getElementById("checkout-btn").disabled = !isValid;
-    }
-
-    ["customer-name", "customer-phone", "customer-email", "delivery-date", "delivery-time", "payment-method"].forEach(id => {
-      document.getElementById(id).addEventListener('input', validateCheckoutFields);
-    });
-
-    function checkout() {
-      if (document.getElementById("checkout-btn").disabled) return;
-
-      const summary = Object.entries(cart).map(([name, item]) => `${item.qty}x ${name}`).join(", ");
-      const method = document.getElementById("payment-method").value;
-      const name = document.getElementById("customer-name").value;
-      const phone = document.getElementById("customer-phone").value;
-      const email = document.getElementById("customer-email").value;
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const filloutUrl = `https://forms.fillout.com/t/oMZACWUnvFus?customerName=${encodeURIComponent(name)}&whatsappNumber=${encodeURIComponent(phone)}&customerEmail=${encodeURIComponent(email)}&deliveryDate=${encodeURIComponent(date)}&deliveryTime=${encodeURIComponent(time)}&cartSummary=${encodeURIComponent(summary)}&paymentMethod=${method}&paymentStatus=${method === 'COD' ? 'Unpaid' : 'Pending'}`;
-      document.getElementById('fillout-iframe').src = filloutUrl;
-      document.getElementById('fillout-modal').style.display = 'flex';
-    }
-
-    function searchProducts() {
-      renderProducts(document.getElementById('search-input').value);
-    }
-
-    renderProducts();
-  </script>
 </body>
 </html>
