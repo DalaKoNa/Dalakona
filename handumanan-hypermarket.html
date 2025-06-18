@@ -1,300 +1,296 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>Handumanan Hypermarket</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #fdfdfd; padding: 1rem; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-.cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
-.cart-count {
-position: absolute; top: -8px; right: -10px; background: red; color: white;
-border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
-text-align: center; line-height: 16px;
-}
-h1 { text-align: center; margin-bottom: 1rem; }
-.search-bar { margin-bottom: 1rem; text-align: center; }
-.search-bar input {
-padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
-}
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-.card {
-background: white; border: 1px solid #ddd; border-radius: 12px;
-padding: 1rem; display: flex; flex-direction: column;
-justify-content: space-between; height: 100%; text-align: center;
-}
-.card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
-.qty-controls {
-display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
-}
-.qty-controls button {
-background: #333; color: white; border: none;
-padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
-}
-.cart-modal {
-position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-background: white; width: 90%; max-width: 600px; max-height: 90vh;
-overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-border-radius: 20px; z-index: 9999;
-}
-.cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
-.form-section, .cart-summary { margin-top: 1rem; }
-.form-section input, .form-section select {
-width: 100%; padding: 0.5rem; margin: 0.5rem 0;
-}
-.checkout-btn {
-margin-top: 1rem; background: green; color: white;
-padding: 0.8rem; width: 100%; border: none;
-font-weight: bold; cursor: pointer;
-}
-.hidden { display: none; }
-.line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Handumanan Hypermarket</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fdfdfd; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
+    h1 { text-align: center; margin-bottom: 1rem; }
+    .search-bar { margin-bottom: 1rem; text-align: center; }
+    .search-bar input {
+      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .card {
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
+    }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
+    .qty-controls {
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
+    }
+    .qty-controls button {
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
+    }
+    .cart-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
+    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
+  </style>
 </head>
 
 <body>
-<header>
-<a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-<h1>Dala🚲Na Hypermarket</h1>
-<div class="cart-btn" onclick="toggleCart()">
-<i class="fas fa-receipt"></i>
-<span class="cart-count" id="cart-count">0</span>
-</div>
-</header>
+  <header>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h1>Dala🚲Na Hypermarket</h1>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </header>
 
-<div class="search-bar">
-<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
-</div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
+  </div>
 
-<div class="grid" id="product-list"></div>
+  <div class="grid" id="product-list"></div>
 
-<div class="cart-modal hidden" id="cart-modal">
-<div class="close-btn" onclick="toggleCart()">&times;</div>
-<div class="cart-summary" id="cart-summary"></div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
-<div class="form-section">
-<h3>Customer Info</h3>
-<input type="text" id="customer-name" placeholder="Full Name" required>
-<input type="tel" id="customer-phone" placeholder="Phone Number" required>
-<input type="email" id="customer-email" placeholder="Email Address" required>
-<input type="text" id="delivery-address" placeholder="Delivery Address" required>
+    <div class="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required>
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+      <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
 
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date">
-<input type="time" id="delivery-time">
-<div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
-✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
-</div>
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date">
+      <input type="time" id="delivery-time">
+      <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
+        ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
+      </div>
 
-<select id="payment-method">
-  <option value="GCash">GCash</option>
-  <option value="PayMaya">PayMaya</option>
-  <option value="Bank">Bank Transfer</option>
-  <option value="Cash">Cash on Delivery</option>
-</select>
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery</option>
+      </select>
+      <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" onclick="event.stopPropagation();" style="color:#008060;text-decoration:underline;font-size:0.85rem;display:inline-block;margin-top:0.5rem;">
+        View GCash instructions
+      </a>
 
-<a
-  id="payment-link"
-  href="payment-instructions.html?method=GCash"
-  target="_blank"
-  onclick="event.stopPropagation();"
-  class="payment-instructions-link"
->
-  View payment instructions
-</a>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Orders are final and cannot be cancelled.
+      </div>
 
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
-</div>
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
+    </div>
+  </div>
 
-<button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>Checkout via WhatsApp</button>
-</div>
-</div>
+  <script>
+    const products = [
+      { name: "Rice 1kg", price: 50, image: "https://via.placeholder.com/100" },
+      { name: "Canned Tuna", price: 30, image: "https://via.placeholder.com/100" },
+      { name: "Cooking Oil 1L", price: 85, image: "https://via.placeholder.com/100" },
+      { name: "Instant Noodles", price: 12, image: "https://via.placeholder.com/100" },
+      { name: "Eggs (1 doz)", price: 90, image: "https://via.placeholder.com/100" },
+      { name: "Detergent Powder", price: 25, image: "https://via.placeholder.com/100" },
+      { name: "Toothpaste", price: 40, image: "https://via.placeholder.com/100" },
+      { name: "Bread Loaf", price: 55, image: "https://via.placeholder.com/100" },
+      { name: "Milk Powder", price: 95, image: "https://via.placeholder.com/100" },
+      { name: "Coffee Sachets", price: 35, image: "https://via.placeholder.com/100" }
+    ];
 
-<script>
-const products = [
-{ name: "Rice 1kg", price: 50, image: "https://via.placeholder.com/100" },
-{ name: "Canned Tuna", price: 30, image: "https://via.placeholder.com/100" },
-{ name: "Cooking Oil 1L", price: 85, image: "https://via.placeholder.com/100" },
-{ name: "Instant Noodles", price: 12, image: "https://via.placeholder.com/100" },
-{ name: "Eggs (1 doz)", price: 90, image: "https://via.placeholder.com/100" },
-{ name: "Detergent Powder", price: 25, image: "https://via.placeholder.com/100" },
-{ name: "Toothpaste", price: 40, image: "https://via.placeholder.com/100" },
-{ name: "Bread Loaf", price: 55, image: "https://via.placeholder.com/100" },
-{ name: "Milk Powder", price: 95, image: "https://via.placeholder.com/100" },
-{ name: "Coffee Sachets", price: 35, image: "https://via.placeholder.com/100" }
-];
+    const cart = {};
 
-const cart = {};
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+          <div class="card" data-name="${item.name.toLowerCase()}">
+            <img src="${item.image}" alt="${item.name}">
+            <h4>${item.name}</h4>
+            <p>₱${item.price.toFixed(2)}</p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
+      });
+    }
 
-function renderProducts() {
-const list = document.getElementById('product-list');
-list.innerHTML = '';
-products.forEach((item, index) => {
-list.innerHTML += `
-         <div class="card" data-name="${item.name.toLowerCase()}">
-           <img src="${item.image}" alt="${item.name}">
-           <h4>${item.name}</h4>
-           <p>₱${item.price.toFixed(2)}</p>
-           <div class="qty-controls">
-             <button onclick="decreaseQty(${index})">-</button>
-             <span id="qty-${index}">0</span>
-             <button onclick="increaseQty(${index})">+</button>
-           </div>
-         </div>`;
-});
-}
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
+      });
+    }
 
-function filterProducts() {
-const query = document.getElementById('searchInput').value.toLowerCase();
-document.querySelectorAll('.card').forEach(card => {
-card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
-});
-}
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
+    }
 
-function increaseQty(i) {
-const item = products[i];
-if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-cart[item.name].qty++;
-updateQty(i);
-}
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
+      }
+      updateQty(i);
+    }
 
-function decreaseQty(i) {
-const item = products[i];
-if (cart[item.name]) {
-cart[item.name].qty--;
-if (cart[item.name].qty <= 0) delete cart[item.name];
-}
-updateQty(i);
-}
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+      validateForm();
+    }
 
-function updateQty(i) {
-const item = products[i];
-const qty = cart[item.name]?.qty || 0;
-document.getElementById(`qty-${i}`).innerText = qty;
-document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-updateCartSummary();
-validateForm();
-}
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
 
-function toggleCart() {
-document.getElementById('cart-modal').classList.toggle('hidden');
-}
+    function updateCartSummary() {
+      let html = '<h3>Receipt Summary - Dala🚲Na Hypermarket</h3><ul>';
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
+        html += `<li>${line}</li>`;
+        total += item.qty * item.price;
+      });
+      const vat = total * 0.12;
+      const fee = 29.99;
+      const grand = total + vat + fee;
+      html += `</ul>
+        <p>Subtotal: ₱${total.toFixed(2)}</p>
+        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+        <p>Service Fee: ₱${fee.toFixed(2)}</p>
+        <div class="line-break"></div>
+        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
 
-function updateCartSummary() {
-let html = '<h3>Receipt Summary - Dala🚲Na Hypermarket</h3><ul>';
-let total = 0;
-Object.values(cart).forEach(item => {
-const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
-html += `<li>${line}</li>`;
-total += item.qty * item.price;
-});
-const vat = total * 0.12;
-const fee = 29.99;
-const grand = total + vat + fee;
-html += `</ul>
-       <p>Subtotal: ₱${total.toFixed(2)}</p>
-       <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-       <p>Service Fee: ₱${fee.toFixed(2)}</p>
-       <div class="line-break"></div>
-       <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-document.getElementById('cart-summary').innerHTML = html;
-}
+    function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
 
-function submitOrder() {
-const name = document.getElementById('customer-name').value.trim();
-const phone = document.getElementById('customer-phone').value.trim();
-const email = document.getElementById('customer-email').value.trim();
-const date = document.getElementById('delivery-date').value;
-const time = document.getElementById('delivery-time').value;
-const method = document.getElementById('payment-method').value;
+      const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+      const summary = document.getElementById('cart-summary').innerText;
 
-const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-const summary = document.getElementById('cart-summary').innerText;
+      const message = `New Order from Dala🚲Na Hypermarket:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment Method: ${method}`;
 
-const message = `New Order from Dala🚲Na Hypermarket:\nMerchant: Dala🚲Na Hypermarket\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment Method: ${method}`;
+      const encoded = encodeURIComponent(message);
+      const merchant = '63XXXXXXXXXX';
+      const admin = '63YYYYYYYYYY';
+      const driver = '63ZZZZZZZZZZ';
 
-const waMessage = encodeURIComponent(message);
-const merchantNumber = '63XXXXXXXXXX';
-const adminNumber = '63YYYYYYYYYY';
-const driverNumber = '63ZZZZZZZZZZ';
+      window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+      window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+      window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
 
-window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+      toggleCart();
+    }
 
-toggleCart();
-}
+    window.onload = () => {
+      renderProducts();
+      const today = new Date();
+      const localDate = today.toISOString().split('T')[0];
+      const deliveryDate = document.getElementById('delivery-date');
+      const deliveryTime = document.getElementById('delivery-time');
+      const deliveryNote = document.getElementById('delivery-note');
 
-window.onload = () => {
-renderProducts();
-const today = new Date();
-const localDate = today.toISOString().split('T')[0];
-const deliveryDate = document.getElementById('delivery-date');
-const deliveryTime = document.getElementById('delivery-time');
-const deliveryNote = document.getElementById('delivery-note');
+      deliveryDate.value = localDate;
 
-deliveryDate.value = localDate;
+      const updateTimeField = () => {
+        const selectedDate = new Date(deliveryDate.value);
+        const currentDate = new Date();
 
-const updateTimeField = () => {
-const selectedDate = new Date(deliveryDate.value);
-const currentDate = new Date();
+        if (selectedDate.toDateString() === currentDate.toDateString()) {
+          const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+          deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+          deliveryTime.disabled = true;
+          deliveryNote.style.display = "block";
+        } else {
+          deliveryTime.disabled = false;
+          deliveryNote.style.display = "none";
+        }
+      };
 
-if (selectedDate.toDateString() === currentDate.toDateString()) {
-const autoTime = new Date(currentDate.getTime() + 70 * 60000);
-deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-deliveryTime.disabled = true;
-deliveryNote.style.display = "block";
-} else {
-deliveryTime.disabled = false;
-deliveryNote.style.display = "none";
-}
-};
+      updateTimeField();
+      deliveryDate.addEventListener('change', updateTimeField);
+    };
 
-updateTimeField();
-deliveryDate.addEventListener('change', updateTimeField);
-});
-document.getElementById('payment-method').addEventListener('change', function () {
-  const method = this.value;
-  const link = document.getElementById('payment-link');
-  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-  link.textContent = `View ${method} instructions`;
-});
+    // ✅ Payment instructions link update
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
+    });
 
-};
-const requiredFields = [
-'customer-name', 'customer-phone', 'customer-email',
-'delivery-date', 'delivery-time', 'payment-method'
-];
+    const requiredFields = [
+      'customer-name', 'customer-phone', 'customer-email',
+      'delivery-date', 'delivery-time', 'payment-method'
+    ];
 
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
+    requiredFields.forEach(id => {
+      document.getElementById(id).addEventListener('input', validateForm);
+    });
 
-function validateForm() {
-const allFilled = requiredFields.every(id => {
-const el = document.getElementById(id);
-return el && el.value.trim() !== '';
-});
+    function validateForm() {
+      const allFilled = requiredFields.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim() !== '';
+      });
 
-const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-const checkoutBtn = document.getElementById('checkout-btn');
+      const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+      const checkoutBtn = document.getElementById('checkout-btn');
 
-if (allFilled && cartHasItems) {
-checkoutBtn.disabled = false;
-checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-} else {
-checkoutBtn.disabled = true;
-checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-}
-}
-</script>
+      if (allFilled && cartHasItems) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+        checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+      } else {
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+        checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+      }
+    }
+  </script>
 </body>
 </html>
