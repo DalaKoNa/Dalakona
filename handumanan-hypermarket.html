@@ -698,7 +698,12 @@
       updateTimeField();
       deliveryDate.addEventListener('change', updateTimeField);
     };
-
+document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+  });
       const message = `🛒 *New Order - Handumanan Hypermarket*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n✉️ *Email:* ${email}\n📅 *Delivery:* ${deliveryDate} at ${deliveryTime}\n📦 *Items:* ${cartSummary}\n💳 *Payment:* ${method} (${status})\n📝 *Instructions:* ${notes}\n💰 *Total:* ₱${total}`;
     const requiredFields = [
       'customer-name', 'customer-phone', 'customer-email',
