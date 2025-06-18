@@ -2,266 +2,247 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na: Bakery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dala🚲na: Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2e0e6cfd7.js" crossorigin="anonymous"></script>
   <style>
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { margin: 0; background: #fffdf8; padding: 1rem; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 1rem; background: #fffaf5; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .back-btn, .cart-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
     .cart-count {
-      position: absolute; top: -8px; right: -10px; background: red; color: white;
-      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      position: absolute; top: -5px; right: -8px;
+      background: red; color: white; font-size: 0.7rem;
+      border-radius: 50%; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; }
-    .search-bar { text-align: center; margin-bottom: 1rem; }
-    .search-bar input {
-      padding: 0.5rem; width: 80%; max-width: 300px;
-      border: 1px solid #ccc; border-radius: 5px;
+    h1 { text-align: center; margin: 1rem 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
     }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .card {
-      background: white; border: 1px solid #eee; border-radius: 12px;
-      padding: 1rem; text-align: center;
+      background: white; padding: 1rem; border-radius: 12px; text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
-    .qty-controls { display: flex; justify-content: center; align-items: center; margin: 0.5rem 0; }
+    .card img {
+      max-width: 100%; height: 100px; object-fit: cover; margin-bottom: 0.5rem;
+    }
+    .qty-controls {
+      display: flex; justify-content: center; gap: 1rem; margin: 0.5rem 0;
+    }
     .qty-controls button {
-      background: #333; color: white; border: none; padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
+      background: #333; color: white; border: none; padding: 0.3rem 0.6rem; cursor: pointer;
     }
-
     .cart-modal {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: white; width: 95%; max-width: 500px;
-      max-height: 90vh; overflow-y: auto;
-      padding: 1rem; border-radius: 16px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 1000;
+      position: fixed; top: 0; right: 0;
+      width: 100%; max-width: 400px; height: 100%;
+      background: #fff; box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      padding: 1rem; overflow-y: auto; z-index: 9999; display: none;
     }
-    .hidden { display: none; }
+    .cart-modal h3 { margin-top: 0; }
     .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
     .form-section input, .form-section select {
-      width: 100%; padding: 0.5rem; margin: 0.4rem 0;
+      width: 100%; padding: 0.6rem; margin: 0.5rem 0;
     }
     .checkout-btn {
-      margin-top: 1rem; background: green; color: white;
-      padding: 0.8rem; width: 100%; border: none;
-      font-weight: bold; cursor: pointer;
+      width: 100%; padding: 0.8rem;
+      background: #008060; color: white;
+      font-weight: bold; border: none; margin-top: 1rem;
+    }
+    .checkout-btn:disabled {
+      background: #ccc; cursor: not-allowed;
+    }
+    .payment-popup {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      padding: 1rem; border-radius: 12px; z-index: 10000;
+      display: none;
     }
     .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
 
-    .payment-popup {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6); display: flex;
-      align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    .payment-content {
-      background: white; padding: 1.5rem; border-radius: 10px;
-      max-width: 90%; text-align: center;
-    }
-
-    .payment-content input {
-      width: 90%; padding: 0.5rem; margin-top: 0.5rem;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.2rem; }
+    @media(max-width: 500px) {
+      h1 { font-size: 1.25rem; }
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na: Bakery</h1>
-    <div class="cart-btn" onclick="toggleCart()">
-      <i class="fas fa-receipt"></i>
-      <span class="cart-count" id="cart-count">0</span>
-    </div>
-  </header>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
+<header>
+  <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+  <h1>Dala🚲na: Bakery</h1>
+  <div class="cart-btn" onclick="toggleCart()">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cart-count">0</span>
   </div>
+</header>
 
-  <div class="grid" id="product-list"></div>
+<div class="grid" id="product-list"></div>
 
-  <div class="cart-modal hidden" id="cart-modal">
-    <div class="close-btn" onclick="toggleCart()">&times;</div>
-    <div id="cart-summary"></div>
+<!-- Slide-out Cart -->
+<div class="cart-modal" id="cart-modal">
+  <div class="close-btn" onclick="toggleCart()">&times;</div>
+  <div class="cart-summary" id="cart-summary"></div>
 
-    <div class="form-section">
-      <h3>Customer Info</h3>
-      <input type="text" id="customer-name" placeholder="Full Name" required>
-      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-      <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
+  <div class="form-section">
+    <h3>Customer Info</h3>
+    <input type="text" id="customer-name" placeholder="Full Name" required>
+    <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+    <input type="email" id="customer-email" placeholder="Email Address" required>
+    <input type="text" id="delivery-address" placeholder="Delivery Address" required>
 
-      <h3>Delivery Date & Time</h3>
-      <input type="date" id="delivery-date">
-      <input type="time" id="delivery-time">
+    <h3>Delivery Time</h3>
+    <input type="date" id="delivery-date">
+    <input type="time" id="delivery-time">
 
-      <h3>Payment Method</h3>
-      <select id="payment-method" onchange="handlePaymentChange()">
-        <option value="">Select...</option>
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Card">Card</option>
-        <option value="COD">Cash on Delivery</option>
-      </select>
+    <h3>Payment Method</h3>
+    <select id="payment-method" onchange="handlePaymentChange()">
+      <option value="">Select</option>
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+      <option value="Card">Card</option>
+      <option value="COD">Cash on Delivery</option>
+    </select>
 
-      <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #555;">
-        ✅ I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a>.
-      </div>
-
-      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>
-        Checkout via WhatsApp
-      </button>
-    </div>
+    <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>
+      Checkout
+    </button>
   </div>
+</div>
 
-  <div class="payment-popup hidden" id="payment-popup">
-    <div class="payment-content">
-      <h3>Complete Your Payment</h3>
-      <p>Scan QR or Enter Card Number:</p>
-      <img src="qr-placeholder.png" alt="QR Code" width="150" />
-      <input type="text" placeholder="Card Number (Mock)" />
-      <br /><br />
-      <button onclick="closePaymentPopup()">Done</button>
-    </div>
-  </div>
+<!-- Payment Modal -->
+<div class="payment-popup" id="payment-popup">
+  <h3>Complete Payment</h3>
+  <p>Scan this QR or enter card number:</p>
+  <img src="qr.png" alt="QR Code" style="max-width: 100%; margin-bottom: 1rem;">
+  <input type="text" placeholder="Card number (if applicable)">
+  <button onclick="confirmPaymentAndSend()">Continue</button>
+</div>
 
-  <script>
-    const products = [
-      { name: "Pandesal", price: 3, image: "https://via.placeholder.com/100?text=Pandesal" },
-      { name: "Spanish Bread", price: 8, image: "https://via.placeholder.com/100?text=Spanish+Bread" },
-      { name: "Ensaymada", price: 15, image: "https://via.placeholder.com/100?text=Ensaymada" },
-    ];
-    const cart = {};
+<script>
+const products = [
+  { name: "Classic Pandesal", price: 30, image: "https://via.placeholder.com/100x100?text=Pandesal" },
+  { name: "Cheese Bread", price: 50, image: "https://via.placeholder.com/100x100?text=Cheese+Bread" },
+  { name: "Ensaymada", price: 55, image: "https://via.placeholder.com/100x100?text=Ensaymada" },
+  { name: "Spanish Bread", price: 45, image: "https://via.placeholder.com/100x100?text=Spanish+Bread" }
+];
 
-    function renderProducts() {
-      const list = document.getElementById("product-list");
-      list.innerHTML = '';
-      products.forEach((item, i) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <img src="${item.image}" />
-            <h4>${item.name}</h4>
-            <p>₱${item.price}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${i})">-</button>
-              <span id="qty-${i}">0</span>
-              <button onclick="increaseQty(${i})">+</button>
-            </div>
-          </div>`;
-      });
-    }
+const cart = {};
 
-    function filterProducts() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.card').forEach(card => {
-        card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
-      });
-    }
+function renderProducts() {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach((item, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <img src="${item.image}" alt="${item.name}">
+        <h4>${item.name}</h4>
+        <p>₱${item.price.toFixed(2)}</p>
+        <div class="qty-controls">
+          <button onclick="decreaseQty(${i})">-</button>
+          <span id="qty-${i}">0</span>
+          <button onclick="increaseQty(${i})">+</button>
+        </div>
+      </div>`;
+  });
+}
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
-    }
+function increaseQty(i) {
+  const item = products[i];
+  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+  cart[item.name].qty++;
+  updateQty(i);
+}
+function decreaseQty(i) {
+  const item = products[i];
+  if (cart[item.name]) {
+    cart[item.name].qty--;
+    if (cart[item.name].qty <= 0) delete cart[item.name];
+  }
+  updateQty(i);
+}
+function updateQty(i) {
+  const item = products[i];
+  document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
+  document.getElementById("cart-count").innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  updateCartSummary();
+  validateForm();
+}
+function toggleCart() {
+  document.getElementById("cart-modal").style.display =
+    document.getElementById("cart-modal").style.display === "block" ? "none" : "block";
+}
 
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
-    }
+function updateCartSummary() {
+  const summary = document.getElementById("cart-summary");
+  let html = "<h3>Order Summary</h3><ul>";
+  let total = 0;
+  for (const item of Object.values(cart)) {
+    html += `<li>${item.qty} x ${item.name} – ₱${(item.qty * item.price).toFixed(2)}</li>`;
+    total += item.qty * item.price;
+  }
+  const vat = total * 0.12;
+  const fee = 29.99;
+  const grand = total + vat + fee;
+  html += `</ul><p>Subtotal: ₱${total.toFixed(2)}</p>
+    <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+    <p>Service Fee: ₱${fee.toFixed(2)}</p>
+    <div class="line-break"></div>
+    <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+  summary.innerHTML = html;
+}
 
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById("cart-count").innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-      validateForm();
-    }
+function handlePaymentChange() {
+  validateForm(); // no auto popup anymore
+}
 
-    function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('hidden');
-    }
+function validateForm() {
+  const filled = ["customer-name", "customer-phone", "customer-email", "delivery-address", "delivery-date", "delivery-time", "payment-method"]
+    .every(id => document.getElementById(id).value.trim() !== "");
+  const hasCart = Object.values(cart).length > 0;
+  document.getElementById("checkout-btn").disabled = !(filled && hasCart);
+}
 
-    function updateCartSummary() {
-      let html = "<h3>Receipt Summary</h3><ul>";
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
-        total += item.qty * item.price;
-      });
-      const vat = total * 0.12;
-      const fee = 29.99;
-      const grand = total + vat + fee;
-      html += `</ul>
-        <p>Subtotal: ₱${total.toFixed(2)}</p>
-        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-        <p>Service Fee: ₱${fee.toFixed(2)}</p>
-        <div class="line-break"></div>
-        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-      document.getElementById('cart-summary').innerHTML = html;
-    }
+function submitOrder() {
+  const method = document.getElementById("payment-method").value;
+  if (["GCash", "PayMaya", "Card"].includes(method)) {
+    document.getElementById("payment-popup").style.display = "block";
+  } else if (method === "COD") {
+    alert("Please prepare exact change. Pay the rider upon delivery.");
+    confirmPaymentAndSend();
+  }
+}
 
-    function validateForm() {
-      const fields = ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'delivery-address'];
-      const allFilled = fields.every(id => document.getElementById(id).value.trim() !== '');
-      const hasItems = Object.values(cart).length > 0;
-      document.getElementById("checkout-btn").disabled = !(allFilled && hasItems);
-    }
+function confirmPaymentAndSend() {
+  const name = document.getElementById("customer-name").value.trim();
+  const phone = document.getElementById("customer-phone").value.trim();
+  const email = document.getElementById("customer-email").value.trim();
+  const address = document.getElementById("delivery-address").value.trim();
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+  const method = document.getElementById("payment-method").value;
 
-    function handlePaymentChange() {
-      const method = document.getElementById("payment-method").value;
-      if (["GCash", "PayMaya", "Card"].includes(method)) {
-        document.getElementById("payment-popup").classList.remove("hidden");
-      } else if (method === "COD") {
-        alert("Please prepare exact change. Pay rider upon delivery.");
-      }
-    }
+  const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(", ");
+  const summary = document.getElementById("cart-summary").innerText;
+  const message = `New Bakery Order:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\nItems: ${items}\nDelivery: ${date} ${time}\nPayment: ${method}\n\n${summary}`;
+  const merchant = "63XXXXXXXXXX";
+  window.open(`https://wa.me/${merchant}?text=${encodeURIComponent(message)}`);
+  document.getElementById("payment-popup").style.display = "none";
+  toggleCart();
+}
 
-    function closePaymentPopup() {
-      document.getElementById("payment-popup").classList.add("hidden");
-    }
+window.onload = () => {
+  renderProducts();
+  const today = new Date();
+  document.getElementById("delivery-date").value = today.toISOString().split("T")[0];
+  document.querySelectorAll("input, select").forEach(el => el.addEventListener("input", validateForm));
+};
+</script>
 
-    function submitOrder() {
-      const name = document.getElementById("customer-name").value;
-      const phone = document.getElementById("customer-phone").value;
-      const email = document.getElementById("customer-email").value;
-      const address = document.getElementById("delivery-address").value;
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const method = document.getElementById("payment-method").value;
-      const summary = document.getElementById("cart-summary").innerText;
-      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-
-      const message = `New Bakery Order:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\nItems: ${items}\nDelivery: ${date} ${time}\nPayment: ${method}\n\n${summary}`;
-      const merchant = "63XXXXXXXXXX";
-
-      window.open(`https://wa.me/${merchant}?text=${encodeURIComponent(message)}`);
-      toggleCart();
-    }
-
-    window.onload = () => {
-      renderProducts();
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById("delivery-date").value = today;
-    };
-
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'delivery-address']
-      .forEach(id => document.getElementById(id).addEventListener('input', validateForm));
-  </script>
 </body>
 </html>
