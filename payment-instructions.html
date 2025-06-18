@@ -44,6 +44,12 @@
       border-left: 4px solid #fbc490;
     }
 
+    .hil {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.2rem;
+    }
+
     .details {
       font-size: 1rem;
       margin-bottom: 1.5rem;
@@ -76,12 +82,14 @@
     <div class="method" id="method-label">Payment Method: </div>
 
     <div class="note">
-      Please only pay the <strong>total amount for your items</strong>. 
+      Kindly pay only the <strong>total price of your selected items</strong>.
+      <div class="hil">Palihog bayri lang ang kabug-osan nga presyo sang mga ginpili mo nga items.</div>
       <br>Do not pay the ₱29.99 service fee — this is settled separately upon delivery.
+      <div class="hil">Indi anay bayaran ang ₱29.99 nga service fee — ini bayaran lang pag-abot sang delivery.</div>
     </div>
 
     <div class="details" id="payment-details">
-      <!-- Content will be filled by JavaScript -->
+      <!-- Filled by JavaScript -->
     </div>
 
     <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
@@ -90,39 +98,50 @@
   <script>
     const query = new URLSearchParams(window.location.search);
     const method = query.get("method");
-
     document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
     const detailsDiv = document.getElementById("payment-details");
 
     if (method === "GCash") {
       detailsDiv.innerHTML = `
-        <strong>GCash Name:</strong> Ellen G. Mendoza<br>
-        <strong>GCash Number:</strong> 09171234567<br>
-        <strong>Reference:</strong> Your Full Name
+        <strong>GCash Name:</strong> Ellen G. Mendoza
+        <div class="hil">Ngalan sa GCash: Ellen G. Mendoza</div>
+        <strong>GCash Number:</strong> 09171234567
+        <div class="hil">Numero sa GCash: 09171234567</div>
+        <strong>Reference:</strong> Use your full name for proper verification.
+        <div class="hil">Gamita ang imo bug-os nga ngalan para sa hustong pagpang-ila.</div>
       `;
     } else if (method === "PayMaya") {
       detailsDiv.innerHTML = `
-        <strong>PayMaya Name:</strong> Ellen G. Mendoza<br>
-        <strong>PayMaya Number:</strong> 09181234567<br>
-        <strong>Reference:</strong> Your Full Name
+        <strong>PayMaya Name:</strong> Ellen G. Mendoza
+        <div class="hil">Ngalan sa PayMaya: Ellen G. Mendoza</div>
+        <strong>PayMaya Number:</strong> 09181234567
+        <div class="hil">Numero sa PayMaya: 09181234567</div>
+        <strong>Reference:</strong> Use your full name for proper verification.
+        <div class="hil">Gamita ang imo bug-os nga ngalan para sa hustong pagpang-ila.</div>
       `;
-    } else if (method === "Bank") {
+    } else if (method === "Bank" || method === "Bank Transfer") {
       detailsDiv.innerHTML = `
-        <strong>Bank Name:</strong> BPI<br>
-        <strong>Account Name:</strong> Ellen G. Mendoza<br>
-        <strong>Account Number:</strong> 1234-5678-9012<br>
-        <strong>Reference:</strong> Your Full Name
+        <strong>Bank:</strong> BPI
+        <div class="hil">Bangko: BPI</div>
+        <strong>Account Name:</strong> Ellen G. Mendoza
+        <div class="hil">Ngalan sang Account: Ellen G. Mendoza</div>
+        <strong>Account Number:</strong> 1234-5678-9012
+        <div class="hil">Numero sang Account: 1234-5678-9012</div>
+        <strong>Reference:</strong> Use your full name.
+        <div class="hil">Gamita ang imo bug-os nga ngalan.</div>
       `;
-    } else if (method === "Cash") {
-  detailsDiv.innerHTML = `
-    <strong>Reminder:</strong> You must pay the full receipt total including ₱29.99 service fee and 12% VAT.<br>
-    <strong>Payment Method:</strong> Cash on Delivery<br>
-    <strong>Note:</strong> Please prepare exact change.
-  `;
-    }
+    } else if (method === "Cash" || method === "COD") {
+      detailsDiv.innerHTML = `
+        <strong>Important:</strong> You must pay the <strong>full amount</strong> including ₱29.99 service fee and 12% VAT.
+        <div class="hil">Importante: Kinahanglan bayran mo ang bug-os nga balor upod ang ₱29.99 nga service fee kag 12% VAT.</div>
+        <strong>Payment Method:</strong> Cash on Delivery
+        <div class="hil">Paagi sa Bayad: Kwarta sa pag-deliver</div>
+        <strong>Reminder:</strong> Please prepare the exact amount for faster processing.
+        <div class="hil">Pahanumdom: Manginhanda sang eksakto nga balor para mapadasig ang proseso.</div>
+      `;
     } else {
-      detailsDiv.innerHTML = `<em>Please return to cart and select a valid payment method.</em>`;
+      detailsDiv.innerHTML = `<em>Please go back and select a valid payment method from the cart.</em><br><small class="hil">Palihog baliki ang cart kag pili sang husto nga paagi sang bayad.</small>`;
     }
   </script>
 </body>
