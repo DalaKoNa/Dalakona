@@ -3,167 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Careers at Dala Ko na – Join our delivery, admin, or merchant team!">
+  <meta name="description" content="Join the Dala Ko na team – delivery, merchant, or admin careers.">
   <title>Careers – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Cinzel', serif;
+      font-family: 'Inter', sans-serif;
+      background-color: #fdf6f0;
       margin: 0;
       padding: 0;
-      background-color: #fdf6f0;
       color: #333;
+      line-height: 1.6;
       font-size: 15px;
-      line-height: 1.5;
     }
 
     .hero {
+      background: url('pastel-hero.jpg') no-repeat center center;
+      background-size: cover;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
       position: relative;
       text-align: center;
-      color: white;
     }
 
-    .hero-img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      filter: brightness(0.6);
-    }
-
-    .hero-text {
+    .hero::after {
+      content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
     }
 
-    .hero-text h1 {
+    .hero h1 {
+      z-index: 1;
       font-size: 1.8em;
-      margin: 0;
-    }
-
-    .back-arrow {
-      position: absolute;
-      top: 1em;
-      left: 1em;
-      background-color: rgba(255, 255, 255, 0.7);
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.8em;
-      color: #333;
-      text-decoration: none;
-    }
-
-    .back-arrow:hover {
-      background-color: #fff;
     }
 
     .container {
-      max-width: 720px;
-      margin: 1.5em auto;
-      padding: 1em;
-      background: white;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      max-width: 850px;
+      margin: auto;
+      padding: 1.5em;
+    }
+
+    .section {
+      margin-bottom: 2em;
     }
 
     h2 {
-      color: #5e3c58;
-      font-size: 1.1em;
-      margin: 1.2em 0 0.6em;
-    }
-
-    p {
-      margin: 0.4em 0;
-    }
-
-    .btn-apply {
-      display: inline-block;
-      margin-top: 0.8em;
-      background-color: #ff69b4;
-      color: white;
-      padding: 8px 14px;
-      border: none;
-      border-radius: 4px;
-      font-size: 0.9em;
-      text-decoration: none;
-    }
-
-    .btn-apply:hover {
-      background-color: #e85ca4;
-    }
-
-    a {
       color: #a0527b;
-      text-decoration: none;
+      font-size: 1.2em;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .benefits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      margin-top: 1em;
+    }
+
+    .benefit {
+      flex: 1 1 250px;
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 1em;
+      background: #a0527b;
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+    .back-home {
+      margin-top: 2em;
+      text-align: center;
     }
 
     @media (max-width: 600px) {
-      .container {
-        padding: 1em 0.8em;
-        margin: 1em;
-      }
-
-      .hero-text h1 {
-        font-size: 1.4em;
-      }
-
-      .btn-apply {
-        font-size: 0.85em;
-        padding: 7px 12px;
-      }
-
-      h2 {
-        font-size: 1em;
-      }
-
-      body {
-        font-size: 14px;
+      .hero h1 {
+        font-size: 1.3em;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Hero Section -->
 <section class="hero">
-  <img 
-    src="pastel-hero.jpg" 
-    alt="Join the Dala Ko Na Team" 
-    class="hero-img" 
-    loading="lazy"
-  />
-  <a href="index.html" class="back-arrow">← Back</a>
-  <div class="hero-text">
-    <h1>Join Our Team</h1>
-  </div>
+  <h1>Join the Dala🚲na Team</h1>
 </section>
 
-<!-- Main Content -->
 <div class="container">
-  <h2>🚴 Become a Rider / Mangin Dala-Rider</h2>
-  <p><strong>English:</strong> Want to earn while helping your community? Dala🚲na riders deliver essentials with care. If you have a bike, scooter, or motorcycle—apply now!</p>
-  <p><em>Hiligaynon:</em> Gusto mo mag-income samtang naga-alagad sa komunidad? Ang Dala🚲na riders nagahatag sang serbisyo nga may paghigugma. Kung may bisikleta ka ukon motorsiklo—apply na!</p>
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn-apply">Apply as Rider</a>
+  <div class="section">
+    <h2>🚴 Rider / Mangin Dala-Rider</h2>
+    <p>Have a bike, scooter, or motor? Join our rider team and deliver essentials with love & speed!</p>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" class="btn" target="_blank">Apply as Rider</a>
+  </div>
 
-  <h2>🏪 Become a Partner Merchant / Mangin Ka-Partner nga Tindahan</h2>
-  <p><strong>English:</strong> Dala🚲na partners with local stores, bakeries, eateries, and pharmacies. Want to grow your orders? Join our merchant program.</p>
-  <p><em>Hiligaynon:</em> Ang Dala🚲na naga-partner sa mga tindahan, panaderia, karinderya, kag botika. Gusto mo magdamo order mo? Mag-partner sa amon subong!</p>
-  <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn-apply">Apply as Merchant</a>
+  <div class="section">
+    <h2>🏪 Merchant / Ka-Partner nga Tindahan</h2>
+    <p>Be one of our partner merchants. Expand your reach and serve your community.</p>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" class="btn" target="_blank">Apply as Merchant</a>
+  </div>
 
-  <h2>🧾 Be Part of Admin / Operations Team</h2>
-  <p><strong>English:</strong> We are looking for organized, caring, and tech-savvy people to help run operations, customer service, and logistics. Work remotely or onsite depending on role.</p>
-  <p><em>Hiligaynon:</em> Nangita kami sang maalam, matinlo, kag maalwan nga tawo nga magbulig sa operations, serbisyo sa customer, kag pag-manage sang delivery. Pwede remote ukon on-site depende sa role.</p>
-  <a href="mailto:join@dalako.na?subject=Admin%20Application" class="btn-apply">Apply as Admin</a>
+  <div class="section">
+    <h2>🧾 Admin / Operations Team</h2>
+    <p>Support logistics, customer service, and coordination. We welcome remote & onsite applicants.</p>
+    <a href="mailto:join@dalako.na" class="btn">Apply as Admin</a>
+  </div>
 
-  <h2>💡 Other Roles? / May Iban ka nga Skills?</h2>
-  <p>Message us on Facebook or email us at <a href="mailto:dalakona.service@gmail.com">dalakona.service@gmail.com</a>. We welcome creative, kind, and fast-moving team members.</p>
+  <div class="section">
+    <h2>✨ Benefits of Joining Dala🚲na</h2>
+    <div class="benefits">
+      <div class="benefit">✅ Flexible Schedule</div>
+      <div class="benefit">📍 Serve Local Communities</div>
+      <div class="benefit">💸 Weekly Payouts</div>
+      <div class="benefit">📞 Friendly Support Team</div>
+      <div class="benefit">🌱 Grow With Us</div>
+      <div class="benefit">👨‍💻 Remote Work (Admin)</div>
+    </div>
+  </div>
+
+  <div class="back-home">
+    <a href="index.html" class="btn">← Back to Dala🚲na</a>
+  </div>
 </div>
 
 </body>
