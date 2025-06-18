@@ -3,87 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Payment Instructions</title>
+  <title>Payment Instructions – Dala🚲Na</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      padding: 1.5rem;
-      background: #fffaf5;
+      font-family: 'Arial', sans-serif;
+      background-color: #fffaf7;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
     }
-    h2 {
-      text-align: center;
-    }
-    .instructions {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: white;
-      border: 1px solid #ddd;
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
-    .qr {
+
+    h1 {
+      color: #d47c9f;
       text-align: center;
-      margin: 1rem 0;
+      margin-bottom: 1.5rem;
     }
-    button {
-      background: #008060;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.2rem;
-      margin-top: 1.5rem;
-      display: block;
-      width: 100%;
-      border-radius: 6px;
+
+    .method {
+      font-size: 1.1rem;
       font-weight: bold;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+      background: #fff4ec;
+      padding: 1rem;
+      border-left: 4px solid #fbc490;
+    }
+
+    .details {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .details strong {
+      display: block;
+      margin-top: 0.5rem;
+      color: #000;
+    }
+
+    .back-link {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background-color: #008060;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .back-link:hover {
+      background-color: #00664d;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Payment Instructions</h1>
+    <div class="method" id="method-label">Payment Method: </div>
 
-<h2 id="method-title">Payment Instructions</h2>
+    <div class="note">
+      Please only pay the <strong>total amount for your items</strong>. 
+      <br>Do not pay the ₱29.99 service fee — this is settled separately upon delivery.
+    </div>
 
-<div class="instructions" id="instructions-box">
-  <!-- Dynamic content will load here -->
-</div>
+    <div class="details" id="payment-details">
+      <!-- Content will be filled by JavaScript -->
+    </div>
 
-<button onclick="window.close()">Back to Cart</button>
+    <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
+  </div>
 
-<script>
-const method = new URLSearchParams(window.location.search).get('method');
-const title = document.getElementById("method-title");
-const box = document.getElementById("instructions-box");
+  <script>
+    const query = new URLSearchParams(window.location.search);
+    const method = query.get("method");
 
-if (method === "GCash") {
-  title.innerText = "GCash Payment";
-  box.innerHTML = `
-    <p>Scan this QR to pay via GCash:</p>
-    <div class="qr"><img src="qr-gcash.png" alt="GCash QR" width="200"></div>
-    <p><strong>GCash Number:</strong> 0917-123-4567</p>
-    <p>Account Name: Bakery Store</p>
-  `;
-} else if (method === "PayMaya") {
-  title.innerText = "PayMaya Payment";
-  box.innerHTML = `
-    <p>Scan this QR to pay via PayMaya:</p>
-    <div class="qr"><img src="qr-paymaya.png" alt="PayMaya QR" width="200"></div>
-    <p><strong>PayMaya Number:</strong> 0918-456-7890</p>
-    <p>Account Name: Bakery Store</p>
-  `;
-} else if (method === "Card") {
-  title.innerText = "Credit/Debit Card Payment";
-  box.innerHTML = `
-    <p>Enter your card details securely on our payment gateway:</p>
-    <p><a href="#" target="_blank">Click here to pay by card</a></p>
-  `;
-} else if (method === "COD") {
-  title.innerText = "Cash on Delivery";
-  box.innerHTML = `
-    <p>Please prepare the exact amount and pay the rider upon delivery.</p>
-  `;
-} else {
-  title.innerText = "Payment Method Not Recognized";
-  box.innerHTML = `<p>Please go back and select a valid payment option.</p>`;
-}
-</script>
+    document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
+    const detailsDiv = document.getElementById("payment-details");
+
+    if (method === "GCash") {
+      detailsDiv.innerHTML = `
+        <strong>GCash Name:</strong> Ellen G. Mendoza<br>
+        <strong>GCash Number:</strong> 09171234567<br>
+        <strong>Reference:</strong> Your Full Name
+      `;
+    } else if (method === "PayMaya") {
+      detailsDiv.innerHTML = `
+        <strong>PayMaya Name:</strong> Ellen G. Mendoza<br>
+        <strong>PayMaya Number:</strong> 09181234567<br>
+        <strong>Reference:</strong> Your Full Name
+      `;
+    } else if (method === "Bank") {
+      detailsDiv.innerHTML = `
+        <strong>Bank Name:</strong> BPI<br>
+        <strong>Account Name:</strong> Ellen G. Mendoza<br>
+        <strong>Account Number:</strong> 1234-5678-9012<br>
+        <strong>Reference:</strong> Your Full Name
+      `;
+    } else if (method === "Cash") {
+      detailsDiv.innerHTML = `
+        <strong>Reminder:</strong> Please prepare exact cash. You agree to pay upon delivery.<br>
+        <strong>Note:</strong> transfer fee may apply.
+      `;
+    } else {
+      detailsDiv.innerHTML = `<em>Please return to cart and select a valid payment method.</em>`;
+    }
+  </script>
 </body>
 </html>
