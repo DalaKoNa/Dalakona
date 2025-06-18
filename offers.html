@@ -2,64 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Offers | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Promos and special deals from Dala Ko Na – save on deliveries and products.">
+  <title>Special Offers – Dala🚲na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Cinzel', serif;
-      margin: 2em;
+      font-family: 'Inter', sans-serif;
+      background-color: #fdf6f0;
+      margin: 0;
+      padding: 0;
       color: #333;
-      background: #fefefe;
+      font-size: 15px;
     }
-    h1 {
-      text-align: center;
-      color: #222;
-      margin-bottom: 1em;
-    }
-    p {
-      max-width: 700px;
-      margin: 0 auto 1.5em auto;
-      font-size: 1.1em;
-      color: #555;
-    }
-    .center-links {
-      text-align: center;
-      font-size: 1.2em;
-      margin-top: 1em;
-    }
-    .center-links a {
-      text-decoration: none;
-      margin: 0 15px;
-    }
-    .back-button {
-      display: block;
-      width: fit-content;
-      margin: 2em auto 0;
-      padding: 10px 20px;
-      background-color: #007bff;
+
+    .hero {
+      background: url('pastel-hero.jpg') no-repeat center center;
+      background-size: cover;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .hero h1 {
+      z-index: 1;
+      font-size: 1.8em;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      padding: 1.5em;
+    }
+
+    .offer {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 1.5em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .offer h2 {
+      margin-top: 0;
+      color: #a0527b;
+      font-size: 1.1em;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 1em;
+      background: #a0527b;
+      color: white;
+      padding: 10px 18px;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+    .back-home {
+      margin-top: 2em;
       text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎉 Launch Promo!</h1>
-  <p><strong>🔸 Hiligaynon:</strong> Mag-order subong kag may chance ka nga makabaton sang libre nga merch! Limitado lang ini nga promo. 🎁</p>
-  <p><strong>🔸 English:</strong> Order now and get a chance to receive free merch! Limited-time offer only. 🎁</p>
+<section class="hero">
+  <h1>Special Offers 🎉</h1>
+</section>
 
-  <p><strong>🔸 Hiligaynon:</strong> Maghulat sang mas madamo pa nga promo! 👀 Para sa updates, i-follow kami sa social media.</p>
-  <p><strong>🔸 English:</strong> Stay tuned for more exciting offers! 👀 Follow us on social media for updates.</p>
-
-  <div class="center-links">
-    <a href="https://facebook.com/dalakona.subongdayon" target="_blank" style="color: #1877f2;">🔵 Facebook</a>
-    <a href="https://instagram.com/dalakona.subongdayon" target="_blank" style="color: #c13584;">📸 Instagram</a>
+<div class="container">
+  <div class="offer">
+    <h2>🆓 Free Delivery Tuesdays</h2>
+    <p>Get free delivery every Tuesday when you order from our partner panaderias and pharmacies! No code needed.</p>
   </div>
 
-  <a href="index.html" class="back-button">⬅️ Back to Home</a>
+  <div class="offer">
+    <h2>👵 Senior Citizens Get ₱20 Off</h2>
+    <p>Just upload a photo of your Senior Citizen ID at checkout. Discount will be applied before delivery.</p>
+  </div>
+
+  <div class="offer">
+    <h2>🏪 Buy 4, Get 1 Free – Sari-sari Store Promo</h2>
+    <p>Buy 4 of the same item (e.g. canned goods, noodles) and get 1 free—available only at select merchants. Check out the <a href="select-store.html">Merchant list</a>.</p>
+  </div>
+
+  <div class="back-home">
+    <a href="index.html" class="btn">← Back to Dala🚲na</a>
+  </div>
+</div>
 
 </body>
 </html>
