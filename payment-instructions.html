@@ -115,10 +115,12 @@
         <strong>Reference:</strong> Your Full Name
       `;
     } else if (method === "Cash") {
-      detailsDiv.innerHTML = `
-        <strong>Reminder:</strong> Please prepare exact cash. You agree to pay upon delivery.<br>
-        <strong>Note:</strong> transfer fee may apply.
-      `;
+  detailsDiv.innerHTML = `
+    <strong>Reminder:</strong> You must pay the full receipt total including ₱29.99 service fee and 12% VAT.<br>
+    <strong>Payment Method:</strong> Cash on Delivery<br>
+    <strong>Note:</strong> Please prepare exact change.
+  `;
+    }
     } else {
       detailsDiv.innerHTML = `<em>Please return to cart and select a valid payment method.</em>`;
     }
