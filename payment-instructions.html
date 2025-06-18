@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Instructions</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 1.5rem;
+      background: #fffaf5;
+    }
+    h2 {
+      text-align: center;
+    }
+    .instructions {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+    .qr {
+      text-align: center;
+      margin: 1rem 0;
+    }
+    button {
+      background: #008060;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      margin-top: 1.5rem;
+      display: block;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2 id="method-title">Payment Instructions</h2>
+
+<div class="instructions" id="instructions-box">
+  <!-- Dynamic content will load here -->
+</div>
+
+<button onclick="window.close()">Back to Cart</button>
+
+<script>
+const method = new URLSearchParams(window.location.search).get('method');
+const title = document.getElementById("method-title");
+const box = document.getElementById("instructions-box");
+
+if (method === "GCash") {
+  title.innerText = "GCash Payment";
+  box.innerHTML = `
+    <p>Scan this QR to pay via GCash:</p>
+    <div class="qr"><img src="qr-gcash.png" alt="GCash QR" width="200"></div>
+    <p><strong>GCash Number:</strong> 0917-123-4567</p>
+    <p>Account Name: Bakery Store</p>
+  `;
+} else if (method === "PayMaya") {
+  title.innerText = "PayMaya Payment";
+  box.innerHTML = `
+    <p>Scan this QR to pay via PayMaya:</p>
+    <div class="qr"><img src="qr-paymaya.png" alt="PayMaya QR" width="200"></div>
+    <p><strong>PayMaya Number:</strong> 0918-456-7890</p>
+    <p>Account Name: Bakery Store</p>
+  `;
+} else if (method === "Card") {
+  title.innerText = "Credit/Debit Card Payment";
+  box.innerHTML = `
+    <p>Enter your card details securely on our payment gateway:</p>
+    <p><a href="#" target="_blank">Click here to pay by card</a></p>
+  `;
+} else if (method === "COD") {
+  title.innerText = "Cash on Delivery";
+  box.innerHTML = `
+    <p>Please prepare the exact amount and pay the rider upon delivery.</p>
+  `;
+} else {
+  title.innerText = "Payment Method Not Recognized";
+  box.innerHTML = `<p>Please go back and select a valid payment option.</p>`;
+}
+</script>
+
+</body>
+</html>
