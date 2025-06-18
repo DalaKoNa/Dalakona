@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="About Us – Dala Ko na. Subong dayon!">
-  <title>About Us – Dala🚲na</title>
+  <meta name="description" content="About Dala Ko na – Your daily essentials delivery service with love & speed.">
+  <title>About – Dala🚲na</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
@@ -15,6 +14,8 @@
       padding: 0;
       background-color: #fdf6f0;
       color: #333;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
     .hero {
@@ -25,7 +26,7 @@
 
     .hero-img {
       width: 100%;
-      height: 300px;
+      height: 240px;
       object-fit: cover;
       filter: brightness(0.6);
     }
@@ -39,7 +40,7 @@
     }
 
     .hero-text h1 {
-      font-size: 2.5em;
+      font-size: 1.8em;
       margin: 0;
     }
 
@@ -48,12 +49,11 @@
       top: 1em;
       left: 1em;
       background-color: rgba(255, 255, 255, 0.7);
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 0.9em;
+      font-size: 0.8em;
       color: #333;
       text-decoration: none;
-      transition: background 0.2s ease;
     }
 
     .back-arrow:hover {
@@ -61,21 +61,41 @@
     }
 
     .container {
-      max-width: 800px;
-      margin: 2em auto;
-      padding: 1.5em;
+      max-width: 720px;
+      margin: 1.5em auto;
+      padding: 1.2em;
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
 
     h2 {
       color: #5e3c58;
-      margin-top: 1.5em;
+      font-size: 1.1em;
+      margin: 1.2em 0 0.6em;
     }
 
     p {
-      line-height: 1.6;
+      margin: 0.6em 0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1em;
+        margin: 1em;
+      }
+
+      .hero-text h1 {
+        font-size: 1.4em;
+      }
+
+      h2 {
+        font-size: 1em;
+      }
+
+      body {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -85,33 +105,31 @@
 <section class="hero">
   <img 
     src="pastel-hero.jpg" 
-    alt="Dala Ko Na Pastel Background" 
+    alt="About Dala Ko Na" 
     class="hero-img" 
     loading="lazy"
   />
-  <a href="index.html" class="back-arrow">← Back to Home</a>
+  <a href="index.html" class="back-arrow">← Back</a>
   <div class="hero-text">
-    <h1>About Dala🚲na</h1>
+    <h1>About Dala Ko na</h1>
   </div>
 </section>
 
 <!-- Main Content -->
 <div class="container">
-  <h2>🌟 Our Mission / Aming Misyon</h2>
-  <p><strong>English:</strong> Dala🚲na is built to deliver daily essentials quickly and lovingly—right to your doorstep. Whether you need groceries, medicine, bread, or lunch, we bring them to you safely and affordably.</p>
-  <p><em>Hiligaynon:</em> Ang Dala🚲na gintukod agud maghatag sang kinahanglanon sa adlaw-adlaw sa imo balay—may kabaskog kag paghigugma. Kung kinahanglan mo pagkaon, bulong, pan, o tanghalian, kami ang magadala.</p>
+  <p><strong>Dala🚲na</strong> is a community-based delivery platform bringing daily essentials from local stores, bakeries, eateries, and pharmacies — right to your doorstep in minutes.</p>
 
-  <h2>🏘️ Why We Exist / Ngaman Ari Kami</h2>
-  <p><strong>English:</strong> We saw a need for faster, more caring local delivery in neighborhoods like yours. Dala🚲na empowers small merchants and riders while making your life easier.</p>
-  <p><em>Hiligaynon:</em> Nakita namon ang panginahanglan sang mas madasig kag maalwan nga delivery. Ang Dala🚲na nagasuporta sa local nga negosyo kag mga riders, samtang ginapadali ang imo pangabuhi.</p>
+  <p>We started Dala Ko na with one goal: to make it easier for families to access what they need, quickly and affordably. Whether it's bread from the local bakery or medicine from your trusted pharmacy, we're here to serve with love and speed.</p>
 
-  <h2>🤝 Community First / Komunidad Una</h2>
-  <p><strong>English:</strong> We partner with nearby bakeries, pharmacies, markets, and food stalls. Every order supports your local community.</p>
-  <p><em>Hiligaynon:</em> Nakipagpartner kami sa mga local nga panaderya, botika, merkado, kag karinderya. Kada order mo, bulig ini sa aton komunidad.</p>
+  <h2>🌟 What makes us different?</h2>
+  <ul>
+    <li>🚴 Local riders who know your area</li>
+    <li>❤️ Partnerships with your favorite local merchants</li>
+    <li>💬 Simple ordering via chat or form — no app required</li>
+    <li>⚡ Same-day delivery, always</li>
+  </ul>
 
-  <h2>📞 Get in Touch / Kontaka Kami</h2>
-  <p><strong>English:</strong> Have a suggestion? Want to become a rider or merchant? Contact us anytime via WhatsApp, Facebook, or Email.</p>
-  <p><em>Hiligaynon:</em> May sugyot ka? Gusto magrider ukon magpartner nga merchant? Kontaka kami bisan san-o.</p>
+  <p>We're proud to support local livelihoods while delivering convenience. Thank you for supporting local and trusting Dala🚲na!</p>
 </div>
 
 </body>
