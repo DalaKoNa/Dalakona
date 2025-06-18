@@ -251,14 +251,14 @@
       };
 
       updateTimeField();
-      deliveryDate.addEventListener('change', updateTimeField);
-      
+      deliveryDate.addEventListener('change', updateTimeField); 
+});
 document.getElementById('payment-method').addEventListener('change', function () {
   const method = this.value;
   const link = document.getElementById('payment-link');
   link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
   link.textContent = `View ${method} instructions`;
-});
+
 
     };
 
