@@ -1,4 +1,4 @@
-<!-- Save as ellens-cakes.html -->
+<!-- Save as ellens-cake.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +84,7 @@
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -96,8 +97,13 @@
       <select id="payment-method">
         <option value="GCash">GCash</option>
         <option value="PayMaya">PayMaya</option>
-        <option value="COD">Cash on Delivery</option>
+        <option value="Bank">Bank</option>
+        <option value="Cash">Cash on Delivery</option>
       </select>
+
+      <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline; font-size: 0.9rem; display: block; margin-top: 0.5rem;">
+        View payment instructions
+      </a>
 
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
@@ -201,6 +207,7 @@
       const name = document.getElementById('customer-name').value.trim();
       const phone = document.getElementById('customer-phone').value.trim();
       const email = document.getElementById('customer-email').value.trim();
+      const address = document.getElementById('delivery-address').value.trim();
       const date = document.getElementById('delivery-date').value;
       const time = document.getElementById('delivery-time').value;
       const method = document.getElementById('payment-method').value;
@@ -208,7 +215,7 @@
       const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
       const summary = document.getElementById('cart-summary').innerText;
 
-      const message = `New Order from Ellen's Cakes:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+      const message = `New Order from Ellen's Cakes:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
 
       const merchant = '63XXXXXXXXXX';
       const admin = '63YYYYYYYYYY';
@@ -251,7 +258,7 @@
     };
 
     function validateForm() {
-      const required = ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'payment-method'];
+      const required = ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'delivery-date', 'delivery-time', 'payment-method'];
       const allFilled = required.every(id => document.getElementById(id).value.trim() !== '');
       const hasCart = Object.values(cart).some(item => item.qty > 0);
       const btn = document.getElementById('checkout-btn');
@@ -267,8 +274,16 @@
       }
     }
 
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'payment-method']
+    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'delivery-date', 'delivery-time', 'payment-method']
       .forEach(id => document.getElementById(id).addEventListener('input', validateForm));
+
+    // 🔁 Update payment instructions link
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
+    });
   </script>
 </body>
 </html>
