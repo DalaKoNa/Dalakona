@@ -101,13 +101,21 @@ body {
 
 .hero-text {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 1em 2em;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6); /* dark blur */
+  color: #fff;
+  padding: 1.2rem 1.8rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  max-width: 90%;
+  font-size: 1rem;
+}
+.hero-text h1, .hero-text h2, .hero-text p {
+  margin: 0.3em 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
 .partners {
@@ -123,21 +131,29 @@ body {
   padding: 1rem;
 }
 
+.merchant-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
 .merchant-card {
-  min-width: 150px;
-  background-color: #fff;
-  padding: 1em;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  color: #333;
-  transition: transform 0.2s;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  min-width: 200px;
+  max-width: 80%;
+  text-align: center;
+  transition: transform 0.2s ease;
 }
-
 .merchant-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
-
 .footer {
   font-family: 'Cinzel', serif;
   background-color: #f9f9f9;
@@ -183,7 +199,8 @@ body {
   }
 
   .hero-text {
-    width: 90%;
+    width: 90
+      %;
     padding: 1em;
     font-size: 0.9rem;
   }
