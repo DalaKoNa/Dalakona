@@ -101,21 +101,20 @@ body {
 
 .hero-text {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.6); /* dark blur */
-  color: #fff;
-  padding: 1.2rem 1.8rem;
-  border-radius: 12px;
+  color: #ffffff;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  max-width: 90%;
-  font-size: 1rem;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  padding: 0;
+  width: 100%;
 }
-.hero-text h1, .hero-text h2, .hero-text p {
-  margin: 0.3em 0;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+
+@media (max-width: 600px) {
+  .hero-text h1, .hero-text h2, .hero-text p {
+    padding: 0 0.5rem;
+  }
 }
 
 .partners {
