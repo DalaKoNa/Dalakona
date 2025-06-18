@@ -83,6 +83,7 @@
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -92,11 +93,18 @@
       </div>
 
       <h3>Payment</h3>
-      <select id="payment-method">
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="COD">Cash on Delivery</option>
-      </select>
+<select id="payment-method">
+  <option value="GCash">GCash</option>
+  <option value="PayMaya">PayMaya</option>
+  <option value="Bank">Bank Transfer</option>
+  <option value="Cash">Cash on Delivery</option>
+</select>
+
+<div style="margin-top: 0.5rem;">
+  <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+    View payment instructions
+  </a>
+</div>
 
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
@@ -245,6 +253,12 @@
       updateTimeField();
       deliveryDate.addEventListener('change', updateTimeField);
     };
+document.getElementById('payment-method').addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+  link.textContent = `View ${method} instructions`;
+});
 
     const requiredFields = [
       'customer-name',
