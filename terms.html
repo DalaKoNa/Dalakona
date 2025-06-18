@@ -1,41 +1,125 @@
-<!-- TERMS PAGE -->
-<!-- terms.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Terms & Conditions | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Terms and Conditions - Dala Ko na. Subong dayon!">
+  <title>Terms & Conditions – Dala🚲na</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
-      margin: 2em;
+      margin: 0;
+      padding: 0;
+      background-color: #fdf6f0;
       color: #333;
-      background: #fefefe;
     }
-    h1 {
+    .hero {
+      position: relative;
       text-align: center;
-      color: #222;
-      margin-bottom: 1em;
+      color: white;
     }
-    ul, p {
-      max-width: 700px;
-      margin: 0 auto 1.5em auto;
-      font-size: 1em;
-      line-height: 1.6em;
-      color: #555;
+    .hero-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hero-text h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2em auto;
+      padding: 1em;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #5e3c58;
+      margin-top: 1.5em;
+    }
+    p, li {
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <h1>Terms & Conditions</h1>
-  <p>Please read our service rules below:</p>
-  <p>Palihug basa sang amon mga kasugtanan:</p>
+
+<!-- Hero Section -->
+<section class="hero">
+  <img 
+    src="pastel-hero.jpg" 
+    alt="Dala Ko Na Pastel Background" 
+    class="hero-img" 
+    loading="lazy"
+  />
+  <div class="hero-text">
+    <h1>Terms & Conditions</h1>
+  </div>
+</section>
+
+<!-- Content -->
+<div class="container">
+  <h2>📜 General / Pangkalahatan</h2>
+  <p><strong>English:</strong> By using Dala🚲na, you agree to the terms below. These help protect our customers, riders, and merchants.</p>
+  <p><em>Hiligaynon:</em> Sa paggamit sang Dala🚲na, nagasugot ka sa amon mga patakaran. Ini para sa proteksyon sang tanan – customers, riders, kag merchants.</p>
+
+  <h2>📦 Orders / Mga Orders</h2>
+  <p><strong>English:</strong> All orders must be placed through our system. You are responsible for checking your order details before confirming.</p>
+  <p><em>Hiligaynon:</em> Ang tanan nga orders dapat ig-submit sa amon nga sistema. Imo responsabilidad ang pagsiguro sang insakto nga impormasyon antes mag-confirm.</p>
+
+  <h2>🔄 Cancellations & Changes / Pagkansela kag Pagbag-o</h2>
+  <p><strong>English:</strong> You may cancel or modify your order within 5 minutes of placing it. After that, it may already be processed and cannot be changed.</p>
+  <p><em>Hiligaynon:</em> Pwede ka mag-kansela o magbag-o sang imo order sulod sang 5 minutos pagkatapos mo mag-order. Paglapas sini, posible nga na-proseso na ini kag indi na mabag-o.</p>
+
+  <p><strong>To request a change or cancel:</strong></p>
   <ul>
-    <li>Orders are subject to availability. / Depende ang order sa presensya sang item.</li>
-    <li>Prices can change anytime. / Pwede magbago ang presyo bisan san-o.</li>
-    <li>We are not liable for third-party delays. / Indi kami responsable sa mga late nga delivery halin sa iban nga provider.</li>
+    <li>Send a message via WhatsApp to our rider/admin</li>
+    <li>Include your name, order details, and time of order</li>
   </ul>
+  <p><em>Para mag-request sang kanselasyon o pagbag-o:</em> Mag-message sa WhatsApp. Ibutang ang imo ngalan, order details, kag oras sang order.</p>
+
+  <h2>💳 Payment / Bayad</h2>
+  <p><strong>English:</strong> Payment must be made via GCash or PayMaya to the number provided in the checkout form. Orders will not be fulfilled until payment is confirmed.</p>
+  <p><em>Hiligaynon:</em> Ang bayad dapat ibayad pinaagi sa GCash ukon PayMaya. Indi madeliver ang order kon wala pa nabayaran.</p>
+
+  <h2>🚚 Delivery / Paghatud</h2>
+  <p><strong>English:</strong> Delivery times are based on availability of riders and traffic conditions. We aim to deliver within the selected time window.</p>
+  <p><em>Hiligaynon:</em> Ang oras sang paghakud nagadepende sa availability sang riders kag dalanon. Ginahalinan namon nga ma-deliver sa ginpili nga oras.</p>
+
+  <h2>⚠️ Responsibility / Responsibilidad</h2>
+  <p><strong>English:</strong> Dala🚲na is not liable for:
+    <ul>
+      <li>Delays caused by traffic or weather</li>
+      <li>Incorrect addresses submitted by users</li>
+      <li>Items damaged by third-party merchants</li>
+    </ul>
+  </p>
+  <p><em>Hiligaynon:</em> Indi kami liable sa:
+    <ul>
+      <li>Pagkadugay tungod sang trapiko o panahon</li>
+      <li>Sala nga address nga ginsumiter sang user</li>
+      <li>Damage nga halin sa merchant mismo</li>
+    </ul>
+  </p>
+
+  <h2>📅 Changes to This Policy / Pagbag-o sang Patakaran</h2>
+  <p><strong>English:</strong> Terms may change anytime. Please check this page regularly.</p>
+  <p><em>Hiligaynon:</em> Ang mga patakaran pwede mabag-o bisan san-o. Palihug bisitaha ini nga pahina pirme para sa updates.</p>
+
+  <p><strong>Thank you for trusting Dala🚲na.</strong></p>
+</div>
+
 </body>
 </html>
