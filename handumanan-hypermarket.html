@@ -98,10 +98,7 @@
   <option value="Bank">Bank Transfer</option>
   <option value="Cash">Cash on Delivery</option>
 </select>
-<a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline; font-size: 0.85rem; display: inline-block; margin-top: 0.5rem;">
-  View payment instructions
-</a>
-
+<a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" onclick="event.stopPropagation();" style="...">View payment instructions</a>
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
       </div>
@@ -252,14 +249,13 @@
 
       updateTimeField();
       deliveryDate.addEventListener('change', updateTimeField); 
-});
+};
 document.getElementById('payment-method').addEventListener('change', function () {
   const method = this.value;
   const link = document.getElementById('payment-link');
   link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
   link.textContent = `View ${method} instructions`;
-
-
+});
     };
 
     const requiredFields = [
