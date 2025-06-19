@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Track My Order – Dala🚲Na</title>
+  <style>
+    body{font-family:'Inter',sans-serif;text-align:center;padding:2rem;background:#f3f4f6;color:#333;}
+    .box{max-width:500px;margin:auto;background:white;padding:1.5rem;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    input,button{margin:0.5rem 0;padding:0.7rem;font-size:1rem;}
+    .status{margin-top:1rem;font-size:1.2rem;}
+    .hil{font-size:0.9rem;color:#555;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>📦 Track My Order</h1>
+    <input type="text" id="ref" placeholder="Enter Ref Number" />
+    <button onclick="track()">Check Status</button>
+    <div class="status" id="status"></div>
+    <div class="hil" id="hil"></div>
+  </div>
+
+<script>
+const BASE = 'appISjv70ZQ4pxBxv', TABLE = 'Orders', TOKEN = 'YOUR_AIRTABLE_API_TOKEN';
+const mapHI = {
+  "Pending": "Gina-process pa ang order",
+  "Confirmed": "Na-confirm na ang order",
+  "Preparing": "Gina-preparar na ang order",
+  "On the way": "Ara na sa dalan ang order",
+  "Delivered": "Na-deliver na ang order"
+};
+
+async function track() {
+  const ref = document.getElementById('ref').value.trim();
+  if (!ref) return;
+
+  const res = await fetch(`https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula={ReferenceID}='${ref}'`, {
+    headers: { Authorization: `Bearer ${TOKEN}` }
+  });
+  const resJson = await res.json();
+  const rec = (resJson.records || [])[0];
+  if (!rec) {
+    document.getElementById('status').innerText = 'Order not found';
+    return;
+  }
+  const st = rec.fields['Order Status'];
+  document.getElementById('status').innerText = st;
+  document.getElementById('hil').innerText = mapHI[st] || '';
+}
+</script>
+</body>
+</html>
