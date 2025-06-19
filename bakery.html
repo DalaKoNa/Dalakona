@@ -2,125 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dala🚲Na: Bakery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲Na Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body {
-      background: linear-gradient(to bottom, #fffaf0, #fce4ec);
-      padding: 1rem;
-      color: #333;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .back-btn, .cart-btn {
-      font-size: 1.5rem;
-      color: #333;
-      text-decoration: none;
-      cursor: pointer;
-    }
+    body { background: #fdfdfd; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
     .cart-count {
-      position: absolute; top: -8px; right: -10px;
-      background: red; color: white; border-radius: 50%;
-      font-size: 0.7rem; width: 16px; height: 16px;
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-size: 1.4rem;
+    h1 { text-align: center; margin-bottom: 1rem; }
+    .search-bar { margin-bottom: 1rem; text-align: center; }
+    .search-bar input {
+      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .card {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
     }
-    .card img {
-      max-width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
     .qty-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
     .qty-controls button {
-      background: #333;
-      color: white;
-      padding: 0.3rem 0.6rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
     .cart-modal {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      width: 90%; max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 1rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      z-index: 1000;
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
     }
-    .close-btn {
-      text-align: right;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
     .form-section input, .form-section select {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
     }
     .checkout-btn {
-      margin-top: 1rem;
-      width: 100%;
-      padding: 0.8rem;
-      font-weight: bold;
-      border: none;
-      color: white;
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
     }
-    .bg-gray-400 { background: #ccc; }
-    .bg-green-600 { background: #2e7d32; }
     .hidden { display: none; }
     .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
   </style>
 </head>
+
 <body>
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Bakery</h1>
+    <h1>Dala🚲Na Bakery</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
 
+  <div class="search-bar">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
+  </div>
+
   <div class="grid" id="product-list"></div>
+
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
-    <div id="cart-summary"></div>
+    <div class="cart-summary" id="cart-summary"></div>
 
     <div class="form-section">
       <h3>Customer Info</h3>
@@ -133,202 +88,215 @@
       <input type="date" id="delivery-date">
       <input type="time" id="delivery-time">
       <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
-        ✅ Today’s delivery auto-sets 1hr 10min from now.
+        ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
       </div>
 
       <h3>Payment</h3>
-      <select id="payment-method" onchange="handlePaymentChange()">
-        <option value="">Select Payment Method</option>
+      <select id="payment-method">
         <option value="GCash">GCash</option>
         <option value="PayMaya">PayMaya</option>
-        <option value="COD">Cash on Delivery</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery</option>
       </select>
 
-      <div id="payment-instructions-link" style="margin-top: 0.5rem;"></div>
-
-      <div style="margin-top: 1rem; font-size: 0.85rem;">
-        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060;">Terms & Conditions</a>.
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+          View payment instructions
+        </a>
       </div>
 
-      <button id="checkout-btn" class="checkout-btn bg-gray-400" onclick="submitOrder()" disabled>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Orders are final.
+      </div>
+
+      <button class="checkout-btn bg-gray-400 text-white cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
         Checkout via WhatsApp
       </button>
     </div>
   </div>
-<script>
-  const products = [
-    { name: "Pandesal (10pcs)", price: 30, image: "https://via.placeholder.com/100?text=Pandesal" },
-    { name: "Spanish Bread", price: 35, image: "https://via.placeholder.com/100?text=Spanish+Bread" },
-    { name: "Ensaymada", price: 40, image: "https://via.placeholder.com/100?text=Ensaymada" },
-    { name: "Cheese Roll", price: 45, image: "https://via.placeholder.com/100?text=Cheese+Roll" }
-  ];
-  const cart = {};
 
-  function renderProducts() {
-    const list = document.getElementById("product-list");
-    list.innerHTML = '';
-    products.forEach((item, i) => {
-      list.innerHTML += `
-        <div class="card">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${i})">-</button>
-            <span id="qty-${i}">0</span>
-            <button onclick="increaseQty(${i})">+</button>
-          </div>
-        </div>`;
-    });
-  }
+  <script>
+    const products = [
+      { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
+      { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
+      { name: "Spanish Bread", price: 12, image: "https://via.placeholder.com/100" },
+      { name: "Ensaymada", price: 15, image: "https://via.placeholder.com/100" },
+      { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
+      { name: "Egg Pie (slice)", price: 35, image: "https://via.placeholder.com/100" },
+      { name: "Buko Pie", price: 50, image: "https://via.placeholder.com/100" },
+      { name: "Banana Bread", price: 60, image: "https://via.placeholder.com/100" },
+      { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
+      { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
+    ];
 
-  function toggleCart() {
-    document.getElementById("cart-modal").classList.toggle("hidden");
-  }
+    const cart = {};
 
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
-  }
-
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+          <div class="card" data-name="${item.name.toLowerCase()}">
+            <img src="${item.image}" alt="${item.name}">
+            <h4>${item.name}</h4>
+            <p>₱${item.price.toFixed(2)}</p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
+      });
     }
-    updateQty(i);
-  }
 
-  function updateQty(i) {
-    const item = products[i];
-    document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
-    document.getElementById("cart-count").innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-    validateForm();
-  }
-
-  function updateCartSummary() {
-    let html = '<h3>Receipt Summary – Bakery</h3><ul>';
-    let total = 0;
-    Object.values(cart).forEach(item => {
-      html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
-      total += item.qty * item.price;
-    });
-    const vat = total * 0.12;
-    const fee = 29.99;
-    const grand = total + vat + fee;
-    html += `</ul>
-      <p>Subtotal: ₱${total.toFixed(2)}</p>
-      <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-      <p>Service Fee: ₱${fee.toFixed(2)}</p>
-      <div class="line-break"></div>
-      <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-    document.getElementById("cart-summary").innerHTML = html;
-  }
-
-  function handlePaymentChange() {
-    const method = document.getElementById("payment-method").value;
-    const div = document.getElementById("payment-instructions-link");
-    if (["GCash", "PayMaya", "COD"].includes(method)) {
-      div.innerHTML = `<a href="payment-instructions.html?method=${method}" target="_blank" style="color:#008060; text-decoration:underline;">➤ View ${method} Payment Instructions</a>`;
-    } else {
-      div.innerHTML = '';
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
+      });
     }
-    validateForm();
-  }
 
-  function validateForm() {
-    const required = ['customer-name', 'customer-phone', 'customer-email', 'customer-address', 'delivery-date', 'delivery-time', 'payment-method'];
-    const allFilled = required.every(id => document.getElementById(id).value.trim() !== '');
-    const hasCart = Object.values(cart).some(item => item.qty > 0);
-    const btn = document.getElementById('checkout-btn');
-    if (allFilled && hasCart) {
-      btn.disabled = false;
-      btn.classList.remove('bg-gray-400');
-      btn.classList.add('bg-green-600');
-    } else {
-      btn.disabled = true;
-      btn.classList.add('bg-gray-400');
-      btn.classList.remove('bg-green-600');
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
     }
-  }
-<script>
-  async function submitOrder() {
-    // Get form and cart values
-    const name = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
-    const email = document.getElementById('customer-email').value.trim();
-    const address = document.getElementById('customer-address').value.trim();
-    const date = document.getElementById('delivery-date').value;
-    const time = document.getElementById('delivery-time').value;
-    const method = document.getElementById('payment-method').value;
 
-    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-    const subtotal = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
-    const vat = (subtotal * 0.12).toFixed(2);
-    const serviceFee = 29.99;
-    const grandTotal = (subtotal + parseFloat(vat) + serviceFee).toFixed(2);
-
-    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT (12%): ₱${vat}\nService Fee: ₱${serviceFee}\nTotal: ₱${grandTotal}`;
-    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
-
-    // ✅ 1. Airtable
-    const airtablePayload = {
-      "fields": {
-        "Confirmation Number": confirmation,
-        "Customer Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Delivery Address": address,
-        "Delivery Date": date,
-        "Delivery Time": time,
-        "Payment Method": method,
-        "Order Summary": `Items: ${items}\n${summary}`,
-        "Status": "Order Received"
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
       }
+      updateQty(i);
+    }
+
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+      validateForm();
+    }
+
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
+
+    function updateCartSummary() {
+      let html = '<h3>Receipt Summary - Dala🚲Na Bakery</h3><ul>';
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
+        total += item.qty * item.price;
+      });
+      const vat = total * 0.12;
+      const fee = 29.99;
+      const grand = total + vat + fee;
+      html += `</ul>
+        <p>Subtotal: ₱${total.toFixed(2)}</p>
+        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+        <p>Service Fee: ₱${fee.toFixed(2)}</p>
+        <div class="line-break"></div>
+        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
+
+    async function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const address = document.getElementById('delivery-address').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
+
+      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+      const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+      const vat = subtotal * 0.12;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+
+      const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+      filloutUrl.searchParams.append("customerName", name);
+      filloutUrl.searchParams.append("customerPhone", phone);
+      filloutUrl.searchParams.append("customerEmail", email);
+      filloutUrl.searchParams.append("deliveryAddress", address);
+      filloutUrl.searchParams.append("deliveryDate", date);
+      filloutUrl.searchParams.append("deliveryTime", time);
+      filloutUrl.searchParams.append("paymentMethod", method);
+      filloutUrl.searchParams.append("cartSummary", items);
+      filloutUrl.searchParams.append("confirmationNumber", confirmation);
+
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = filloutUrl.toString();
+      document.body.appendChild(iframe);
+
+      const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT: ₱${vat.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
+      const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+      const encodedMsg = encodeURIComponent(message);
+
+      const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+      window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+
+      window.location.href = `thankyou.html?ref=${confirmation}`;
+    }
+
+    window.onload = () => {
+      renderProducts();
+      const today = new Date();
+      const localDate = today.toISOString().split('T')[0];
+      const deliveryDate = document.getElementById('delivery-date');
+      const deliveryTime = document.getElementById('delivery-time');
+      const deliveryNote = document.getElementById('delivery-note');
+
+      deliveryDate.value = localDate;
+
+      const updateTime = () => {
+        const selected = new Date(deliveryDate.value);
+        const now = new Date();
+        if (selected.toDateString() === now.toDateString()) {
+          const autoTime = new Date(now.getTime() + 70 * 60000);
+          deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+          deliveryTime.disabled = true;
+          deliveryNote.style.display = "block";
+        } else {
+          deliveryTime.disabled = false;
+          deliveryNote.style.display = "none";
+        }
+      };
+
+      updateTime();
+      deliveryDate.addEventListener('change', updateTime);
     };
 
-    await fetch('https://api.airtable.com/v0/appISjv70ZQ4pxBxv/Orders', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer patrffXUVNy8RCH24.8e05f5c594e7096a962086a508b1ace8f4a1dd80a6baaf01b6aebf149b0747e3',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(airtablePayload)
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
     });
 
-    // ✅ 2. Silent Fillout Form (hidden iframe)
-    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-    filloutUrl.searchParams.set("customerName", name);
-    filloutUrl.searchParams.set("customerPhone", phone);
-    filloutUrl.searchParams.set("customerEmail", email);
-    filloutUrl.searchParams.set("deliveryAddress", address);
-    filloutUrl.searchParams.set("deliveryDate", date);
-    filloutUrl.searchParams.set("deliveryTime", time);
-    filloutUrl.searchParams.set("paymentMethod", method);
-    filloutUrl.searchParams.set("cartSummary", items);
-    filloutUrl.searchParams.set("confirmationNumber", confirmation);
+    const requiredFields = ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'payment-method'];
+    requiredFields.forEach(id => {
+      document.getElementById(id).addEventListener('input', validateForm);
+    });
 
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = filloutUrl.toString();
-    document.body.appendChild(iframe);
-
-    // ✅ 3. WhatsApp Message
-    const message = `🧾 New Order - Bakery\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
-    const wa = encodeURIComponent(message);
-    const merchantNumber = '63XXXXXXXXXX';
-    const adminNumber = '639082900309';
-    const driverNumber = '63ZZZZZZZZZZ';
-
-    window.open(`https://wa.me/${merchantNumber}?text=${wa}`, '_blank');
-    window.open(`https://wa.me/${adminNumber}?text=${wa}`, '_blank');
-    window.open(`https://wa.me/${driverNumber}?text=${wa}`, '_blank');
-
-    // ✅ 4. Redirect to thankyou page
-    window.location.href = `thankyou.html?ref=${encodeURIComponent(confirmation)}`;
-  }
-</script>
+    function validateForm() {
+      const filled = requiredFields.every(id => document.getElementById(id).value.trim() !== '');
+      const hasItems = Object.values(cart).some(i => i.qty > 0);
+      const btn = document.getElementById('checkout-btn');
+      btn.disabled = !(filled && hasItems);
+      btn.classList.toggle('bg-gray-400', btn.disabled);
+      btn.classList.toggle('cursor-not-allowed', btn.disabled);
+      btn.classList.toggle('bg-green-600', !btn.disabled);
+    }
+  </script>
+</body>
+</html>
