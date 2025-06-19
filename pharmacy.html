@@ -210,31 +210,52 @@
         <h4>Total: ₱${grand.toFixed(2)}</h4>`;
       document.getElementById('cart-summary').innerHTML = html;
     }
+function submitOrder() {
+  const name = document.getElementById('customer-name').value.trim();
+  const phone = document.getElementById('customer-phone').value.trim();
+  const email = document.getElementById('customer-email').value.trim();
+  const address = document.getElementById('delivery-address').value.trim();
+  const date = document.getElementById('delivery-date').value;
+  const time = document.getElementById('delivery-time').value;
+  const method = document.getElementById('payment-method').value;
 
-    function submitOrder() {
-      const name = document.getElementById('customer-name').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const date = document.getElementById('delivery-date').value;
-      const time = document.getElementById('delivery-time').value;
-      const method = document.getElementById('payment-method').value;
+  const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
+  const summary = document.getElementById('cart-summary').innerText;
+  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-      const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-      const summary = document.getElementById('cart-summary').innerText;
+  // ✅ Fillout form submission silently
+  const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+  filloutUrl.searchParams.append("customerName", name);
+  filloutUrl.searchParams.append("customerPhone", phone);
+  filloutUrl.searchParams.append("customerEmail", email);
+  filloutUrl.searchParams.append("deliveryAddress", address);
+  filloutUrl.searchParams.append("deliveryDate", date);
+  filloutUrl.searchParams.append("deliveryTime", time);
+  filloutUrl.searchParams.append("paymentMethod", method);
+  filloutUrl.searchParams.append("cartSummary", items);
+  filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
-      const message = `New Order from Dala🚲Na Pharmacy:\nMerchant: Dala🚲Na Pharmacy\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nItems: ${items}\n${summary}\nDelivery: ${date} ${time}\nPayment Method: ${method}`;
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = filloutUrl.toString();
+  document.body.appendChild(iframe);
 
-      const waMessage = encodeURIComponent(message);
-      const merchantNumber = '63XXXXXXXXXX';
-      const adminNumber = '63YYYYYYYYYY';
-      const driverNumber = '63ZZZZZZZZZZ';
+  // ✅ WhatsApp Message
+  const message = `🧾 New Order - Handumanan Hypermarket\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+  const waMessage = encodeURIComponent(message);
 
-      window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-      window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-      window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+  const merchantNumber = '63XXXXXXXXXX';
+  const adminNumber = '63YYYYYYYYYY';
+  const driverNumber = '63ZZZZZZZZZZ';
 
-      toggleCart();
-    }
+  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
+  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
+  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
+
+  // ✅ Redirect to Thank You page with confirmation number
+  window.location.href = `thankyou.html?ref=${confirmation}`;
+}
+</script>
 
     window.onload = () => {
       renderProducts();
