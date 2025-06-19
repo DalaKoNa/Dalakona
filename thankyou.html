@@ -5,74 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thank You - Dala🚲Na</title>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      padding: 2rem;
-      text-align: center;
-      background-color: #f1fef3;
-      color: #333;
-    }
-    h1 {
-      color: #008060;
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-    }
-    .ref-number {
-      background: #fff;
-      padding: 1rem 1.5rem;
-      margin: 1rem auto;
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #008060;
-      border-radius: 10px;
-      display: inline-block;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .translation {
-      font-size: 0.95rem;
-      color: #444;
-      margin-top: 1rem;
-      font-style: italic;
-    }
-    .emoji {
-      font-size: 2rem;
-    }
-    .home-link {
-      display: inline-block;
-      margin-top: 2rem;
-      background: #008060;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    .home-link:hover {
-      background: #006748;
-    }
+    body{font-family:'Inter',sans-serif;padding:2rem;text-align:center;background:#f9f9f9;color:#333;}
+    h1{margin-bottom:1rem;}
+    .ref{background:#e6ffee;padding:1rem;margin:1rem auto;font-size:1.2rem;border-radius:10px;display:inline-block;}
+    button{margin-top:1.5rem;padding:0.6rem 1.2rem;background:#008060;color:white;border:none;border-radius:6px;font-size:1rem;cursor:pointer;}
+    .hil{font-size:0.9rem;color:#666;margin-top:1rem;}
   </style>
 </head>
 <body>
-  <div class="emoji">🎉</div>
-  <h1>Thank you for your order!</h1>
-  <p>We've received it and are getting things ready. 📦</p>
+  <h1>✅ Thank You for Your Order!</h1>
+  <div>Your confirmation number:</div>
+  <div class="ref" id="ref-number">DALA-XXXXXX</div>
+  <div class="hil">🙏 Salamat guid sa imo order!</div>
+  <button onclick="location.href='track-order.html?ref='+encodeURIComponent(getRef());">Track Order</button>
 
-  <p>Your confirmation number:</p>
-  <div class="ref-number" id="ref-number">DALA-000000</div>
-
-  <p class="translation">🙏 Salamat guid sa imo order! Ipaabot lang ang order mo sa nasugtan nga oras.</p>
-
-  <a class="home-link" href="index.html">← Back to Dala🚲Na Home</a>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref') || 'DALA-UNKNOWN';
-    document.getElementById('ref-number').innerText = ref;
-  </script>
+<script>
+function getRef() {
+  const p = new URLSearchParams(location.search);
+  return p.get('ref') || 'UNKNOWN';
+}
+document.getElementById('ref-number').innerText = getRef();
+</script>
 </body>
 </html>
