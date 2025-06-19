@@ -202,18 +202,48 @@
         <h4>Total: ₱${grand.toFixed(2)}</h4>`;
       document.getElementById('cart-summary').innerHTML = html;
     }
-function submitOrder() {
-  const name = document.getElementById('customer-name').value.trim();
-  const phone = document.getElementById('customer-phone').value.trim();
-  const email = document.getElementById('customer-email').value.trim();
-  const address = document.getElementById('delivery-address').value.trim();
-  const date = document.getElementById('delivery-date').value;
-  const time = document.getElementById('delivery-time').value;
-  const method = document.getElementById('payment-method').value;
+<script>
+  async function submitOrder() {
+    // Gather data
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const total = /* calculate subtotal */;
+    const vat = (0.12 * total).toFixed(2);
+    const serviceFee = 29.99;
+    const grand = (total + parseFloat(vat) + serviceFee).toFixed(2);
 
-  const items = Object.values(cart).map(item => `${item.qty}x ${item.name}`).join(', ');
-  const summary = document.getElementById('cart-summary').innerText;
-  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const payload = {
+      "fields": {
+        "Customer Name": document.getElementById('customer-name').value.trim(),
+        "Phone": document.getElementById('customer-phone').value.trim(),
+        "Email": document.getElementById('customer-email').value.trim(),
+        "Delivery Address": document.getElementById('delivery-address').value.trim(),
+        "Delivery Date": document.getElementById('delivery-date').value,
+        "Delivery Time": document.getElementById('delivery-time').value,
+        "Payment Method": document.getElementById('payment-method').value,
+        "Order Summary": `Items: ${items}\nSubtotal: ₱${total}\nVAT: ₱${vat}\nService Fee: ₱${serviceFee}\nTotal: ₱${grand}`,
+        "Status": "Order Received"
+      }
+    };
+
+    // Airtable API call
+    const res = await fetch('https://api.airtable.com/v0/appISjv70ZQ4pxBxv/Orders', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer YOUR_AIRTABLE_TOKEN',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      const ref = data.fields.Ref || data.id.slice(-6).toUpperCase();
+      window.location.href = `thankyou.html?ref=${encodeURIComponent(ref)}`;
+    } else {
+      alert('Error submitting your order. Please try again.');
+    }
+  }
+</script>
 
   // ✅ Fillout form submission silently
   const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
