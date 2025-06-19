@@ -381,22 +381,36 @@ window.onload = () => {
 };
 
 async function submitOrder() {
-  const name = document.getElementById('customer-name').value.trim();
-  const phone = document.getElementById('customer-phone').value.trim();
-  const email = document.getElementById('customer-email').value.trim();
-  const address = document.getElementById('delivery-address').value.trim();
-  const date = document.getElementById('delivery-date').value;
-  const time = document.getElementById('delivery-time').value;
-  const method = document.getElementById('payment-method').value;
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const address = document.getElementById('delivery-address').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
 
-  const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-  const subtotal = Object.values(cart).reduce((sum, i) => sum + (i.qty * i.price), 0);
-  const vat = subtotal * 0.12;
-  const serviceFee = 29.99;
-  const grand = subtotal + vat + serviceFee;
+      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+      const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+      const vat = subtotal * 0.12;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-  const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT: ₱${vat.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nTotal: ₱${grand.toFixed(2)}`;
-  const confirmation = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+      filloutUrl.searchParams.append("customerName", name);
+      filloutUrl.searchParams.append("customerPhone", phone);
+      filloutUrl.searchParams.append("customerEmail", email);
+      filloutUrl.searchParams.append("deliveryAddress", address);
+      filloutUrl.searchParams.append("deliveryDate", date);
+      filloutUrl.searchParams.append("deliveryTime", time);
+      filloutUrl.searchParams.append("paymentMethod", method);
+      filloutUrl.searchParams.append("cartSummary", items);
+      filloutUrl.searchParams.append("confirmationNumber", confirmation);
+
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = filloutUrl.toString();
+      document.body.appendChild(iframe);
 
   // ✅ Silent Fillout tracking
   const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
