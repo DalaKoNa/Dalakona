@@ -240,3 +240,10 @@ html, body {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
 }
+.tagline {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 5vw, 2.5rem); /* Responsive size */
+  text-align: center;
+  color: #a0527b;
+  margin-bottom: 0.5rem;
+}
