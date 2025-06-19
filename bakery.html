@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dala🚲Na: Bakery</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
@@ -19,13 +19,23 @@
       align-items: center;
       margin-bottom: 1rem;
     }
-    .back-btn, .cart-btn { font-size: 1.5rem; color: #333; text-decoration: none; cursor: pointer; }
+    .back-btn, .cart-btn {
+      font-size: 1.5rem;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+    }
     .cart-count {
       position: absolute; top: -8px; right: -10px;
       background: red; color: white; border-radius: 50%;
-      font-size: 0.7rem; width: 16px; height: 16px; text-align: center; line-height: 16px;
+      font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; font-size: 1.4rem; }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -38,7 +48,12 @@
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
+    .card img {
+      max-width: 100%;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
     .qty-controls {
       display: flex;
       justify-content: center;
@@ -46,10 +61,13 @@
       gap: 0.5rem;
     }
     .qty-controls button {
-      background: #333; color: white;
-      padding: 0.3rem 0.6rem; border: none; border-radius: 5px; cursor: pointer;
+      background: #333;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .cart-btn { position: relative; }
     .cart-modal {
       position: fixed;
       top: 50%; left: 50%;
@@ -100,7 +118,6 @@
   </header>
 
   <div class="grid" id="product-list"></div>
-
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div id="cart-summary"></div>
@@ -110,7 +127,7 @@
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="customer-address" placeholder="Delivery Address" required>
+      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -138,216 +155,180 @@
       </button>
     </div>
   </div>
+<script>
+  const products = [
+    { name: "Pandesal (10pcs)", price: 30, image: "https://via.placeholder.com/100?text=Pandesal" },
+    { name: "Spanish Bread", price: 35, image: "https://via.placeholder.com/100?text=Spanish+Bread" },
+    { name: "Ensaymada", price: 40, image: "https://via.placeholder.com/100?text=Ensaymada" },
+    { name: "Cheese Roll", price: 45, image: "https://via.placeholder.com/100?text=Cheese+Roll" }
+  ];
+  const cart = {};
 
-  <script>
-    const products = [
-      { name: "Pandesal (10pcs)", price: 30, image: "https://via.placeholder.com/100?text=Pandesal" },
-      { name: "Spanish Bread", price: 35, image: "https://via.placeholder.com/100?text=Spanish+Bread" },
-      { name: "Ensaymada", price: 40, image: "https://via.placeholder.com/100?text=Ensaymada" },
-      { name: "Cheese Roll", price: 45, image: "https://via.placeholder.com/100?text=Cheese+Roll" }
-    ];
-    const cart = {};
+  function renderProducts() {
+    const list = document.getElementById("product-list");
+    list.innerHTML = '';
+    products.forEach((item, i) => {
+      list.innerHTML += `
+        <div class="card">
+          <img src="${item.image}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>₱${item.price}</p>
+          <div class="qty-controls">
+            <button onclick="decreaseQty(${i})">-</button>
+            <span id="qty-${i}">0</span>
+            <button onclick="increaseQty(${i})">+</button>
+          </div>
+        </div>`;
+    });
+  }
 
-    function renderProducts() {
-      const list = document.getElementById("product-list");
-      list.innerHTML = '';
-      products.forEach((item, i) => {
-        list.innerHTML += `
-          <div class="card">
-            <img src="${item.image}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>₱${item.price}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${i})">-</button>
-              <span id="qty-${i}">0</span>
-              <button onclick="increaseQty(${i})">+</button>
-            </div>
-          </div>`;
-      });
+  function toggleCart() {
+    document.getElementById("cart-modal").classList.toggle("hidden");
+  }
+
+  function increaseQty(i) {
+    const item = products[i];
+    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+    cart[item.name].qty++;
+    updateQty(i);
+  }
+
+  function decreaseQty(i) {
+    const item = products[i];
+    if (cart[item.name]) {
+      cart[item.name].qty--;
+      if (cart[item.name].qty <= 0) delete cart[item.name];
     }
+    updateQty(i);
+  }
 
-    function toggleCart() {
-      document.getElementById("cart-modal").classList.toggle("hidden");
+  function updateQty(i) {
+    const item = products[i];
+    document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
+    document.getElementById("cart-count").innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    updateCartSummary();
+    validateForm();
+  }
+
+  function updateCartSummary() {
+    let html = '<h3>Receipt Summary – Bakery</h3><ul>';
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
+      total += item.qty * item.price;
+    });
+    const vat = total * 0.12;
+    const fee = 29.99;
+    const grand = total + vat + fee;
+    html += `</ul>
+      <p>Subtotal: ₱${total.toFixed(2)}</p>
+      <p>VAT (12%): ₱${vat.toFixed(2)}</p>
+      <p>Service Fee: ₱${fee.toFixed(2)}</p>
+      <div class="line-break"></div>
+      <h4>Total: ₱${grand.toFixed(2)}</h4>`;
+    document.getElementById("cart-summary").innerHTML = html;
+  }
+
+  function handlePaymentChange() {
+    const method = document.getElementById("payment-method").value;
+    const div = document.getElementById("payment-instructions-link");
+    if (["GCash", "PayMaya", "COD"].includes(method)) {
+      div.innerHTML = `<a href="payment-instructions.html?method=${method}" target="_blank" style="color:#008060; text-decoration:underline;">➤ View ${method} Payment Instructions</a>`;
+    } else {
+      div.innerHTML = '';
     }
+    validateForm();
+  }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
+  function validateForm() {
+    const required = ['customer-name', 'customer-phone', 'customer-email', 'customer-address', 'delivery-date', 'delivery-time', 'payment-method'];
+    const allFilled = required.every(id => document.getElementById(id).value.trim() !== '');
+    const hasCart = Object.values(cart).some(item => item.qty > 0);
+    const btn = document.getElementById('checkout-btn');
+    if (allFilled && hasCart) {
+      btn.disabled = false;
+      btn.classList.remove('bg-gray-400');
+      btn.classList.add('bg-green-600');
+    } else {
+      btn.disabled = true;
+      btn.classList.add('bg-gray-400');
+      btn.classList.remove('bg-green-600');
     }
-
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
-    }
-
-    function updateQty(i) {
-      const item = products[i];
-      document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
-      document.getElementById("cart-count").innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-      validateForm();
-    }
-
-    function updateCartSummary() {
-      let html = '<h3>Receipt Summary – Bakery</h3><ul>';
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
-        total += item.qty * item.price;
-      });
-      const vat = total * 0.12;
-      const fee = 29.99;
-      const grand = total + vat + fee;
-      html += `</ul>
-        <p>Subtotal: ₱${total.toFixed(2)}</p>
-        <p>VAT (12%): ₱${vat.toFixed(2)}</p>
-        <p>Service Fee: ₱${fee.toFixed(2)}</p>
-        <div class="line-break"></div>
-        <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-      document.getElementById("cart-summary").innerHTML = html;
-    }
-
-    function handlePaymentChange() {
-      const method = document.getElementById("payment-method").value;
-      const div = document.getElementById("payment-instructions-link");
-      if (["GCash", "PayMaya", "COD"].includes(method)) {
-        div.innerHTML = `<a href="payment-instructions.html?method=${method}" target="_blank" style="color:#008060; text-decoration:underline;">➤ View ${method} Payment Instructions</a>`;
-      } else {
-        div.innerHTML = '';
-      }
-      validateForm();
-    }
-
-    function validateForm() {
-      const required = ['customer-name', 'customer-phone', 'customer-email', 'customer-address', 'delivery-date', 'delivery-time', 'payment-method'];
-      const allFilled = required.every(id => document.getElementById(id).value.trim() !== '');
-      const hasCart = Object.values(cart).some(item => item.qty > 0);
-      const btn = document.getElementById('checkout-btn');
-      if (allFilled && hasCart) {
-        btn.disabled = false;
-        btn.classList.remove('bg-gray-400');
-        btn.classList.add('bg-green-600');
-      } else {
-        btn.disabled = true;
-        btn.classList.add('bg-gray-400');
-        btn.classList.remove('bg-green-600');
-      }
-    }
-
-    <script>
+  }
 <script>
   async function submitOrder() {
-    // Gather data
-    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-    const total = /* calculate subtotal */;
-    const vat = (0.12 * total).toFixed(2);
-    const serviceFee = 29.99;
-    const grand = (total + parseFloat(vat) + serviceFee).toFixed(2);
+    // Get form and cart values
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const address = document.getElementById('customer-address').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
 
-    const payload = {
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const subtotal = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
+    const vat = (subtotal * 0.12).toFixed(2);
+    const serviceFee = 29.99;
+    const grandTotal = (subtotal + parseFloat(vat) + serviceFee).toFixed(2);
+
+    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT (12%): ₱${vat}\nService Fee: ₱${serviceFee}\nTotal: ₱${grandTotal}`;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+
+    // ✅ 1. Airtable
+    const airtablePayload = {
       "fields": {
-        "Customer Name": document.getElementById('customer-name').value.trim(),
-        "Phone": document.getElementById('customer-phone').value.trim(),
-        "Email": document.getElementById('customer-email').value.trim(),
-        "Delivery Address": document.getElementById('delivery-address').value.trim(),
-        "Delivery Date": document.getElementById('delivery-date').value,
-        "Delivery Time": document.getElementById('delivery-time').value,
-        "Payment Method": document.getElementById('payment-method').value,
-        "Order Summary": `Items: ${items}\nSubtotal: ₱${total}\nVAT: ₱${vat}\nService Fee: ₱${serviceFee}\nTotal: ₱${grand}`,
+        "Confirmation Number": confirmation,
+        "Customer Name": name,
+        "Phone": phone,
+        "Email": email,
+        "Delivery Address": address,
+        "Delivery Date": date,
+        "Delivery Time": time,
+        "Payment Method": method,
+        "Order Summary": `Items: ${items}\n${summary}`,
         "Status": "Order Received"
       }
     };
 
-    // Airtable API call
-    const res = await fetch('https://api.airtable.com/v0/appISjv70ZQ4pxBxv/Orders', {
+    await fetch('https://api.airtable.com/v0/appISjv70ZQ4pxBxv/Orders', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer YOUR_AIRTABLE_TOKEN',
+        'Authorization': 'Bearer patrffXUVNy8RCH24.8e05f5c594e7096a962086a508b1ace8f4a1dd80a6baaf01b6aebf149b0747e3',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(airtablePayload)
     });
-    const data = await res.json();
 
-    if (res.ok) {
-      const ref = data.fields.Ref || data.id.slice(-6).toUpperCase();
-      window.location.href = `thankyou.html?ref=${encodeURIComponent(ref)}`;
-    } else {
-      alert('Error submitting your order. Please try again.');
-    }
+    // ✅ 2. Silent Fillout Form (hidden iframe)
+    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+    filloutUrl.searchParams.set("customerName", name);
+    filloutUrl.searchParams.set("customerPhone", phone);
+    filloutUrl.searchParams.set("customerEmail", email);
+    filloutUrl.searchParams.set("deliveryAddress", address);
+    filloutUrl.searchParams.set("deliveryDate", date);
+    filloutUrl.searchParams.set("deliveryTime", time);
+    filloutUrl.searchParams.set("paymentMethod", method);
+    filloutUrl.searchParams.set("cartSummary", items);
+    filloutUrl.searchParams.set("confirmationNumber", confirmation);
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = filloutUrl.toString();
+    document.body.appendChild(iframe);
+
+    // ✅ 3. WhatsApp Message
+    const message = `🧾 New Order - Bakery\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+    const wa = encodeURIComponent(message);
+    const merchantNumber = '63XXXXXXXXXX';
+    const adminNumber = '639082900309';
+    const driverNumber = '63ZZZZZZZZZZ';
+
+    window.open(`https://wa.me/${merchantNumber}?text=${wa}`, '_blank');
+    window.open(`https://wa.me/${adminNumber}?text=${wa}`, '_blank');
+    window.open(`https://wa.me/${driverNumber}?text=${wa}`, '_blank');
+
+    // ✅ 4. Redirect to thankyou page
+    window.location.href = `thankyou.html?ref=${encodeURIComponent(confirmation)}`;
   }
 </script>
-
-  // ✅ Fillout form submission silently
-  const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-  filloutUrl.searchParams.append("customerName", name);
-  filloutUrl.searchParams.append("customerPhone", phone);
-  filloutUrl.searchParams.append("customerEmail", email);
-  filloutUrl.searchParams.append("deliveryAddress", address);
-  filloutUrl.searchParams.append("deliveryDate", date);
-  filloutUrl.searchParams.append("deliveryTime", time);
-  filloutUrl.searchParams.append("paymentMethod", method);
-  filloutUrl.searchParams.append("cartSummary", items);
-  filloutUrl.searchParams.append("confirmationNumber", confirmation);
-
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = filloutUrl.toString();
-  document.body.appendChild(iframe);
-
-  // ✅ WhatsApp Message
-  const message = `🧾 New Order - Handumanan Hypermarket\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
-  const waMessage = encodeURIComponent(message);
-
-  const merchantNumber = '63XXXXXXXXXX';
-  const adminNumber = '639082900309';
-  const driverNumber = '63ZZZZZZZZZZ';
-
-  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
-
-  // ✅ Redirect to Thank You page with confirmation number
-  window.location.href = `thankyou.html?ref=${confirmation}`;
-}
-</script>
-
-    window.onload = () => {
-      renderProducts();
-      const dateEl = document.getElementById("delivery-date");
-      const timeEl = document.getElementById("delivery-time");
-      const note = document.getElementById("delivery-note");
-      const today = new Date();
-      const localDate = today.toISOString().split('T')[0];
-      dateEl.value = localDate;
-
-      function setAutoTime() {
-        const selected = new Date(dateEl.value);
-        const now = new Date();
-        if (selected.toDateString() === now.toDateString()) {
-          const future = new Date(now.getTime() + 70 * 60000);
-          timeEl.value = future.toTimeString().slice(0, 5);
-          timeEl.disabled = true;
-          note.style.display = "block";
-        } else {
-          timeEl.disabled = false;
-          note.style.display = "none";
-        }
-      }
-
-      setAutoTime();
-      dateEl.addEventListener('change', setAutoTime);
-
-      ['customer-name', 'customer-phone', 'customer-email', 'customer-address', 'delivery-date', 'delivery-time', 'payment-method'].forEach(id => {
-        document.getElementById(id).addEventListener('input', validateForm);
-      });
-    };
-  </script>
-</body>
-</html>
