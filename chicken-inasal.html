@@ -93,18 +93,18 @@
       </div>
 
       <h3>Payment</h3>
-<select id="payment-method">
-  <option value="GCash">GCash</option>
-  <option value="PayMaya">PayMaya</option>
-  <option value="Bank">Bank Transfer</option>
-  <option value="Cash">Cash on Delivery</option>
-</select>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery</option>
+      </select>
 
-<div style="margin-top: 0.5rem;">
-  <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
-    View payment instructions
-  </a>
-</div>
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+          View payment instructions
+        </a>
+      </div>
 
       <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Note: Orders are final and cancellations will not be accepted once submitted.
@@ -200,82 +200,49 @@
       document.getElementById('cart-summary').innerHTML = html;
     }
 
-  <script>
-  async function submitOrder() {
-    // Gather data
-    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-    const total = /* calculate subtotal */;
-    const vat = (0.12 * total).toFixed(2);
-    const serviceFee = 29.99;
-    const grand = (total + parseFloat(vat) + serviceFee).toFixed(2);
+    async function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const address = document.getElementById('delivery-address').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
 
-    const payload = {
-      "fields": {
-        "Customer Name": document.getElementById('customer-name').value.trim(),
-        "Phone": document.getElementById('customer-phone').value.trim(),
-        "Email": document.getElementById('customer-email').value.trim(),
-        "Delivery Address": document.getElementById('delivery-address').value.trim(),
-        "Delivery Date": document.getElementById('delivery-date').value,
-        "Delivery Time": document.getElementById('delivery-time').value,
-        "Payment Method": document.getElementById('payment-method').value,
-        "Order Summary": `Items: ${items}\nSubtotal: ₱${total}\nVAT: ₱${vat}\nService Fee: ₱${serviceFee}\nTotal: ₱${grand}`,
-        "Status": "Order Received"
-      }
-    };
+      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+      const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+      const vat = subtotal * 0.12;
+      const fee = 29.99;
+      const total = subtotal + vat + fee;
+      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-    // Airtable API call
-    const res = await fetch('https://api.airtable.com/v0/appISjv70ZQ4pxBxv/Orders', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer YOUR_AIRTABLE_TOKEN',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
+      const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+      filloutUrl.searchParams.append("customerName", name);
+      filloutUrl.searchParams.append("customerPhone", phone);
+      filloutUrl.searchParams.append("customerEmail", email);
+      filloutUrl.searchParams.append("deliveryAddress", address);
+      filloutUrl.searchParams.append("deliveryDate", date);
+      filloutUrl.searchParams.append("deliveryTime", time);
+      filloutUrl.searchParams.append("paymentMethod", method);
+      filloutUrl.searchParams.append("cartSummary", items);
+      filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
-    if (res.ok) {
-      const ref = data.fields.Ref || data.id.slice(-6).toUpperCase();
-      window.location.href = `thankyou.html?ref=${encodeURIComponent(ref)}`;
-    } else {
-      alert('Error submitting your order. Please try again.');
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = filloutUrl.toString();
+      document.body.appendChild(iframe);
+
+      const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT: ₱${vat.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
+      const message = `🧾 New Order - Dala Chicken Inasal\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+      const encodedMsg = encodeURIComponent(message);
+
+      const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+      window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+
+      window.location.href = `thankyou.html?ref=${confirmation}`;
     }
-  }
-</script>
-
-  // ✅ Fillout form submission silently
-  const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-  filloutUrl.searchParams.append("customerName", name);
-  filloutUrl.searchParams.append("customerPhone", phone);
-  filloutUrl.searchParams.append("customerEmail", email);
-  filloutUrl.searchParams.append("deliveryAddress", address);
-  filloutUrl.searchParams.append("deliveryDate", date);
-  filloutUrl.searchParams.append("deliveryTime", time);
-  filloutUrl.searchParams.append("paymentMethod", method);
-  filloutUrl.searchParams.append("cartSummary", items);
-  filloutUrl.searchParams.append("confirmationNumber", confirmation);
-
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = filloutUrl.toString();
-  document.body.appendChild(iframe);
-
-  // ✅ WhatsApp Message
-  const message = `🧾 New Order - Handumanan Hypermarket\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
-  const waMessage = encodeURIComponent(message);
-
-  const merchantNumber = '63XXXXXXXXXX';
-  const adminNumber = '63YYYYYYYYYY';
-  const driverNumber = '63ZZZZZZZZZZ';
-
-  window.open(`https://wa.me/${merchantNumber}?text=${waMessage}`, '_blank');
-  window.open(`https://wa.me/${adminNumber}?text=${waMessage}`, '_blank');
-  window.open(`https://wa.me/${driverNumber}?text=${waMessage}`, '_blank');
-
-  // ✅ Redirect to Thank You page with confirmation number
-  window.location.href = `thankyou.html?ref=${confirmation}`;
-}
-</script>
 
     window.onload = () => {
       renderProducts();
@@ -305,12 +272,13 @@
       updateTimeField();
       deliveryDate.addEventListener('change', updateTimeField);
     };
-document.getElementById('payment-method').addEventListener('change', function () {
-  const method = this.value;
-  const link = document.getElementById('payment-link');
-  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-  link.textContent = `View ${method} instructions`;
-});
+
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
+    });
 
     const requiredFields = [
       'customer-name',
