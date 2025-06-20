@@ -1,12 +1,15 @@
+/* === Base Styles === */
 body {
   margin: 0;
   font-family: 'Cinzel', serif;
-  background-color: #fffef5;
+  line-height: 1.6;
+  background-color: #fff;
   color: #333;
 }
 
 html, body {
   touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
 }
 
@@ -16,26 +19,24 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  background-color: #ffd966;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  background-color: #222;
+  color: white;
+  flex-wrap: wrap;
 }
 
 .hamburger {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   background: none;
   border: none;
-  color: #333;
+  color: white;
   cursor: pointer;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 1.5em;
   text-decoration: none;
+  color: white;
+  text-align: center;
 }
 
 .cart {
@@ -47,29 +48,32 @@ html, body {
   height: 100%;
   width: 0;
   position: fixed;
-  top: 0; left: 0;
-  background-color: #333;
+  top: 0;
+  left: 0;
+  background-color: #111;
   overflow-x: hidden;
-  transition: 0.3s;
+  transition: width 0.3s ease;
   padding-top: 60px;
-  z-index: 2000;
+  z-index: 1001;
 }
 
 .sidebar a {
-  padding: 12px 20px;
-  color: #fffef0;
-  display: block;
+  padding: 10px 15px;
   text-decoration: none;
+  font-size: 1rem;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #444;
+  background-color: #575757;
 }
 
 .close-btn {
   position: absolute;
-  top: 12px;
-  right: 20px;
+  top: 10px;
+  right: 25px;
   font-size: 2rem;
   color: white;
   cursor: pointer;
@@ -79,54 +83,64 @@ html, body {
 .hero {
   position: relative;
   width: 100%;
-  height: auto;
-  text-align: center;
-  background-color: #fff8dc;
+  height: 70vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-img {
   width: 100%;
-  height: auto;
-  max-height: 380px;
+  height: 100%;
   object-fit: cover;
-  border-bottom: 4px solid #ffd966;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.hero-text {
-  padding: 1.2rem;
-  background-color: #fffbe8;
+.hero-text-overlay {
+  z-index: 2;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 14px;
+  color: #fffbe9;
+  max-width: 90%;
 }
 
-.hero-text h1 {
-  font-size: 2rem;
-  color: #3e2600;
-  margin-bottom: 0.3rem;
+.hero-text-overlay h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
 }
 
-.hero-text p {
-  font-size: 1rem;
-  color: #5c3c0d;
+.hero-text-overlay p {
+  font-size: 1.1rem;
   margin-bottom: 1rem;
 }
 
 .order-btn {
+  font-size: 1rem;
+  padding: 0.6em 1.4em;
   background-color: #ffc107;
   color: #000;
-  padding: 0.6em 1.2em;
   font-weight: bold;
   border-radius: 30px;
   text-decoration: none;
+  display: inline-block;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
 }
 
 .order-btn:hover {
   background-color: #ffb300;
 }
 
-/* === Merchants === */
+/* === Merchants Section === */
 .partners {
   padding: 2em 1em;
-  background-color: #fef7e5;
+  background-color: #f9f9f9;
   text-align: center;
 }
 
@@ -141,39 +155,39 @@ html, body {
 
 .merchant-card {
   flex: 0 0 auto;
-  background: #fff4c4;
-  border: 1px solid #ffd966;
-  border-radius: 12px;
-  padding: 1rem;
+  scroll-snap-align: start;
+  background: linear-gradient(135deg, #ffe4ec, #fce4ec);
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  padding: 1.2rem 1rem;
   text-align: center;
   min-width: 180px;
   font-weight: bold;
   font-size: 1rem;
-  color: #5e4200;
+  color: #a0527b;
   text-decoration: none;
-  scroll-snap-align: start;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: 0.3s;
+  border: 1px solid #f9cfdc;
 }
 
 .merchant-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
 }
 
 /* === Footer === */
 .footer {
-  background-color: #fff9e6;
+  background-color: #f9f9f9;
   padding: 2em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   border-top: 1px solid #ddd;
+  font-family: 'Cinzel', serif;
 }
 
 .footer-left, .footer-right {
   flex: 1;
-  min-width: 180px;
+  min-width: 200px;
 }
 
 .footer-left .socials a {
@@ -193,17 +207,27 @@ html, body {
   text-decoration: underline;
 }
 
-/* === Responsive === */
+/* === Responsive Adjustments === */
 @media (max-width: 768px) {
-  .hero-text h1 {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero {
+    height: 50vh;
+  }
+
+  .hero-text-overlay h1 {
     font-size: 1.6rem;
   }
 
-  .hero-text p {
-    font-size: 0.95rem;
+  .hero-text-overlay p {
+    font-size: 1rem;
   }
 
   .order-btn {
+    padding: 0.5em 1.2em;
     font-size: 0.95rem;
   }
 
@@ -218,6 +242,7 @@ html, body {
   }
 
   .footer-right {
-    margin-top: 1rem;
+    text-align: left;
+    margin-top: 1em;
   }
 }
