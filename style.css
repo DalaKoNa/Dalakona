@@ -108,74 +108,52 @@ img {
 .hero {
   position: relative;
   width: 100%;
-  height: 100vh; /* Full page height */
+  height: 70vh;
   overflow: hidden;
 }
 
 .hero-img {
   position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
   z-index: 1;
-  animation: fadeIn 2s ease-out forwards;
-  opacity: 0;
 }
 
-/* This makes the overlay perfectly centered */
 .hero-text-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
   text-align: center;
+  z-index: 2;
   background: rgba(0, 0, 0, 0.5);
   padding: 1.5rem 2rem;
   border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   color: #fffbe9;
-  animation: fadeInUp 1.2s ease-out 1s forwards;
-  opacity: 0;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.hero-text-overlay h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #ffd54f;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-.hero-text-overlay p {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #fffad1;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
+/* Box-style button */
 .order-btn {
-  font-size: 1rem;
-  padding: 0.75em 1.5em;
-  background-color: #ffc107;
-  color: #000;
-  font-weight: bold;
-  border: 2px solid #ffb300;
-  border-radius: 10px;
-  text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75em 1.5em;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+  background-color: #ffc107;
+  border: 2px solid #ffb300;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 }
 
 .order-btn:hover {
   background-color: #ffb300;
-  border-color: #ffa000;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
   transform: translateY(-2px);
 }
 
