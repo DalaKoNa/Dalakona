@@ -3,28 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Join the Dala Ko na team – delivery, merchant, or admin careers.">
-  <title>Careers – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <meta name="description" content="Work with Dala🚲na – Join the movement!">
+  <title>Careers / Trabaho – Dala🚲na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #fdf6f0;
+      background-color: #fffdf5;
       margin: 0;
-      padding: 0;
       color: #333;
-      line-height: 1.6;
-      font-size: 15px;
     }
 
     .hero {
       background: url('pastel-hero.jpg') no-repeat center center;
       background-size: cover;
-      height: 180px;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
       position: relative;
       text-align: center;
     }
@@ -33,108 +30,143 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .hero h1 {
+      position: relative;
+      color: #fffbe9;
+      font-size: 2rem;
       z-index: 1;
-      font-size: 1.8em;
     }
 
     .container {
       max-width: 850px;
       margin: auto;
-      padding: 1.5em;
+      padding: 2rem 1.5rem;
     }
 
-    .section {
-      margin-bottom: 2em;
+    .job-card {
+      background: #fff1cc;
+      border-left: 5px solid #e3a312;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
     }
 
-    h2 {
+    .job-card h2 {
+      margin-bottom: 0.3rem;
       color: #a0527b;
-      font-size: 1.2em;
     }
 
-    .benefits {
+    .job-card p {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      background-color: #fff9e6;
+      padding: 2em;
       display: flex;
+      justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1em;
-      margin-top: 1em;
+      font-family: 'Cinzel', serif;
     }
 
-    .benefit {
-      flex: 1 1 250px;
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .footer-left, .footer-right {
+      flex: 1;
+      min-width: 200px;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 1em;
-      background: #a0527b;
-      color: white;
-      padding: 10px 18px;
+    .footer-left .socials a {
+      margin-right: 10px;
       text-decoration: none;
-      border-radius: 6px;
-      font-size: 0.95em;
+      color: #0077cc;
     }
 
-    .back-home {
-      margin-top: 2em;
-      text-align: center;
+    .footer-right a {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      text-decoration: none;
     }
 
-    @media (max-width: 600px) {
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
       .hero h1 {
-        font-size: 1.3em;
+        font-size: 1.6rem;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-right {
+        margin-top: 1em;
       }
     }
   </style>
 </head>
 <body>
 
-<section class="hero">
-  <h1>Join the Dala🚲na Team</h1>
-</section>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Careers / Trabaho</h1>
+  </section>
 
-<div class="container">
-  <div class="section">
-    <h2>🚴 Rider / Mangin Dala-Rider</h2>
-    <p>Have a bike, scooter, or motor? Join our rider team and deliver essentials with love & speed!</p>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" class="btn" target="_blank">Apply as Rider</a>
-  </div>
+  <!-- Jobs Section -->
+  <div class="container">
 
-  <div class="section">
-    <h2>🏪 Merchant / Ka-Partner nga Tindahan</h2>
-    <p>Be one of our partner merchants. Expand your reach and serve your community.</p>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" class="btn" target="_blank">Apply as Merchant</a>
-  </div>
-
-  <div class="section">
-    <h2>🧾 Admin / Operations Team</h2>
-    <p>Support logistics, customer service, and coordination. We welcome remote & onsite applicants.</p>
-    <a href="mailto:join@dalako.na" class="btn">Apply as Admin</a>
-  </div>
-
-  <div class="section">
-    <h2>✨ Benefits of Joining Dala🚲na</h2>
-    <div class="benefits">
-      <div class="benefit">✅ Flexible Schedule</div>
-      <div class="benefit">📍 Serve Local Communities</div>
-      <div class="benefit">💸 Weekly Payouts</div>
-      <div class="benefit">📞 Friendly Support Team</div>
-      <div class="benefit">🌱 Grow With Us</div>
-      <div class="benefit">👨‍💻 Remote Work (Admin)</div>
+    <div class="job-card">
+      <h2>🚴‍♂️ Rider / Manug-deliver</h2>
+      <p><strong>English:</strong> Responsible for fast and friendly delivery of customer orders using bikes, scooters, or motorcycles.</p>
+      <p><strong>Hiligaynon:</strong> Amo ang naga-deliver sang mga order sa customer gamit ang bisikleta, scooter, ukon motorsiklo. Dapat abtik kag mahapos updan.</p>
     </div>
+
+    <div class="job-card">
+      <h2>📦 Operations Staff / Staff sang Operasyon</h2>
+      <p><strong>English:</strong> Handles inventory, rider coordination, and makes sure every order is fulfilled efficiently.</p>
+      <p><strong>Hiligaynon:</strong> Naga-manage sang stock, naga-coordinate sa mga rider, kag naga-siguro nga ma-deliver ang order sang husto kag paspas.</p>
+    </div>
+
+    <div class="job-card">
+      <h2>🤝 Community Manager / Tagdumala sang Komunidad</h2>
+      <p><strong>English:</strong> Builds relationships with local merchants, riders, and users to grow the Dala🚲na ecosystem.</p>
+      <p><strong>Hiligaynon:</strong> Naga-establisar sang maayong relasyon sa mga local nga tindahan, rider, kag user agud magtubo ang Dala🚲na nga komunidad.</p>
+    </div>
+
+    <div class="job-card">
+      <h2>📊 Auditor / Tag-usisa</h2>
+      <p><strong>English:</strong> Ensures all orders, payments, and rider reports are accurate and honest.</p>
+      <p><strong>Hiligaynon:</strong> Naga-siguro nga ang mga order, bayad, kag report sang mga rider insakto kag matinlo.</p>
+    </div>
+
   </div>
 
-  <div class="back-home">
-    <a href="index.html" class="btn">← Back to Dala🚲na</a>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank">FB</a>
+        <a href="https://instagram.com" target="_blank">IG</a>
+        <a href="https://x.com" target="_blank">X</a>
+      </div>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    </div>
+    <div class="footer-right">
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
