@@ -93,47 +93,45 @@ html, body {
 .hero {
   position: relative;
   width: 100%;
-  height: 70vh;
+  height: 80vh;
   overflow: hidden;
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('pastel-hero.jpg') no-repeat center center/cover;
 }
 
 .hero-text-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 1.5rem 2.5rem;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  color: #fff;
-  width: auto;
-  max-width: 90%;
   z-index: 2;
-  animation: fadeInUp 1s ease-out forwards;
-  opacity: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 14px;
+  color: #fffbe9;
+  max-width: 90%;
 }
 
 .hero-text-overlay h1 {
   font-size: 2.4rem;
-  margin: 0 0 0.5rem;
-  color: #ffe082;
 }
 
 .hero-text-overlay p {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #fffde7;
+  font-size: 1.1rem;
 }
 
+@media (max-width: 600px) {
+  .hero {
+    height: 65vh;
+  }
+
+  .hero-text-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text-overlay p {
+    font-size: 1rem;
+  }
+}
 .order-btn {
   font-size: 1rem;
   padding: 0.6em 1.4em;
