@@ -1,4 +1,6 @@
 /* style.css */
+
+/* === Base Styles === */
 body {
   margin: 0;
   font-family: 'Cinzel', serif;
@@ -7,6 +9,13 @@ body {
   color: #333;
 }
 
+html, body {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+/* === Navbar === */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -14,6 +23,7 @@ body {
   padding: 1em;
   background-color: #222;
   color: white;
+  flex-wrap: wrap;
 }
 
 .nav-left, .nav-center, .nav-right {
@@ -21,6 +31,7 @@ body {
   display: flex;
   align-items: center;
 }
+
 .nav-left { justify-content: flex-start; }
 .nav-center { justify-content: center; }
 .nav-right { justify-content: flex-end; }
@@ -44,7 +55,7 @@ body {
   font-size: 1rem;
 }
 
-/* Sidebar */
+/* === Sidebar === */
 .sidebar {
   height: 100%;
   width: 0;
@@ -57,6 +68,7 @@ body {
   padding-top: 60px;
   z-index: 1001;
 }
+
 .sidebar a {
   padding: 10px 15px;
   text-decoration: none;
@@ -65,9 +77,11 @@ body {
   display: block;
   transition: 0.3s;
 }
+
 .sidebar a:hover {
   background-color: #575757;
 }
+
 .close-btn {
   position: absolute;
   top: 10px;
@@ -77,193 +91,13 @@ body {
   cursor: pointer;
 }
 
-/* Hero section */
-.hero {
-  position: relative;
-  text-align: center;
-}
-.hero-img {
-  width: 100%;
-  height: auto;
-  max-height: 400px;
-  object-fit: cover;
-}
-.hero-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-  text-align: center;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-  padding: 0;
-  width: 100%;
-}
-@media (max-width: 600px) {
-  .hero-text h1, .hero-text h2, .hero-text p {
-    padding: 0 0.5rem;
-  }
-}
-
-/* Partners + Merchants */
-.partners {
-  padding: 2em 1em;
-  background-color: #f9f9f9;
-  text-align: center;
-}
-.merchant-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem 0.5rem;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-.merchant-card {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  min-width: 200px;
-  max-width: 80%;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-.merchant-card:hover {
-  transform: scale(1.03);
-}
-
-/* Footer */
-.footer {
-  font-family: 'Cinzel', serif;
-  background-color: #f9f9f9;
-  padding: 2em;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  border-top: 1px solid #ddd;
-}
-.footer-left, .footer-right {
-  flex: 1;
-  min-width: 200px;
-}
-.footer-left .socials a {
-  margin-right: 10px;
-  text-decoration: none;
-  color: #0077cc;
-}
-.footer-right a {
-  display: block;
-  margin-bottom: 6px;
-  color: #333;
-  text-decoration: none;
-}
-.footer-right a:hover {
-  text-decoration: underline;
-}
-.copyright {
-  margin-top: 1em;
-  font-size: 0.9em;
-  color: #999;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .hero-text {
-    width: 90%;
-    padding: 1em;
-    font-size: 0.9rem;
-  }
-  .merchant-card {
-    min-width: 120px;
-    font-size: 0.9rem;
-  }
-  .footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .footer-right {
-    text-align: left;
-    margin-top: 1em;
-  }
-}
-
-/* Cart styles */
-.cart-icon {
-  width: 36px; height: 36px;
-  background: white; color: #008060; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: bold; cursor: pointer;
-  border: 1px solid #ccc;
-}
-.cart-count {
-  position: absolute; top: -6px; right: -6px;
-  background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px;
-}
-#checkout-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* Terms */
-.terms-link {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  color: #444;
-  text-align: center;
-}
-.terms-link a {
-  color: #008060;
-  text-decoration: underline;
-}
-.cart-modal {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  background: white;
-  overflow-y: auto;
-  z-index: 9999;
-  padding: 1rem;
-  border-radius: 10px;
-}
-html, body {
-  touch-action: manipulation;
-  -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
-}
-.tagline {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 5vw, 2.5rem); /* Responsive size */
-  text-align: center;
-  color: #a0527b;
-  margin-bottom: 0.5rem;
-}
-.hero-text .standout {
-  color: #b08d57; /* warm gold tone */
-  font-weight: 600;
-  font-size: 2em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-@media (max-width: 480px) {
-  .hero-text .standout {
-    font-size: 1.5em;
-  }
-}
+/* === Hero Section === */
 .hero {
   position: relative;
   width: 100%;
   height: 60vh;
   overflow: hidden;
+  text-align: center;
 }
 
 .hero-img {
@@ -283,7 +117,8 @@ html, body {
 }
 
 .hero-tagline h2.tagline {
-  font-size: 1.8rem;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 4vw, 2.2rem);
   margin: 0;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
@@ -295,8 +130,150 @@ html, body {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* === Merchants === */
+.partners {
+  padding: 2em 1em;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.merchant-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.merchant-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  min-width: 200px;
+  max-width: 80%;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.merchant-card:hover {
+  transform: scale(1.03);
+}
+
+/* === Footer === */
+.footer {
+  font-family: 'Cinzel', serif;
+  background-color: #f9f9f9;
+  padding: 2em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-top: 1px solid #ddd;
+}
+
+.footer-left, .footer-right {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-left .socials a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #0077cc;
+}
+
+.footer-right a {
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-right a:hover {
+  text-decoration: underline;
+}
+
+/* === Cart === */
+.cart-icon {
+  width: 36px;
+  height: 36px;
+  background: white;
+  color: #008060;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+#checkout-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* === Terms === */
+.terms-link {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #444;
+  text-align: center;
+}
+
+.terms-link a {
+  color: #008060;
+  text-decoration: underline;
+}
+
+.cart-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  background: white;
+  overflow-y: auto;
+  z-index: 9999;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* === Animation === */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .hero {
     height: 50vh;
   }
@@ -308,15 +285,19 @@ html, body {
   .hero-tagline p {
     font-size: 0.85rem;
   }
-}
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
+  .merchant-card {
+    min-width: 120px;
+    font-size: 0.9rem;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-right {
+    text-align: left;
+    margin-top: 1em;
   }
 }
