@@ -1,4 +1,10 @@
-/* === Base Styles === */
+/* === Global Reset & Base Styles === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
   font-family: 'Cinzel', serif;
@@ -11,6 +17,13 @@ html, body {
   touch-action: manipulation;
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
+  max-width: 100vw;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* === Navbar === */
@@ -22,6 +35,8 @@ html, body {
   background-color: #222;
   color: white;
   flex-wrap: wrap;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .nav-left, .nav-center, .nav-right {
@@ -93,11 +108,12 @@ html, body {
 .hero {
   position: relative;
   width: 100%;
-  height: 65vh;
+  height: 60vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
 }
 
 .hero-img {
@@ -107,14 +123,17 @@ html, body {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 0;
   animation: fadeIn 2s ease-out forwards;
   opacity: 0;
 }
 
 .hero-text-overlay {
-  position: relative;
+  position: absolute;
   z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   background: rgba(0, 0, 0, 0.5);
   padding: 1.5rem 2.5rem;
@@ -161,6 +180,8 @@ html, body {
   padding: 2em 1em;
   background-color: #f9f9f9;
   text-align: center;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .merchant-scroll {
@@ -170,6 +191,8 @@ html, body {
   padding: 1rem 0.5rem;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .merchant-card {
@@ -228,6 +251,8 @@ html, body {
   justify-content: space-between;
   flex-wrap: wrap;
   border-top: 1px solid #ddd;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .footer-left, .footer-right {
@@ -337,11 +362,11 @@ html, body {
   }
 
   .hero {
-    height: 55vh;
+    height: 50vh;
   }
 
   .hero-text-overlay h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .hero-text-overlay p {
