@@ -259,3 +259,71 @@ html, body {
     font-size: 1.5em;
   }
 }
+.hero {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-text.bottom-tagline {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  max-width: 90%;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  /* ✨ Animation */
+  opacity: 0;
+  animation: fadeInUp 1.2s ease-out 0.5s forwards;
+}
+
+.hero-text.bottom-tagline h2.tagline {
+  color: goldenrod;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.hero-text.bottom-tagline p {
+  margin: 0.3rem 0 0;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero {
+    height: 50vh;
+  }
+
+  .hero-text.bottom-tagline h2.tagline {
+    font-size: 1.2rem;
+  }
+
+  .hero-text.bottom-tagline p {
+    font-size: 0.85rem;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
