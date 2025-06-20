@@ -159,19 +159,24 @@ img {
 }
 
 .order-btn {
+  font-size: 1rem;
+  padding: 0.75em 1.5em;
   background-color: #ffc107;
   color: #000;
   font-weight: bold;
-  border-radius: 25px;
-  padding: 0.6em 1.4em;
+  border: 2px solid #ffb300;
+  border-radius: 10px;
   text-decoration: none;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: inline-block;
+  transition: all 0.3s ease;
 }
 
 .order-btn:hover {
   background-color: #ffb300;
+  border-color: #ffa000;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
 }
 
 /* Animations */
