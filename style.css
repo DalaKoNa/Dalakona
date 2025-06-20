@@ -1,5 +1,3 @@
-/* style.css */
-
 /* === Base Styles === */
 body {
   margin: 0;
@@ -97,37 +95,69 @@ html, body {
   width: 100%;
   height: 60vh;
   overflow: hidden;
-  text-align: center;
+  margin: 0;
 }
 
 .hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: fadeIn 2s ease-in-out forwards;
+  opacity: 0;
+  background-image: url('dala-na-hero-bike-grocery-hiligaynon.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
-.hero-tagline {
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-overlay {
   position: absolute;
-  bottom: 1.5rem;
-  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  color: goldenrod;
-  animation: fadeInUp 1.2s ease-out 0.5s forwards;
+  color: #3c2a2a;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1.2rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 1s ease-out 1s forwards;
   opacity: 0;
 }
 
-.hero-tagline h2.tagline {
+.hero-overlay h1 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.3rem, 4vw, 2.2rem);
+  font-size: 2.2rem;
   margin: 0;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: #a0527b;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
 }
 
-.hero-tagline p {
-  font-size: 0.95rem;
-  margin: 0.2rem 0 0;
-  color: #f8e9cc;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+.hero-overlay p {
+  font-size: 1.1rem;
+  margin-top: 0.6rem;
+  color: #555;
+}
+
+.order-btn {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.6em 1.4em;
+  background-color: #ffc107;
+  color: #000;
+  font-weight: bold;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.order-btn:hover {
+  background-color: #ffb300;
 }
 
 /* === Merchants === */
@@ -255,18 +285,6 @@ html, body {
   border-radius: 10px;
 }
 
-/* === Animation === */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {
   .navbar {
@@ -278,12 +296,17 @@ html, body {
     height: 50vh;
   }
 
-  .hero-tagline h2.tagline {
-    font-size: 1.3rem;
+  .hero-overlay h1 {
+    font-size: 1.6rem;
   }
 
-  .hero-tagline p {
-    font-size: 0.85rem;
+  .hero-overlay p {
+    font-size: 0.9rem;
+  }
+
+  .order-btn {
+    padding: 0.5em 1.1em;
+    font-size: 0.9rem;
   }
 
   .merchant-card {
@@ -299,167 +322,5 @@ html, body {
   .footer-right {
     text-align: left;
     margin-top: 1em;
-  }
-}
-.hero {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  overflow: hidden;
-  margin: 0;
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: fadeIn 2s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-.hero-overlay {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: #fffde9;
-  background: rgba(0,0,0,0.5);
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  animation: fadeInUp 1s ease-out 1s forwards;
-  opacity: 0;
-}
-
-.hero-overlay h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 2rem;
-  margin: 0;
-  color: #ffe082;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-}
-
-.hero-overlay p {
-  font-size: 1rem;
-  margin-top: 0.4rem;
-  color: #fff9f0;
-}
-
-.order-btn {
-  margin-top: 0.8rem;
-  display: inline-block;
-  padding: 0.5em 1.2em;
-  background-color: #ffd54f;
-  color: #000;
-  font-weight: bold;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.order-btn:hover {
-  background-color: #ffc107;
-}
-
-/* Optional Mobile Tweak */
-@media (max-width: 600px) {
-  .hero-overlay {
-    padding: 0.8rem 1.2rem;
-  }
-  .hero-overlay h1 {
-    font-size: 1.5rem;
-  }
-  .order-btn {
-    padding: 0.4em 1em;
-    font-size: 0.9rem;
-  }
-}
-.hero {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  overflow: hidden;
-  margin: 0;
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: fadeIn 2s ease-in-out forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-.hero-overlay.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #3c2a2a;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 1.2rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: fadeInUp 1s ease-out 1s forwards;
-  opacity: 0;
-}
-
-.hero-overlay h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 2.2rem;
-  margin: 0;
-  color: #a0527b;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
-}
-
-.hero-overlay p {
-  font-size: 1.1rem;
-  margin-top: 0.6rem;
-  color: #555;
-}
-
-.order-btn {
-  margin-top: 1rem;
-  display: inline-block;
-  padding: 0.6em 1.4em;
-  background-color: #ffc107;
-  color: #000;
-  font-weight: bold;
-  border-radius: 25px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.order-btn:hover {
-  background-color: #ffb300;
-}
-
-/* Mobile Tweaks */
-@media (max-width: 600px) {
-  .hero {
-    height: 50vh;
-  }
-  .hero-overlay h1 {
-    font-size: 1.6rem;
-  }
-  .hero-overlay p {
-    font-size: 0.9rem;
-  }
-  .order-btn {
-    padding: 0.5em 1.1em;
-    font-size: 0.9rem;
   }
 }
