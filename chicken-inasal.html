@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { background: #fdfdfd; padding: 1rem; }
+    body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
     .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
@@ -17,7 +17,7 @@
       border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
     .search-bar { margin-bottom: 1rem; text-align: center; }
     .search-bar input {
       padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
@@ -54,13 +54,19 @@
     }
     .hidden { display: none; }
     .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
-    .bg-green-600 { background-color: #16a34a !important; }
-    .text-white { color: white; }
-    .cursor-not-allowed { cursor: not-allowed; }
+    .location-btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Dala🚲Na Chicken Inasal</h1>
@@ -71,12 +77,11 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search Inasal...">
   </div>
 
-  <body>
-  </header>
   <div class="grid" id="product-list"></div>
+
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
@@ -86,7 +91,8 @@
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps Pin or Full Address" required>
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -113,7 +119,7 @@
         ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Orders are final.
       </div>
 
-      <button class="checkout-btn bg-gray-400 text-white cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
         Checkout via WhatsApp
       </button>
     </div>
@@ -122,16 +128,12 @@
   const products = [
     { name: "Half Lechon Manok (Original)", price: 160, image: "https://via.placeholder.com/100" },
     { name: "Half Lechon Manok (Spicy)", price: 170, image: "https://via.placeholder.com/100" },
-    { name: "Half Lechon Manok (Garlic)", price: 170, image: "https://via.placeholder.com/100" },
-    { name: "Full Lechon Manok (Original)", price: 300, image: "https://via.placeholder.com/100" },
-    { name: "Full Lechon Manok (Spicy)", price: 320, image: "https://via.placeholder.com/100" },
-    { name: "Full Lechon Manok (Garlic)", price: 320, image: "https://via.placeholder.com/100" },
-    { name: "Combo: Half Chicken + Rice + Drink", price: 199, image: "https://via.placeholder.com/100" },
-    { name: "Combo: Whole Chicken + 2 Rice + Drinks", price: 350, image: "https://via.placeholder.com/100" },
-    { name: "Chicken Inasal BBQ Stick (per piece)", price: 45, image: "https://via.placeholder.com/100" },
-    { name: "Chicken Skin (crispy pack)", price: 60, image: "https://via.placeholder.com/100" },
-    { name: "Garlic Rice (solo)", price: 25, image: "https://via.placeholder.com/100" },
-    { name: "Extra Sauce", price: 10, image: "https://via.placeholder.com/100" }
+    { name: "Full Lechon Manok (Original)", price: 320, image: "https://via.placeholder.com/100" },
+    { name: "Full Lechon Manok (Spicy)", price: 340, image: "https://via.placeholder.com/100" },
+    { name: "Paa (Leg Quarter)", price: 90, image: "https://via.placeholder.com/100" },
+    { name: "Pecho (Breast Quarter)", price: 100, image: "https://via.placeholder.com/100" },
+    { name: "Isaw (Chicken Intestines)", price: 20, image: "https://via.placeholder.com/100" },
+    { name: "Atsara (Pickled Papaya)", price: 15, image: "https://via.placeholder.com/100" }
   ];
 
   const cart = {};
@@ -189,80 +191,23 @@
   function toggleCart() {
     document.getElementById('cart-modal').classList.toggle('hidden');
   }
-</script>
-<script>
+
   function updateCartSummary() {
-    let html = '<h3>Receipt Summary - Dala🚲Na Chicken Inasal</h3><ul>';
+    let html = '<h3>Receipt - Chicken Inasal</h3><ul>';
     let total = 0;
     Object.values(cart).forEach(item => {
-      html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
+      const line = `${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}`;
+      html += `<li>${line}</li>`;
       total += item.qty * item.price;
     });
-    const vat = total * 0.12;
     const fee = 29.99;
-    const grand = total + vat + fee;
-
+    const grand = total + fee;
     html += `</ul>
       <p>Subtotal: ₱${total.toFixed(2)}</p>
-      <p>VAT (12%): ₱${vat.toFixed(2)}</p>
       <p>Service Fee: ₱${fee.toFixed(2)}</p>
       <div class="line-break"></div>
       <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-
     document.getElementById('cart-summary').innerHTML = html;
-  }
-
-  window.onload = () => {
-    renderProducts();
-
-    const today = new Date();
-    const localDate = today.toISOString().split('T')[0];
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
-
-    deliveryDate.value = localDate;
-
-    const updateTime = () => {
-      const selected = new Date(deliveryDate.value);
-      const now = new Date();
-
-      if (selected.toDateString() === now.toDateString()) {
-        const autoTime = new Date(now.getTime() + 70 * 60000); // +1h10m
-        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-        deliveryTime.disabled = true;
-        deliveryNote.style.display = "block";
-      } else {
-        deliveryTime.disabled = false;
-        deliveryNote.style.display = "none";
-      }
-    };
-
-    updateTime();
-    deliveryDate.addEventListener('change', updateTime);
-  };
-
-  document.getElementById('payment-method').addEventListener('change', function () {
-    const method = this.value;
-    const link = document.getElementById('payment-link');
-    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-    link.textContent = `View ${method} instructions`;
-  });
-
-  const requiredFields = ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'payment-method'];
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
-
-  function validateForm() {
-    const filled = requiredFields.every(id => document.getElementById(id).value.trim() !== '');
-    const hasItems = Object.values(cart).some(i => i.qty > 0);
-    const btn = document.getElementById('checkout-btn');
-
-    btn.disabled = !(filled && hasItems);
-    btn.classList.toggle('bg-gray-400', btn.disabled);
-    btn.classList.toggle('cursor-not-allowed', btn.disabled);
-    btn.classList.toggle('bg-green-600', !btn.disabled);
   }
 
   async function submitOrder() {
@@ -276,9 +221,8 @@
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
     const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-    const vat = subtotal * 0.12;
     const fee = 29.99;
-    const total = subtotal + vat + fee;
+    const total = subtotal + fee;
     const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
@@ -297,8 +241,8 @@
     iframe.src = filloutUrl.toString();
     document.body.appendChild(iframe);
 
-    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nVAT: ₱${vat.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
-    const message = `🔥 New Order - Dala Chicken Inasal\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
+    const message = `🔥 New Order - Chicken Inasal\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
     const encodedMsg = encodeURIComponent(message);
 
     const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
@@ -308,4 +252,90 @@
 
     window.location.href = `thankyou.html?ref=${confirmation}`;
   }
+
+  function getLocation() {
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+      document.getElementById("delivery-address").value = mapsLink;
+      validateForm();
+    }, () => {
+      alert("Unable to retrieve your location.");
+    });
+  }
+
+  window.onload = () => {
+    renderProducts();
+    const today = new Date();
+    const localDate = today.toISOString().split('T')[0];
+    const deliveryDate = document.getElementById('delivery-date');
+    const deliveryTime = document.getElementById('delivery-time');
+    const deliveryNote = document.getElementById('delivery-note');
+
+    deliveryDate.value = localDate;
+
+    const updateTimeField = () => {
+      const selectedDate = new Date(deliveryDate.value);
+      const currentDate = new Date();
+
+      if (selectedDate.toDateString() === currentDate.toDateString()) {
+        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
+        deliveryTime.disabled = true;
+        deliveryNote.style.display = "block";
+      } else {
+        deliveryTime.disabled = false;
+        deliveryNote.style.display = "none";
+      }
+    };
+
+    updateTimeField();
+    deliveryDate.addEventListener('change', updateTimeField);
+  };
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+  });
+
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
+
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+
+  function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    if (allFilled && cartHasItems) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    }
+  }
 </script>
+</body>
+</html>
