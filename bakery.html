@@ -1,9 +1,8 @@
-<!-- File: bakery.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲Na Bakery</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
@@ -55,9 +54,18 @@
     }
     .hidden { display: none; }
     .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
+    .location-btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+    }
   </style>
 </head>
-
 <body>
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
@@ -84,7 +92,7 @@
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
-<button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -116,7 +124,6 @@
       </button>
     </div>
   </div>
-
 <script>
   const products = [
     { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
@@ -148,13 +155,6 @@
             <button onclick="increaseQty(${index})">+</button>
           </div>
         </div>`;
-    });
-  }
-
-  function filterProducts() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    document.querySelectorAll('.card').forEach(card => {
-      card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
     });
   }
 
@@ -204,6 +204,26 @@
     document.getElementById('cart-summary').innerHTML = html;
   }
 
+  function getLocation() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+        document.getElementById('delivery-address').value = mapsLink;
+        validateForm();
+      },
+      error => {
+        alert("Unable to retrieve your location.");
+      }
+    );
+  }
+
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
     const phone = document.getElementById('customer-phone').value.trim();
@@ -235,7 +255,7 @@
     iframe.src = filloutUrl.toString();
     document.body.appendChild(iframe);
 
-    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
+    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
     const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n📍 Address: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
     const encodedMsg = encodeURIComponent(message);
 
@@ -298,25 +318,6 @@
   requiredFields.forEach(id => {
     document.getElementById(id).addEventListener('input', validateForm);
   });
-function getLocation() {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser.");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-      document.getElementById('delivery-address').value = mapsLink;
-      validateForm();
-    },
-    error => {
-      alert("Unable to retrieve your location.");
-    }
-  );
-}
 
   function validateForm() {
     const allFilled = requiredFields.every(id => {
