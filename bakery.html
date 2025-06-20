@@ -298,6 +298,25 @@
   requiredFields.forEach(id => {
     document.getElementById(id).addEventListener('input', validateForm);
   });
+function getLocation() {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+      document.getElementById('delivery-address').value = mapsLink;
+      validateForm();
+    },
+    error => {
+      alert("Unable to retrieve your location.");
+    }
+  );
+}
 
   function validateForm() {
     const allFilled = requiredFields.every(id => {
