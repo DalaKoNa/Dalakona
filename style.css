@@ -1,50 +1,59 @@
+/* === Base Styles === */
 body {
   margin: 0;
   font-family: 'Cinzel', serif;
-  background-color: #fffbe6;
-  color: #333;
+  line-height: 1.6;
+  background-color: #fffef7;
+  color: #5a4a1d;
 }
 
 html, body {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
 }
 
-/* Navbar */
+/* === Navbar (Header) === */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  background-color: #ffd54f;
-  color: #000;
+  background-color: #fff8cc; /* pastel yellow */
+  color: #5a4a1d;
+  flex-wrap: wrap;
+  font-family: 'Cinzel', serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .hamburger {
   font-size: 1.5em;
   background: none;
   border: none;
+  color: #5a4a1d;
   cursor: pointer;
-  color: #000;
 }
 
 .title {
   font-size: 1.5em;
   text-decoration: none;
-  color: #000;
+  color: #5a4a1d;
+  text-align: center;
 }
 
 .cart {
   font-size: 1rem;
+  color: #5a4a1d;
 }
 
-/* Sidebar */
+/* === Sidebar === */
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #fff3cd;
+  background-color: #fff0c4; /* lighter pastel yellow */
   overflow-x: hidden;
   transition: width 0.3s ease;
   padding-top: 60px;
@@ -53,14 +62,15 @@ html, body {
 
 .sidebar a {
   padding: 10px 15px;
-  font-size: 1rem;
-  display: block;
-  color: #5a4a1d;
   text-decoration: none;
+  font-size: 1rem;
+  color: #5a4a1d;
+  display: block;
+  transition: 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #ffe082;
+  background-color: #fff5da;
 }
 
 .close-btn {
@@ -68,64 +78,83 @@ html, body {
   top: 10px;
   right: 25px;
   font-size: 2rem;
+  color: #5a4a1d;
   cursor: pointer;
-  color: #333;
 }
 
-/* Hero Section */
+/* === Hero Section === */
 .hero {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  background-color: #fffbe6;
+  height: 70vh;
+  background: url('pastel-hero.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-img {
-  width: 100%;
-  height: auto;
-  max-height: 65vh;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-text-centered {
+.hero-text-overlay {
+  position: absolute;
+  bottom: 5%;
+  width: 90%;
+  max-width: 600px;
   text-align: center;
-  background-color: #fffbe6;
-  padding: 2rem 1rem;
+  background: rgba(255, 248, 204, 0.95); /* semi-transparent pastel yellow */
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   color: #5a4a1d;
 }
 
-.hero-text-centered h1 {
+.hero-text-overlay h1 {
   font-size: 2.4rem;
-  margin: 0.5rem 0;
-  color: #d4a813;
+  margin-bottom: 0.5rem;
 }
 
-.hero-text-centered p {
-  font-size: 1.2rem;
-  margin: 0.3rem 0;
+.hero-text-overlay p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .order-btn {
   font-size: 1rem;
-  padding: 0.6rem 1.4rem;
-  background-color: #ffd54f;
-  color: #000;
+  padding: 0.6em 1.4em;
+  background-color: #ffd966;
+  color: #5a4a1d;
   font-weight: bold;
   border-radius: 30px;
-  display: inline-block;
-  margin-top: 1rem;
   text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: background-color 0.3s ease;
 }
 
 .order-btn:hover {
-  background-color: #ffc107;
+  background-color: #ffcc33;
 }
 
-/* Merchants Section */
+@media (max-width: 600px) {
+  .hero {
+    height: 55vh;
+  }
+
+  .hero-text-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text-overlay p {
+    font-size: 1rem;
+  }
+
+  .order-btn {
+    padding: 0.5em 1.2em;
+    font-size: 0.95rem;
+  }
+}
+
+/* === Merchants Section === */
 .partners {
-  padding: 2rem 1rem;
+  padding: 2em 1em;
+  background-color: #fffef7;
   text-align: center;
 }
 
@@ -135,30 +164,42 @@ html, body {
   gap: 1rem;
   padding: 1rem 0.5rem;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .merchant-card {
   flex: 0 0 auto;
-  background: #fffde7;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 1rem;
+  scroll-snap-align: start;
+  background: linear-gradient(135deg, #fff3d0, #ffeeb8);
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  padding: 1.2rem 1rem;
   text-align: center;
   min-width: 180px;
+  max-width: 80%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-weight: bold;
-  color: #8d6e63;
+  font-size: 1.05rem;
+  color: #5a4a1d;
   text-decoration: none;
+  border: 1px solid #ffe8a0;
 }
 
-/* Footer */
+.merchant-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* === Footer === */
 .footer {
-  background-color: #fff8e1;
-  padding: 2rem 1rem;
+  font-family: 'Cinzel', serif;
+  background-color: #fff8cc;
+  padding: 2em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-family: 'Cinzel', serif;
-  font-size: 0.95rem;
+  border-top: 1px solid #eee3b0;
+  color: #5a4a1d;
 }
 
 .footer-left, .footer-right {
@@ -183,24 +224,68 @@ html, body {
   text-decoration: underline;
 }
 
-/* Responsive */
+/* === Cart (just in case it's included) === */
+.cart-icon {
+  width: 36px;
+  height: 36px;
+  background: white;
+  color: #5a4a1d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+/* === Terms link (in cart) === */
+.terms-link {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #5a4a1d;
+  text-align: center;
+}
+
+.terms-link a {
+  color: #008060;
+  text-decoration: underline;
+}
+
+/* === Responsive Adjustments === */
 @media (max-width: 768px) {
-  .hero-img {
-    max-height: 50vh;
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .hero-text-centered h1 {
-    font-size: 2rem;
-  }
-
-  .hero-text-centered p {
-    font-size: 1rem;
-  }
-
-  .order-btn {
-    font-size: 0.95rem;
-    padding: 0.5rem 1.2rem;
+  .hero {
+    height: 60vh;
   }
 
   .merchant-card {
-    m
+    min-width: 120px;
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-right {
+    text-align: left;
+    margin-top: 1em;
+  }
+}
