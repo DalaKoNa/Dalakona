@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -5,14 +7,13 @@
   <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
       background: linear-gradient(180deg, #fff9f6, #e0f7fa, #fce4ec);
-      color: #2d2d2d; /* darker for contrast */
+      color: #2d2d2d;
     }
 
     .navbar {
@@ -26,14 +27,13 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    .navbar .title {
+    .title {
       font-size: 1.3em;
       font-weight: bold;
-      color: #a0527b; /* pastel-accented heading */
-      text-align: center;
+      color: #a0527b;
     }
 
-    .navbar .hamburger {
+    .hamburger {
       font-size: 1.5em;
       background: none;
       border: none;
@@ -41,95 +41,133 @@
       cursor: pointer;
     }
 
-    .navbar .cart {
-      font-size: 1em;
-      color: #444;
-      white-space: nowrap;
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: width 0.3s ease;
+      padding-top: 60px;
+      z-index: 1001;
     }
 
-    a, .merchant-card {
-      color: #a0527b;
+    .sidebar a {
+      padding: 10px 15px;
       text-decoration: none;
+      font-size: 1rem;
+      color: #f1f1f1;
+      display: block;
+      transition: 0.3s;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .sidebar a:hover {
+      background-color: #575757;
     }
 
-    @media (max-width: 480px) {
-      .navbar .title {
-        font-size: 1em;
-      }
-      .navbar .cart {
-        font-size: 0.9em;
-      }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #fffdfc;
+      padding: 2rem;
+      max-width: 800px;
+      width: 100%;
+      border-radius: 12px;
+      position: relative;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: #444;
+      cursor: pointer;
+    }
+
+    .form-tabs {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #eee;
+      color: #333;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+    }
+
+    .tab-btn.active {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .form-frame {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-
-  <!-- Sidebar (Hamburger Nav) -->
   <nav id="sidebar" class="sidebar" aria-hidden="true">
     <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" rel="noopener noreferrer">Join as Rider</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" rel="noopener noreferrer">Join as Merchant</a>
+    <a href="#" onclick="openModal()">Join as Rider / Merchant</a>
     <a href="#partners">Our Partner Merchants</a>
   </nav>
 
-  <!-- Navbar -->
   <header class="navbar">
     <button id="hamburger" class="hamburger" aria-label="Open menu">&#9776;</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
-    <div class="cart">🛒 dala‑Cart</div>
+    <div class="title">Dala🚲na.</div>
   </header>
 
- <section class="hero">
-  <img 
-    src="pastel-hero.jpg" 
-    alt="Dala🚲na Hero Background" 
-    class="hero-img"
-  />
-  <div class="hero-text-overlay">
-    <h1>Dala🚲na.</h1>
-    <p>Subong Dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
-    <a href="#partners" class="order-btn">🛒 Order Now</a>
-  </div>
-</section>
-
-  <!-- Merchants Section -->
-  <section class="partners" id="partners">
-    <h2>Our Merchants</h2>
-    <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-left">
-      <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
-        <a href="https://x.com" target="_blank" aria-label="X">X</a>
+  <!-- Modal with both Rider and Merchant forms -->
+  <div id="formModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2>Join the Dala🚲na Community</h2>
+      <div class="form-tabs">
+        <button class="tab-btn active" onclick="switchForm('rider')">Rider Form</button>
+        <button class="tab-btn" onclick="switchForm('merchant')">Merchant Form</button>
       </div>
-      <p>dala🚲na hasta sa FB, IG, X</p>
+      <div id="riderForm" class="form-content">
+        <iframe class="form-frame" src="https://airtable.com/embed/pagAPO8f6i7wAMjMw?backgroundColor=teal" height="1300"></iframe>
+      </div>
+      <div id="merchantForm" class="form-content" style="display: none;">
+        <iframe class="form-frame" src="https://airtable.com/embed/pagI0B2GjHT1q5SvO?backgroundColor=purple" height="1300"></iframe>
+      </div>
     </div>
-    <nav class="footer-right" aria-label="Footer navigation">
-      <a href="careers.html">Careers / Trabaho</a>
-      <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="offers.html">Offers / Mga Promos</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy / Pribado nga Palisi</a>
-      <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </nav>
-  </footer>
+  </div>
 
-  <!-- Scripts -->
   <script>
     document.getElementById("hamburger").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "250px";
@@ -137,43 +175,21 @@
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "0";
     });
-    document.getElementById("sidebar").querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("sidebar").style.width = "0";
-      });
-    });
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    function openModal() {
+      document.getElementById("formModal").style.display = "flex";
+      document.getElementById("sidebar").style.width = "0";
     }
-  </script>
 
-  <!-- WhatsApp Reminder Popup -->
-  <div id="order-popup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:9999;padding:1rem;">
-    <div style="background:#fffafc;color:#333;padding:1rem;border-radius:10px;max-width:360px;width:100%;font-size:0.95em;box-shadow:0 4px 10px rgba(0,0,0,0.15);">
-      <h3>📲 Kinahanglan may WhatsApp ka</h3>
-      <p>Siguraduhon nga may WhatsApp ka para maka-receive sang order confirmation.</p>
-      <p>Make sure you have WhatsApp installed before ordering.</p>
-      <h4>📦 Paano mag-order?</h4>
-      <p>Pilia ang tindahan, idugang ang items sa cart, pun-a ang ngalan, numero, kag petsa/time.</p>
-      <p>Choose store, add items to cart, and fill in name, number, and delivery date/time.</p>
-      <button onclick="closePopup()">✅ Got it!</button>
-    </div>
-  </div>
+    function closeModal() {
+      document.getElementById("formModal").style.display = "none";
+    }
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lastSeen = localStorage.getItem('whatsappPopupLastSeen');
-      const today = new Date().toDateString();
-      if (lastSeen !== today) {
-        setTimeout(() => {
-          document.getElementById('order-popup').style.display = 'flex';
-          localStorage.setItem('whatsappPopupLastSeen', today);
-        }, 2000);
-      }
-    });
-    function closePopup() {
-      document.getElementById('order-popup').style.display = 'none';
+    function switchForm(type) {
+      document.getElementById("riderForm").style.display = type === 'rider' ? 'block' : 'none';
+      document.getElementById("merchantForm").style.display = type === 'merchant' ? 'block' : 'none';
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[onclick*="${type}"]`).classList.add('active');
     }
   </script>
 </body>
