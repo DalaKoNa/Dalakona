@@ -3,169 +3,170 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Dala Ko na Terms and Conditions – Simple & fair delivery service terms.">
+  <meta name="description" content="Terms and Conditions – Dala Ko Na">
   <title>Terms & Conditions – Dala🚲na</title>
-  <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Cinzel', serif;
+      font-family: 'Inter', sans-serif;
+      background-color: #fffdf5;
       margin: 0;
-      padding: 0;
-      background-color: #fdf6f0;
       color: #333;
-      font-size: 15px;
-      line-height: 1.6;
     }
 
     .hero {
+      background: url('pastel-hero.jpg') no-repeat center center;
+      background-size: cover;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       text-align: center;
-      color: white;
     }
 
-    .hero-img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      filter: brightness(0.6);
-    }
-
-    .hero-text {
+    .hero::after {
+      content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
-    .hero-text h1 {
-      font-size: 1.8em;
-      margin: 0;
+    .hero h1 {
+      position: relative;
+      color: #fffbe9;
+      font-size: 2rem;
+      z-index: 1;
     }
 
-    .back-arrow {
-      position: absolute;
-      top: 1em;
-      left: 1em;
-      background-color: rgba(255, 255, 255, 0.7);
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.8em;
+    .container {
+      max-width: 850px;
+      margin: auto;
+      padding: 2rem 1.5rem;
+    }
+
+    h2 {
+      color: #a0527b;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+
+    footer {
+      background-color: #fff9e6;
+      padding: 2em;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-family: 'Cinzel', serif;
+    }
+
+    .footer-left, .footer-right {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-left .socials a {
+      margin-right: 10px;
+      text-decoration: none;
+      color: #0077cc;
+    }
+
+    .footer-right a {
+      display: block;
+      margin-bottom: 6px;
       color: #333;
       text-decoration: none;
     }
 
-    .back-arrow:hover {
-      background-color: #fff;
+    .footer-right a:hover {
+      text-decoration: underline;
     }
 
-    .container {
-      max-width: 780px;
-      margin: 1.5em auto;
-      padding: 1.2em;
-    }
-
-    .benefit-box {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      padding: 1em 1.2em;
-      margin-bottom: 1.2em;
-    }
-
-    .benefit-box h2 {
-      margin-top: 0;
-      font-size: 1.1em;
-      color: #5e3c58;
-    }
-
-    .benefit-box p {
-      margin: 0.3em 0 0.6em;
-    }
-
-    .cta-btn {
-      display: block;
-      width: fit-content;
-      margin: 2em auto 1em;
-      padding: 10px 20px;
-      background-color: #ff69b4;
-      color: white;
-      font-size: 0.95em;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.3s ease;
-    }
-
-    .cta-btn:hover {
-      background-color: #e95ca0;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 0.85em;
-      color: #555;
-      margin-bottom: 1.5em;
-    }
-
-    @media (max-width: 600px) {
-      .hero-text h1 {
-        font-size: 1.5em;
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.6rem;
       }
-      .container {
-        padding: 1em;
-        margin: 1em;
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
       }
-      body {
-        font-size: 14px;
+
+      .footer-right {
+        margin-top: 1em;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Hero Section -->
-<section class="hero">
-  <img src="pastel-hero.jpg" alt="Terms and Conditions" class="hero-img" loading="lazy" />
-  <a href="index.html" class="back-arrow">← Back</a>
-  <div class="hero-text">
-    <h1>Terms & Conditions</h1>
-  </div>
-</section>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Terms & Conditions / Kasugtanan</h1>
+  </section>
 
-<!-- Content Section -->
-<div class="container">
-  <div class="benefit-box">
-    <h2>🚚 Fair Delivery Promise</h2>
-    <p>Dala🚲na riders deliver with care. Delivery ETA is 30–60 mins. Expect chat or SMS updates if there’s a delay.</p>
-  </div>
+  <!-- Main Content -->
+  <div class="container">
+    <h2>1. Service Coverage / Lugar sang Serbisyo</h2>
+    <p>Dala🚲na currently operates within selected barangays and areas. Deliveries are subject to rider availability and traffic conditions.</p>
+    <p>Ang Dala🚲na nagaserbisyo lang sa pilang ka barangay. Ang delivery naga-depende sa availability sang rider kag kahimtangan sang dalan.</p>
 
-  <div class="benefit-box">
-    <h2>🛒 Reliable Orders & Payments</h2>
-    <p>Orders can be canceled within 5 minutes unless already in transit. Pay via cash, GCash, or PayMaya — total includes VAT & service fees.</p>
-  </div>
+    <h2>2. Order Acceptance / Pagsugot sang Order</h2>
+    <p>We reserve the right to cancel or refuse any order based on stock availability, location limits, or safety concerns.</p>
+    <p>May katungdanan kami nga indi batunon ang order kon wala na sang stock, layo ang location, ukon may delikado nga kahimtangan.</p>
 
-  <div class="benefit-box">
-    <h2>💬 Respectful Community</h2>
-    <p>We expect all riders, merchants, and customers to be respectful. Abuse or scams result in account removal.</p>
-  </div>
+    <h2>3. Payment Terms / Paagi sang Bayad</h2>
+    <ul>
+      <li>Payments may be made via GCash, PayMaya, or Cash on Delivery (COD).</li>
+      <li>Ang bayad pwede pinaagi sa GCash, PayMaya, ukon Cash on Delivery.</li>
+    </ul>
 
-  <div class="benefit-box">
-    <h2>📩 Disputes & Support</h2>
-    <p>Missing items or issues? Contact us via Facebook or email. We respond within 1–2 business days.</p>
-  </div>
+    <h2>4. Responsibility / Responsibilidad</h2>
+    <p>Dala🚲na is not liable for incorrect information provided by the customer or failure to respond upon delivery.</p>
+    <p>Wala kami sang responsibilidad kon sala ang info nga ginhatag sang customer ukon wala siya nagbaton sang tawag sa oras sang delivery.</p>
 
-  <div class="benefit-box">
-    <h2>📜 Updates</h2>
-    <p>Using Dala🚲na means agreeing to future updates in these terms. Check back regularly or ask us via chat.</p>
+    <h2>5. Changes and Updates / Pagbag-o sang Kasugtanan</h2>
+    <p>We may update these terms at any time. Customers are encouraged to check the latest version on our website.</p>
+    <p>Pwede kami magbag-o sang kasugtanan bisan san-o. Ginaengganyo namon kamo nga magtan-aw pirmi sang pinakaulihi nga version.</p>
+
+    <h2>6. Contact / Kontak</h2>
+    <p>For concerns, email us at <strong>support@dalako.na</strong>.</p>
   </div>
 
-  <a href="index.html" class="cta-btn">← Back to Dala🚲na Homepage</a>
-
-  <div class="footer-note">Thank you for supporting local deliveries. 💖</div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank">FB</a>
+        <a href="https://instagram.com" target="_blank">IG</a>
+        <a href="https://x.com" target="_blank">X</a>
+      </div>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    </div>
+    <div class="footer-right">
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
