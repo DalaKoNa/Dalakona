@@ -3,27 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Promos and special deals from Dala Ko Na – save on deliveries and products.">
-  <title>Special Offers – Dala🚲na</title>
+  <meta name="description" content="Dala Ko Na – Current Promos and Offers">
+  <title>Offers / Mga Promos – Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #fdf6f0;
+      background-color: #fffdf5;
       margin: 0;
-      padding: 0;
       color: #333;
-      font-size: 15px;
     }
 
     .hero {
       background: url('pastel-hero.jpg') no-repeat center center;
       background-size: cover;
-      height: 180px;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
       position: relative;
       text-align: center;
     }
@@ -32,77 +30,132 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .hero h1 {
+      position: relative;
+      color: #fffbe9;
+      font-size: 2rem;
       z-index: 1;
-      font-size: 1.8em;
     }
 
     .container {
       max-width: 850px;
       margin: auto;
-      padding: 1.5em;
+      padding: 2rem 1.5rem;
     }
 
-    .offer {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1em;
-      margin-bottom: 1.5em;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .promo {
+      background-color: #fff1cc;
+      border-left: 5px solid #e3a312;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
     }
 
-    .offer h2 {
-      margin-top: 0;
+    .promo h2 {
       color: #a0527b;
-      font-size: 1.1em;
+      margin-bottom: 0.5rem;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 1em;
-      background: #a0527b;
-      color: white;
-      padding: 10px 18px;
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background-color: #fff9e6;
+      padding: 2em;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-family: 'Cinzel', serif;
+    }
+
+    .footer-left, .footer-right {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-left .socials a {
+      margin-right: 10px;
       text-decoration: none;
-      border-radius: 6px;
-      font-size: 0.95em;
+      color: #0077cc;
     }
 
-    .back-home {
-      margin-top: 2em;
-      text-align: center;
+    .footer-right a {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-right {
+        margin-top: 1em;
+      }
     }
   </style>
 </head>
 <body>
 
-<section class="hero">
-  <h1>Special Offers 🎉</h1>
-</section>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Offers / Mga Promos</h1>
+  </section>
 
-<div class="container">
-  <div class="offer">
-    <h2>🆓 Free Delivery Tuesdays</h2>
-    <p>Get free delivery every Tuesday when you order from our partner panaderias and pharmacies! No code needed.</p>
+  <!-- Main Content -->
+  <div class="container">
+    <div class="promo">
+      <h2>🎁 Order Minimum ₱500 = Free Dala🚲na Merchandise!</h2>
+      <p><strong>ENGLISH:</strong> Get a FREE Dala🚲na tote bag or eco-friendly mug when your total order reaches ₱500 or more in a single checkout.</p>
+      <p><strong>HILIGAYNON:</strong> Makabaton ka sang LIBRE nga Dala🚲na tote bag ukon mug kon ang imo order maglab-ot ₱500 ukon sobra sa isa ka transaction.</p>
+      <p><strong>How to Claim:</strong> Your rider will hand you the freebie upon delivery. Promo valid while supplies last!</p>
+      <p><strong>Kon Paano Kuhaon:</strong> Iahatag ini sang rider sa imo pag-abot sang delivery. Valid tubtob may stock pa!</p>
+    </div>
+
+    <div class="promo">
+      <h2>📦 Refer & Earn (Coming Soon!)</h2>
+      <p><strong>ENGLISH:</strong> Invite your friends to use Dala🚲na and earn vouchers for every successful referral.</p>
+      <p><strong>HILIGAYNON:</strong> Imbitara ang imo mga abyan nga maggamit sang Dala🚲na kag makabaton ka sang voucher sa kada referral nga nagagamit man!</p>
+      <p>🕐 Stay tuned on our socials for launch details!</p>
+    </div>
   </div>
 
-  <div class="offer">
-    <h2>👵 Senior Citizens Get ₱20 Off</h2>
-    <p>Just upload a photo of your Senior Citizen ID at checkout. Discount will be applied before delivery.</p>
-  </div>
-
-  <div class="offer">
-    <h2>🏪 Buy 4, Get 1 Free – Sari-sari Store Promo</h2>
-    <p>Buy 4 of the same item (e.g. canned goods, noodles) and get 1 free—available only at select merchants. Check out the <a href="select-store.html">Merchant list</a>.</p>
-  </div>
-
-  <div class="back-home">
-    <a href="index.html" class="btn">← Back to Dala🚲na</a>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank">FB</a>
+        <a href="https://instagram.com" target="_blank">IG</a>
+        <a href="https://x.com" target="_blank">X</a>
+      </div>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    </div>
+    <div class="footer-right">
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
