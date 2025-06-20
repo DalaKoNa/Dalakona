@@ -355,3 +355,13 @@ html, body {
     margin-top: 1em;
   }
 }
+.location-btn {
+  background: #008060;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+}
