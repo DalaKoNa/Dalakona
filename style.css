@@ -272,34 +272,27 @@ html, body {
   object-fit: cover;
 }
 
-.hero-text.bottom-tagline {
+.hero-tagline {
   position: absolute;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
+  bottom: 1.5rem;
+  width: 100%;
   text-align: center;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 0.8rem 1rem;
-  border-radius: 12px;
-  max-width: 90%;
-  margin: 0 auto;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-  /* ✨ Animation */
-  opacity: 0;
-  animation: fadeInUp 1.2s ease-out 0.5s forwards;
-}
-
-.hero-text.bottom-tagline h2.tagline {
   color: goldenrod;
-  font-size: 1.6rem;
-  margin: 0;
+  animation: fadeInUp 1.2s ease-out 0.5s forwards;
+  opacity: 0;
 }
 
-.hero-text.bottom-tagline p {
-  margin: 0.3rem 0 0;
-  color: #444;
+.hero-tagline h2.tagline {
+  font-size: 1.8rem;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.hero-tagline p {
   font-size: 0.95rem;
+  margin: 0.2rem 0 0;
+  color: #f8e9cc;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 /* Responsive */
@@ -308,11 +301,11 @@ html, body {
     height: 50vh;
   }
 
-  .hero-text.bottom-tagline h2.tagline {
-    font-size: 1.2rem;
+  .hero-tagline h2.tagline {
+    font-size: 1.3rem;
   }
 
-  .hero-text.bottom-tagline p {
+  .hero-tagline p {
     font-size: 0.85rem;
   }
 }
