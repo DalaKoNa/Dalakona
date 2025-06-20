@@ -82,15 +82,19 @@
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="delivery-address" placeholder="Delivery Address" required>
-
+      
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
       <input type="time" id="delivery-time">
       <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
         ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
       </div>
-
+<input 
+  type="text" 
+  id="delivery-address" 
+  placeholder="📍 Pin or Full Address (Google Maps)" 
+  required
+>
       <h3>Payment</h3>
       <select id="payment-method">
         <option value="GCash">GCash</option>
@@ -282,6 +286,8 @@
       link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
       link.textContent = `View ${method} instructions`;
     });
+const address = document.getElementById("delivery-address")?.value || "N/A";
+whatsappMessage += `\n📍 Address: ${address}`;
 
     const requiredFields = ['customer-name', 'customer-phone', 'customer-email', 'delivery-date', 'delivery-time', 'payment-method'];
     requiredFields.forEach(id => {
