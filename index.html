@@ -2,50 +2,219 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city.">
-  <title>Dala🚲na – Dala Ko na. Subong dayon!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲na – Subong Dayon!</title>
+  <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city." />
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cinzel', serif;
+      background-color: #fff8dc;
+      color: #333;
+    }
+
+    /* === Header & Navbar === */
+    .navbar {
+      background-color: #ffe694;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hamburger {
+      font-size: 1.5em;
+      background: none;
+      border: none;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 1.5em;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .cart {
+      font-size: 1rem;
+    }
+
+    /* === Sidebar === */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 999;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 1rem;
+      color: white;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #575757;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* === Hero Section === */
+    .hero {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .hero img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin: 1rem 0 0.2rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .cta {
+      margin-top: 1rem;
+      background: #ffc107;
+      color: #000;
+      padding: 0.6em 1.4em;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* === Merchants === */
+    .partners {
+      padding: 2rem 1rem;
+      background-color: #fffdf3;
+      text-align: center;
+    }
+
+    .merchant-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .merchant-card {
+      flex: 0 0 auto;
+      background: linear-gradient(135deg, #fff5d1, #ffe9a0);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      color: #a0522d;
+      scroll-snap-align: start;
+    }
+
+    /* === Footer === */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 2rem 1rem;
+      background-color: #fff8dc;
+      border-top: 1px solid #ddd;
+    }
+
+    .footer-left,
+    .footer-right {
+      flex: 1 1 200px;
+      margin-bottom: 1rem;
+    }
+
+    .footer-left .socials a {
+      margin-right: 10px;
+      text-decoration: none;
+      color: #0077cc;
+    }
+
+    .footer-right a {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .merchant-card {
+        min-width: 140px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <nav id="sidebar" class="sidebar" aria-hidden="true">
-    <a href="#" class="close-btn" id="closeBtn" aria-label="Close menu">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚵 Join as Rider</a>
+  <!-- Sidebar Nav -->
+  <nav id="sidebar" class="sidebar">
+    <a href="#" class="close-btn" id="closeBtn">&times;</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider</a>
     <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Merchant Form</a>
     <a href="#partners">🤝 Our Partner Merchants</a>
   </nav>
 
-  <!-- Navbar -->
+  <!-- Top Navbar -->
   <header class="navbar">
-    <button id="hamburger" class="hamburger" aria-label="Open menu">☰</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na.</a>
+    <button class="hamburger" id="hamburger">☰</button>
+    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
     <div class="cart">🛒 dala‑Cart</div>
   </header>
 
   <!-- Hero Section -->
-<section class="hero">
-  <img 
-    src="pastel-hero.jpg" 
-    alt="Dala🚲na – Subong Dayon" 
-    class="hero-img"
-  />
-  <div class="hero-text">
-    <h1>DALAKONA.</h1>
-    <h2>SUBONG DAYON.</h2>
-    <p>BULIG SA ADLAW-ADLAW NGA KINAHANGLANON.</p>
-    <p class="sub-translation">Daily delivery of essentials with speed and love in your local city.</p>
-    <a href="#partners" class="order-btn">🛒 Order Now</a>
-  </div>
-</section>
+  <section class="hero">
+    <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" />
+    <h1>DalaKoNa.</h1>
+    <p>Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
+    <a href="#partners" class="cta">🛒 Order Now</a>
+  </section>
 
-  <!-- Merchants Section -->
+  <!-- Merchant List -->
   <section class="partners" id="partners">
-    <h2>Our Merchants</h2>
+    <h2>Our Merchants / Mga Ka-partner nga Tindahan</h2>
     <div class="merchant-scroll">
       <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
       <a href="bakery.html" class="merchant-card">Bakery</a>
@@ -56,7 +225,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
@@ -64,16 +233,16 @@
         <a href="https://instagram.com" target="_blank">IG</a>
         <a href="https://x.com" target="_blank">X</a>
       </div>
-      <p>dala🚲na hasta sa FB, IG, X</p>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
-    <nav class="footer-right">
-      <a href="careers.html">Careers</a>
-      <a href="about.html">About</a>
-      <a href="offers.html">Offers</a>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html">Privacy</a>
+    <div class="footer-right">
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
       <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </nav>
+    </div>
   </footer>
 
   <!-- Scripts -->
@@ -81,17 +250,14 @@
     document.getElementById("hamburger").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "250px";
     });
+
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "0";
     });
-    document.querySelectorAll("#sidebar a").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("sidebar").style.width = "0";
-      });
-    });
+
     function scrollToTop(e) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   </script>
 </body>
