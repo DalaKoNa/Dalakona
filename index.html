@@ -83,5 +83,37 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   </script>
+<!-- WhatsApp Elder Support Button -->
+<a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
+   class="whatsapp-float" target="_blank" aria-label="Chat with Support">
+  🚴🛍️
+</a>
+
+<!-- WhatsApp Support Popup -->
+<div id="elder-popup" class="elder-popup">
+  <div class="popup-content">
+    <h3>👵 Para sa mga Lolo kag Lola</h3>
+    <p>Kinahanglan mo bulig sa pag-order?</p>
+    <p>I-click lang ang green button sa idalom para makachaty ka sa aton support sa WhatsApp.</p>
+    <button onclick="closeElderPopup()">✔️ Gets ko na!</button>
+  </div>
+</div>
+
+<script>
+  function closeElderPopup() {
+    document.getElementById("elder-popup").style.display = "none";
+    localStorage.setItem("elderPopupSeen", "true");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const seen = localStorage.getItem("elderPopupSeen");
+    if (!seen) {
+      setTimeout(() => {
+        document.getElementById("elder-popup").style.display = "flex";
+      }, 2500);
+    }
+  });
+</script>
+
 </body>
 </html>
