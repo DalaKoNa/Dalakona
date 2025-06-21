@@ -93,6 +93,7 @@
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -222,6 +223,7 @@
     const phone = document.getElementById('customer-phone').value.trim();
     const email = document.getElementById('customer-email').value.trim();
     const address = document.getElementById('delivery-address').value.trim();
+    const notes = document.getElementById('delivery-notes').value.trim();
     const date = document.getElementById('delivery-date').value;
     const time = document.getElementById('delivery-time').value;
     const method = document.getElementById('payment-method').value;
@@ -249,7 +251,20 @@
     document.body.appendChild(iframe);
 
     const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
-    const message = `🎂 New Order - Ellen’s Cakes\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n📍 Address: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
+    const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
+
+Items:
+${items}
+
+${summary}
+Delivery: ${date} ${time}
+Payment: ${method}`;
+
     const encodedMsg = encodeURIComponent(message);
 
     const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
