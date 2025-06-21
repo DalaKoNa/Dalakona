@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rider EOD Summary</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fdf8f2;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 2rem;
+      background: green;
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      width: 100%;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧾 Rider EOD Summary</h1>
+
+  <label for="rider-name">Rider Name</label>
+  <input type="text" id="rider-name" placeholder="Juan Dela Cruz">
+
+  <label for="date">Date</label>
+  <input type="date" id="date">
+
+  <label for="cash-on-hand">Cash on Hand (COD)</label>
+  <input type="number" id="cash-on-hand" placeholder="₱ collected cash">
+
+  <label for="cash-online">Cash Online (e.g., GCash, bank)</label>
+  <input type="number" id="cash-online" placeholder="₱ paid online">
+
+  <label for="deliveries">Total Deliveries (e.g., Pharmacy, Bakery...)</label>
+  <textarea id="deliveries" rows="3" placeholder="e.g., Pharmacy: 5 orders, Bakery: 3 orders"></textarea>
+
+  <label for="expenses">Petty Cash Used</label>
+  <input type="text" id="expenses" placeholder="e.g., ₱50 load, ₱30 toll">
+
+  <label for="notes">Notes / Remarks</label>
+  <textarea id="notes" rows="3" placeholder="Anything admin needs to know"></textarea>
+
+  <button onclick="sendEOD()">📤 Send EOD via WhatsApp</button>
+
+  <script>
+    function sendEOD() {
+      const name = document.getElementById('rider-name').value;
+      const date = document.getElementById('date').value;
+      const hand = document.getElementById('cash-on-hand').value;
+      const online = document.getElementById('cash-online').value;
+      const deliveries = document.getElementById('deliveries').value;
+      const expenses = document.getElementById('expenses').value;
+      const notes = document.getElementById('notes').value;
+
+      const summary = `🧾 Rider EOD Summary\n\n👤 Name: ${name}\n📅 Date: ${date}\n\n📦 Deliveries:\n${deliveries}\n\n💵 Cash on Hand: ₱${hand}\n💳 Cash Online: ₱${online}\n🧾 Petty Cash: ${expenses || 'None'}\n\n📌 Notes: ${notes || 'N/A'}`;
+
+      const encoded = encodeURIComponent(summary);
+      const adminNumber = "63XXXXXXXXXX"; // change to real admin number
+      const url = `https://wa.me/${adminNumber}?text=${encoded}`;
+
+      window.open(url, '_blank');
+    }
+
+    window.onload = () => {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("date").value = today;
+    }
+  </script>
+
+</body>
+</html>
