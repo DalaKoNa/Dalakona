@@ -128,6 +128,48 @@
     </div>
   </div>
 <script src="delivery-area-check.js"></script>
+// STEP 2A — Extract coordinates from pasted Google Maps link
+async function extractLatLngFromGoogleMapsLink(url) {
+  try {
+    const regex = /(?:\/|\?|q=)(-?\d{1,3}\.\d+),\s*(-?\d{1,3}\.\d+)/;
+    const match = url.match(regex);
+    if (match && match.length === 3) {
+      return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// STEP 2B — Listen for pasted/typed address
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('delivery-address').addEventListener('input', async function () {
+    const address = this.value;
+    const coords = await extractLatLngFromGoogleMapsLink(address);
+    if (coords) {
+      handleLocationValidation(coords.lat, coords.lng);
+    }
+  });
+});
+
+// STEP 2C — Control checkout button and warning display
+function handleLocationValidation(lat, lng) {
+  const allowed = isInsideHandumanan(lat, lng);
+  const warning = document.getElementById('addressWarning');
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  if (allowed) {
+    warning.style.display = 'none';
+    validateForm();
+  } else {
+    warning.style.display = 'block';
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+  }
+}
+
 <script>
 
   const products = [
