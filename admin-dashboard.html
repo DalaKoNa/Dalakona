@@ -141,8 +141,8 @@
   function verifyOTP() {
     const v = document.getElementById('otpInput').value.trim();
     if (v === OTP) {
-      document.getElementById('loginModal').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
+      // ✅ Redirect to Google Form
+      window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform";
     } else {
       document.getElementById('otpError').style.display = 'block';
     }
