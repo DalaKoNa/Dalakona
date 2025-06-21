@@ -2,169 +2,209 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rider Dashboard – Dala🚲na</title>
+  <title>Dala🚲na – Rider Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fffaf7;
+      font-family: 'Inter', sans-serif;
+      background: #fefbf8;
       margin: 0;
-      padding: 1rem;
-      color: #444;
-      font-size: 14px;
+      padding: 0;
+      color: #333;
     }
-    h1, h2 {
+
+    .container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
       text-align: center;
-      color: #7b4f56;
-      font-weight: 500;
+      color: #7d4c59;
+      margin-bottom: 1rem;
     }
-    #loginSection, #dashboard {
-      max-width: 500px;
-      margin: auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
+
     label {
-      font-weight: 500;
-      margin-top: 10px;
+      font-size: 0.85rem;
       display: block;
+      margin-bottom: 4px;
+      color: #555;
     }
-    input, textarea {
+
+    input, select, textarea {
       width: 100%;
       padding: 8px;
-      margin-top: 4px;
-      margin-bottom: 10px;
-      border-radius: 5px;
+      margin-bottom: 12px;
       border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      background: #a0527b;
-      color: white;
-      padding: 10px;
-      border: none;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      background-color: #7d4c59;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .logout-btn {
+      float: right;
+      font-size: 0.8rem;
+      background: transparent;
+      color: #999;
+      border: none;
       cursor: pointer;
     }
-    button:hover {
-      background: #8b3e63;
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
     }
-    .hidden {
-      display: none;
+
+    .tabs button {
+      background: none;
+      border: none;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #999;
     }
-    .record {
-      background: #fafafa;
-      border-left: 3px solid #a0527b;
-      margin: 0.5rem 0;
+
+    .tabs button.active {
+      color: #7d4c59;
+      font-weight: bold;
+      border-bottom: 2px solid #7d4c59;
+    }
+
+    .log {
+      font-size: 0.8rem;
+      background: #f7f7f7;
       padding: 0.5rem;
-      border-radius: 5px;
-      font-size: 13px;
-      white-space: pre-wrap;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
     }
-    .logout {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    .logout button {
-      background: #999;
-    }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <div id="loginSection">
-    <h1>🚴 Dala🚲na Rider Login</h1>
-    <label>Employee Number:</label>
-    <input type="text" id="employeeId" placeholder="e.g. R12345" required />
-    <label>Rider Name:</label>
-    <input type="text" id="riderNameLogin" placeholder="Your full name" required />
-    <button onclick="loginRider()">Login</button>
-  </div>
-
-  <div id="dashboard" class="hidden">
-    <h2>📋 Rider Remittance Form</h2>
-    <form id="riderForm" onsubmit="submitRiderForm(event)">
-      <label>Rider Name</label>
-      <input type="text" id="riderName" readonly />
-
-      <label>Store / Merchant</label>
-      <input type="text" id="store" required />
-
-      <label>COD Collected (₱)</label>
-      <input type="number" id="cod" required />
-
-      <label>Notes</label>
-      <textarea id="notes" rows="2"></textarea>
-
-      <button type="submit">✔️ Save Log</button>
-    </form>
-
-    <h2 style="margin-top:2rem;">🧾 EOD Summary Logs</h2>
-    <div id="logDisplay"></div>
-
-    <div style="margin-top: 1rem;">
-      <button onclick="sendWhatsApp()">📤 Remit Now via WhatsApp</button>
+  <div class="container">
+    <div class="tabs">
+      <button id="loginTab" class="active" onclick="showTab('login')">🔐 Login</button>
+      <button id="dashboardTab" onclick="showTab('dashboard')" class="hidden">🚴 Rider Dashboard</button>
     </div>
 
-    <div class="logout">
-      <button onclick="logout()">🔓 Logout</button>
+    <!-- Login View -->
+    <div id="loginView">
+      <h2>Rider Login</h2>
+      <label>Enter Rider Name or ID</label>
+      <input type="text" id="riderName" placeholder="e.g. Rider 004" />
+      <button onclick="login()">Log In</button>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboardView" class="hidden">
+      <h2>Welcome, <span id="riderDisplay"></span>!</h2>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+
+      <form id="eodForm" onsubmit="submitEOD(event)">
+        <label>🏪 Store</label>
+        <input type="text" id="store" required />
+
+        <label>💵 Cash on Hand (₱)</label>
+        <input type="number" id="cashOnHand" required />
+
+        <label>💳 Remitted (₱)</label>
+        <input type="number" id="remitted" required />
+
+        <label>🗒️ Notes</label>
+        <textarea id="notes" rows="2" placeholder="Optional"></textarea>
+
+        <button type="submit">📋 Submit EOD</button>
+      </form>
+
+      <hr style="margin:2rem 0;">
+      <h3 style="margin-bottom:0.5rem;">📚 Today's Logs</h3>
+      <div id="logContainer"></div>
     </div>
   </div>
 
   <script>
-    function loginRider() {
-      const empId = document.getElementById('employeeId').value.trim();
-      const name = document.getElementById('riderNameLogin').value.trim();
+    function showTab(tab) {
+      document.getElementById('loginTab').classList.remove('active');
+      document.getElementById('dashboardTab').classList.remove('active');
+      document.getElementById(tab + 'Tab').classList.add('active');
 
-      if (!empId || !name) {
-        alert("Please enter your employee number and name.");
-        return;
-      }
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('dashboardView').classList.add('hidden');
 
-      sessionStorage.setItem("riderName", name);
-      sessionStorage.setItem("employeeId", empId);
-      document.getElementById('riderName').value = name;
+      document.getElementById(tab + 'View').classList.remove('hidden');
+    }
 
-      document.getElementById('loginSection').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
+    function login() {
+      const rider = document.getElementById('riderName').value.trim();
+      if (!rider) return alert('Please enter your name or ID.');
+
+      localStorage.setItem('riderName', rider);
+      document.getElementById('riderDisplay').textContent = rider;
+
+      showTab('dashboard');
+      document.getElementById('dashboardTab').classList.remove('hidden');
+      loadLogs();
     }
 
     function logout() {
-      sessionStorage.clear();
-      location.reload();
+      localStorage.removeItem('riderName');
+      showTab('login');
     }
 
-    function submitRiderForm(e) {
-      e.preventDefault();
-      const name = sessionStorage.getItem("riderName");
-      const store = document.getElementById('store').value.trim();
-      const cod = parseFloat(document.getElementById('cod').value);
-      const notes = document.getElementById('notes').value.trim() || 'N/A';
-      const time = new Date().toLocaleString();
+    function submitEOD(event) {
+      event.preventDefault();
 
-      const entry = `🕒 ${time}\n👤 ${name}\n🏪 ${store}\n💰 COD: ₱${cod.toFixed(2)}\n🗒️ ${notes}`;
-      const div = document.createElement('div');
-      div.className = 'record';
-      div.innerText = entry;
-      document.getElementById('logDisplay').prepend(div);
+      const rider = localStorage.getItem('riderName');
+      const store = document.getElementById('store').value;
+      const cash = document.getElementById('cashOnHand').value;
+      const remit = document.getElementById('remitted').value;
+      const notes = document.getElementById('notes').value;
+      const date = new Date().toLocaleString();
 
-      document.getElementById('riderForm').reset();
+      const log = `🕒 ${date}\n👤 ${rider}\n🏪 ${store}\n💵 Cash: ₱${cash}\n🏦 Remit: ₱${remit}\n🗒️ ${notes || 'N/A'}`;
+      const prevLogs = JSON.parse(localStorage.getItem('eodLogs') || '[]');
+      prevLogs.unshift(log);
+      localStorage.setItem('eodLogs', JSON.stringify(prevLogs));
+
+      alert('📋 EOD Submitted!');
+      document.getElementById('eodForm').reset();
+      loadLogs();
     }
 
-    function sendWhatsApp() {
-      const logs = Array.from(document.querySelectorAll('.record'))
-        .map(div => div.innerText).join('\n\n');
-      const name = sessionStorage.getItem("riderName") || "Rider";
-      const empId = sessionStorage.getItem("employeeId") || "N/A";
-
-      const msg = `📤 Dala🚲na Rider Remit Summary\n👤 ${name} (${empId})\n\n${logs}`;
-      const waURL = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`;
-      window.open(waURL, "_blank");
+    function loadLogs() {
+      const logs = JSON.parse(localStorage.getItem('eodLogs') || '[]');
+      const container = document.getElementById('logContainer');
+      container.innerHTML = logs.slice(0, 10).map(log => `<div class="log">${log.replace(/\n/g, '<br>')}</div>`).join('');
     }
+
+    // Restore session
+    window.onload = () => {
+      const rider = localStorage.getItem('riderName');
+      if (rider) {
+        document.getElementById('riderDisplay').textContent = rider;
+        document.getElementById('dashboardTab').classList.remove('hidden');
+        showTab('dashboard');
+        loadLogs();
+      }
+    };
   </script>
+
 </body>
 </html>
