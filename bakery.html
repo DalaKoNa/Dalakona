@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dala🚲Na Bakery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DalaὯNa Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
@@ -17,7 +17,7 @@
       border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; font-size: 1.4rem; }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
     .search-bar { margin-bottom: 1rem; text-align: center; }
     .search-bar input {
       padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
@@ -69,7 +69,7 @@
 <body>
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na Bakery</h1>
+    <h1>DalaὯNa Bakery</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
@@ -93,10 +93,6 @@
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-
-      <div id="addressWarning" style="color: red; font-size: 0.85rem; display: none;">
-        ❗ Delivery address is outside Handumanan. We currently do not deliver to this area.
-      </div>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -132,7 +128,8 @@
     </div>
   </div>
 
-  <script src="bakery.js"></script>
+  <script>
+    <script>
 const products = [
   { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
   { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
@@ -355,6 +352,7 @@ function validateForm() {
     checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
   }
 }
-
+  </script>
+  <script src="bakery.js"></script>
 </body>
 </html>
