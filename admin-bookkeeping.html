@@ -29,17 +29,91 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+    .admin-btn {
+      margin: 2rem auto;
+      display: block;
+      background: #008060;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>📊 Admin Bookkeeping Dashboard</h1>
 
   <iframe 
-    src="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/preview"
+    src="https://docs.google.com/spreadsheets/d/1neYrl_kR6hl2ZgsgUTTW6v8jULYFStl8TjHSApzlkrU/preview"
     allowfullscreen></iframe>
+
+  <button class="admin-btn" onclick="openAdminModal()">➕ Add COD Record</button>
 
   <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
     🔐 This dashboard is password protected. Manual EOD logs may be copy-pasted by Admin.
   </p>
+
+  <!-- Admin Modal -->
+  <div id="adminModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:12px; width:90%; max-width:500px; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.3);">
+      <span onclick="closeAdminModal()" style="position:absolute; top:10px; right:20px; font-size:1.5rem; cursor:pointer;">&times;</span>
+      <h2 style="margin-bottom:1rem;">📒 Admin COD Record</h2>
+
+      <form id="adminLogForm" onsubmit="saveAdminRecord(event)">
+        <label>👤 Rider Name:</label>
+        <input type="text" id="admin-rider" required style="width:100%; padding:8px; margin-bottom:10px;">
+
+        <label>🏪 Store / Merchant:</label>
+        <input type="text" id="admin-store" required style="width:100%; padding:8px; margin-bottom:10px;">
+
+        <label>💰 COD Collected (₱):</label>
+        <input type="number" id="admin-cod" required style="width:100%; padding:8px; margin-bottom:10px;">
+
+        <label>🏦 Remitted (₱):</label>
+        <input type="number" id="admin-remit" required style="width:100%; padding:8px; margin-bottom:10px;">
+
+        <label>🗒️ Notes:</label>
+        <textarea id="admin-notes" rows="3" style="width:100%; padding:8px; margin-bottom:10px;"></textarea>
+
+        <button type="submit" style="width:100%; background:#008060; color:white; padding:10px; border:none; border-radius:6px;">✔️ Save Record</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openAdminModal() {
+      document.getElementById('adminModal').style.display = 'flex';
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').style.display = 'none';
+    }
+
+    function saveAdminRecord(event) {
+      event.preventDefault();
+
+      const rider = document.getElementById('admin-rider').value.trim();
+      const store = document.getElementById('admin-store').value.trim();
+      const cod = parseFloat(document.getElementById('admin-cod').value);
+      const remit = parseFloat(document.getElementById('admin-remit').value);
+      const notes = document.getElementById('admin-notes').value.trim();
+      const timestamp = new Date().toLocaleString();
+
+      const record = `🕒 ${timestamp}
+👤 Rider: ${rider}
+🏪 Store: ${store}
+💰 COD Collected: ₱${cod.toFixed(2)}
+🏦 Remitted: ₱${remit.toFixed(2)}
+🗒️ Notes: ${notes || 'N/A'}`;
+
+      alert(`📋 Record Saved:\n\n${record}`);
+      console.log("Copied to Admin Log:\n", record);
+
+      document.getElementById('adminLogForm').reset();
+      closeAdminModal();
+    }
+  </script>
 </body>
 </html>
