@@ -7,6 +7,7 @@
   <title>Careers / Trabaho – Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: 'Cinzel', serif;
@@ -14,6 +15,7 @@
       margin: 0;
       padding: 0;
       color: #333;
+      overflow-x: hidden;
     }
 
     .hero {
@@ -53,7 +55,21 @@
       border-radius: 12px;
       padding: 1.5rem;
       margin-bottom: 2rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h2 {
@@ -61,7 +77,27 @@
       font-size: 1.2rem;
       margin-top: 0;
       margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
     }
+
+    h2 i {
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+
+    .status {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-top: 0.2rem;
+      margin-bottom: 0.8rem;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .open { background: #e0f7e9; color: #2e7d32; }
+    .closed { background: #ffe0e0; color: #c62828; }
 
     p {
       line-height: 1.7;
@@ -151,7 +187,8 @@
 
     <!-- Rider Card -->
     <div class="card">
-      <h2>🚴 Join as a Rider</h2>
+      <h2><i class="fas fa-motorcycle"></i> Join as a Rider</h2>
+      <div class="status open">✅ Now Hiring</div>
       <p>We are looking for passionate, reliable, and friendly riders to deliver essentials within your barangay.</p>
       <p><em>Nagapangita kami sang masaligan kag matinlo nga riders nga mag-deliver sang mga kinahanglanon sa sulod sang inyo barangay.</em></p>
       <p><strong>Benefits:</strong> Flexible schedule, weekly payout, and priority access to orders in your area.</p>
@@ -160,7 +197,8 @@
 
     <!-- Merchant Card -->
     <div class="card">
-      <h2>🛒 Join as a Merchant Partner</h2>
+      <h2><i class="fas fa-store"></i> Join as a Merchant Partner</h2>
+      <div class="status open">✅ Now Accepting</div>
       <p>If you own a sari-sari store, bakery, or local shop, Dala🚲na can help you reach more customers through fast delivery.</p>
       <p><em>Kung may ara ka tindahan o bakery, mabuligan ka sang Dala🚲na makalab-ot sa mas madamo nga customers.</em></p>
       <p><strong>Benefits:</strong> Zero setup fee, delivery support, and digital visibility on our platform.</p>
@@ -169,7 +207,8 @@
 
     <!-- Assistant / Auditor Card -->
     <div class="card">
-      <h2>🧾 Join as an Assistant or Auditor</h2>
+      <h2><i class="fas fa-user-check"></i> Join as Assistant / Auditor</h2>
+      <div class="status closed">❌ Closed</div>
       <p>We're also hiring part-time or full-time assistants and community auditors to help manage daily operations, verify orders, and support logistics.</p>
       <p><em>Nagapangita kami sang assistants kag auditors nga magabulig sa pagdumala sang adlaw-adlaw nga buluhaton kag pagsiguro sang serbisyo sa komunidad.</em></p>
       <p><strong>How to Apply:</strong> Click below to email us your resume and a short introduction.</p>
