@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dala🚲na Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cinzel', serif;
+      background-color: #fffaf6;
+      color: #333;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .dala-modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fffaf6;
+      border-radius: 14px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #a0527b;
+    }
+
+    .modal-content label {
+      font-size: 0.9rem;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    .close-btn {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .btn-dala {
+      margin-top: 1.5rem;
+      padding: 10px 20px;
+      background: #a0527b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Dala🚲na Record Tools</h1>
+  <button onclick="openAdminModal()" class="btn-dala">📒 Admin Bookkeeping</button>
+  <button onclick="openRiderModal()" class="btn-dala">💸 Rider Remittance</button>
+
+  <!-- Admin Modal -->
+  <div id="adminModal" class="dala-modal">
+    <div class="modal-content">
+      <span onclick="closeAdminModal()" class="close-btn">&times;</span>
+      <h2>📒 Admin COD Record</h2>
+      <form id="adminForm">
+        <input type="hidden" name="type" value="Admin Bookkeeping" />
+        <input type="hidden" name="timestamp" id="admin-timestamp" />
+
+        <label>👤 Rider Name:</label>
+        <input name="rider" required />
+
+        <label>🏪 Store:</label>
+        <input name="store" required />
+
+        <label>💰 COD Collected (₱):</label>
+        <input type="number" name="cod_collected" required />
+
+        <label>🏦 Amount Remitted (₱):</label>
+        <input type="number" name="remitted" required />
+
+        <label>📝 Notes:</label>
+        <textarea name="notes" rows="2"></textarea>
+
+        <button type="submit" class="btn-dala">✔️ Submit & Alert Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Rider Modal -->
+  <div id="riderModal" class="dala-modal">
+    <div class="modal-content">
+      <span onclick="closeRiderModal()" class="close-btn">&times;</span>
+      <h2>💸 Rider Remittance Summary</h2>
+      <form id="riderForm">
+        <input type="hidden" name="type" value="Rider Remittance" />
+        <input type="hidden" name="timestamp" id="rider-timestamp" />
+
+        <label>👤 Rider Name:</label>
+        <input name="rider" required />
+
+        <label>📍 Barangay:</label>
+        <input name="barangay" required />
+
+        <label>💰 Cash on Hand (₱):</label>
+        <input type="number" name="cash_on_hand" required />
+
+        <label>🏦 Cash Remitted (₱):</label>
+        <input type="number" name="cash_remitted" required />
+
+        <label>📝 Notes:</label>
+        <textarea name="notes" rows="2"></textarea>
+
+        <button type="submit" class="btn-dala">✔️ Submit & Alert Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const sheetURL = "https://script.google.com/macros/s/AKfycbyMxfznPWI5dMfa9rPbObH5lDDLR-E_ZNzIJG8t-b1f1R8fG4J2KFbqUWH2-zxWmqT1Gw/exec";
+    const adminPhone = "63XXXXXXXXXX";
+
+    function timestampNow() {
+      return new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" });
+    }
+
+    function openAdminModal() {
+      document.getElementById("adminModal").style.display = "flex";
+      document.getElementById("admin-timestamp").value = timestampNow();
+    }
+    function closeAdminModal() {
+      document.getElementById("adminModal").style.display = "none";
+    }
+    function openRiderModal() {
+      document.getElementById("riderModal").style.display = "flex";
+      document.getElementById("rider-timestamp").value = timestampNow();
+    }
+    function closeRiderModal() {
+      document.getElementById("riderModal").style.display = "none";
+    }
+
+    document.getElementById("adminForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(this));
+      try {
+        await fetch(sheetURL, {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
+        alert("✅ Record saved.");
+        window.open(`https://wa.me/${adminPhone}?text=📒%20Admin%20Log%20-%20${data.rider}%20%7C%20${data.store}%20%7C%20₱${data.cod_collected}%20%7C%20₱${data.remitted}`);
+        this.reset();
+        closeAdminModal();
+      } catch {
+        alert("❌ Submission failed.");
+      }
+    });
+
+    document.getElementById("riderForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(this));
+      try {
+        await fetch(sheetURL, {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
+        alert("✅ Rider remittance saved.");
+        window.open(`https://wa.me/${adminPhone}?text=💸%20Rider%20Log%20-%20${data.rider}%20%7C%20${data.barangay}%20%7C%20₱${data.cash_on_hand}%20%7C%20₱${data.cash_remitted}`);
+        this.reset();
+        closeRiderModal();
+      } catch {
+        alert("❌ Submission failed.");
+      }
+    });
+  </script>
+</body>
+</html>
