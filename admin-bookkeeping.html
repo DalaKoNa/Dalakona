@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Bookkeeping – Dala🚲na</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    const correctPassword = "daladmin123";
+    const input = prompt("🔐 Enter admin password:");
+    if (input !== correctPassword) {
+      document.body.innerHTML = "<h1 style='text-align:center;'>🚫 Access Denied</h1>";
+      throw new Error("Unauthorized access");
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fffaf7;
+      color: #333;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Admin Bookkeeping Dashboard</h1>
+
+  <iframe 
+    src="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/preview"
+    allowfullscreen></iframe>
+
+  <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
+    🔐 This dashboard is password protected. Manual EOD logs may be copy-pasted by Admin.
+  </p>
+</body>
+</html>
