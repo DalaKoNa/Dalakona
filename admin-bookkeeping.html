@@ -3,200 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <title>Admin Bookkeeping – Dala🚲na</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
-  <script>
-    const correctPassword = "daladmin123";
-    const input = prompt("🔐 Enter admin password:");
-    if (input !== correctPassword) {
-      document.body.innerHTML = "<h1 style='text-align:center; font-family: Inter;'>🚫 Access Denied</h1>";
-      throw new Error("Unauthorized access");
-    }
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Cinzel', serif;
       background-color: #fffaf7;
+      padding: 2rem;
       color: #333;
-      padding: 1.5rem;
-      font-size: 0.9rem;
     }
-
     h1 {
       text-align: center;
-      font-weight: 600;
-      margin-bottom: 1rem;
       color: #a0527b;
+      margin-bottom: 1.5rem;
     }
-
-    button {
-      background-color: #f4c2c2;
-      color: #333;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      cursor: pointer;
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      font-weight: bold;
       display: block;
-      margin: 0 auto 1.5rem;
-      transition: background 0.3s ease;
+      margin-bottom: 0.25rem;
     }
-
-    button:hover {
-      background-color: #f8dada;
-    }
-
-    iframe {
-      width: 100%;
-      height: 500px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
-
-    .footer-note {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.75rem;
-      color: #777;
-    }
-
-    /* Modal styles */
-    #adminModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 460px;
-      position: relative;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      font-size: 0.9rem;
-    }
-
-    .modal-content input,
-    .modal-content textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-
-    .modal-content label {
-      font-weight: 500;
-      margin-bottom: 4px;
-      display: block;
-    }
-
-    .modal-content button {
-      background-color: #008060;
-      color: white;
+    input, textarea {
       width: 100%;
       padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    button {
+      background-color: #a0527b;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .log-record {
+      background-color: #f9f1ea;
+      padding: 1rem;
       border-radius: 8px;
-      font-size: 0.9rem;
+      margin-top: 2rem;
+      white-space: pre-line;
+      border: 1px solid #ddd;
+    }
+    .log-entry {
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px dashed #ccc;
     }
 
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 16px;
-      font-size: 1.4rem;
-      cursor: pointer;
+    .login-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #fffaf7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .login-box input {
+      margin-top: 1rem;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>📒 Admin Bookkeeping</h1>
-  <button onclick="openAdminModal()">➕ Log New Record</button>
-
-  <iframe 
-    src="https://docs.google.com/spreadsheets/d/1neYrl_kR6hl2ZgsgUTTW6v8jULYFStl8TjHSApzlkrU/preview"
-    allowfullscreen></iframe>
-
-  <p class="footer-note">
-    🔐 Admin-only. Submit rider remittance & COD records for each store. Google Sheets linked.
-  </p>
-
-  <!-- Modal -->
-  <div id="adminModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeAdminModal()">&times;</span>
-      <h2 style="margin-bottom:1rem; font-weight:600; color:#a0527b;">➕ New COD Record</h2>
-
-      <form id="adminLogForm" onsubmit="saveAdminRecord(event)">
-        <label>👤 Rider Name:</label>
-        <input type="text" id="admin-rider" required>
-
-        <label>🏪 Store / Merchant:</label>
-        <input type="text" id="admin-store" required>
-
-        <label>💰 COD Collected (₱):</label>
-        <input type="number" id="admin-cod" required>
-
-        <label>🏦 Remitted (₱):</label>
-        <input type="number" id="admin-remit" required>
-
-        <label>🗒️ Notes:</label>
-        <textarea id="admin-notes" rows="3"></textarea>
-
-        <button type="submit">✔️ Submit Record</button>
-      </form>
-    </div>
+<!-- 🔐 Login Prompt -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <p>Please enter the admin password:</p>
+    <input type="password" id="adminPass" placeholder="Enter Password"/>
+    <button onclick="checkLogin()">Login</button>
+    <p style="color:gray; margin-top:1rem;">Hint: daladmin123</p>
   </div>
+</div>
 
-  <script>
-    function openAdminModal() {
-      document.getElementById('adminModal').style.display = 'flex';
+<!-- ✅ Admin Dashboard -->
+<div id="adminContent" class="hidden">
+  <h1>📒 Admin Bookkeeping</h1>
+
+  <form id="adminForm" onsubmit="handleAdminLog(event)">
+    <div class="form-group">
+      <label>👤 Rider Name</label>
+      <input type="text" id="adminRider" required />
+    </div>
+    <div class="form-group">
+      <label>🏪 Store / Merchant</label>
+      <input type="text" id="adminStore" required />
+    </div>
+    <div class="form-group">
+      <label>💰 COD Collected (₱)</label>
+      <input type="number" id="adminCod" required />
+    </div>
+    <div class="form-group">
+      <label>🏦 Remitted (₱)</label>
+      <input type="number" id="adminRemit" required />
+    </div>
+    <div class="form-group">
+      <label>🗒️ Notes</label>
+      <textarea id="adminNotes" rows="3"></textarea>
+    </div>
+    <button type="submit">✔️ Save & Send Remit Alert</button>
+  </form>
+
+  <div class="log-record" id="adminLogs">
+    <strong>📋 Record Logs:</strong>
+    <div id="logContainer"></div>
+  </div>
+</div>
+
+<script>
+  const correctPassword = "daladmin123";
+  const adminPhone = "63XXXXXXXXXX"; // ← change this to your admin number
+
+  function checkLogin() {
+    const input = document.getElementById("adminPass").value;
+    if (input === correctPassword) {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminContent").classList.remove("hidden");
+    } else {
+      alert("🚫 Incorrect password!");
     }
+  }
 
-    function closeAdminModal() {
-      document.getElementById('adminModal').style.display = 'none';
-    }
+  function handleAdminLog(event) {
+    event.preventDefault();
 
-    async function saveAdminRecord(event) {
-      event.preventDefault();
+    const rider = document.getElementById('adminRider').value.trim();
+    const store = document.getElementById('adminStore').value.trim();
+    const cod = parseFloat(document.getElementById('adminCod').value).toFixed(2);
+    const remit = parseFloat(document.getElementById('adminRemit').value).toFixed(2);
+    const notes = document.getElementById('adminNotes').value.trim() || 'N/A';
+    const timestamp = new Date().toLocaleString();
 
-      const rider = document.getElementById('admin-rider').value.trim();
-      const store = document.getElementById('admin-store').value.trim();
-      const cod = parseFloat(document.getElementById('admin-cod').value);
-      const remit = parseFloat(document.getElementById('admin-remit').value);
-      const notes = document.getElementById('admin-notes').value.trim();
+    const message = `📒 *Admin Bookkeeping Log*\n🕒 ${timestamp}\n👤 Rider: ${rider}\n🏪 Store: ${store}\n💰 COD Collected: ₱${cod}\n🏦 Remitted: ₱${remit}\n🗒️ Notes: ${notes}`;
 
-      const data = { rider, store, cod, remit, notes };
+    // Open WhatsApp alert to admin
+    window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`);
 
-      try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbyMxfznPWI5dMfa9rPbObH5lDDLR-E_ZNzIJG8t-b1f1R8fG4J2KFbqUWH2-zxWmqT1Gw/exec", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: { "Content-Type": "application/json" }
-        });
+    // Show locally in record logs
+    const logEntry = document.createElement("div");
+    logEntry.className = "log-entry";
+    logEntry.innerText = message;
+    document.getElementById("logContainer").prepend(logEntry);
 
-        if (res.ok) {
-          alert("✅ Record saved successfully!");
-          document.getElementById('adminLogForm').reset();
-          closeAdminModal();
-        } else {
-          alert("⚠️ Failed to save. Try again later.");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("🚫 Error submitting to Google Sheets.");
-      }
-    }
-  </script>
+    // Reset form
+    document.getElementById("adminForm").reset();
+  }
+</script>
 
 </body>
 </html>
