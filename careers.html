@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Work with Dala🚲na – Join the movement!">
+  <meta name="description" content="Careers at Dala Ko Na – Join our mission to serve local communities with fast and caring delivery." />
   <title>Careers / Trabaho – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fffdf5;
+      font-family: 'Cinzel', serif;
+      background-color: #fdf6f0;
       margin: 0;
+      padding: 0;
       color: #333;
     }
 
@@ -22,6 +23,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
       position: relative;
       text-align: center;
     }
@@ -30,14 +32,13 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0,0,0,0.5);
     }
 
     .hero h1 {
       position: relative;
-      color: #fffbe9;
-      font-size: 2rem;
       z-index: 1;
+      font-size: 2rem;
     }
 
     .container {
@@ -46,31 +47,37 @@
       padding: 2rem 1.5rem;
     }
 
-    .job-card {
-      background: #fff1cc;
-      border-left: 5px solid #e3a312;
-      padding: 1rem 1.5rem;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-    }
-
-    .job-card h2 {
-      margin-bottom: 0.3rem;
+    h2 {
       color: #a0527b;
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
     }
 
-    .job-card p {
-      margin-bottom: 0.5rem;
-      line-height: 1.6;
+    p {
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1rem;
     }
 
-    .footer {
-      background-color: #fff9e6;
+    .btn {
+      display: inline-block;
+      margin-top: 2rem;
+      background: #a0527b;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    footer {
+      font-family: 'Cinzel', serif;
+      background-color: #f9f9f9;
       padding: 2em;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      font-family: 'Cinzel', serif;
+      border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
@@ -95,18 +102,18 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       .hero h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
-      .footer {
+      footer {
         flex-direction: column;
         align-items: flex-start;
       }
 
       .footer-right {
-        margin-top: 1em;
+        margin-top: 1.5rem;
       }
     }
   </style>
@@ -118,37 +125,27 @@
     <h1>Careers / Trabaho</h1>
   </section>
 
-  <!-- Jobs Section -->
+  <!-- Content -->
   <div class="container">
+    <h2>🚴 Join as a Rider</h2>
+    <p>We are looking for passionate, reliable, and friendly riders to deliver essentials within your barangay.</p>
+    <p><em>Nagapangita kami sang masaligan kag matinlo nga riders nga mag-deliver sang mga kinahanglanon sa sulod sang inyo barangay.</em></p>
+    <p><strong>Benefits:</strong> Flexible schedule, weekly payout, and priority access to orders in your area.</p>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn">Apply as Rider</a>
 
-    <div class="job-card">
-      <h2>🚴‍♂️ Rider / Manug-deliver</h2>
-      <p><strong>English:</strong> Responsible for fast and friendly delivery of customer orders using bikes, scooters, or motorcycles.</p>
-      <p><strong>Hiligaynon:</strong> Amo ang naga-deliver sang mga order sa customer gamit ang bisikleta, scooter, ukon motorsiklo. Dapat abtik kag mahapos updan.</p>
+    <h2>🛒 Join as a Merchant Partner</h2>
+    <p>If you own a sari-sari store, bakery, or local shop, Dala🚲na can help you reach more customers through fast delivery.</p>
+    <p><em>Kung may ara ka tindahan o bakery, mabuligan ka sang Dala🚲na makalab-ot sa mas madamo nga customers.</em></p>
+    <p><strong>Benefits:</strong> Zero setup fee, delivery support, and digital visibility on our platform.</p>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn">Apply as Merchant</a>
+
+    <div style="text-align:center;">
+      <a href="index.html" class="btn">← Back to Dala🚲na</a>
     </div>
-
-    <div class="job-card">
-      <h2>📦 Operations Staff / Staff sang Operasyon</h2>
-      <p><strong>English:</strong> Handles inventory, rider coordination, and makes sure every order is fulfilled efficiently.</p>
-      <p><strong>Hiligaynon:</strong> Naga-manage sang stock, naga-coordinate sa mga rider, kag naga-siguro nga ma-deliver ang order sang husto kag paspas.</p>
-    </div>
-
-    <div class="job-card">
-      <h2>🤝 Community Manager / Tagdumala sang Komunidad</h2>
-      <p><strong>English:</strong> Builds relationships with local merchants, riders, and users to grow the Dala🚲na ecosystem.</p>
-      <p><strong>Hiligaynon:</strong> Naga-establisar sang maayong relasyon sa mga local nga tindahan, rider, kag user agud magtubo ang Dala🚲na nga komunidad.</p>
-    </div>
-
-    <div class="job-card">
-      <h2>📊 Auditor / Tag-usisa</h2>
-      <p><strong>English:</strong> Ensures all orders, payments, and rider reports are accurate and honest.</p>
-      <p><strong>Hiligaynon:</strong> Naga-siguro nga ang mga order, bayad, kag report sang mga rider insakto kag matinlo.</p>
-    </div>
-
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
