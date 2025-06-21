@@ -144,56 +144,7 @@
     { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
     { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
   ];
-  <script>
-// STEP 1 — Polygon area for Handumanan
-function isInsideHandumanan(lat, lng) {
-  const handumananPolygon = [
-    [10.6033, 122.9641],
-    [10.6021, 122.9730],
-    [10.6005, 122.9756],
-    [10.5979, 122.9739],
-    [10.5956, 122.9667],
-    [10.5968, 122.9628],
-    [10.5990, 122.9612],
-    [10.6012, 122.9610]
-  ];
 
-  let inside = false;
-  for (let i = 0, j = handumananPolygon.length - 1; i < handumananPolygon.length; j = i++) {
-    const xi = handumananPolygon[i][0], yi = handumananPolygon[i][1];
-    const xj = handumananPolygon[j][0], yj = handumananPolygon[j][1];
-    const intersect = ((yi > lng) !== (yj > lng)) && (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
-    if (intersect) inside = !inside;
-  }
-  return inside;
-}
-
-// STEP 2 — Extract coordinates from Google Maps URL
-async function extractLatLngFromGoogleMapsLink(url) {
-  try {
-    const regex = /(?:\/|\?|q=)(-?\d{1,3}\.\d+),\s*(-?\d{1,3}\.\d+)/;
-    const match = url.match(regex);
-    if (match && match.length === 3) {
-      return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
-    }
-    return null;
-  } catch (e) {
-    return null;
-  }
-}
-
-// STEP 3 — Listen to delivery address input
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('delivery-address').addEventListener('input', async function () {
-    const address = this.value;
-    const coords = await extractLatLngFromGoogleMapsLink(address);
-    if (coords) {
-      handleLocationValidation(coords.lat, coords.lng);
-    } else {
-      // Reset if invalid
-      document.getElementById('addressWarning').style.display = 'none';
-    }
-  });
 });
 
 // STEP 4 — Disable checkout if outside Handumanan
