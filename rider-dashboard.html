@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲Na Rider Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f9f7f3;
+      color: #333;
+    }
+    header {
+      background: #008060;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h2 {
+      margin-top: 1.5rem;
+      color: #008060;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    th {
+      background: #eee;
+    }
+    .btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .btn:hover {
+      background: #00684a;
+    }
+    .notes {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Rider Dashboard – Dala🚲Na
+  </header>
+
+  <div class="container">
+    <h2>🧾 Today's Deliveries</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Store</th>
+          <th>Barangay</th>
+          <th>Cash (₱)</th>
+          <th>Online (₱)</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="log-body">
+        <!-- Rows will be inserted here -->
+      </tbody>
+    </table>
+
+    <h2>➕ Add Entry</h2>
+    <input type="text" placeholder="Store Name" id="store" class="notes">
+    <input type="text" placeholder="Barangay" id="barangay" class="notes">
+    <input type="number" placeholder="Cash Collected" id="cash" class="notes">
+    <input type="number" placeholder="Online Payment" id="online" class="notes">
+    <input type="text" placeholder="Notes" id="notes" class="notes">
+    <button class="btn" onclick="addLog()">Add Log</button>
+
+    <h2>📤 Summary</h2>
+    <p>Total Cash: ₱<span id="total-cash">0</span></p>
+    <p>Total Online: ₱<span id="total-online">0</span></p>
+    <button class="btn" onclick="copyToClipboard()">📋 Copy Logs</button>
+    <button class="btn" onclick="remitNow()">✅ Remit Now via WhatsApp</button>
+  </div>
+
+  <script>
+    const logs = [];
+
+    function addLog() {
+      const store = document.getElementById('store').value;
+      const barangay = document.getElementById('barangay').value;
+      const cash = parseFloat(document.getElementById('cash').value) || 0;
+      const online = parseFloat(document.getElementById('online').value) || 0;
+      const notes = document.getElementById('notes').value;
+      const time = new Date().toLocaleTimeString();
+
+      logs.push({ time, store, barangay, cash, online, notes });
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const body = document.getElementById('log-body');
+      body.innerHTML = '';
+      let totalCash = 0;
+      let totalOnline = 0;
+
+      logs.forEach(log => {
+        totalCash += log.cash;
+        totalOnline += log.online;
+        body.innerHTML += `
+          <tr>
+            <td>${log.time}</td>
+            <td>${log.store}</td>
+            <td>${log.barangay}</td>
+            <td>₱${log.cash.toFixed(2)}</td>
+            <td>₱${log.online.toFixed(2)}</td>
+            <td>${log.notes}</td>
+          </tr>`;
+      });
+
+      document.getElementById('total-cash').innerText = totalCash.toFixed(2);
+      document.getElementById('total-online').innerText = totalOnline.toFixed(2);
+    }
+
+    function copyToClipboard() {
+      let text = '🧾 Rider Logs - Dala🚲Na\n\n';
+      logs.forEach(log => {
+        text += `${log.time} - ${log.store} (${log.barangay})\nCash: ₱${log.cash}\nOnline: ₱${log.online}\nNotes: ${log.notes || 'None'}\n\n`;
+      });
+      navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+    }
+
+    function remitNow() {
+      let totalCash = logs.reduce((sum, l) => sum + l.cash, 0);
+      let totalOnline = logs.reduce((sum, l) => sum + l.online, 0);
+      const summary = `Remittance Summary - Dala🚲Na\n\nCash: ₱${totalCash.toFixed(2)}\nOnline: ₱${totalOnline.toFixed(2)}\nDate: ${new Date().toLocaleDateString()}`;
+      const url = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(summary)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
