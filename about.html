@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="About Dala Ko Na – Learn more about our mission and story.">
   <title>About Us – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fffdf5;
+      background-color: #fdf6f0;
+      font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
       color: #333;
@@ -19,27 +20,26 @@
     .hero {
       background: url('pastel-hero.jpg') no-repeat center center;
       background-size: cover;
-      height: 200px;
-      position: relative;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      color: #fff;
+      position: relative;
     }
 
     .hero::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
     }
 
     .hero h1 {
       position: relative;
       font-size: 2rem;
-      color: #fffbe9;
       z-index: 1;
-      margin: 0;
     }
 
     .container {
@@ -50,34 +50,34 @@
 
     h2 {
       color: #a0527b;
-      font-size: 1.2rem;
-      margin-top: 1.8rem;
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
     }
 
     p {
       line-height: 1.6;
-      margin: 0.5rem 0 1rem;
+      font-size: 1rem;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 2em;
-      background: #ffc107;
-      color: #000;
+      margin-top: 2rem;
+      background: #a0527b;
+      color: white;
       padding: 10px 20px;
       text-decoration: none;
-      border-radius: 30px;
-      font-size: 0.95em;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      font-size: 1rem;
     }
 
     footer {
-      background-color: #fff9e6;
+      font-family: 'Cinzel', serif;
+      background-color: #f9f9f9;
       padding: 2em;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      font-family: 'Cinzel', serif;
+      border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
@@ -102,13 +102,17 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
-      .hero {
-        height: 160px;
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.5rem;
       }
 
-      .hero h1 {
-        font-size: 1.6rem;
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.95rem;
       }
 
       footer {
@@ -117,7 +121,7 @@
       }
 
       .footer-right {
-        margin-top: 1em;
+        margin-top: 1.5rem;
       }
     }
   </style>
@@ -129,26 +133,27 @@
     <h1>About Dala🚲na</h1>
   </section>
 
-  <!-- Content -->
+  <!-- Main Content -->
   <div class="container">
-    <h2>💡 Our Mission / Ang Amon Misyon</h2>
+    <h2>💡 Our Mission / Ang Amon Misyón</h2>
     <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make daily essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
-    <p>Ang Dala🚲na isa ka delivery service nga ginhalinan mismo sa barangay. Ginapasayon namon ang pagkuha sang adlaw-adlaw nga kinahanglanon sa imo lugar.</p>
+    <p>Ang Dala🚲na isa ka delivery service nga naga-serbisyo sa mga kinahanglanon sang komunidad. Ginadala namon ang mga kinahanglanon — halin sa panaderia tubtob sa botika — padulong sa imo balay, subong dayon.</p>
 
-    <h2>📍 Community-Centered / Sentro sa Komunidad</h2>
+    <h2>📍 Community-Centered / Para sa Komunidad</h2>
     <p>We prioritize local shops and community riders, helping small businesses grow while making life easier for customers.</p>
-    <p>Gina-una namon ang mga lokal nga tindahan kag mga riders sa barangay para mabuligan ang gamay nga negosyo kag mapadasig ang serbisyo.</p>
+    <p>Ginauna namon ang mga lokal nga tindahan kag mga rider sang komunidad. Gintinguhaan namon nga mabuligan ang mga gamay nga negosyo kag mapasayon ang kabuhi sang mga customers.</p>
 
-    <h2>🚴 Subong Dayon! / Karon Gilayon!</h2>
+    <h2>🚴 Subong Dayon!</h2>
     <p>We don’t just deliver quickly—we deliver with intention, love, and a personal touch. Every order supports a chain of local heroes.</p>
-    <p>Indi lang kami basta dasig. Ginalab-ot namon ang mga order may hugot nga panghangkat kag pagpangabudlay. Kada order isa ka bulig sa pumuluyo.</p>
+    <p>Indi lang ni basta delivery. Gindal-an ka sang gugma, intensyon, kag suporta sa mga lokal nga bayani.</p>
 
-    <h2>🌱 Why We Started / Ngaa Kami Nagsugod</h2>
-    <p>Dala🚲na began during the pandemic as a passion project to support neighbors, sari-sari stores, and riders who needed a way to earn.</p>
-    <p>Nagsugod kami sang pandemic bilang isa ka proyekto sang kabalaslan. Gusto namon nga may pagkakitaan ang mga riders kag mabuligan ang mga kasilingan.</p>
+    <h2>🌱 Our Roots / Ang Amon Kabangdanan</h2>
+    <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
+    <p>Gintukod ang Dala🚲na agud mabuligan ang aton kasilingan, sari-sari stores, kag mga rider. Ginahingyo namon ang kabuhi nga may tinutuyo.</p>
 
-    <div style="text-align: center;">
-      <a href="index.html" class="btn">← Back to Dala🚲na</a>
+    <!-- Back Button -->
+    <div class="back-home" style="text-align:center;">
+      <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
     </div>
   </div>
 
