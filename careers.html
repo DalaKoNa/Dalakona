@@ -47,10 +47,20 @@
       padding: 2rem 1.5rem;
     }
 
+    .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
     h2 {
       color: #a0527b;
       font-size: 1.2rem;
-      margin-top: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
     }
 
     p {
@@ -75,6 +85,10 @@
 
     .btn:hover {
       background: #8b3e68;
+    }
+
+    .center {
+      text-align: center;
     }
 
     footer {
@@ -134,27 +148,37 @@
 
   <!-- Content -->
   <div class="container">
-    <h2>🚴 Join as a Rider</h2>
-    <p>We are looking for passionate, reliable, and friendly riders to deliver essentials within your barangay.</p>
-    <p><em>Nagapangita kami sang masaligan kag matinlo nga riders nga mag-deliver sang mga kinahanglanon sa sulod sang inyo barangay.</em></p>
-    <p><strong>Benefits:</strong> Flexible schedule, weekly payout, and priority access to orders in your area.</p>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn">Apply as Rider</a>
 
-    <h2>🛒 Join as a Merchant Partner</h2>
-    <p>If you own a sari-sari store, bakery, or local shop, Dala🚲na can help you reach more customers through fast delivery.</p>
-    <p><em>Kung may ara ka tindahan o bakery, mabuligan ka sang Dala🚲na makalab-ot sa mas madamo nga customers.</em></p>
-    <p><strong>Benefits:</strong> Zero setup fee, delivery support, and digital visibility on our platform.</p>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn">Apply as Merchant</a>
+    <!-- Rider Card -->
+    <div class="card">
+      <h2>🚴 Join as a Rider</h2>
+      <p>We are looking for passionate, reliable, and friendly riders to deliver essentials within your barangay.</p>
+      <p><em>Nagapangita kami sang masaligan kag matinlo nga riders nga mag-deliver sang mga kinahanglanon sa sulod sang inyo barangay.</em></p>
+      <p><strong>Benefits:</strong> Flexible schedule, weekly payout, and priority access to orders in your area.</p>
+      <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn">Apply as Rider</a>
+    </div>
 
-    <h2>🧾 Join as an Assistant or Auditor</h2>
-    <p>We're also hiring part-time or full-time assistants and community auditors to help manage daily operations, verify orders, and support logistics.</p>
-    <p><em>Nagapangita kami sang assistants kag auditors nga magabulig sa pagdumala sang adlaw-adlaw nga buluhaton kag pagsiguro sang serbisyo sa komunidad.</em></p>
-    <p><strong>How to Apply:</strong> Click below to email us your resume and a short introduction.</p>
-    <button class="btn" onclick="window.location.href='mailto:dalakona.service@gmail.com?cc=lynntebban@yahoo.com&subject=Application%20-%20Assistant%20or%20Auditor'">
-      📧 Send Resume
-    </button>
+    <!-- Merchant Card -->
+    <div class="card">
+      <h2>🛒 Join as a Merchant Partner</h2>
+      <p>If you own a sari-sari store, bakery, or local shop, Dala🚲na can help you reach more customers through fast delivery.</p>
+      <p><em>Kung may ara ka tindahan o bakery, mabuligan ka sang Dala🚲na makalab-ot sa mas madamo nga customers.</em></p>
+      <p><strong>Benefits:</strong> Zero setup fee, delivery support, and digital visibility on our platform.</p>
+      <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn">Apply as Merchant</a>
+    </div>
 
-    <div style="text-align:center;">
+    <!-- Assistant / Auditor Card -->
+    <div class="card">
+      <h2>🧾 Join as an Assistant or Auditor</h2>
+      <p>We're also hiring part-time or full-time assistants and community auditors to help manage daily operations, verify orders, and support logistics.</p>
+      <p><em>Nagapangita kami sang assistants kag auditors nga magabulig sa pagdumala sang adlaw-adlaw nga buluhaton kag pagsiguro sang serbisyo sa komunidad.</em></p>
+      <p><strong>How to Apply:</strong> Click below to email us your resume and a short introduction.</p>
+      <button class="btn" onclick="window.location.href='mailto:dalakona.service@gmail.com?cc=lynntebban@yahoo.com&subject=Application%20-%20Assistant%20or%20Auditor'">
+        📧 Send Resume
+      </button>
+    </div>
+
+    <div class="center">
       <a href="index.html" class="btn">← Back to Dala🚲na</a>
     </div>
   </div>
