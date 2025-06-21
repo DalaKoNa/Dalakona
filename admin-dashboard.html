@@ -141,8 +141,13 @@
   function verifyOTP() {
     const v = document.getElementById('otpInput').value.trim();
     if (v === OTP) {
-      // ✅ Redirect to Google Form
-      window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform";
+      // ✅ Hide the modal
+      document.getElementById('loginModal').classList.add('hidden');
+
+      // ✅ Redirect after a short delay (optional fade effect)
+      setTimeout(() => {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform";
+      }, 300); // 300ms for smooth UX
     } else {
       document.getElementById('otpError').style.display = 'block';
     }
