@@ -3,166 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <title>Rider Dashboard – Dala🚲na</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: 'Cinzel', serif;
-      background-color: #fffaf7;
-      padding: 2rem;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fffaf7;
+      margin: 0;
+      padding: 1rem;
+      color: #444;
+      font-size: 14px;
     }
-    h1 {
+    h1, h2 {
       text-align: center;
-      color: #008060;
-      margin-bottom: 1.5rem;
+      color: #7b4f56;
+      font-weight: 500;
     }
-    .form-group {
-      margin-bottom: 1rem;
+    #loginSection, #dashboard {
+      max-width: 500px;
+      margin: auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
     label {
-      font-weight: bold;
+      font-weight: 500;
+      margin-top: 10px;
       display: block;
-      margin-bottom: 0.25rem;
     }
     input, textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-family: inherit;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
     }
     button {
-      background-color: #008060;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
       width: 100%;
-      margin-top: 1rem;
+      background: #a0527b;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
     }
-    .log-record {
-      background-color: #f1fdf4;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 2rem;
-      white-space: pre-line;
-      border: 1px solid #cceedd;
+    button:hover {
+      background: #8b3e63;
     }
-    .log-entry {
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px dashed #ccc;
-    }
-
-    .login-screen {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #fffaf7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .login-box {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    .login-box input {
-      margin-top: 1rem;
-    }
-
     .hidden {
       display: none;
+    }
+    .record {
+      background: #fafafa;
+      border-left: 3px solid #a0527b;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 5px;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+    .logout {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .logout button {
+      background: #999;
     }
   </style>
 </head>
 <body>
 
-<!-- 🔐 Rider Login Prompt -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <h2>🔐 Rider Login</h2>
-    <p>Please enter your rider password:</p>
-    <input type="password" id="riderPass" placeholder="Enter Password"/>
-    <button onclick="checkLogin()">Login</button>
-    <p style="color:gray; margin-top:1rem;">Hint: dalarider123</p>
+  <div id="loginSection">
+    <h1>🚴 Dala🚲na Rider Login</h1>
+    <label>Employee Number:</label>
+    <input type="text" id="employeeId" placeholder="e.g. R12345" required />
+    <label>Rider Name:</label>
+    <input type="text" id="riderNameLogin" placeholder="Your full name" required />
+    <button onclick="loginRider()">Login</button>
   </div>
-</div>
 
-<!-- 🚴 Rider Dashboard -->
-<div id="riderContent" class="hidden">
-  <h1>🚴 Rider Remittance Log</h1>
+  <div id="dashboard" class="hidden">
+    <h2>📋 Rider Remittance Form</h2>
+    <form id="riderForm" onsubmit="submitRiderForm(event)">
+      <label>Rider Name</label>
+      <input type="text" id="riderName" readonly />
 
-  <form id="riderForm" onsubmit="handleRiderLog(event)">
-    <div class="form-group">
-      <label>👤 Rider Name</label>
-      <input type="text" id="riderName" required />
-    </div>
-    <div class="form-group">
-      <label>🏪 Store / Merchant</label>
-      <input type="text" id="riderStore" required />
-    </div>
-    <div class="form-group">
-      <label>💰 COD Collected (₱)</label>
-      <input type="number" id="riderCod" required />
-    </div>
-    <div class="form-group">
-      <label>🗒️ Notes</label>
-      <textarea id="riderNotes" rows="3"></textarea>
-    </div>
-    <button type="submit">✔️ Submit & Notify Admin</button>
-  </form>
+      <label>Store / Merchant</label>
+      <input type="text" id="store" required />
 
-  <div class="log-record" id="riderLogs">
-    <strong>📋 Rider Logs:</strong>
-    <div id="logContainer"></div>
+      <label>COD Collected (₱)</label>
+      <input type="number" id="cod" required />
+
+      <label>Notes</label>
+      <textarea id="notes" rows="2"></textarea>
+
+      <button type="submit">✔️ Save Log</button>
+    </form>
+
+    <h2 style="margin-top:2rem;">🧾 EOD Summary Logs</h2>
+    <div id="logDisplay"></div>
+
+    <div style="margin-top: 1rem;">
+      <button onclick="sendWhatsApp()">📤 Remit Now via WhatsApp</button>
+    </div>
+
+    <div class="logout">
+      <button onclick="logout()">🔓 Logout</button>
+    </div>
   </div>
-</div>
 
-<script>
-  const correctPassword = "dalarider123";
-  const adminPhone = "63XXXXXXXXXX"; // 🔁 Replace with your admin WhatsApp number
+  <script>
+    function loginRider() {
+      const empId = document.getElementById('employeeId').value.trim();
+      const name = document.getElementById('riderNameLogin').value.trim();
 
-  function checkLogin() {
-    const input = document.getElementById("riderPass").value;
-    if (input === correctPassword) {
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("riderContent").classList.remove("hidden");
-    } else {
-      alert("🚫 Incorrect password!");
+      if (!empId || !name) {
+        alert("Please enter your employee number and name.");
+        return;
+      }
+
+      sessionStorage.setItem("riderName", name);
+      sessionStorage.setItem("employeeId", empId);
+      document.getElementById('riderName').value = name;
+
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
     }
-  }
 
-  function handleRiderLog(event) {
-    event.preventDefault();
+    function logout() {
+      sessionStorage.clear();
+      location.reload();
+    }
 
-    const name = document.getElementById('riderName').value.trim();
-    const store = document.getElementById('riderStore').value.trim();
-    const cod = parseFloat(document.getElementById('riderCod').value).toFixed(2);
-    const notes = document.getElementById('riderNotes').value.trim() || 'N/A';
-    const timestamp = new Date().toLocaleString();
+    function submitRiderForm(e) {
+      e.preventDefault();
+      const name = sessionStorage.getItem("riderName");
+      const store = document.getElementById('store').value.trim();
+      const cod = parseFloat(document.getElementById('cod').value);
+      const notes = document.getElementById('notes').value.trim() || 'N/A';
+      const time = new Date().toLocaleString();
 
-    const message = `🚴 *Rider Remit Log*\n🕒 ${timestamp}\n👤 Rider: ${name}\n🏪 Store: ${store}\n💰 COD Collected: ₱${cod}\n🗒️ Notes: ${notes}`;
+      const entry = `🕒 ${time}\n👤 ${name}\n🏪 ${store}\n💰 COD: ₱${cod.toFixed(2)}\n🗒️ ${notes}`;
+      const div = document.createElement('div');
+      div.className = 'record';
+      div.innerText = entry;
+      document.getElementById('logDisplay').prepend(div);
 
-    // Open WhatsApp alert to admin
-    window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`);
+      document.getElementById('riderForm').reset();
+    }
 
-    // Log locally
-    const logEntry = document.createElement("div");
-    logEntry.className = "log-entry";
-    logEntry.innerText = message;
-    document.getElementById("logContainer").prepend(logEntry);
+    function sendWhatsApp() {
+      const logs = Array.from(document.querySelectorAll('.record'))
+        .map(div => div.innerText).join('\n\n');
+      const name = sessionStorage.getItem("riderName") || "Rider";
+      const empId = sessionStorage.getItem("employeeId") || "N/A";
 
-    document.getElementById("riderForm").reset();
-  }
-</script>
-
+      const msg = `📤 Dala🚲na Rider Remit Summary\n👤 ${name} (${empId})\n\n${logs}`;
+      const waURL = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`;
+      window.open(waURL, "_blank");
+    }
+  </script>
 </body>
 </html>
