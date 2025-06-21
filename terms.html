@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Terms and Conditions – Dala Ko Na">
-  <title>Terms & Conditions – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="Dala🚲na – Offers and Promos for You!">
+  <title>Offers / Mga Promos – Dala🚲na</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fffdf5;
+      font-family: 'Cinzel', serif;
+      background-color: #fdf6f0;
       margin: 0;
+      padding: 0;
       color: #333;
     }
 
@@ -22,6 +23,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
       position: relative;
       text-align: center;
     }
@@ -30,14 +32,13 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0,0,0,0.5);
     }
 
     .hero h1 {
       position: relative;
-      color: #fffbe9;
-      font-size: 2rem;
       z-index: 1;
+      font-size: 2rem;
     }
 
     .container {
@@ -46,32 +47,45 @@
       padding: 2rem 1.5rem;
     }
 
-    h2 {
+    .offer {
+      background: #fff7ec;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      border-left: 6px solid #ffc107;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    .offer h2 {
       color: #a0527b;
-      margin-top: 2rem;
       font-size: 1.2rem;
+      margin-bottom: 0.5rem;
     }
 
-    p {
-      line-height: 1.6;
-      margin-bottom: 1rem;
+    .offer p {
+      font-size: 1rem;
+      margin: 0;
     }
 
-    ul {
-      padding-left: 1.5rem;
-    }
-
-    li {
-      margin-bottom: 0.6rem;
+    .btn {
+      display: inline-block;
+      margin-top: 2rem;
+      background: #a0527b;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1rem;
     }
 
     footer {
-      background-color: #fff9e6;
+      font-family: 'Cinzel', serif;
+      background-color: #f9f9f9;
       padding: 2em;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      font-family: 'Cinzel', serif;
+      border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
@@ -96,9 +110,9 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       .hero h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       footer {
@@ -107,44 +121,41 @@
       }
 
       .footer-right {
-        margin-top: 1em;
+        margin-top: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
+  <!-- Hero Section -->
   <section class="hero">
-    <h1>Terms & Conditions / Kasugtanan</h1>
+    <h1>Offers / Mga Promos</h1>
   </section>
 
-  <!-- Main Content -->
+  <!-- Main Offers -->
   <div class="container">
-    <h2>1. Service Coverage / Lugar sang Serbisyo</h2>
-    <p>Dala🚲na currently operates within selected barangays and areas. Deliveries are subject to rider availability and traffic conditions.</p>
-    <p>Ang Dala🚲na nagaserbisyo lang sa pilang ka barangay. Ang delivery naga-depende sa availability sang rider kag kahimtangan sang dalan.</p>
+    <div class="offer">
+      <h2>🎁 FREE Dala🚲na Merchandise</h2>
+      <p>Order a minimum of ₱500 from any of our partner stores and get a free limited-edition Dala🚲na merchandise item! Available while supplies last.</p>
+      <p><em>Mag-order sang ₱500 kag labaw pa sa bisan ano nga tindahan kag makaangkon ka sang libre nga Dala🚲na item! Para sa mga una lang.</em></p>
+    </div>
 
-    <h2>2. Order Acceptance / Pagsugot sang Order</h2>
-    <p>We reserve the right to cancel or refuse any order based on stock availability, location limits, or safety concerns.</p>
-    <p>May katungdanan kami nga indi batunon ang order kon wala na sang stock, layo ang location, ukon may delikado nga kahimtangan.</p>
+    <div class="offer">
+      <h2>📦 Free Delivery Fee sa First Order</h2>
+      <p>Waived delivery fee for first-time customers. Your first checkout is on us!</p>
+      <p><em>Libreng delivery fee para sa mga bag-o nga customer. Ang una mo nga order, amon na bahala!</em></p>
+    </div>
 
-    <h2>3. Payment Terms / Paagi sang Bayad</h2>
-    <ul>
-      <li>Payments may be made via GCash, PayMaya, or Cash on Delivery (COD).</li>
-      <li>Ang bayad pwede pinaagi sa GCash, PayMaya, ukon Cash on Delivery.</li>
-    </ul>
+    <div class="offer">
+      <h2>🎉 Refer a Friend, Earn ₱50 Credit</h2>
+      <p>Share Dala🚲na with your friends and earn ₱50 store credit each time someone you refer places an order.</p>
+      <p><em>I-share ang Dala🚲na sa imo abyan, kag maka-earn ka ₱50 kada may mag-order nga gin-refer mo!</em></p>
+    </div>
 
-    <h2>4. Responsibility / Responsibilidad</h2>
-    <p>Dala🚲na is not liable for incorrect information provided by the customer or failure to respond upon delivery.</p>
-    <p>Wala kami sang responsibilidad kon sala ang info nga ginhatag sang customer ukon wala siya nagbaton sang tawag sa oras sang delivery.</p>
-
-    <h2>5. Changes and Updates / Pagbag-o sang Kasugtanan</h2>
-    <p>We may update these terms at any time. Customers are encouraged to check the latest version on our website.</p>
-    <p>Pwede kami magbag-o sang kasugtanan bisan san-o. Ginaengganyo namon kamo nga magtan-aw pirmi sang pinakaulihi nga version.</p>
-
-    <h2>6. Contact / Kontak</h2>
-    <p>For concerns, email us at <strong>support@dalako.na</strong>.</p>
+    <div style="text-align:center;">
+      <a href="index.html" class="btn">← Back to Dala🚲na</a>
+    </div>
   </div>
 
   <!-- Footer -->
