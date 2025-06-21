@@ -93,6 +93,7 @@
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -210,6 +211,7 @@
           phone=document.getElementById('customer-phone').value.trim(),
           email=document.getElementById('customer-email').value.trim(),
           address=document.getElementById('delivery-address').value.trim(),
+   const notes = document.getElementById('delivery-notes').value.trim();
           date=document.getElementById('delivery-date').value,
           time=document.getElementById('delivery-time').value,
           method=document.getElementById('payment-method').value;
@@ -224,6 +226,7 @@
     filloutUrl.searchParams.append("customerPhone",phone);
     filloutUrl.searchParams.append("customerEmail",email);
     filloutUrl.searchParams.append("deliveryAddress",address);
+    filloutUrl.searchParams.append("addressNotes", notes);
     filloutUrl.searchParams.append("deliveryDate",date);
     filloutUrl.searchParams.append("deliveryTime",time);
     filloutUrl.searchParams.append("paymentMethod",method);
@@ -236,8 +239,19 @@
     document.body.appendChild(iframe);
 
     const summary=`Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
-    const msg=`💊 New Order - Pharmacy\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nItems:\n${items}\n\n${summary}\nDelivery: ${date} ${time}\nPayment: ${method}`;
-    const enc=encodeURIComponent(msg);
+    const msg=`💊 New Order - Pharmacy\n\nConfirmation #: ${confirmation}Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
+
+Items:
+${items}
+
+${summary}
+Delivery: ${date} ${time}
+Payment: ${method}`;    
+const enc=encodeURIComponent(msg);
     const merchant='63XXXXXXXXXX', admin='63YYYYYYYYYY', driver='63ZZZZZZZZZZ';
 
     window.open(`https://wa.me/${merchant}?text=${enc}`, '_blank');
