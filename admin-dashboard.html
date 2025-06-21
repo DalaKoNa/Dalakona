@@ -1,87 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Admin – Dala🚲na</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #fffaf7;
-      color: #333;
-      margin: 0;
-      padding: 2rem;
-    }
-    .login-screen, .dashboard {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    .hidden {
-      display: none;
-    }
-    iframe {
-      width: 100%;
-      max-width: 700px;
-      height: 600px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    .whatsapp-alert {
-      margin-top: 1rem;
-      background: #008060;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    #loginError {
-      color: red;
-      margin-top: 0.5rem;
-      display: none;
-    }
-  </style>
-</head>
 <body>
 
-<!-- Login -->
-<div id="loginScreen" class="login-screen">
-  <h2>🔐 Enter Admin PIN</h2>
-  <input type="password" id="adminPin" placeholder="Enter PIN" style="padding: 0.5rem; width: 220px;" />
-  <button onclick="checkAdminPin()" style="margin-top: 1rem; background: #008060; color: #fff; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">Login</button>
-  <div id="loginError">Incorrect PIN. Please try again.</div>
+<!-- Admin Login Modal -->
+<div class="hidden-login" id="adminLogin">
+  <div class="login-box">
+    <h2>🔒 Admin Login</h2>
+    <input type="text" id="adminPhone" placeholder="📱 Phone number" />
+    <input type="password" id="adminPass" placeholder="🔑 OTP or Password" />
+    <button onclick="checkAdmin()">✔️ Login</button>
+  </div>
 </div>
 
-<!-- Dashboard -->
-<div id="dashboard" class="dashboard hidden">
-  <h1>📒 Admin Bookkeeping</h1>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?embedded=true" allowfullscreen></iframe>
-  <button class="whatsapp-alert" onclick="sendAdminWhatsApp()">📤 Remit Alert (WhatsApp)</button>
+<!-- Header & Profile -->
+<header>
+  📒 Dala🚲na Admin Bookkeeping Dashboard
+  <div id="adminProfile" style="margin-top: 0.5rem; font-size: 0.9rem; display:none;">
+    <span id="profileName">👤 Admin</span> | <span id="profilePhone">📱</span>
+    <button onclick="logoutAdmin()" style="margin-left: 10px; background:#fff; color:#a0527b; border:1px solid #a0527b; padding:3px 10px; border-radius:4px; font-size: 0.8rem;">Logout</button>
+  </div>
+</header>
+
+<!-- Embedded Google Form -->
+<iframe id="adminFrame" src="" loading="lazy"></iframe>
+
+<div class="note">
+  ⛔ For authorized personnel only. Press <strong>Shift + A + D + M</strong> to access login.
 </div>
 
 <script>
-  const adminPIN = "daladmin123"; // change to your secure PIN
+  const ADMIN_PHONE = "09171234567";
+  const ADMIN_PASS = "daladmin123";
+  const SHEET_URL = "https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?embedded=true";
 
-  function checkAdminPin() {
-    const input = document.getElementById("adminPin").value;
-    if (input === adminPIN) {
-      document.getElementById("loginScreen").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
+  function checkAdmin() {
+    const phone = document.getElementById("adminPhone").value.trim();
+    const pass = document.getElementById("adminPass").value.trim();
+
+    if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
+      document.getElementById("adminLogin").style.display = "none";
+      document.getElementById("adminFrame").src = SHEET_URL;
+
+      // Show profile
+      document.getElementById("profileName").textContent = "👤 Admin";
+      document.getElementById("profilePhone").textContent = phone;
+      document.getElementById("adminProfile").style.display = "block";
+
+      // Save to session
+      sessionStorage.setItem("adminLoggedIn", "true");
     } else {
-      document.getElementById("loginError").style.display = "block";
+      alert("❌ Incorrect credentials.");
     }
   }
 
-  function sendAdminWhatsApp() {
-    const message = encodeURIComponent("📒 Admin COD Bookkeeping Alert – Remittance record submitted.");
-    const phone = "63XXXXXXXXXX"; // Admin number
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+  function logoutAdmin() {
+    sessionStorage.removeItem("adminLoggedIn");
+    document.getElementById("adminFrame").src = "";
+    document.getElementById("adminProfile").style.display = "none";
+    document.getElementById("adminLogin").style.display = "flex";
+  }
+
+  // Shortcut to trigger login modal
+  let keys = [];
+  document.addEventListener("keydown", (e) => {
+    keys.push(e.key.toLowerCase());
+    if (keys.slice(-4).join("") === "admn" && e.shiftKey) {
+      document.getElementById("adminLogin").style.display = "flex";
+      keys = [];
+    }
+  });
+
+  // Check if still logged in
+  window.onload = function () {
+    if (sessionStorage.getItem("adminLoggedIn")) {
+      document.getElementById("adminFrame").src = SHEET_URL;
+      document.getElementById("adminProfile").style.display = "block";
+    }
   }
 </script>
 
 </body>
-</html>
