@@ -2,155 +2,191 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Rider Dashboard – Dala🚲na</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Rider Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: #f9f7f3;
-      color: #333;
-    }
-    header {
-      background: #008060;
-      color: white;
+      background-color: #fffaf4;
       padding: 1rem;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    h1 {
       text-align: center;
       font-size: 1.5rem;
+      color: #a0527b;
+      margin-bottom: 1rem;
     }
-    .container {
-      max-width: 800px;
+
+    .dashboard {
+      max-width: 650px;
       margin: auto;
-      padding: 2rem;
+      background: #fff;
+      padding: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    h2 {
-      margin-top: 1.5rem;
-      color: #008060;
+
+    label {
+      margin-top: 1rem;
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #444;
     }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    button {
+      margin-top: 1.2rem;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      background: #008060;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .copy-btn {
+      background: #a0527b;
+      margin-top: 0.6rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
     }
+
     th, td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
-      text-align: center;
+      border: 1px solid #eee;
+      padding: 0.4rem;
+      text-align: left;
     }
+
     th {
-      background: #eee;
+      background: #f8f3ef;
+      font-weight: 600;
+      color: #555;
     }
-    .btn {
-      background: #008060;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    .btn:hover {
-      background: #00684a;
-    }
-    .notes {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 1rem;
+
+    @media (max-width: 500px) {
+      body {
+        font-size: 0.85rem;
+      }
+
+      input, textarea, button {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    Rider Dashboard – Dala🚲Na
-  </header>
 
-  <div class="container">
-    <h2>🧾 Today's Deliveries</h2>
-    <table>
+  <h1>🚴 Rider Remittance Dashboard</h1>
+
+  <div class="dashboard">
+    <label for="store">🏪 Store / Merchant</label>
+    <input type="text" id="store" placeholder="e.g. Pharmacy or Bakery" />
+
+    <label for="codAmount">💰 Cash on Hand (COD)</label>
+    <input type="number" id="codAmount" placeholder="₱ Amount collected in cash" />
+
+    <label for="onlineAmount">💸 Sent via GCash / PayMaya</label>
+    <input type="number" id="onlineAmount" placeholder="₱ Amount sent online" />
+
+    <label for="notes">📝 Notes (optional)</label>
+    <textarea id="notes" placeholder="e.g. Paid via GCash ref 1234, given to admin"></textarea>
+
+    <button onclick="logTransaction()">✅ Remit Now</button>
+    <button class="copy-btn" onclick="copyLog()">📋 Copy Logs</button>
+
+    <table id="logTable">
       <thead>
         <tr>
-          <th>Time</th>
-          <th>Store</th>
-          <th>Barangay</th>
-          <th>Cash (₱)</th>
-          <th>Online (₱)</th>
-          <th>Notes</th>
+          <th>🕒 Time</th>
+          <th>🏪 Store</th>
+          <th>💰 Cash</th>
+          <th>💸 Online</th>
+          <th>📊 Total</th>
+          <th>📝 Notes</th>
         </tr>
       </thead>
-      <tbody id="log-body">
-        <!-- Rows will be inserted here -->
-      </tbody>
+      <tbody id="logBody"></tbody>
     </table>
-
-    <h2>➕ Add Entry</h2>
-    <input type="text" placeholder="Store Name" id="store" class="notes">
-    <input type="text" placeholder="Barangay" id="barangay" class="notes">
-    <input type="number" placeholder="Cash Collected" id="cash" class="notes">
-    <input type="number" placeholder="Online Payment" id="online" class="notes">
-    <input type="text" placeholder="Notes" id="notes" class="notes">
-    <button class="btn" onclick="addLog()">Add Log</button>
-
-    <h2>📤 Summary</h2>
-    <p>Total Cash: ₱<span id="total-cash">0</span></p>
-    <p>Total Online: ₱<span id="total-online">0</span></p>
-    <button class="btn" onclick="copyToClipboard()">📋 Copy Logs</button>
-    <button class="btn" onclick="remitNow()">✅ Remit Now via WhatsApp</button>
   </div>
 
   <script>
-    const logs = [];
+    const adminNumber = '63XXXXXXXXXX'; // 🔁 Replace with your WhatsApp number
 
-    function addLog() {
-      const store = document.getElementById('store').value;
-      const barangay = document.getElementById('barangay').value;
-      const cash = parseFloat(document.getElementById('cash').value) || 0;
-      const online = parseFloat(document.getElementById('online').value) || 0;
-      const notes = document.getElementById('notes').value;
-      const time = new Date().toLocaleTimeString();
+    function logTransaction() {
+      const store = document.getElementById('store').value.trim();
+      const cod = parseFloat(document.getElementById('codAmount').value) || 0;
+      const online = parseFloat(document.getElementById('onlineAmount').value) || 0;
+      const notes = document.getElementById('notes').value.trim();
+      const timestamp = new Date().toLocaleString('en-PH', { hour12: true });
 
-      logs.push({ time, store, barangay, cash, online, notes });
-      renderLogs();
+      const remit = cod + online;
+
+      const row = `
+        <tr>
+          <td>${timestamp}</td>
+          <td>${store}</td>
+          <td>₱${cod.toFixed(2)}</td>
+          <td>₱${online.toFixed(2)}</td>
+          <td>₱${remit.toFixed(2)}</td>
+          <td>${notes || '—'}</td>
+        </tr>
+      `;
+      document.getElementById('logBody').insertAdjacentHTML('afterbegin', row);
+
+      // 🔔 Send to WhatsApp Admin
+      const message = `🛵 *Rider Remittance Alert*\n\n🏪 Store: ${store}\n💰 Cash: ₱${cod.toFixed(2)}\n💸 Online: ₱${online.toFixed(2)}\n📊 Total Remit: ₱${remit.toFixed(2)}\n📝 Notes: ${notes || 'N/A'}\n🕒 Time: ${timestamp}`;
+      const encoded = encodeURIComponent(message);
+      const waLink = `https://wa.me/${adminNumber}?text=${encoded}`;
+      window.open(waLink, '_blank');
+
+      // Clear fields
+      document.getElementById('store').value = '';
+      document.getElementById('codAmount').value = '';
+      document.getElementById('onlineAmount').value = '';
+      document.getElementById('notes').value = '';
     }
 
-    function renderLogs() {
-      const body = document.getElementById('log-body');
-      body.innerHTML = '';
-      let totalCash = 0;
-      let totalOnline = 0;
+    function copyLog() {
+      const rows = Array.from(document.querySelectorAll('#logTable tr'));
+      const text = rows.map(row =>
+        Array.from(row.cells).map(cell => cell.textContent.trim()).join('\t')
+      ).join('\n');
 
-      logs.forEach(log => {
-        totalCash += log.cash;
-        totalOnline += log.online;
-        body.innerHTML += `
-          <tr>
-            <td>${log.time}</td>
-            <td>${log.store}</td>
-            <td>${log.barangay}</td>
-            <td>₱${log.cash.toFixed(2)}</td>
-            <td>₱${log.online.toFixed(2)}</td>
-            <td>${log.notes}</td>
-          </tr>`;
-      });
-
-      document.getElementById('total-cash').innerText = totalCash.toFixed(2);
-      document.getElementById('total-online').innerText = totalOnline.toFixed(2);
-    }
-
-    function copyToClipboard() {
-      let text = '🧾 Rider Logs - Dala🚲Na\n\n';
-      logs.forEach(log => {
-        text += `${log.time} - ${log.store} (${log.barangay})\nCash: ₱${log.cash}\nOnline: ₱${log.online}\nNotes: ${log.notes || 'None'}\n\n`;
-      });
-      navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
-    }
-
-    function remitNow() {
-      let totalCash = logs.reduce((sum, l) => sum + l.cash, 0);
-      let totalOnline = logs.reduce((sum, l) => sum + l.online, 0);
-      const summary = `Remittance Summary - Dala🚲Na\n\nCash: ₱${totalCash.toFixed(2)}\nOnline: ₱${totalOnline.toFixed(2)}\nDate: ${new Date().toLocaleDateString()}`;
-      const url = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(summary)}`;
-      window.open(url, '_blank');
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      alert('✅ Log copied. Paste to Google Sheets or Notepad.');
     }
   </script>
+
 </body>
 </html>
