@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
   <style>
-    /* Base styles and modal layouts (same pastel theme) */
     body { font-family: 'Inter', sans-serif; background-color: #fffaf6; margin:0; padding:0; }
-    .hidden { display:none; }
+    .hidden { display: none; }
     .modal-backdrop {
       position: fixed; inset:0;
       background: rgba(0,0,0,0.5);
@@ -21,38 +20,60 @@
     }
     .modal h2 { margin-top:0; color:#a0527b; text-align:center; }
     .modal .close { position:absolute; top:8px; right:12px; font-size:1.2rem; cursor:pointer; }
-
-    /* Dashboard form styles */
     .container {
       max-width:700px; margin:2rem auto; padding:1rem;
     }
     .container h1 { text-align:center; color:#a0527b; }
     .container label { display:block; margin-bottom:0.25rem; font-weight:500; }
-    .container input, textarea { width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:6px; border:1px solid #ccc; font-size:0.95rem; }
-    .container button { width:100%; padding:0.75rem; border:none; border-radius:6px; font-size:1rem; cursor:pointer; background-color:#a0527b; color:#fff; }
+    .container input, textarea {
+      width:100%; padding:0.75rem; margin-bottom:1rem;
+      border-radius:6px; border:1px solid #ccc; font-size:0.95rem;
+    }
+    .container button {
+      width:100%; padding:0.75rem; border:none; border-radius:6px;
+      font-size:1rem; cursor:pointer; background-color:#a0527b; color:#fff;
+    }
     .container button:hover { background-color:#8e406c; }
     .top-bar {
       display:flex; justify-content: space-between; align-items:center;
       background:#f8eeda; padding:0.75rem 1rem; border-bottom:1px solid #e0d4c7;
     }
     .top-bar span { font-weight:600; }
-    .top-bar button { background:#008060; color:white; border:none; padding:0.4rem 0.7rem; border-radius:6px; cursor:pointer; }
-
+    .top-bar button {
+      background:#008060; color:white; border:none; padding:0.4rem 0.7rem;
+      border-radius:6px; cursor:pointer; margin-left:0.5rem;
+    }
+    #logsList pre {
+      background:#f9f5f2; padding:8px; font-size:0.9rem; border-radius:6px;
+    }
+    .google-form-link {
+      text-align:center; margin-top:1rem;
+    }
+    .google-form-link a {
+      color:#a0527b; text-decoration:underline; font-weight:500;
+    }
   </style>
 </head>
 <body>
 
-  <!-- OTP Login Modal -->
-  <div id="otpModal" class="modal-backdrop">
+  <!-- Secure Login Modal -->
+  <div id="loginModal" class="modal-backdrop">
     <div class="modal">
       <h2>🔐 Admin Login</h2>
-      <input type="text" id="otpInput" placeholder="Enter OTP" />
-      <button onclick="verifyOTP()">Submit</button>
-      <div id="otpError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Invalid OTP</div>
+      <div id="passwordStep">
+        <input type="password" id="adminPassword" placeholder="Enter Admin Password"/>
+        <button onclick="checkPassword()">Next</button>
+        <div id="passError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Wrong password</div>
+      </div>
+      <div id="otpStep" class="hidden">
+        <input type="text" id="otpInput" placeholder="Enter OTP"/>
+        <button onclick="verifyOTP()">Submit</button>
+        <div id="otpError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Invalid OTP</div>
+      </div>
     </div>
   </div>
 
-  <!-- Main Dashboard -->
+  <!-- Main Admin Dashboard -->
   <div class="container hidden" id="dashboard">
     <div class="top-bar">
       <span>Admin Dashboard – Dala🚲na</span>
@@ -70,6 +91,9 @@
       <label>📝 Notes:</label><textarea id="adminNotes" rows="3"></textarea>
       <button type="submit">📤 Submit Record</button>
     </form>
+    <div class="google-form-link">
+      Need help? <a href="https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?usp=header" target="_blank">Submit via Google Form</a>
+    </div>
   </div>
 
   <!-- Logs Modal -->
@@ -82,13 +106,31 @@
   </div>
 
   <script>
-    const OTP = "123456"; // Simplified OTP
-    const SHEET_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform';
+    const ADMIN_PASSWORD = "dalaAdmin2024";
+    const OTP = "123456";
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyMxfznPWI5dMfa9rPbObH5lDDLR-E_ZNzIJG8t-b1f1R8fG4J2KFbqUWH2-zxWmqT1Gw/exec';
+    let failedAttempts = 0;
+
+    function checkPassword() {
+      const p = document.getElementById('adminPassword').value.trim();
+      if (p === ADMIN_PASSWORD) {
+        document.getElementById('passError').style.display = 'none';
+        document.getElementById('passwordStep').classList.add('hidden');
+        document.getElementById('otpStep').classList.remove('hidden');
+      } else {
+        failedAttempts++;
+        document.getElementById('passError').style.display = 'block';
+        if (failedAttempts >= 5) {
+          alert("⛔ Too many failed attempts. Please refresh the page.");
+          document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+        }
+      }
+    }
 
     function verifyOTP() {
       const v = document.getElementById('otpInput').value.trim();
       if (v === OTP) {
-        document.getElementById('otpModal').classList.add('hidden');
+        document.getElementById('loginModal').classList.add('hidden');
         document.getElementById('dashboard').classList.remove('hidden');
       } else {
         document.getElementById('otpError').style.display = 'block';
@@ -133,7 +175,7 @@
         .then(json => {
           if (json.logs) {
             document.getElementById('logsList').innerHTML =
-              json.logs.map(l => `<pre style="background:#f9f5f2; padding:8px;">${l}</pre>`).join('');
+              json.logs.map(l => `<pre>${l}</pre>`).join('');
           } else {
             document.getElementById('logsList').innerText = "No logs";
           }
