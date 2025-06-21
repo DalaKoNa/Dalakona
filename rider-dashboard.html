@@ -2,200 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na – Rider EOD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap" rel="stylesheet" />
+  <title>Dala Rider EOD Dashboard</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: #fffaf5;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf5;
       margin: 0;
       padding: 0;
+      color: #333;
     }
-
+    header {
+      background-color: #a0527b;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
     .container {
       max-width: 600px;
       margin: 2rem auto;
       background: #fff;
       padding: 1.5rem;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      text-align: center;
-      color: #7a3e53;
-    }
-
     label {
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
+      font-weight: bold;
       display: block;
+      margin-top: 1rem;
     }
-
-    input, textarea {
+    input, select, textarea {
       width: 100%;
       padding: 8px;
-      margin-top: 4px;
-      margin-bottom: 12px;
+      margin-top: 5px;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 0.9rem;
+      border-radius: 5px;
     }
-
     button {
-      background: #7a3e53;
+      background-color: #a0527b;
       color: white;
       border: none;
-      padding: 10px;
+      padding: 10px 15px;
       border-radius: 6px;
+      margin-top: 1.5rem;
       cursor: pointer;
       width: 100%;
-      font-size: 0.9rem;
     }
-
-    .log {
-      background: #f5f5f5;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      font-size: 0.8rem;
+    .summary {
+      background: #fef7f2;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .logout-btn {
-      background: none;
-      border: none;
-      float: right;
-      color: #999;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    .whatsapp-btn {
-      margin-top: 1rem;
-      background: #25d366;
+    .top-info {
+      background: #f1e9e4;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h2>Dala🚲na Rider EOD Dashboard</h2>
+  </header>
 
-<div class="container">
-  <div id="loginBox">
-    <h2>Rider Login</h2>
-    <label>👤 Rider ID</label>
-    <input type="text" id="login-id" placeholder="e.g. R001" />
-    <label>🔑 PIN</label>
-    <input type="password" id="login-pin" placeholder="e.g. 1234" />
-    <button onclick="riderLogin()">Log In</button>
-  </div>
+  <div class="container">
+    <div class="top-info" id="riderInfo">
+      👤 Rider: <span id="riderName"></span><br>
+      🆔 ID: <span id="employeeId"></span>
+    </div>
 
-  <div id="dashboardBox" class="hidden">
-    <h2>Welcome, <span id="rider-name-display"></span></h2>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    <form id="eodForm">
+      <label for="store">🏪 Store / Merchant</label>
+      <input type="text" id="store" required>
 
-    <form id="eodForm" onsubmit="submitEOD(event)">
-      <label>🏪 Store Name</label>
-      <input type="text" id="store" required />
+      <label for="cod">💰 COD Collected (₱)</label>
+      <input type="number" id="cod" required>
 
-      <label>💰 Cash on Hand (₱)</label>
-      <input type="number" id="cash" required />
+      <label for="remitted">🏦 Remitted (₱)</label>
+      <input type="number" id="remitted" required>
 
-      <label>🏦 Remitted (₱)</label>
-      <input type="number" id="remit" required />
+      <label for="cohUsed">💸 Paid using COH (₱)</label>
+      <input type="number" id="cohUsed" value="0">
 
-      <label>🗒️ Notes</label>
-      <textarea id="notes" rows="2"></textarea>
+      <label for="paymentMethod">💳 Payment Method</label>
+      <select id="paymentMethod" required>
+        <option value="Cash">Cash</option>
+        <option value="Gcash">Gcash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="Card">Card / Online</option>
+      </select>
 
-      <button type="submit">📋 Submit EOD</button>
+      <label for="notes">🗒️ Notes</label>
+      <textarea id="notes" rows="3"></textarea>
+
+      <button type="submit">📩 Submit EOD + Alert Admin</button>
     </form>
 
-    <button class="whatsapp-btn" onclick="sendWhatsApp()">📤 Remit Now via WhatsApp</button>
-
-    <hr />
-    <h3>📚 EOD Logs</h3>
-    <div id="logs"></div>
+    <div class="summary" id="summaryBox" style="display:none">
+      <strong>📋 Summary Log:</strong><br>
+      <pre id="logPreview"></pre>
+    </div>
   </div>
-</div>
 
-<script>
-  // Rider IDs and PINs (can later move to Firebase or Sheets)
-  const riderCredentials = {
-    'R001': '1234',
-    'R002': '2222',
-    'R003': '3333'
-  };
+  <script>
+    const riderName = prompt("Enter your full name:");
+    const employeeId = prompt("Enter your Employee ID:");
+    document.getElementById("riderName").textContent = riderName;
+    document.getElementById("employeeId").textContent = employeeId;
 
-  function riderLogin() {
-    const id = document.getElementById('login-id').value.trim();
-    const pin = document.getElementById('login-pin').value.trim();
+    document.getElementById("eodForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    if (riderCredentials[id] === pin) {
-      localStorage.setItem('riderId', id);
-      document.getElementById('rider-name-display').textContent = id;
-      document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('dashboardBox').classList.remove('hidden');
-      loadLogs();
-    } else {
-      alert("❌ Invalid ID or PIN.");
-    }
-  }
+      const store = document.getElementById("store").value;
+      const cod = parseFloat(document.getElementById("cod").value);
+      const remitted = parseFloat(document.getElementById("remitted").value);
+      const cohUsed = parseFloat(document.getElementById("cohUsed").value);
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const notes = document.getElementById("notes").value || "N/A";
+      const timestamp = new Date().toLocaleString();
 
-  function logout() {
-    localStorage.removeItem('riderId');
-    document.getElementById('dashboardBox').classList.add('hidden');
-    document.getElementById('loginBox').classList.remove('hidden');
-  }
+      const coh = cod - remitted - cohUsed;
 
-  function submitEOD(e) {
-    e.preventDefault();
-    const rider = localStorage.getItem('riderId');
-    const store = document.getElementById('store').value;
-    const cash = document.getElementById('cash').value;
-    const remit = document.getElementById('remit').value;
-    const notes = document.getElementById('notes').value || "N/A";
-    const date = new Date().toLocaleString();
+      const log = `🕒 ${timestamp}\n👤 Rider: ${riderName} (${employeeId})\n🏪 Store: ${store}\n💰 COD: ₱${cod.toFixed(2)}\n🏦 Remitted: ₱${remitted.toFixed(2)}\n💸 COH Used: ₱${cohUsed.toFixed(2)}\n💳 Payment Method: ${paymentMethod}\n💵 COH Remaining: ₱${coh.toFixed(2)}\n🗒️ Notes: ${notes}`;
 
-    const log = `🕒 ${date}\n👤 ${rider}\n🏪 ${store}\n💰 Cash: ₱${cash}\n🏦 Remit: ₱${remit}\n🗒️ ${notes}`;
-    const logs = JSON.parse(localStorage.getItem('eodLogs') || '[]');
-    logs.unshift(log);
-    localStorage.setItem('eodLogs', JSON.stringify(logs));
+      document.getElementById("logPreview").textContent = log;
+      document.getElementById("summaryBox").style.display = "block";
 
-    alert("✅ EOD Submitted.");
-    document.getElementById('eodForm').reset();
-    loadLogs();
-  }
+      const encoded = encodeURIComponent(log);
+      const waUrl = `https://wa.me/63XXXXXXXXXX?text=${encoded}`; // Replace with admin number
+      window.open(waUrl, '_blank');
 
-  function loadLogs() {
-    const logs = JSON.parse(localStorage.getItem('eodLogs') || '[]');
-    document.getElementById('logs').innerHTML = logs.slice(0, 10).map(l => `<div class="log">${l.replace(/\n/g, "<br>")}</div>`).join('');
-  }
-
-  function sendWhatsApp() {
-    const rider = localStorage.getItem('riderId') || "Unknown Rider";
-    const now = new Date().toLocaleString();
-    const message = `📦 Rider EOD Alert\n\n👤 ${rider}\n🕒 ${now}\n\n✅ Cash remitted today.`;
-    const encodedMsg = encodeURIComponent(message);
-    const adminNumber = "63XXXXXXXXXX"; // Replace with real admin number
-
-    window.open(`https://wa.me/${adminNumber}?text=${encodedMsg}`, '_blank');
-  }
-
-  // Auto-login if session exists
-  window.onload = () => {
-    const rider = localStorage.getItem('riderId');
-    if (rider) {
-      document.getElementById('rider-name-display').textContent = rider;
-      document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('dashboardBox').classList.remove('hidden');
-      loadLogs();
-    }
-  };
-</script>
-
+      document.getElementById("eodForm").reset();
+    });
+  </script>
 </body>
 </html>
