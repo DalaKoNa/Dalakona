@@ -6,190 +6,252 @@
   <title>Admin Dashboard – Dala🚲na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #fffaf6; margin:0; padding:0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fffaf6;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     .hidden { display: none; }
     .modal-backdrop {
-      position: fixed; inset:0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.5);
-      display:flex; justify-content:center; align-items:center; z-index:99;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 99;
     }
     .modal {
-      background:#fff; padding:1.5rem; border-radius:10px;
-      min-width:300px; max-width:400px; width:90%; box-shadow:0 2px 10px rgba(0,0,0,0.2);
-      position:relative;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      min-width: 300px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: relative;
     }
-    .modal h2 { margin-top:0; color:#a0527b; text-align:center; }
-    .modal .close { position:absolute; top:8px; right:12px; font-size:1.2rem; cursor:pointer; }
+    .modal h2 { margin-top: 0; color: #a0527b; text-align: center; }
     .container {
-      max-width:700px; margin:2rem auto; padding:1rem;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      flex: 1;
     }
-    .container h1 { text-align:center; color:#a0527b; }
-    .container label { display:block; margin-bottom:0.25rem; font-weight:500; }
-    .container input, textarea {
-      width:100%; padding:0.75rem; margin-bottom:1rem;
-      border-radius:6px; border:1px solid #ccc; font-size:0.95rem;
+    .container h1 {
+      text-align: center;
+      color: #a0527b;
+    }
+    .container label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    .container input,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
     }
     .container button {
-      width:100%; padding:0.75rem; border:none; border-radius:6px;
-      font-size:1rem; cursor:pointer; background-color:#a0527b; color:#fff;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #a0527b;
+      color: #fff;
     }
-    .container button:hover { background-color:#8e406c; }
+    .container button:hover {
+      background-color: #8e406c;
+    }
     .top-bar {
-      display:flex; justify-content: space-between; align-items:center;
-      background:#f8eeda; padding:0.75rem 1rem; border-bottom:1px solid #e0d4c7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8eeda;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0d4c7;
     }
-    .top-bar span { font-weight:600; }
+    .top-bar span { font-weight: 600; }
     .top-bar button {
-      background:#008060; color:white; border:none; padding:0.4rem 0.7rem;
-      border-radius:6px; cursor:pointer; margin-left:0.5rem;
+      background: #008060;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #f8eeda;
+      color: #5c4b4b;
+      font-size: 0.9rem;
+      border-top: 1px solid #e0d4c7;
+    }
+    footer a {
+      color: #a0527b;
+      text-decoration: underline;
     }
     #logsList pre {
-      background:#f9f5f2; padding:8px; font-size:0.9rem; border-radius:6px;
-    }
-    .google-form-link {
-      text-align:center; margin-top:1rem;
-    }
-    .google-form-link a {
-      color:#a0527b; text-decoration:underline; font-weight:500;
+      background: #f9f5f2;
+      padding: 8px;
+      font-size: 0.9rem;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Secure Login Modal -->
-  <div id="loginModal" class="modal-backdrop">
-    <div class="modal">
-      <h2>🔐 Admin Login</h2>
-      <div id="passwordStep">
-        <input type="password" id="adminPassword" placeholder="Enter Admin Password"/>
-        <button onclick="checkPassword()">Next</button>
-        <div id="passError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Wrong password</div>
-      </div>
-      <div id="otpStep" class="hidden">
-        <input type="text" id="otpInput" placeholder="Enter OTP"/>
-        <button onclick="verifyOTP()">Submit</button>
-        <div id="otpError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Invalid OTP</div>
-      </div>
+<!-- Secure Login Modal -->
+<div id="loginModal" class="modal-backdrop">
+  <div class="modal">
+    <h2>🔐 Admin Login</h2>
+    <div id="passwordStep">
+      <input type="password" id="adminPassword" placeholder="Enter Admin Password"/>
+      <button onclick="checkPassword()">Next</button>
+      <div id="passError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Wrong password</div>
+    </div>
+    <div id="otpStep" class="hidden">
+      <input type="text" id="otpInput" placeholder="Enter OTP"/>
+      <button onclick="verifyOTP()">Submit</button>
+      <div id="otpError" style="color:red; font-size:0.9rem; text-align:center; display:none;">Invalid OTP</div>
     </div>
   </div>
+</div>
 
-  <!-- Main Admin Dashboard -->
-  <div class="container hidden" id="dashboard">
-    <div class="top-bar">
-      <span>Admin Dashboard – Dala🚲na</span>
-      <div>
-        <button onclick="openLogs()">View Logs</button>
-        <button onclick="logout()">Log Out</button>
-      </div>
-    </div>
-    <form id="adminForm">
-      <label>👩‍💼 Admin Name:</label><input type="text" id="adminName" required />
-      <label>🚴 Total Riders:</label><input type="number" id="ridersCount" required />
-      <label>💰 Total COD Collected (₱):</label><input type="number" id="totalCOD" required />
-      <label>🏦 Total Remitted (₱):</label><input type="number" id="totalRemit" required />
-      <label>💳 Online Payments (₱):</label><input type="number" id="totalOnline" required />
-      <label>📝 Notes:</label><textarea id="adminNotes" rows="3"></textarea>
-      <button type="submit">📤 Submit Record</button>
-    </form>
-    <div class="google-form-link">
-      Need help? <a href="https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?usp=header" target="_blank">Submit via Google Form</a>
+<!-- Admin Dashboard -->
+<div class="container hidden" id="dashboard">
+  <div class="top-bar">
+    <span>Admin Dashboard – Dala🚲na</span>
+    <div>
+      <button onclick="openLogs()">View Logs</button>
+      <button onclick="logout()">Log Out</button>
     </div>
   </div>
+  <form id="adminForm">
+    <label>👩‍💼 Admin Name:</label><input type="text" id="adminName" required />
+    <label>🚴 Total Riders:</label><input type="number" id="ridersCount" required />
+    <label>💰 Total COD Collected (₱):</label><input type="number" id="totalCOD" required />
+    <label>🏦 Total Remitted (₱):</label><input type="number" id="totalRemit" required />
+    <label>💳 Online Payments (₱):</label><input type="number" id="totalOnline" required />
+    <label>📝 Notes:</label><textarea id="adminNotes" rows="3"></textarea>
+    <button type="submit">📤 Submit Record</button>
+  </form>
+  <p style="text-align:center; margin-top:1rem;">
+    Need help? <a href="https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?usp=header" target="_blank">Submit via Google Form</a>
+  </p>
+</div>
 
-  <!-- Logs Modal -->
-  <div id="logsModal" class="modal-backdrop hidden">
-    <div class="modal">
-      <span class="close" onclick="closeLogs()">&times;</span>
-      <h2>📄 Recent Logs</h2>
-      <div id="logsList" style="max-height:300px; overflow:auto;"></div>
-    </div>
+<!-- Logs Modal -->
+<div id="logsModal" class="modal-backdrop hidden">
+  <div class="modal">
+    <span class="close" onclick="closeLogs()" style="position:absolute; top:8px; right:12px; font-size:1.2rem; cursor:pointer;">&times;</span>
+    <h2>📄 Recent Logs</h2>
+    <div id="logsList" style="max-height:300px; overflow:auto;"></div>
   </div>
+</div>
 
-  <script>
-    const ADMIN_PASSWORD = "dalaAdmin2024";
-    const OTP = "123456";
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyMxfznPWI5dMfa9rPbObH5lDDLR-E_ZNzIJG8t-b1f1R8fG4J2KFbqUWH2-zxWmqT1Gw/exec';
-    let failedAttempts = 0;
+<!-- Footer -->
+<footer>
+  © 2025 Dala🚲na Admin · 
+  <a href="index.html">Return to Site</a> · 
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLScLVq8c5AAoW9zNzNZLwwVmUsYR-wKDwcrVPbvcEpA6OvuVGw/viewform?usp=header" target="_blank">Report Issue</a>
+</footer>
 
-    function checkPassword() {
-      const p = document.getElementById('adminPassword').value.trim();
-      if (p === ADMIN_PASSWORD) {
-        document.getElementById('passError').style.display = 'none';
-        document.getElementById('passwordStep').classList.add('hidden');
-        document.getElementById('otpStep').classList.remove('hidden');
-      } else {
-        failedAttempts++;
-        document.getElementById('passError').style.display = 'block';
-        if (failedAttempts >= 5) {
-          alert("⛔ Too many failed attempts. Please refresh the page.");
-          document.querySelectorAll('button').forEach(btn => btn.disabled = true);
-        }
+<script>
+  const ADMIN_PASSWORD = "dalaAdmin2024";
+  const OTP = "123456";
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyMxfznPWI5dMfa9rPbObH5lDDLR-E_ZNzIJG8t-b1f1R8fG4J2KFbqUWH2-zxWmqT1Gw/exec';
+  let failedAttempts = 0;
+
+  function checkPassword() {
+    const p = document.getElementById('adminPassword').value.trim();
+    if (p === ADMIN_PASSWORD) {
+      document.getElementById('passError').style.display = 'none';
+      document.getElementById('passwordStep').classList.add('hidden');
+      document.getElementById('otpStep').classList.remove('hidden');
+    } else {
+      failedAttempts++;
+      document.getElementById('passError').style.display = 'block';
+      if (failedAttempts >= 5) {
+        alert("⛔ Too many failed attempts. Please refresh the page.");
+        document.querySelectorAll('button').forEach(btn => btn.disabled = true);
       }
     }
+  }
 
-    function verifyOTP() {
-      const v = document.getElementById('otpInput').value.trim();
-      if (v === OTP) {
-        document.getElementById('loginModal').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
+  function verifyOTP() {
+    const v = document.getElementById('otpInput').value.trim();
+    if (v === OTP) {
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+    } else {
+      document.getElementById('otpError').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    location.reload();
+  }
+
+  document.getElementById('adminForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = {
+      timestamp: new Date().toISOString(),
+      admin: document.getElementById('adminName').value.trim(),
+      riders: document.getElementById('ridersCount').value,
+      cod: document.getElementById('totalCOD').value,
+      remit: document.getElementById('totalRemit').value,
+      online: document.getElementById('totalOnline').value,
+      notes: document.getElementById('adminNotes').value.trim()
+    };
+
+    const params = new URLSearchParams(data);
+    try {
+      const resp = await fetch(SHEET_URL + '?' + params);
+      const json = await resp.json();
+      if (json.result === 'success') {
+        alert("✅ Record submitted!");
+        document.getElementById('adminForm').reset();
       } else {
-        document.getElementById('otpError').style.display = 'block';
+        alert("❌ Submission failed");
       }
+    } catch {
+      alert("⚠️ Network error");
     }
+  });
 
-    function logout() {
-      location.reload();
-    }
-
-    document.getElementById('adminForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const data = {
-        timestamp: new Date().toISOString(),
-        admin: document.getElementById('adminName').value.trim(),
-        riders: document.getElementById('ridersCount').value,
-        cod: document.getElementById('totalCOD').value,
-        remit: document.getElementById('totalRemit').value,
-        online: document.getElementById('totalOnline').value,
-        notes: document.getElementById('adminNotes').value.trim()
-      };
-
-      const params = new URLSearchParams(data);
-      try {
-        const resp = await fetch(SHEET_URL + '?' + params);
-        const json = await resp.json();
-        if (json.result === 'success') {
-          alert("✅ Record submitted!");
-          document.getElementById('adminForm').reset();
+  function openLogs() {
+    document.getElementById('logsList').innerHTML = "Loading…";
+    fetch(SHEET_URL + '?action=getLogs')
+      .then(r => r.json())
+      .then(json => {
+        if (json.logs) {
+          document.getElementById('logsList').innerHTML =
+            json.logs.map(l => `<pre>${l}</pre>`).join('');
         } else {
-          alert("❌ Submission failed");
+          document.getElementById('logsList').innerText = "No logs";
         }
-      } catch {
-        alert("⚠️ Network error");
-      }
-    });
+        document.getElementById('logsModal').classList.remove('hidden');
+      })
+      .catch(() => {
+        document.getElementById('logsList').innerText = "Failed to load logs";
+        document.getElementById('logsModal').classList.remove('hidden');
+      });
+  }
 
-    function openLogs() {
-      document.getElementById('logsList').innerHTML = "Loading…";
-      fetch(SHEET_URL + '?action=getLogs')
-        .then(r => r.json())
-        .then(json => {
-          if (json.logs) {
-            document.getElementById('logsList').innerHTML =
-              json.logs.map(l => `<pre>${l}</pre>`).join('');
-          } else {
-            document.getElementById('logsList').innerText = "No logs";
-          }
-          document.getElementById('logsModal').classList.remove('hidden');
-        })
-        .catch(() => {
-          document.getElementById('logsList').innerText = "Failed to load logs";
-          document.getElementById('logsModal').classList.remove('hidden');
-        });
-    }
+  function closeLogs() {
+    document.getElementById('logsModal').classList.add('hidden');
+  }
+</script>
 
-    function closeLogs() {
-      document.getElementById('logsModal').classList.add('hidden');
-    }
-  </script>
 </body>
 </html>
