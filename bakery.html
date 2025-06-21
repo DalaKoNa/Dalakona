@@ -93,6 +93,9 @@
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <div id="addressWarning" style="color: red; font-size: 0.85rem; display: none;">
+  ❗ Delivery address is outside Handumanan. We currently do not deliver to this area.
+</div>
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
@@ -124,7 +127,9 @@
       </button>
     </div>
   </div>
+<script src="delivery-area-check.js"></script>
 <script>
+
   const products = [
     { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
     { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
@@ -137,7 +142,7 @@
     { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
     { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
   ];
-
+  
   const cart = {};
 
   function renderProducts() {
@@ -338,6 +343,7 @@
       checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
     }
   }
+
 </script>
 </body>
 </html>
