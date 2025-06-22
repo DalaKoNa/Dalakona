@@ -1,525 +1,220 @@
-<!-- CONFIRMED: Rebuilding the full final version as a unified dashboard with admin/staff logins, editable payouts, PDF/email/WhatsApp export, charts, and calendar -->
-
-<!-- ✅ Step 1: Basic HTML Shell with Branding, Roles -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Dala🚲na | Admin HR Overview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD – Rider Admin Dashboard</title>
-  <link rel="stylesheet" href="style.css" /> <!-- Will be included in final zip -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #fdfbf9;
+    }
+    h1 {
+      text-align: center;
+      color: #8a3c63;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    select, input, textarea, button {
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 0.5rem;
+      width: 100%;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    label { font-weight: 600; margin-top: 1rem; display: block; }
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-top: 1rem; }
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+    }
+    .footer img {
+      height: 30px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .buttons button {
+      width: auto;
+      background: #8a3c63;
+      color: white;
+      border: none;
+    }
+    .payslip-box {
+      background: #fff3f6;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      font-family: monospace;
+    }
+    .signature {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+    .calendar, .weekly-summary {
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">🚲 DalaRAD</div>
-    <div class="user-info" id="loggedInUser"></div>
-    <button class="logout-btn hidden" onclick="logout()">Logout</button>
-  </header>
-<style>
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    background: #fffdfc;
-    color: #333;
-  }
+  <h1>📋 Dala🚲na HR Admin Dashboard</h1>
+  <div class="container">
+    <label for="staffSelect">Select Staff:</label>
+    <select id="staffSelect">
+      <option value="lynn">Lynn Tebban</option>
+      <option value="mario">Mario Lopez</option>
+      <option value="jenny">Jenny Cruz</option>
+      <option value="joan">Assistant Joan</option>
+    </select>
 
-  header {
-    background: #a0527b;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.5rem;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+    <label>✨ Basic Pay (₱)</label>
+    <input type="number" id="basicPay" value="2000" />
 
-  .container {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 1rem;
-  }
+    <label>🍱 Meal & Load Allowance (₱)</label>
+    <input type="number" id="allowance" value="300" />
 
-  .login-modal, .data-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(30, 30, 30, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
+    <label>💸 Weekly Advance (₱)</label>
+    <input type="number" id="advance" value="450" />
 
-  .login-box, .modal-box {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    text-align: center;
-    animation: fadeIn 0.3s ease-in-out;
-  }
+    <label>🚚 Total Deliveries</label>
+    <input type="number" id="deliveries" value="25" />
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+    <label>📅 Attendance (20 days)</label>
+    <div class="grid" id="attendanceGrid"></div>
 
-  input[type="text"], input[type="password"], input[type="number"], textarea, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-
-  button {
-    background: #a0527b;
-    color: white;
-    padding: 10px 16px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  .dashboard {
-    display: none;
-  }
-
-  .visible {
-    display: block;
-  }
-
-  .logout {
-    text-align: right;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-
-  .payslip {
-    background: #fffdf9;
-    border: 1px solid #e5d4c4;
-    padding: 1rem;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-
-  .payslip h3 {
-    margin-top: 0;
-    color: #a0527b;
-  }
-
-  .payslip table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 0.5rem;
-  }
-
-  .payslip table td {
-    padding: 6px 8px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .payslip table tr:last-child td {
-    font-weight: bold;
-    background: #faf4f0;
-  }
-
-  .calendar {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .calendar div {
-    padding: 0.75rem;
-    background: #f7f2f0;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 0.85rem;
-    border: 1px solid #ddd;
-  }
-
-  .calendar .present {
-    background: #d4f7d4;
-    border-color: #8cd48c;
-  }
-
-  .calendar .absent {
-    background: #fbd6d6;
-    border-color: #e58c8c;
-  }
-
-  .owner-tools {
-    background: #f3edf1;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-top: 2rem;
-  }
-
-  .dropdown-week {
-    margin: 1rem 0;
-  }
-
-  .dropdown-week select {
-    width: auto;
-    padding: 6px 10px;
-    font-size: 0.95rem;
-  }
-
-  .footer {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #999;
-    padding: 2rem 0 1rem;
-    border-top: 1px dashed #ccc;
-    margin-top: 3rem;
-  }
-
-  .footer img {
-    height: 40px;
-    margin-top: 1rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    .calendar {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .payslip {
-      font-size: 0.95rem;
-    }
-  }
-</style>
-
-  <!-- 🔐 Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <h2>Login to DalaRAD</h2>
-      <input type="text" id="loginName" placeholder="Full Name" required />
-      <input type="password" id="loginOTP" placeholder="OTP" required />
-      <button onclick="handleLogin()">Login</button>
-    </div>
-  </div>
-
-  <!-- 🧑‍💼 Staff Payslip View -->
-  <main id="staffDashboard" class="hidden">
-    <section id="payslipView"></section>
-    <div class="export-controls">
-      <button onclick="exportPDF()">🖨️ Print / PDF</button>
+    <div class="buttons">
+      <button onclick="generatePayslip()">🧾 Generate Payslip</button>
+      <button onclick="downloadPDF()">🖨️ Export PDF</button>
+      <button onclick="sendWhatsApp()">📲 Send WhatsApp</button>
       <button onclick="sendEmail()">📧 Email Receipt</button>
-      <button onclick="sendWhatsApp()">📲 WhatsApp Receipt</button>
+      <button onclick="saveToSheets()">📤 Save to Google Sheets</button>
     </div>
-  </main>
 
-  <!-- 🧑‍💼 Admin Dashboard -->
-  <main id="adminDashboard" class="hidden">
-    <section>
-      <h2>👥 Staff Overview</h2>
-      <select id="staffSelector" onchange="loadStaff(this.value)"></select>
-    </section>
-    <div id="adminEditor"></div>
-    <section>
-      <h3>📆 Calendar Attendance</h3>
-      <div id="calendar"></div>
-    </section>
-    <section>
-      <h3>📈 Payout Trends</h3>
-      <canvas id="chartCanvas"></canvas>
-    </section>
-    <footer>
-      <p>© 2025 Dala🚲na | All Rights Reserved</p>
-      <img src="logo.png" alt="Company Logo" style="height:40px" />
-    </footer>
-  </main>
+    <div class="payslip-box" id="payslip"></div>
 
-  <script src="dala-rad.js"></script> <!-- Final logic code in next step -->
-// dala-rad.js – Logic for Dala🚲na Rider Admin Dashboard
+    <div class="calendar">
+      <h3>📅 Monthly Calendar Summary (Coming Soon)</h3>
+      <p>Visual view of attendance and delivery days.</p>
+    </div>
 
-const ADMIN_CREDENTIALS = {
-  role: "admin",
-  name: "HR Admin",
-  otp: "radAdmin2024"
-};
+    <div class="weekly-summary">
+      <h3>🧾 Weekly Summary Breakdown (Coming Soon)</h3>
+      <p>Week-by-week payout and attendance summary.</p>
+    </div>
 
-const STAFF_LIST = [
-  { name: "Lynn Tebban", otp: "lynn123" },
-  { name: "Mario Lopez", otp: "mario123" },
-  { name: "Jenny Cruz", otp: "jenny123" },
-  { name: "Assistant Joan", otp: "joan123" },
-];
+    <div class="signature">
+      <div>_________________________<br>Staff Signature</div>
+      <div>_________________________<br>HR/Admin Signature</div>
+    </div>
 
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxoKh3-TTJm1QYcOU3nQqiIsA9gRZhtYvzaCWOBt5B53NGPSbdueHbZr2_R4uOmsXqVSA/exec";
-
-let currentUser = null;
-
-function openLoginModal() {
-  document.getElementById("loginModal").classList.remove("hidden");
-}
-
-function verifyLogin() {
-  const name = document.getElementById("loginName").value.trim();
-  const otp = document.getElementById("loginOTP").value.trim();
-
-  if (name === ADMIN_CREDENTIALS.name && otp === ADMIN_CREDENTIALS.otp) {
-    currentUser = { role: "admin", name };
-    closeModal();
-    showAdminDashboard();
-    return;
-  }
-
-  const staff = STAFF_LIST.find(s => s.name === name && s.otp === otp);
-  if (staff) {
-    currentUser = { role: "staff", name: staff.name };
-    closeModal();
-    loadStaffDashboard(staff.name);
-  } else {
-    alert("Invalid credentials");
-  }
-}
-
-function closeModal() {
-  document.getElementById("loginModal").classList.add("hidden");
-}
-
-function showAdminDashboard() {
-  document.getElementById("adminPanel").classList.remove("hidden");
-  fetchPayoutData();
-}
-
-function loadStaffDashboard(name) {
-  document.getElementById("staffPanel").classList.remove("hidden");
-  fetch(`${GOOGLE_SHEET_URL}?action=get&name=${encodeURIComponent(name)}`)
-    .then(res => res.json())
-    .then(data => renderStaffData(data))
-    .catch(() => alert("Error loading staff data."));
-}
-
-function renderStaffData(data) {
-  document.getElementById("staffNameHeader").innerText = data.name;
-  document.getElementById("totalPay").innerText = `₱${data.totalPay || 0}`;
-  document.getElementById("attendanceDays").innerText = `${data.attendance || 0} days`;
-  document.getElementById("deliveryCount").innerText = `${data.deliveries || 0} deliveries`;
-  // Render other info if needed
-}
-
-function fetchPayoutData() {
-  fetch(`${GOOGLE_SHEET_URL}?action=getAll`)
-    .then(res => res.json())
-    .then(data => populateAdminTable(data))
-    .catch(() => alert("Error loading payout data."));
-}
-
-function populateAdminTable(records) {
-  const tbody = document.getElementById("payoutTableBody");
-  tbody.innerHTML = "";
-  records.forEach(record => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${record.name}</td>
-      <td>${record.attendance}</td>
-      <td>${record.deliveries}</td>
-      <td>₱${record.basicPay}</td>
-      <td>₱${record.allowance}</td>
-      <td>₱${record.advance}</td>
-      <td><strong>₱${record.totalPay}</strong></td>
-      <td>${record.lastUpdated}</td>
-      <td><button onclick="sendReceipt('${record.name}')">Send</button></td>
-    `;
-    tbody.appendChild(row);
-  });
-}
-
-function sendReceipt(name) {
-  fetch(`${GOOGLE_SHEET_URL}?action=receipt&name=${encodeURIComponent(name)}`)
-    .then(() => alert(`Receipt sent to ${name}`))
-    .catch(() => alert("Failed to send receipt."));
-}
-
-function printPDF() {
-  window.print();
-}
-
-function logout() {
-  location.reload();
-}
-
-document.getElementById("loginBtn").addEventListener("click", verifyLogin);
-document.getElementById("exportBtn").addEventListener("click", printPDF);
-document.getElementById("logoutBtn").addEventListener("click", logout);
-<!-- 🔐 Login Modal -->
-  <div id="loginModal" class="modal active">
-    <div class="modal-content">
-      <h2>Login</h2>
-      <label>Full Name</label>
-      <input type="text" id="loginName" placeholder="e.g., Jenny Cruz" />
-      <label>OTP</label>
-      <input type="password" id="loginOTP" placeholder="••••••" />
-      <button onclick="handleLogin()">🔓 Login</button>
+    <div class="footer">
+      <img src="/logo.png" alt="Dala🚲na Logo" /><br>
+      This document is confidential. All payouts are subject to attendance and delivery validation.<br>
+      © 2025 Dala🚲na
     </div>
   </div>
 
-  <!-- 🧾 Admin Dashboard -->
-  <section id="adminDashboard" class="hidden">
-    <h2>👩‍💼 HR / Admin Overview</h2>
-    <table id="payoutTable">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Basic Pay</th>
-          <th>Meal/Load</th>
-          <th>Advance</th>
-          <th>Deliveries</th>
-          <th>Attendance</th>
-          <th>Total</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="adminTableBody"></tbody>
-    </table>
-    <div class="admin-controls">
-      <button onclick="exportPDF()">🖨️ Print / PDF</button>
-      <button onclick="sendAllReceipts()">📧 Email All</button>
-    </div>
-  </section>
-
-  <!-- 👤 Staff View -->
-  <section id="staffDashboard" class="hidden">
-    <h2>👋 Welcome, <span id="staffNameDisplay"></span></h2>
-    <div id="staffPayslip"></div>
-    <div class="export-btns">
-      <button onclick="downloadPDF()">🖨️ Print / PDF</button>
-      <button onclick="sendEmail()">📧 Email</button>
-      <button onclick="sendWhatsApp()">📲 WhatsApp</button>
-    </div>
-  </section>
-
-  <!-- ✏️ Edit Modal -->
-  <div id="editModal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Edit Staff Data</h3>
-      <label>Basic Pay</label>
-      <input type="number" id="editBasic" />
-      <label>Meal/Load Allowance</label>
-      <input type="number" id="editMeal" />
-      <label>Advance</label>
-      <input type="number" id="editAdvance" />
-      <label>Deliveries</label>
-      <input type="number" id="editDeliveries" />
-      <label>Attendance</label>
-      <input type="number" id="editAttendance" />
-      <button onclick="saveEdits()">💾 Save</button>
-      <button onclick="closeEditModal()">❌ Cancel</button>
-    </div>
-  </div>
-<script>
-  const ADMIN_OTP = "radAdmin2024";
-  const staffAccounts = {
-    "lynn": "lynn123",
-    "mario": "mario123",
-    "jenny": "jenny123",
-    "joan": "joan123"
-  };
-
-  let currentUser = null;
-  let currentRole = null;
-
-  function showModal(id) {
-    document.getElementById(id).style.display = "flex";
-  }
-
-  function hideModal(id) {
-    document.getElementById(id).style.display = "none";
-  }
-
-  function login() {
-    const name = document.getElementById("loginName").value.toLowerCase().trim();
-    const otp = document.getElementById("loginOtp").value.trim();
-
-    if (name === "hr admin" && otp === ADMIN_OTP) {
-      currentUser = "HR Admin";
-      currentRole = "admin";
-      hideModal("loginModal");
-      loadAdminDashboard();
-    } else if (staffAccounts[name] && staffAccounts[name] === otp) {
-      currentUser = name;
-      currentRole = "staff";
-      hideModal("loginModal");
-      loadStaffDashboard(name);
-    } else {
-      alert("Invalid name or OTP.");
+  <script>
+    const grid = document.getElementById("attendanceGrid");
+    for (let i = 1; i <= 20; i++) {
+      const box = document.createElement("div");
+      box.innerHTML = `<label><input type='checkbox' checked onchange='updateTotal()'> Day ${i}</label>`;
+      grid.appendChild(box);
     }
-  }
 
-  function logout() {
-    currentUser = null;
-    currentRole = null;
-    location.reload();
-  }
+    function updateTotal() {
+      // Optional real-time recalculation logic
+    }
 
-  function loadStaffDashboard(name) {
-    document.getElementById("dashboard").classList.add("visible");
-    document.getElementById("staffView").style.display = "block";
-    document.getElementById("staffNameDisplay").innerText = name.charAt(0).toUpperCase() + name.slice(1);
-    // Later: fetch individual data from Google Sheets
-  }
+    function generatePayslip() {
+      const name = document.getElementById("staffSelect").selectedOptions[0].text;
+      const pay = parseFloat(document.getElementById("basicPay").value);
+      const allow = parseFloat(document.getElementById("allowance").value);
+      const adv = parseFloat(document.getElementById("advance").value);
+      const del = parseInt(document.getElementById("deliveries").value);
+      const attend = [...document.querySelectorAll("#attendanceGrid input")].filter(b => b.checked).length;
+      const total = pay + allow + adv;
+      const date = new Date().toLocaleString();
+      document.getElementById("payslip").innerText = `
+DALA🚲NA PAYSLIP SUMMARY
+-------------------------
+🧑‍🤝‍🧑 Name: ${name}
+📆 Date: ${date}
 
-  function loadAdminDashboard() {
-    document.getElementById("dashboard").classList.add("visible");
-    document.getElementById("adminView").style.display = "block";
-    // Later: fetch full sheet data
-  }
+✨ Basic Pay: ₱${pay.toFixed(2)}
+🍱 Allowance: ₱${allow.toFixed(2)}
+💸 Advance: ₱${adv.toFixed(2)}
+🚚 Deliveries: ${del} items
+📅 Attendance: ${attend} / 20 days
 
-  function exportPDF() {
-    window.print(); // basic print-to-PDF; for branded PDF, use html2pdf or jsPDF
-  }
+💰 TOTAL PAY: ₱${total.toFixed(2)}
+-------------------------
+✅ Verified by HR/Admin
+`;
+    }
 
-  function sendWhatsApp() {
-    const message = `📤 Dala🚲na Weekly Payslip\nStaff: ${currentUser}\nPay: ₱3000\nAttendance: 18 days\nDeliveries: 25`;
-    const encoded = encodeURIComponent(message);
-    const number = "63XXXXXXXXXX"; // replace with actual
-    window.open(`https://wa.me/${number}?text=${encoded}`, "_blank");
-  }
+    function downloadPDF() {
+      window.print();
+    }
 
-  function sendEmail() {
-    const payload = {
-      name: currentUser,
-      email: "staff@example.com", // Optional: dynamic lookup later
-      total: 3000,
-      message: `Payslip for ${currentUser}`
-    };
+    function sendWhatsApp() {
+      const txt = encodeURIComponent(document.getElementById("payslip").innerText);
+      const phone = prompt("Enter phone number (639XXXXXXXXX):");
+      if (phone) window.open(`https://wa.me/${phone}?text=${txt}`, "_blank");
+    }
 
-    fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    }).then(res => alert("📧 Email sent!"))
-      .catch(err => alert("Email failed."));
-  }
+    function sendEmail() {
+      const content = document.getElementById("payslip").innerText;
+      const email = prompt("Enter email address:");
+      if (email) {
+        fetch("https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec", {
+          method: "POST",
+          body: JSON.stringify({ to: email, message: content })
+        })
+        .then(() => alert("📧 Email sent!"))
+        .catch(() => alert("❌ Failed to send email"));
+      }
+    }
 
-  window.onload = () => {
-    showModal("loginModal");
-  }
-</script>
-<button onclick="exportPDF()">🖨️ Export PDF</button>
-<button onclick="sendWhatsApp()">📲 WhatsApp</button>
-<button onclick="sendEmail()">📧 Email Receipt</button>
+    function saveToSheets() {
+      const data = {
+        timestamp: new Date().toISOString(),
+        name: document.getElementById("staffSelect").selectedOptions[0].text,
+        basic: document.getElementById("basicPay").value,
+        allowance: document.getElementById("allowance").value,
+        advance: document.getElementById("advance").value,
+        deliveries: document.getElementById("deliveries").value,
+        attendance: [...document.querySelectorAll("#attendanceGrid input")].filter(b => b.checked).length
+      };
 
+      const query = new URLSearchParams(data).toString();
+      fetch("https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec?" + query)
+        .then(res => res.json())
+        .then(json => {
+          if (json.result === "success") alert("✅ Saved to Google Sheets");
+          else alert("❌ Save failed");
+        });
+    }
+  </script>
 </body>
 </html>
