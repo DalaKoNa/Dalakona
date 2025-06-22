@@ -2,189 +2,157 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na RAD – Salary Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Dala🚲na | Rider Payslip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: #fdfbf9;
-      color: #333;
+      font-family: 'Inter', sans-serif;
       margin: 0;
-      padding-bottom: 3rem;
+      padding: 0;
+      background: #fdfaf6;
+      color: #333;
     }
     header {
       background: #a0527b;
-      color: white;
+      color: #fff;
       padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    header h1 { font-size: 1.2rem; margin: 0; }
-    .nav-btn { background: white; color: #a0527b; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
     .container {
-      max-width: 900px;
+      max-width: 600px;
       margin: 2rem auto;
-      background: white;
+      background: #fff;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
-    .login-box input {
-      width: 100%; padding: 0.75rem; margin-bottom: 1rem;
-      border-radius: 6px; border: 1px solid #ccc;
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
     }
-    .login-box button {
-      background: #a0527b; color: white; border: none;
-      padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer;
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
-    .hidden { display: none; }
-    .logout { text-align: right; font-size: 0.8rem; margin-bottom: 1rem; }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #a0527b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background: #8a4266;
+    }
     .payslip {
-      border: 1px solid #ddd; padding: 1.5rem;
-      border-radius: 10px; background: #fefefe; margin-bottom: 1.5rem;
+      background: #f9f4f1;
+      border: 1px solid #e0d4c7;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1.5rem;
+      line-height: 1.5;
     }
-    .payslip h2 { margin-top: 0; color: #a0527b; text-align: center; }
-    .payslip .row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-    .payslip .total { font-weight: bold; font-size: 1.1rem; text-align: center; margin-top: 1rem; }
-    .calendar {
-      display: grid; grid-template-columns: repeat(7, 1fr);
-      gap: 8px; font-size: 0.85rem; margin-top: 1rem;
-    }
-    .calendar div {
-      border: 1px solid #ccc; padding: 0.5rem;
-      border-radius: 6px; text-align: center;
-    }
-    .present { background: #d4edda; }
-    .absent { background: #f8d7da; }
-    .controls button {
-      margin-right: 8px; background: #eee; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;
-    }
-    .controls { margin-bottom: 1rem; }
-    .footer-btns button {
-      background: #a0527b; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px;
-      margin-right: 1rem; cursor: pointer;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>Dala🚲na RAD Payslip System</h1>
-  <button class="nav-btn" onclick="logout()">Logout</button>
-</header>
-
-<div class="container">
-  <div id="loginBox" class="login-box">
-    <input type="text" id="loginName" placeholder="Enter Full Name" />
-    <input type="password" id="loginOTP" placeholder="Enter OTP" />
-    <button onclick="login()">Login</button>
+  <header>Dala🚲na Staff Payslip</header>
+  <div class="container" id="loginBox">
+    <label>Full Name</label>
+    <input type="text" id="staffName" placeholder="e.g. Juan Dela Cruz" />
+    <label>OTP</label>
+    <input type="password" id="staffOTP" placeholder="Enter OTP" />
+    <button onclick="verifyStaff()">Login</button>
   </div>
 
-  <div id="dashboard" class="hidden">
-    <div class="logout">Welcome, <span id="userRole"></span></div>
-
-    <div class="controls">
-      <label>Select Month:
-        <select id="monthSelect" onchange="renderPayslip()">
-          <option value="2025-06">June 2025</option>
-          <option value="2025-07">July 2025</option>
-        </select>
-      </label>
+  <div class="container hidden" id="payslipBox">
+    <h2>Welcome, <span id="displayName"></span>!</h2>
+    <div class="payslip" id="payslipContent">
+      <!-- Payslip content will be generated here -->
     </div>
-
-    <div class="payslip" id="payslipArea">
-      <h2>Payslip for <span id="userName">Rider</span></h2>
-      <div class="row"><span>📅 Period:</span><span id="payslipPeriod">June 2025</span></div>
-      <div class="row"><span>✅ Attendance:</span><span id="payslipAttendance">0 / 20 days</span></div>
-      <div class="row"><span>📦 Deliveries:</span><span id="payslipDeliveries">0 deliveries</span></div>
-      <div class="row"><span>🍱 Allowance:</span><span id="payslipAllowance">₱0</span></div>
-      <div class="row"><span>💸 Payout:</span><span id="payslipPayout">₱0</span></div>
-      <div class="total">💰 Total: ₱<span id="payslipTotal">0</span></div>
-    </div>
-
-    <div class="calendar" id="calendar"></div>
-
-    <div class="footer-btns">
-      <button onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
-      <button onclick="sendEmail()">📧 Send via Email</button>
-      <button onclick="window.print()">🖨️ Print Payslip</button>
-    </div>
+    <button onclick="window.print()">🖨️ Print / Save PDF</button>
+    <button onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
+    <button onclick="logout()" style="background:#888">Logout</button>
   </div>
-</div>
 
-<script>
-  const STAFF = {
-    "lynn": "lynn2024",
-    "mark": "mark2024",
-    "jane": "jane2024",
-    "karl": "karl2024",
-    "radadmin": "radAdmin2024"
-  };
+  <script>
+    const STAFF = {
+      "Juan Dela Cruz": "otp123",
+      "Maria Santos": "otp456",
+      "Pedro Reyes": "otp789"
+    };
 
-  const DATA = {
-    "lynn": { deliveries: 120, attendance: 18, allowance: 1000, payout: 2000, email: "lynn@email.com", phone: "63XXXXXX" },
-    "mark": { deliveries: 98, attendance: 17, allowance: 950, payout: 1800, email: "mark@email.com", phone: "63XXXXXX" },
-    "jane": { deliveries: 105, attendance: 19, allowance: 1050, payout: 1900, email: "jane@email.com", phone: "63XXXXXX" },
-    "karl": { deliveries: 90, attendance: 16, allowance: 900, payout: 1700, email: "karl@email.com", phone: "63XXXXXX" },
-  };
+    const SAMPLE_PAYOUT = {
+      week: "June 17–21, 2025",
+      attendance: 5,
+      deliveries: 48,
+      allowance: 250,
+      payout: 500,
+      bonus: 150,
+      total: 900
+    };
 
-  let currentUser = null;
-
-  function login() {
-    const name = document.getElementById("loginName").value.toLowerCase().trim();
-    const otp = document.getElementById("loginOTP").value.trim();
-    if (STAFF[name] && STAFF[name] === otp) {
-      currentUser = name;
-      document.getElementById("loginBox").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("userName").innerText = name.toUpperCase();
-      document.getElementById("userRole").innerText = name.toUpperCase();
-      renderPayslip();
-    } else {
-      alert("Invalid login");
+    function verifyStaff() {
+      const name = document.getElementById('staffName').value.trim();
+      const otp = document.getElementById('staffOTP').value.trim();
+      if (STAFF[name] === otp) {
+        localStorage.setItem("staffName", name);
+        showPayslip(name);
+      } else {
+        alert("Invalid OTP. Please try again.");
+      }
     }
-  }
 
-  function logout() {
-    location.reload();
-  }
+    function showPayslip(name) {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('payslipBox').classList.remove('hidden');
+      document.getElementById('displayName').textContent = name;
 
-  function renderPayslip() {
-    const month = document.getElementById("monthSelect").value;
-    const data = DATA[currentUser];
-    document.getElementById("payslipPeriod").innerText = month;
-    document.getElementById("payslipAttendance").innerText = `${data.attendance} / 20 days`;
-    document.getElementById("payslipDeliveries").innerText = `${data.deliveries} deliveries`;
-    document.getElementById("payslipAllowance").innerText = `₱${data.allowance}`;
-    document.getElementById("payslipPayout").innerText = `₱${data.payout}`;
-    document.getElementById("payslipTotal").innerText = data.allowance + data.payout;
-
-    const calendar = document.getElementById("calendar");
-    calendar.innerHTML = "";
-    for (let i = 1; i <= 20; i++) {
-      const div = document.createElement("div");
-      div.className = i <= data.attendance ? 'present' : 'absent';
-      div.innerText = `Day ${i}`;
-      calendar.appendChild(div);
+      const p = SAMPLE_PAYOUT;
+      document.getElementById('payslipContent').innerHTML = `
+        <strong>📆 Week:</strong> ${p.week}<br>
+        <strong>👥 Attendance Days:</strong> ${p.attendance}<br>
+        <strong>🚚 Deliveries Made:</strong> ${p.deliveries}<br>
+        <strong>🍽️ Allowance:</strong> ₱${p.allowance}<br>
+        <strong>💵 Base Payout:</strong> ₱${p.payout}<br>
+        <strong>🎁 Bonus:</strong> ₱${p.bonus}<br>
+        <hr>
+        <strong>✨ Total Salary:</strong> <span style="font-size:1.3rem;">₱${p.total}</span>
+      `;
     }
-  }
 
-  function sendWhatsApp() {
-    const data = DATA[currentUser];
-    const message = `RAD Payslip\nName: ${currentUser}\nAttendance: ${data.attendance}/20\nDeliveries: ${data.deliveries}\nAllowance: ₱${data.allowance}\nPayout: ₱${data.payout}\nTotal: ₱${data.allowance + data.payout}`;
-    const url = `https://wa.me/${data.phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  }
+    function sendWhatsApp() {
+      const name = localStorage.getItem("staffName");
+      const p = SAMPLE_PAYOUT;
+      const msg = `Hello ${name}, your Dala🚲na payslip for ${p.week} is:\n\n` +
+                  `Attendance: ${p.attendance} days\nDeliveries: ${p.deliveries}\nAllowance: ₱${p.allowance}\nPayout: ₱${p.payout}\nBonus: ₱${p.bonus}\n\nTotal: ₱${p.total}`;
+      const encoded = encodeURIComponent(msg);
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    }
 
-  function sendEmail() {
-    const data = DATA[currentUser];
-    const subject = `RAD Payslip – ${currentUser}`;
-    const body = `Hi ${currentUser},\n\nHere's your payslip summary:\n- Attendance: ${data.attendance}/20\n- Deliveries: ${data.deliveries}\n- Allowance: ₱${data.allowance}\n- Payout: ₱${data.payout}\n\nTotal: ₱${data.allowance + data.payout}`;
-    window.location.href = `mailto:${data.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-</script>
+    function logout() {
+      localStorage.removeItem("staffName");
+      location.reload();
+    }
 
+    // Auto-login if session exists
+    window.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("staffName");
+      if (name) showPayslip(name);
+    });
+  </script>
 </body>
 </html>
