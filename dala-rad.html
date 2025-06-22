@@ -2,210 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Dala🚲na RAD – Salary Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD – Payout Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: #fffaf6;
+      font-family: 'Arial', sans-serif;
+      background: #fdfbf9;
       color: #333;
+      margin: 0;
+      padding-bottom: 3rem;
     }
     header {
       background: #a0527b;
       color: white;
       padding: 1rem;
-      text-align: center;
-      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    header h1 { font-size: 1.2rem; margin: 0; }
+    .nav-btn { background: white; color: #a0527b; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
     .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 1rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .login-box input {
+      width: 100%; padding: 0.75rem; margin-bottom: 1rem;
+      border-radius: 6px; border: 1px solid #ccc;
+    }
+    .login-box button {
+      background: #a0527b; color: white; border: none;
+      padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer;
     }
     .hidden { display: none; }
-    .card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
+    .logout { text-align: right; font-size: 0.8rem; margin-bottom: 1rem; }
     .payslip {
-      background: #f9f4f1;
-      border-left: 4px solid #a0527b;
-      padding: 1rem;
-      margin-top: 1rem;
+      border: 1px solid #ddd; padding: 1.5rem;
+      border-radius: 10px; background: #fefefe; margin-bottom: 1.5rem;
     }
-    .controls, select, button {
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      font-size: 1rem;
+    .payslip h2 { margin-top: 0; color: #a0527b; text-align: center; }
+    .payslip .row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    .payslip .total { font-weight: bold; font-size: 1.1rem; text-align: center; margin-top: 1rem; }
+    .calendar {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 8px; font-size: 0.85rem; margin-top: 1rem;
     }
-    button {
-      background: #a0527b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+    .calendar div {
+      border: 1px solid #ccc; padding: 0.5rem;
+      border-radius: 6px; text-align: center;
     }
-    button:hover { background: #8e406c; }
-    .logout-btn {
-      font-size: 0.8rem;
-      background: gray;
-      margin-top: 1rem;
+    .present { background: #d4edda; }
+    .absent { background: #f8d7da; }
+    .controls button {
+      margin-right: 8px; background: #eee; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;
     }
-    .owner-only { border: 2px dashed #a0527b; padding: 1rem; margin-top: 1rem; background: #fff5f8; }
-    .dropdown {
-      width: 100%;
+    .controls { margin-bottom: 1rem; }
+    .footer-btns button {
+      background: #a0527b; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px;
+      margin-right: 1rem; cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>Dala🚲na RAD – Rider Attendance & Delivery</header>
 
-  <div class="container" id="loginView">
-    <div class="card">
-      <h2>Login</h2>
-      <label>Name</label>
-      <input type="text" id="loginName" placeholder="Enter name" />
-      <label>OTP</label>
-      <input type="password" id="loginOTP" placeholder="Enter OTP" />
-      <button onclick="login()">Login</button>
-    </div>
+<header>
+  <h1>Dala🚲na RAD Payslip System</h1>
+  <button class="nav-btn" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+  <div id="loginBox" class="login-box">
+    <input type="text" id="loginName" placeholder="Enter Full Name" />
+    <input type="password" id="loginOTP" placeholder="Enter OTP" />
+    <button onclick="login()">Login</button>
   </div>
 
-  <div class="container hidden" id="dashboardView">
-    <div class="card">
-      <h2>Welcome, <span id="userName"></span></h2>
-      <label>Week</label>
-      <select id="weekSelect" class="dropdown" onchange="renderPayslip()">
-        <option value="week1">Week 1</option>
-        <option value="week2">Week 2</option>
-        <option value="week3">Week 3</option>
-        <option value="week4">Week 4</option>
-      </select>
+  <div id="dashboard" class="hidden">
+    <div class="logout">Welcome, <span id="userRole"></span></div>
 
-      <div id="payslipContent" class="payslip"></div>
+    <div class="controls">
+      <label>Select Month:
+        <select id="monthSelect" onchange="renderPayslip()">
+          <option value="2025-06">June 2025</option>
+          <option value="2025-07">July 2025</option>
+        </select>
+      </label>
+    </div>
 
+    <div class="payslip" id="payslipArea">
+      <h2>Payslip for <span id="userName">Rider</span></h2>
+      <div class="row"><span>📅 Period:</span><span id="payslipPeriod">June 2025</span></div>
+      <div class="row"><span>✅ Attendance:</span><span id="payslipAttendance">0 / 20 days</span></div>
+      <div class="row"><span>📦 Deliveries:</span><span id="payslipDeliveries">0 deliveries</span></div>
+      <div class="row"><span>🍱 Allowance:</span><span id="payslipAllowance">₱0</span></div>
+      <div class="row"><span>💸 Payout:</span><span id="payslipPayout">₱0</span></div>
+      <div class="total">💰 Total: ₱<span id="payslipTotal">0</span></div>
+    </div>
+
+    <div class="calendar" id="calendar"></div>
+
+    <div class="footer-btns">
       <button onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
-      <button onclick="sendEmail()">📧 Email Receipt</button>
-      <button onclick="window.print()">🖨️ Download PDF</button>
-      <button onclick="logout()" class="logout-btn">Logout</button>
-    </div>
-
-    <div class="owner-only hidden" id="ownerPanel">
-      <h3>🧑‍💼 Admin Panel</h3>
-      <label>Attendance (days)</label>
-      <input type="number" id="inputAttendance" min="0" max="6" />
-      <label>Deliveries Made</label>
-      <input type="number" id="inputDeliveries" min="0" />
-      <label>Food Allowance Given?</label>
-      <select id="inputFood">
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-      <label>Payout Released?</label>
-      <select id="inputPayout">
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-      <button onclick="saveToSheet()">💾 Save to Google Sheets</button>
+      <button onclick="sendEmail()">📧 Send via Email</button>
+      <button onclick="window.print()">🖨️ Print Payslip</button>
     </div>
   </div>
+</div>
 
-  <script>
-    const sheetUrl = "https://script.google.com/macros/s/AKfycbxoKh3-TTJm1QYcOU3nQqiIsA9gRZhtYvzaCWOBt5B53NGPSbdueHbZr2_R4uOmsXqVSA/exec";
-    const users = {
-      owner: { otp: "dalaAdmin2024", role: "admin" },
-      lynn: { otp: "rider1otp", role: "staff" },
-      mark: { otp: "rider2otp", role: "staff" },
-      jane: { otp: "rider3otp", role: "staff" },
-      karl: { otp: "assistantotp", role: "staff" },
-    };
-    let currentUser = {};
+<script>
+  const STAFF = {
+    "lynn": "lynn2024",
+    "mark": "mark2024",
+    "jane": "jane2024",
+    "karl": "karl2024",
+    "radadmin": "radAdmin2024"
+  };
 
-    function login() {
-      const name = document.getElementById("loginName").value.trim().toLowerCase();
-      const otp = document.getElementById("loginOTP").value.trim();
-      if (users[name] && users[name].otp === otp) {
-        currentUser = { name, role: users[name].role };
-        document.getElementById("loginView").classList.add("hidden");
-        document.getElementById("dashboardView").classList.remove("hidden");
-        document.getElementById("userName").innerText = name;
-        if (currentUser.role === 'admin') document.getElementById("ownerPanel").classList.remove("hidden");
-        renderPayslip();
-      } else {
-        alert("Invalid login credentials");
-      }
-    }
+  const DATA = {
+    "lynn": { deliveries: 120, attendance: 18, allowance: 1000, payout: 2000, email: "lynn@email.com", phone: "63XXXXXX" },
+    "mark": { deliveries: 98, attendance: 17, allowance: 950, payout: 1800, email: "mark@email.com", phone: "63XXXXXX" },
+    "jane": { deliveries: 105, attendance: 19, allowance: 1050, payout: 1900, email: "jane@email.com", phone: "63XXXXXX" },
+    "karl": { deliveries: 90, attendance: 16, allowance: 900, payout: 1700, email: "karl@email.com", phone: "63XXXXXX" },
+  };
 
-    function logout() {
-      currentUser = {};
-      location.reload();
-    }
+  let currentUser = null;
 
-    function renderPayslip() {
-      const week = document.getElementById("weekSelect").value;
-      const attendance = localStorage.getItem(week + "_att_" + currentUser.name) || 0;
-      const deliveries = localStorage.getItem(week + "_del_" + currentUser.name) || 0;
-      const food = localStorage.getItem(week + "_food_" + currentUser.name) || "No";
-      const payout = localStorage.getItem(week + "_payout_" + currentUser.name) || "No";
-      let total = 0;
-      if (food === "Yes") total += 250;
-      if (payout === "Yes") total += 500;
-
-      const slip = `
-📅 ${week.toUpperCase()}
-👤 ${currentUser.name.toUpperCase()}
-✅ Attendance: ${attendance} day(s)
-🚚 Deliveries: ${deliveries}
-🍱 Food Allowance: ${food === 'Yes' ? '₱250' : '❌'}
-💵 Weekly Payout: ${payout === 'Yes' ? '₱500' : '❌'}
-📊 TOTAL RECEIVED: ₱${total}`;
-      document.getElementById("payslipContent").innerText = slip;
-    }
-
-    function sendWhatsApp() {
-      const msg = encodeURIComponent(document.getElementById("payslipContent").innerText);
-      window.open(`https://wa.me/?text=${msg}`);
-    }
-
-    function sendEmail() {
-      const email = prompt("Enter email address to send receipt:");
-      if (!email) return;
-      const week = document.getElementById("weekSelect").value;
-      const content = document.getElementById("payslipContent").innerText;
-      fetch(sheetUrl, {
-        method: "POST",
-        body: JSON.stringify({ action: "email", email, content, week, user: currentUser.name })
-      });
-      alert("📧 Sent email (if connected)");
-    }
-
-    function saveToSheet() {
-      const week = document.getElementById("weekSelect").value;
-      const name = currentUser.name;
-      const att = document.getElementById("inputAttendance").value;
-      const del = document.getElementById("inputDeliveries").value;
-      const food = document.getElementById("inputFood").value;
-      const payout = document.getElementById("inputPayout").value;
-
-      localStorage.setItem(week + "_att_" + name, att);
-      localStorage.setItem(week + "_del_" + name, del);
-      localStorage.setItem(week + "_food_" + name, food);
-      localStorage.setItem(week + "_payout_" + name, payout);
-
+  function login() {
+    const name = document.getElementById("loginName").value.toLowerCase().trim();
+    const otp = document.getElementById("loginOTP").value.trim();
+    if (STAFF[name] && STAFF[name] === otp) {
+      currentUser = name;
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("userName").innerText = name.toUpperCase();
+      document.getElementById("userRole").innerText = name.toUpperCase();
       renderPayslip();
-
-      fetch(sheetUrl, {
-        method: "POST",
-        body: JSON.stringify({ action: "save", name, week, att, del, food, payout })
-      });
-
-      alert("Saved and synced with sheet");
+    } else {
+      alert("Invalid login");
     }
-  </script>
+  }
+
+  function logout() {
+    location.reload();
+  }
+
+  function renderPayslip() {
+    const month = document.getElementById("monthSelect").value;
+    const data = DATA[currentUser];
+    document.getElementById("payslipPeriod").innerText = month;
+    document.getElementById("payslipAttendance").innerText = `${data.attendance} / 20 days`;
+    document.getElementById("payslipDeliveries").innerText = `${data.deliveries} deliveries`;
+    document.getElementById("payslipAllowance").innerText = `₱${data.allowance}`;
+    document.getElementById("payslipPayout").innerText = `₱${data.payout}`;
+    document.getElementById("payslipTotal").innerText = data.allowance + data.payout;
+
+    const calendar = document.getElementById("calendar");
+    calendar.innerHTML = "";
+    for (let i = 1; i <= 20; i++) {
+      const div = document.createElement("div");
+      div.className = i <= data.attendance ? 'present' : 'absent';
+      div.innerText = `Day ${i}`;
+      calendar.appendChild(div);
+    }
+  }
+
+  function sendWhatsApp() {
+    const data = DATA[currentUser];
+    const message = `RAD Payslip\nName: ${currentUser}\nAttendance: ${data.attendance}/20\nDeliveries: ${data.deliveries}\nAllowance: ₱${data.allowance}\nPayout: ₱${data.payout}\nTotal: ₱${data.allowance + data.payout}`;
+    const url = `https://wa.me/${data.phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  function sendEmail() {
+    const data = DATA[currentUser];
+    const subject = `RAD Payslip – ${currentUser}`;
+    const body = `Hi ${currentUser},\n\nHere's your payslip summary:\n- Attendance: ${data.attendance}/20\n- Deliveries: ${data.deliveries}\n- Allowance: ₱${data.allowance}\n- Payout: ₱${data.payout}\n\nTotal: ₱${data.allowance + data.payout}`;
+    window.location.href = `mailto:${data.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+</script>
+
 </body>
 </html>
