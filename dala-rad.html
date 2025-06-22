@@ -2,22 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na RAD | Rider Admin Dashboard</title>
+  <title>Dala🚲na RAD | Rider Salary Payslip</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
       background: #fffaf7;
-      color: #333;
-      padding: 2rem;
       margin: 0;
+      padding: 2rem 1rem;
     }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #a0527b;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+    .hamburger {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
     h1 {
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: #a0527b;
+      margin-top: 1rem;
     }
+
     .login-box, .dashboard {
       max-width: 700px;
       margin: 2rem auto;
@@ -26,64 +43,97 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
     label {
-      font-size: 0.9rem;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
+
     input {
       width: 100%;
-      padding: 8px;
-      font-size: 0.95rem;
+      padding: 0.6rem;
+      font-size: 1rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
+
     button {
       width: 100%;
       padding: 10px;
       background: #a0527b;
       color: white;
-      border: none;
       font-size: 1rem;
-      border-radius: 8px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
-    .hidden { display: none; }
+
     .logout {
       text-align: right;
+    }
+    .logout button {
+      background: #999;
       font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 6px;
       margin-bottom: 1rem;
     }
-    .week {
-      background: #f8f4f0;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border-radius: 10px;
+
+    .payslip {
+      background: #fdfdfc;
       border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
+    .payslip h3 {
+      margin-top: 0;
+      color: #a0527b;
+    }
+
+    .payslip .meta {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .payslip label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
     .summary {
-      background: #fff2ea;
-      padding: 1rem;
-      border-radius: 8px;
       font-weight: bold;
       text-align: center;
+      margin-top: 2rem;
+      background: #fff2ea;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
     }
-    .admin-controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 1rem;
-      justify-content: center;
+
+    input[type="checkbox"]:disabled {
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
-  <h1>Dala🚲na RAD – Rider Salary Tracker</h1>
+  <header class="navbar">
+    <button class="hamburger" onclick="alert('Sidebar coming soon!')">☰</button>
+    <h1 style="margin: 0;">Dala🚲na RAD</h1>
+  </header>
+
   <div class="login-box" id="loginBox">
-    <label>👤 Name</label>
-    <input type="text" id="userName" />
-    <label>🆔 ID</label>
-    <input type="text" id="userId" />
+    <h2>👤 Rider Login</h2>
+    <label>Rider Name</label>
+    <input type="text" id="riderName" />
+    <label>Employee ID</label>
+    <input type="text" id="employeeId" />
     <button onclick="login()">Login</button>
   </div>
 
@@ -91,35 +141,31 @@
     <div class="logout">
       <button onclick="logout()">Logout</button>
     </div>
-    <div id="header"></div>
+    <div id="riderHeader"></div>
     <div id="salaryWeeks"></div>
     <div class="summary" id="salarySummary"></div>
-    <div class="admin-controls hidden" id="adminActions">
-      <button onclick="downloadPDF()">📄 Download Payslip</button>
-      <button onclick="sendWhatsApp()">📤 Send via WhatsApp</button>
-      <button onclick="sendEmail()">📧 Send via Email</button>
-    </div>
   </div>
 
   <script>
-    const OWNER_ID = 'dalaAdmin2024';
-    const ALLOWANCE = 250;
-    const PAYOUT = 500;
-    const TOTAL_WEEKS = 4;
     const schedule = [
       { week: 1, start: "2025-06-02" },
       { week: 2, start: "2025-06-09" },
       { week: 3, start: "2025-06-16" },
-      { week: 4, start: "2025-06-23" }
+      { week: 4, start: "2025-06-23" },
     ];
 
-    function login() {
-      const name = document.getElementById("userName").value.trim();
-      const id = document.getElementById("userId").value.trim();
-      if (!name || !id) return alert("Enter both name and ID");
+    const ALLOWANCE = 250;
+    const PAYOUT = 500;
+    let isAdmin = false;
 
-      localStorage.setItem("radName", name);
-      localStorage.setItem("radID", id);
+    function login() {
+      const name = document.getElementById("riderName").value.trim();
+      const id = document.getElementById("employeeId").value.trim();
+      if (!name || !id) return alert("Please fill both fields");
+
+      localStorage.setItem("riderName", name);
+      localStorage.setItem("employeeId", id);
+      isAdmin = (id === "dalaAdmin2024");
       showDashboard(name, id);
     }
 
@@ -131,75 +177,57 @@
     function showDashboard(name, id) {
       document.getElementById("loginBox").classList.add("hidden");
       document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("header").innerText = `👤 ${name} | 🆔 ${id}`;
-
-      const isAdmin = id === OWNER_ID;
-      document.getElementById("adminActions").classList.toggle("hidden", !isAdmin);
-
-      const today = new Date();
+      document.getElementById("riderHeader").innerHTML = `👤 <strong>${name}</strong> | 🆔 ${id}`;
+      
       let totalPaid = 0;
-      const weeksEl = document.getElementById("salaryWeeks");
-      weeksEl.innerHTML = "";
+      const container = document.getElementById("salaryWeeks");
+      container.innerHTML = "";
 
       schedule.forEach(({ week, start }) => {
-        const weekStart = new Date(start);
         const foodKey = `week${week}_food_${id}`;
         const payoutKey = `week${week}_payout_${id}`;
-
-        const foodGiven = JSON.parse(localStorage.getItem(foodKey)) || (today >= weekStart);
-        const payoutGiven = JSON.parse(localStorage.getItem(payoutKey)) || (today >= new Date(weekStart.getTime() + 4 * 86400000));
+        const foodGiven = JSON.parse(localStorage.getItem(foodKey)) || false;
+        const payoutGiven = JSON.parse(localStorage.getItem(payoutKey)) || false;
 
         if (foodGiven) totalPaid += ALLOWANCE;
         if (payoutGiven) totalPaid += PAYOUT;
 
-        const weekDiv = document.createElement("div");
-        weekDiv.className = "week";
-        weekDiv.innerHTML = `
-          <h3>📅 Week ${week} – ${start}</h3>
-          <label><input type="checkbox" ${foodGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="setPayment('${foodKey}', this.checked)"> ₱${ALLOWANCE} Food Allowance</label>
-          <label><input type="checkbox" ${payoutGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="setPayment('${payoutKey}', this.checked)"> ₱${PAYOUT} Payout</label>
+        const slip = document.createElement("div");
+        slip.className = "payslip";
+        slip.innerHTML = `
+          <h3>🧾 Payslip – Week ${week}</h3>
+          <div class="meta">📅 Start: ${start}</div>
+          <label>
+            <input type="checkbox" ${foodGiven ? "checked" : ""} 
+              ${isAdmin ? "" : "disabled"} onchange="togglePayment('${foodKey}', this.checked)">
+            ₱${ALLOWANCE} Food Allowance
+          </label>
+          <label>
+            <input type="checkbox" ${payoutGiven ? "checked" : ""} 
+              ${isAdmin ? "" : "disabled"} onchange="togglePayment('${payoutKey}', this.checked)">
+            ₱${PAYOUT} Weekly Payout
+          </label>
         `;
-        weeksEl.appendChild(weekDiv);
+        container.appendChild(slip);
       });
 
-      document.getElementById("salarySummary").innerText = `✨ Total Paid: ₱${totalPaid.toLocaleString()} of ₱3,000`;
+      document.getElementById("salarySummary").innerText = `💰 Total Earned: ₱${totalPaid.toLocaleString()} / ₱3,000`;
     }
 
-    function setPayment(key, val) {
-      localStorage.setItem(key, val);
-      const name = localStorage.getItem("radName");
-      const id = localStorage.getItem("radID");
+    function togglePayment(key, checked) {
+      localStorage.setItem(key, checked);
+      const name = localStorage.getItem("riderName");
+      const id = localStorage.getItem("employeeId");
       showDashboard(name, id);
     }
 
-    function downloadPDF() {
-      const element = document.getElementById("salaryWeeks").cloneNode(true);
-      element.appendChild(document.getElementById("salarySummary").cloneNode(true));
-      html2pdf().from(element).save("DalaPayslip.pdf");
-    }
-
-    function sendWhatsApp() {
-      const name = localStorage.getItem("radName");
-      const id = localStorage.getItem("radID");
-      const summary = document.getElementById("salarySummary").innerText;
-      const message = `📤 Dala🚲na Salary Summary\n👤 ${name}\n🆔 ${id}\n${summary}`;
-      const adminNumber = "63XXXXXXXXXX"; // replace with your number
-      window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`);
-    }
-
-    function sendEmail() {
-      const name = localStorage.getItem("radName");
-      const id = localStorage.getItem("radID");
-      const summary = document.getElementById("salarySummary").innerText;
-      const subject = `Dala🚲na Payslip for ${name}`;
-      const body = `Hi ${name},\n\nHere’s your salary summary:\n\n👤 ${name}\n🆔 ${id}\n${summary}\n\nFrom: Dala🚲na RAD`;
-      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
-
     window.addEventListener("DOMContentLoaded", () => {
-      const name = localStorage.getItem("radName");
-      const id = localStorage.getItem("radID");
-      if (name && id) showDashboard(name, id);
+      const name = localStorage.getItem("riderName");
+      const id = localStorage.getItem("employeeId");
+      if (name && id) {
+        isAdmin = (id === "dalaAdmin2024");
+        showDashboard(name, id);
+      }
     });
   </script>
 </body>
