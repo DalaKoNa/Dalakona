@@ -3,171 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD Login</title>
+  <title>Dala🚲na | RAD Unified Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: #fffaf7;
       margin: 0;
-      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background: #fffaf6;
+      color: #333;
     }
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    header {
+      background: #a0527b;
+      color: white;
+      padding: 1rem;
       text-align: center;
+      font-size: 1.5rem;
     }
-    h2 {
-      color: #a0527b;
-      margin-bottom: 1.5rem;
+    .login-modal, .dashboard, .payslip-card {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    input {
+    input, select, button {
       width: 100%;
-      padding: 0.75rem;
+      padding: 10px;
+      margin-top: 0.5rem;
       margin-bottom: 1rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
       font-size: 1rem;
     }
     button {
       background: #a0527b;
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 8px;
       cursor: pointer;
-      width: 100%;
     }
-    .error {
-      color: red;
-      font-size: 0.9rem;
-      display: none;
+    .hidden { display: none; }
+    .logout-btn { text-align: right; }
+    .tab-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 1rem;
     }
-    .dashboard {
-      display: none;
-      padding: 2rem;
+    .tab-menu button {
+      flex: 1;
+      background: #eee;
+      color: #333;
+    }
+    .tab-menu button.active {
+      background: #a0527b;
+      color: white;
+    }
+    .payslip-card {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f9f5f2;
+    }
+    .payslip-card h3 { margin: 0 0 1rem; }
+    .actions button {
+      width: auto;
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body>
+  <header>Dala🚲na | Rider Salary System</header>
 
-<!-- Login Modal -->
-<div class="modal-backdrop" id="loginModal">
-  <div class="modal">
-    <h2>Login to Dala🚲na RAD</h2>
-    <input type="text" id="loginName" placeholder="Full Name (e.g. admin)" />
-    <input type="password" id="loginOtp" placeholder="Enter OTP" />
-    <div class="error" id="loginError">Invalid name or OTP</div>
-    <button onclick="handleLogin()">Login</button>
+  <div class="login-modal" id="loginModal">
+    <h2>Login</h2>
+    <label>Name</label>
+    <input type="text" id="loginName" />
+    <label>OTP Code</label>
+    <input type="password" id="loginOTP" />
+    <button onclick="login()">Login</button>
   </div>
-</div>
 
-<!-- Admin Dashboard -->
-<div class="dashboard" id="adminDashboard">
-  <h2>👩‍💼 Admin Overview Dashboard</h2>
-  <p>See all staff salary records, attendance, delivery logs.</p>
-  <!-- Data entry section (Google Sheets linked) -->
-  <form id="adminEntryForm">
-    <input type="text" id="entryName" placeholder="Staff Name" required />
-    <input type="number" id="entryAttendance" placeholder="Work Days" required />
-    <input type="number" id="entryDeliveries" placeholder="No. of Deliveries" required />
-    <input type="number" id="entryPayout" placeholder="Total Payout" required />
-    <input type="email" id="entryEmail" placeholder="Staff Email" required />
-    <button type="submit">📤 Submit Payout</button>
-  </form>
-  <div id="entryStatus"></div>
-</div>
+  <div class="dashboard hidden" id="dashboard">
+    <div class="logout-btn">
+      <button onclick="logout()">Logout</button>
+    </div>
+    <div id="tabMenu" class="tab-menu"></div>
+    <div id="tabContent"></div>
+  </div>
 
-<!-- Staff Dashboard -->
-<div class="dashboard" id="staffDashboard">
-  <h2>📄 Your Payslip</h2>
-  <div id="staffPayslip">Loading your record...</div>
-</div>
+  <script>
+    const USERS = [
+      { name: "HR Admin", role: "admin", otp: "radAdmin2024" },
+      { name: "Lynn Tebban", role: "staff", otp: "lynn123" },
+      { name: "Mario Lopez", role: "staff", otp: "mario123" },
+      { name: "Jenny Cruz", role: "staff", otp: "jenny123" },
+      { name: "Assistant Joan", role: "staff", otp: "joan123" },
+    ];
 
-<script>
-  const credentials = {
-    admin: "radAdmin2024",
-    lynn: "radStaff001",
-    mario: "radStaff002",
-    jenny: "radStaff003",
-    assistant: "radAssistant01"
-  };
+    let currentUser = null;
+    let currentRole = null;
 
-  const sheetURL = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
-
-  function handleLogin() {
-    const name = document.getElementById("loginName").value.trim().toLowerCase();
-    const otp = document.getElementById("loginOtp").value.trim();
-    const error = document.getElementById("loginError");
-
-    if (credentials[name] && credentials[name] === otp) {
-      document.getElementById("loginModal").style.display = "none";
-
-      if (name === "admin") {
-        document.getElementById("adminDashboard").style.display = "block";
-      } else {
-        document.getElementById("staffDashboard").style.display = "block";
-        loadStaffPayslip(name);
-      }
-    } else {
-      error.style.display = "block";
+    function login() {
+      const name = document.getElementById('loginName').value.trim();
+      const otp = document.getElementById('loginOTP').value.trim();
+      const found = USERS.find(u => u.name === name && u.otp === otp);
+      if (!found) return alert("Invalid credentials");
+      currentUser = found.name;
+      currentRole = found.role;
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadDashboard();
     }
-  }
 
-  // Admin Form Submission
-  document.getElementById("adminEntryForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const data = {
-      name: document.getElementById("entryName").value.trim(),
-      attendance: document.getElementById("entryAttendance").value,
-      deliveries: document.getElementById("entryDeliveries").value,
-      payout: document.getElementById("entryPayout").value,
-      email: document.getElementById("entryEmail").value,
-      timestamp: new Date().toISOString()
-    };
-
-    const query = new URLSearchParams(data);
-    const statusDiv = document.getElementById("entryStatus");
-
-    try {
-      const res = await fetch(sheetURL + "?" + query);
-      const json = await res.json();
-      if (json.result === "success") {
-        statusDiv.innerText = "✅ Submitted to Google Sheet";
-        document.getElementById("adminEntryForm").reset();
-      } else {
-        statusDiv.innerText = "❌ Submission failed";
-      }
-    } catch (err) {
-      statusDiv.innerText = "⚠️ Network error";
+    function logout() {
+      location.reload();
     }
-  });
 
-  // Load staff record
-  async function loadStaffPayslip(name) {
-    try {
-      const res = await fetch(sheetURL + `?action=getPayslip&name=${name}`);
-      const data = await res.json();
-      document.getElementById("staffPayslip").innerHTML = data.html || "No record found.";
-    } catch {
-      document.getElementById("staffPayslip").innerText = "Error loading record.";
+    function loadDashboard() {
+      const tabMenu = document.getElementById("tabMenu");
+      const tabContent = document.getElementById("tabContent");
+      tabMenu.innerHTML = "";
+      tabContent.innerHTML = "";
+
+      const staff = USERS.filter(u => u.role === "staff");
+      const showUsers = currentRole === "admin" ? staff : staff.filter(u => u.name === currentUser);
+
+      showUsers.forEach((user, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = user.name;
+        if (i === 0) btn.classList.add("active");
+        btn.onclick = () => switchTab(user.name);
+        tabMenu.appendChild(btn);
+      });
+
+      showUsers.forEach((user, i) => {
+        const div = document.createElement("div");
+        div.id = `tab-${user.name}`;
+        div.classList.add("payslip-card");
+        if (i !== 0) div.classList.add("hidden");
+        div.innerHTML = `
+          <h3>${user.name}'s Payslip</h3>
+          <p>✨ Basic Pay: ₱1,000</p>
+          <p>🚚 Deliveries: 25</p>
+          <p>📅 Attendance: 18 days</p>
+          <p>💸 Total Pay: ₱3,000</p>
+          ${currentRole === 'admin' ? `
+          <div class="actions">
+            <button onclick="sendWhatsApp('${user.name}')">WhatsApp</button>
+            <button onclick="sendEmail('${user.name}')">Email</button>
+            <button onclick="printPayslip('${user.name}')">PDF</button>
+          </div>` : ''}
+        `;
+        tabContent.appendChild(div);
+      });
     }
-  }
-</script>
 
+    function switchTab(name) {
+      document.querySelectorAll(".tab-menu button").forEach(b => b.classList.remove("active"));
+      const activeBtn = [...document.querySelectorAll(".tab-menu button")].find(b => b.innerText === name);
+      if (activeBtn) activeBtn.classList.add("active");
+      document.querySelectorAll(".payslip-card").forEach(c => c.classList.add("hidden"));
+      document.getElementById(`tab-${name}`).classList.remove("hidden");
+    }
+
+    function sendWhatsApp(name) {
+      alert(`📲 Sending WhatsApp payout to ${name}`);
+    }
+
+    function sendEmail(name) {
+      alert(`📧 Sending email receipt to ${name}`);
+    }
+
+    function printPayslip(name) {
+      const content = document.getElementById(`tab-${name}`).innerHTML;
+      const win = window.open('', '', 'width=800,height=600');
+      win.document.write('<html><head><title>Payslip</title></head><body>' + content + '</body></html>');
+      win.document.close();
+      win.print();
+    }
+  </script>
 </body>
 </html>
