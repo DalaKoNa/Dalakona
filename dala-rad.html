@@ -2,191 +2,202 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na RAD – Rider Payout Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Dala🚲na RAD – Rider Allowance Dashboard</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: #fdfaf6;
-      color: #333;
       margin: 0;
-      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: #fffaf7;
+      color: #333;
     }
-    header {
-      background: #a0527b;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      position: sticky;
-      top: 0;
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       z-index: 1000;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 1rem;
+
+    .modal {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .hidden { display: none; }
-    input, button {
+
+    .modal h2 {
+      margin-top: 0;
+      color: #a0527b;
+      text-align: center;
+    }
+
+    input {
       width: 100%;
-      padding: 0.75rem;
+      padding: 10px;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
       font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
+
     button {
+      width: 100%;
+      padding: 10px;
       background: #a0527b;
       color: white;
       border: none;
+      font-size: 1rem;
+      border-radius: 6px;
       cursor: pointer;
     }
-    .week-box {
-      border: 1px solid #ddd;
-      background: #fff;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+
+    .dashboard {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .week {
+      background: #fdf5f2;
       padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 1rem;
     }
-    .week-box h3 {
-      margin: 0 0 0.5rem;
-      font-size: 1.1rem;
+
+    .week h3 {
+      margin-top: 0;
     }
-    .week-box label {
+
+    label {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
     }
+
     .summary {
-      background: #fff5ec;
-      border-left: 5px solid #a0527b;
+      background: #fff2ea;
       padding: 1rem;
-      font-weight: bold;
-      margin-top: 1rem;
       border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
     }
+
+    .hidden {
+      display: none;
+    }
+
     .logout {
       text-align: right;
       margin-bottom: 1rem;
     }
-    @media (max-width: 600px) {
-      header { font-size: 1.2rem; }
+
+    .logout button {
+      background: #bbb;
+      padding: 6px 12px;
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    Dala🚲na RAD – Rider Allowance & Debit
-  </header>
-
-  <div class="container">
-    <div id="loginBox">
-      <h2>Login</h2>
-      <input type="text" id="riderName" placeholder="Rider Name" />
-      <input type="text" id="employeeId" placeholder="Employee ID" />
-      <input type="password" id="adminCode" placeholder="(Optional) Admin Code" />
-      <button onclick="login()">Login</button>
-    </div>
-
-    <div id="dashboard" class="hidden">
-      <div class="logout">
-        <button onclick="logout()">Logout</button>
-      </div>
-      <div id="riderHeader"></div>
-      <div id="weeksList"></div>
-      <div id="summaryBox" class="summary"></div>
+  <div id="loginModal" class="modal-backdrop">
+    <div class="modal">
+      <h2>🔐 Login to Dala🚲na RAD</h2>
+      <input type="text" id="userName" placeholder="Full Name" />
+      <input type="password" id="otp" placeholder="Enter OTP" />
+      <button onclick="handleLogin()">Login</button>
+      <p id="loginError" style="color:red; text-align:center; display:none;">Invalid OTP or Name</p>
     </div>
   </div>
 
+  <div class="dashboard hidden" id="dashboard">
+    <div class="logout">
+      <button onclick="logout()">Logout</button>
+    </div>
+    <div id="riderHeader"></div>
+    <div id="salaryWeeks"></div>
+    <div class="summary" id="salarySummary"></div>
+  </div>
+
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
-    const SCHEDULE = [
+    const schedule = [
       { week: 1, start: "2025-06-02" },
       { week: 2, start: "2025-06-09" },
       { week: 3, start: "2025-06-16" },
-      { week: 4, start: "2025-06-23" }
+      { week: 4, start: "2025-06-23" },
     ];
+
     const ALLOWANCE = 250;
     const PAYOUT = 500;
-    const ADMIN_SECRET = "dalaAdmin2024";
+    const ADMIN_NAME = "owner";
+    const ADMIN_OTP = "123456";
+    const STAFF_OTP = "246810";
 
-    function login() {
-      const name = document.getElementById("riderName").value.trim();
-      const id = document.getElementById("employeeId").value.trim();
-      const adminInput = document.getElementById("adminCode").value.trim();
+    let isAdmin = false;
 
-      if (!name || !id) return alert("Please enter name and ID");
-      const isAdmin = adminInput === ADMIN_SECRET;
+    function handleLogin() {
+      const name = document.getElementById("userName").value.trim().toLowerCase();
+      const otp = document.getElementById("otp").value.trim();
 
-      localStorage.setItem("riderName", name);
-      localStorage.setItem("employeeId", id);
-      localStorage.setItem("isAdmin", isAdmin);
+      if ((name === ADMIN_NAME && otp === ADMIN_OTP) || otp === STAFF_OTP) {
+        isAdmin = (name === ADMIN_NAME);
+        localStorage.setItem("riderName", name);
+        localStorage.setItem("isAdmin", isAdmin);
+        document.getElementById("loginModal").classList.add("hidden");
+        showDashboard(name);
+      } else {
+        document.getElementById("loginError").style.display = "block";
+      }
+    }
 
-      showDashboard(name, id, isAdmin);
+    function showDashboard(name) {
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("riderHeader").innerText = `👤 ${name}`;
+      const salaryWeeks = document.getElementById("salaryWeeks");
+      salaryWeeks.innerHTML = "";
+      let totalPaid = 0;
+
+      schedule.forEach(({ week, start }) => {
+        const foodKey = `week${week}_food`;
+        const payoutKey = `week${week}_payout`;
+        const foodGiven = JSON.parse(localStorage.getItem(foodKey)) || false;
+        const payoutGiven = JSON.parse(localStorage.getItem(payoutKey)) || false;
+
+        if (foodGiven) totalPaid += ALLOWANCE;
+        if (payoutGiven) totalPaid += PAYOUT;
+
+        const weekDiv = document.createElement("div");
+        weekDiv.className = "week";
+        weekDiv.innerHTML = `
+          <h3>📅 Week ${week} (${start})</h3>
+          <label><input type="checkbox" ${foodGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${foodKey}', this.checked)"> ₱250 Food Allowance</label>
+          <label><input type="checkbox" ${payoutGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${payoutKey}', this.checked)"> ₱500 Payout</label>
+        `;
+        salaryWeeks.appendChild(weekDiv);
+      });
+
+      document.getElementById("salarySummary").innerText = `✨ Total Paid: ₱${totalPaid.toLocaleString()} of ₱3,000`;
+    }
+
+    function toggle(key, checked) {
+      localStorage.setItem(key, checked);
+      showDashboard(localStorage.getItem("riderName"));
     }
 
     function logout() {
       localStorage.clear();
       location.reload();
     }
-
-    function showDashboard(name, id, isAdmin) {
-      document.getElementById("loginBox").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("riderHeader").innerText = `👤 ${name} | 🆔 ${id}${isAdmin ? ' (Admin)' : ''}`;
-
-      let total = 0;
-      const weeksDiv = document.getElementById("weeksList");
-      weeksDiv.innerHTML = "";
-
-      SCHEDULE.forEach(({ week, start }) => {
-        const foodKey = `w${week}_a`;
-        const payKey = `w${week}_p`;
-        const allowance = JSON.parse(localStorage.getItem(foodKey)) || false;
-        const payout = JSON.parse(localStorage.getItem(payKey)) || false;
-        if (allowance) total += ALLOWANCE;
-        if (payout) total += PAYOUT;
-
-        const div = document.createElement("div");
-        div.className = "week-box";
-        div.innerHTML = `
-          <h3>Week ${week} (${start})</h3>
-          <label><input type="checkbox" ${allowance ? 'checked' : ''} ${isAdmin ? '' : 'disabled'} onchange="toggle('${foodKey}', this.checked, ${week}, 'allowance')"> ₱250 Allowance</label>
-          <label><input type="checkbox" ${payout ? 'checked' : ''} ${isAdmin ? '' : 'disabled'} onchange="toggle('${payKey}', this.checked, ${week}, 'payout')"> ₱500 Payout</label>
-        `;
-        weeksDiv.appendChild(div);
-      });
-
-      document.getElementById("summaryBox").innerText = `🧾 Total Paid: ₱${total.toLocaleString()} / ₱3,000`;
-    }
-
-    function toggle(key, checked, week, type) {
-      localStorage.setItem(key, checked);
-      const name = localStorage.getItem("riderName");
-      const id = localStorage.getItem("employeeId");
-
-      const params = new URLSearchParams({
-        riderName: name,
-        employeeId: id,
-        week: week,
-        allowance: key.includes('_a') ? checked : localStorage.getItem(`w${week}_a`) === 'true',
-        payout: key.includes('_p') ? checked : localStorage.getItem(`w${week}_p`) === 'true'
-      });
-
-      fetch(scriptURL + "?" + params.toString()).then(() => {
-        showDashboard(name, id, localStorage.getItem("isAdmin") === 'true');
-      });
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const name = localStorage.getItem("riderName");
-      const id = localStorage.getItem("employeeId");
-      const isAdmin = localStorage.getItem("isAdmin") === 'true';
-      if (name && id) showDashboard(name, id, isAdmin);
-    });
   </script>
 </body>
 </html>
