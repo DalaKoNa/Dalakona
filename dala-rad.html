@@ -2,132 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na | RAD (Rider Allowance & Debit)</title>
+  <title>Dala🚲na RAD – Rider Payout Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fffaf7;
-      margin: 0;
-      padding: 1rem;
+      background: #fdfaf6;
       color: #333;
+      margin: 0;
+      padding: 0;
     }
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       background: #a0527b;
       color: white;
       padding: 1rem;
-    }
-    .menu-btn {
-      font-size: 1.4rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-    h1 {
       text-align: center;
-      color: #a0527b;
+      font-size: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .login-box, .dashboard {
-      max-width: 700px;
-      margin: 2rem auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
     }
-    label {
-      font-weight: 500;
-    }
-    input {
-      width: 100%;
-      padding: 0.6rem;
-      margin: 0.5rem 0 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
+    .hidden { display: none; }
+    input, button {
       width: 100%;
       padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
       background: #a0527b;
       color: white;
       border: none;
-      font-size: 1rem;
-      border-radius: 8px;
       cursor: pointer;
     }
     .week-box {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 1rem;
       padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 10px;
-      background: #faf4f0;
     }
-    .week-box h3 { margin-top: 0; }
-    .logout { text-align: right; }
-    .summary { background: #fff0ea; padding: 1rem; text-align: center; border-radius: 10px; font-weight: bold; }
-    .actions button { width: auto; margin: 0.25rem; }
+    .week-box h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .week-box label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .summary {
+      background: #fff5ec;
+      border-left: 5px solid #a0527b;
+      padding: 1rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+    .logout {
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 600px) {
+      header { font-size: 1.2rem; }
+    }
   </style>
 </head>
 <body>
-
   <header>
-    <strong>Dala🚲na RAD</strong>
-    <button class="menu-btn" onclick="logout()">Logout ⎋</button>
+    Dala🚲na RAD – Rider Allowance & Debit
   </header>
 
-  <h1>🧾 Rider Salary Dashboard</h1>
+  <div class="container">
+    <div id="loginBox">
+      <h2>Login</h2>
+      <input type="text" id="riderName" placeholder="Rider Name" />
+      <input type="text" id="employeeId" placeholder="Employee ID" />
+      <input type="password" id="adminCode" placeholder="(Optional) Admin Code" />
+      <button onclick="login()">Login</button>
+    </div>
 
-  <!-- Login -->
-  <div class="login-box" id="loginBox">
-    <label>👤 Rider Name</label>
-    <input type="text" id="riderName" />
-    <label>🆔 Employee ID</label>
-    <input type="text" id="employeeId" />
-    <label>🔑 Admin Code (if owner)</label>
-    <input type="password" id="adminCode" />
-    <button onclick="login()">Login</button>
-  </div>
-
-  <!-- Dashboard -->
-  <div class="dashboard hidden" id="dashboard">
-    <div id="riderHeader"></div>
-    <div id="salaryWeeks"></div>
-    <div class="summary" id="salarySummary"></div>
-    <div class="actions">
-      <button onclick="downloadPDF()">🖨️ Download PDF</button>
-      <button onclick="sendViaWhatsApp()">📲 Send via WhatsApp</button>
+    <div id="dashboard" class="hidden">
+      <div class="logout">
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div id="riderHeader"></div>
+      <div id="weeksList"></div>
+      <div id="summaryBox" class="summary"></div>
     </div>
   </div>
 
   <script>
-    const ALLOWANCE = 250, PAYOUT = 500;
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
     const SCHEDULE = [
       { week: 1, start: "2025-06-02" },
       { week: 2, start: "2025-06-09" },
       { week: 3, start: "2025-06-16" },
       { week: 4, start: "2025-06-23" }
     ];
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxoKh3-TTJm1QYcOU3nQqiIsA9gRZhtYvzaCWOBt5B53NGPSbdueHbZr2_R4uOmsXqVSA/exec";
-
-    let isAdmin = false;
+    const ALLOWANCE = 250;
+    const PAYOUT = 500;
+    const ADMIN_SECRET = "dalaAdmin2024";
 
     function login() {
       const name = document.getElementById("riderName").value.trim();
       const id = document.getElementById("employeeId").value.trim();
-      const adminCode = document.getElementById("adminCode").value.trim();
-      if (!name || !id) return alert("Fill all fields");
+      const adminInput = document.getElementById("adminCode").value.trim();
 
-      isAdmin = adminCode === "dalaAdmin2024";
+      if (!name || !id) return alert("Please enter name and ID");
+      const isAdmin = adminInput === ADMIN_SECRET;
 
       localStorage.setItem("riderName", name);
       localStorage.setItem("employeeId", id);
       localStorage.setItem("isAdmin", isAdmin);
-      showDashboard(name, id);
+
+      showDashboard(name, id, isAdmin);
     }
 
     function logout() {
@@ -135,88 +133,59 @@
       location.reload();
     }
 
-    function showDashboard(name, id) {
+    function showDashboard(name, id, isAdmin) {
       document.getElementById("loginBox").classList.add("hidden");
       document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("riderHeader").innerText = `👤 ${name} | 🆔 ${id}`;
+      document.getElementById("riderHeader").innerText = `👤 ${name} | 🆔 ${id}${isAdmin ? ' (Admin)' : ''}`;
 
-      const container = document.getElementById("salaryWeeks");
-      container.innerHTML = "";
       let total = 0;
+      const weeksDiv = document.getElementById("weeksList");
+      weeksDiv.innerHTML = "";
 
       SCHEDULE.forEach(({ week, start }) => {
-        const foodKey = `week${week}_food`, payoutKey = `week${week}_payout`;
-        const food = JSON.parse(localStorage.getItem(foodKey)) || false;
-        const payout = JSON.parse(localStorage.getItem(payoutKey)) || false;
-
-        if (food) total += ALLOWANCE;
+        const foodKey = `w${week}_a`;
+        const payKey = `w${week}_p`;
+        const allowance = JSON.parse(localStorage.getItem(foodKey)) || false;
+        const payout = JSON.parse(localStorage.getItem(payKey)) || false;
+        if (allowance) total += ALLOWANCE;
         if (payout) total += PAYOUT;
 
-        const box = document.createElement("div");
-        box.className = "week-box";
-        box.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "week-box";
+        div.innerHTML = `
           <h3>Week ${week} (${start})</h3>
-          <label><input type="checkbox" ${food ? "checked" : ""} ${isAdmin ? "" : "disabled"} onchange="togglePayment('${foodKey}', this.checked, ${week})"> ₱${ALLOWANCE} Allowance</label><br/>
-          <label><input type="checkbox" ${payout ? "checked" : ""} ${isAdmin ? "" : "disabled"} onchange="togglePayment('${payoutKey}', this.checked, ${week})"> ₱${PAYOUT} Payout</label>
+          <label><input type="checkbox" ${allowance ? 'checked' : ''} ${isAdmin ? '' : 'disabled'} onchange="toggle('${foodKey}', this.checked, ${week}, 'allowance')"> ₱250 Allowance</label>
+          <label><input type="checkbox" ${payout ? 'checked' : ''} ${isAdmin ? '' : 'disabled'} onchange="toggle('${payKey}', this.checked, ${week}, 'payout')"> ₱500 Payout</label>
         `;
-        container.appendChild(box);
+        weeksDiv.appendChild(div);
       });
 
-      document.getElementById("salarySummary").innerText = `Total Paid: ₱${total.toLocaleString()} of ₱3,000`;
+      document.getElementById("summaryBox").innerText = `🧾 Total Paid: ₱${total.toLocaleString()} / ₱3,000`;
     }
 
-    function togglePayment(key, checked, week) {
+    function toggle(key, checked, week, type) {
       localStorage.setItem(key, checked);
-      syncToSheet(week);
       const name = localStorage.getItem("riderName");
       const id = localStorage.getItem("employeeId");
-      showDashboard(name, id);
-    }
-
-    function syncToSheet(week) {
-      const name = localStorage.getItem("riderName");
-      const id = localStorage.getItem("employeeId");
-      const food = localStorage.getItem(`week${week}_food`) === "true";
-      const payout = localStorage.getItem(`week${week}_payout`) === "true";
 
       const params = new URLSearchParams({
         riderName: name,
         employeeId: id,
-        week,
-        allowance: food,
-        payout
+        week: week,
+        allowance: key.includes('_a') ? checked : localStorage.getItem(`w${week}_a`) === 'true',
+        payout: key.includes('_p') ? checked : localStorage.getItem(`w${week}_p`) === 'true'
       });
 
-      fetch(`${SCRIPT_URL}?${params.toString()}`);
-    }
-
-    function downloadPDF() {
-      window.print();
-    }
-
-    function sendViaWhatsApp() {
-      const name = localStorage.getItem("riderName");
-      const id = localStorage.getItem("employeeId");
-      let message = `🧾 *Dala🚲na Salary Receipt*\n👤 ${name}\n🆔 ${id}\n\n`;
-
-      SCHEDULE.forEach(({ week }) => {
-        const food = localStorage.getItem(`week${week}_food`) === "true";
-        const payout = localStorage.getItem(`week${week}_payout`) === "true";
-        message += `📅 Week ${week}: `;
-        if (food) message += `₱${ALLOWANCE} ✅ `;
-        if (payout) message += `₱${PAYOUT} ✅`;
-        message += "\n";
+      fetch(scriptURL + "?" + params.toString()).then(() => {
+        showDashboard(name, id, localStorage.getItem("isAdmin") === 'true');
       });
-
-      message += `\n📌 Total: ₱${document.getElementById("salarySummary").innerText.split('₱')[1]}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       const name = localStorage.getItem("riderName");
       const id = localStorage.getItem("employeeId");
-      isAdmin = localStorage.getItem("isAdmin") === "true";
-      if (name && id) showDashboard(name, id);
+      const isAdmin = localStorage.getItem("isAdmin") === 'true';
+      if (name && id) showDashboard(name, id, isAdmin);
     });
   </script>
 </body>
