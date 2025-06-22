@@ -3,257 +3,208 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD – Rider Attendance & Delivery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <title>Dala🚲na RAD – Payout Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fffaf7;
-      color: #333;
       margin: 0;
-      padding: 1rem;
+      background: #fffaf6;
+      color: #333;
     }
     header {
       background: #a0527b;
       color: white;
       padding: 1rem;
       text-align: center;
+      font-weight: 600;
     }
-    .login-box, .dashboard {
-      max-width: 700px;
-      margin: 2rem auto;
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .hidden { display: none; }
+    .card {
       background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    label {
-      font-size: 0.9rem;
-      display: block;
-      margin-bottom: 5px;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      font-size: 0.95rem;
+      padding: 1rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+    }
+    .payslip {
+      background: #f9f4f1;
+      border-left: 4px solid #a0527b;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .controls, select, button {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      font-size: 1rem;
     }
     button {
-      width: 100%;
-      padding: 10px;
       background: #a0527b;
       color: white;
       border: none;
-      font-size: 1rem;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
     }
-    .hidden { display: none; }
-    .week-section {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      background: #fff2ee;
-    }
-    .week-section h3 {
-      margin-top: 0;
-    }
-    .day-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.25rem 0;
-    }
-    .summary, .admin-controls {
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-    .logout {
+    button:hover { background: #8e406c; }
+    .logout-btn {
       font-size: 0.8rem;
-      text-align: right;
-    }
-    .dropdown {
-      margin: 1rem 0;
-      text-align: center;
-    }
-    select {
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-    }
-    .receipt-style {
-      font-family: monospace;
-      background: #fefefe;
-      border: 1px dashed #ccc;
-      padding: 1rem;
+      background: gray;
       margin-top: 1rem;
-      border-radius: 10px;
-      white-space: pre-wrap;
+    }
+    .owner-only { border: 2px dashed #a0527b; padding: 1rem; margin-top: 1rem; background: #fff5f8; }
+    .dropdown {
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Dala🚲na RAD</h1>
-    <p>Rider Attendance & Delivery Payout System</p>
-  </header>
+  <header>Dala🚲na RAD – Rider Attendance & Delivery</header>
 
-  <div class="login-box" id="loginBox">
-    <label>👤 Full Name</label>
-    <input type="text" id="loginName" placeholder="Enter your full name" />
-    <label>🔐 OTP Code</label>
-    <input type="password" id="loginOTP" placeholder="Enter OTP code" />
-    <button onclick="handleLogin()">Login</button>
+  <div class="container" id="loginView">
+    <div class="card">
+      <h2>Login</h2>
+      <label>Name</label>
+      <input type="text" id="loginName" placeholder="Enter name" />
+      <label>OTP</label>
+      <input type="password" id="loginOTP" placeholder="Enter OTP" />
+      <button onclick="login()">Login</button>
+    </div>
   </div>
 
-  <div class="dashboard hidden" id="dashboard">
-    <div class="logout"><button onclick="logout()">🚪 Logout</button></div>
-    <h2 id="userRole"></h2>
-    <div class="dropdown">
-      <label>📅 Select Week:</label>
-      <select id="weekSelect" onchange="renderWeek()">
-        <option value="1">Week 1</option>
-        <option value="2">Week 2</option>
-        <option value="3">Week 3</option>
-        <option value="4">Week 4</option>
+  <div class="container hidden" id="dashboardView">
+    <div class="card">
+      <h2>Welcome, <span id="userName"></span></h2>
+      <label>Week</label>
+      <select id="weekSelect" class="dropdown" onchange="renderPayslip()">
+        <option value="week1">Week 1</option>
+        <option value="week2">Week 2</option>
+        <option value="week3">Week 3</option>
+        <option value="week4">Week 4</option>
       </select>
+
+      <div id="payslipContent" class="payslip"></div>
+
+      <button onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
+      <button onclick="sendEmail()">📧 Email Receipt</button>
+      <button onclick="window.print()">🖨️ Download PDF</button>
+      <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 
-    <div id="weekData"></div>
-    <div class="summary" id="summary"></div>
-    <div class="admin-controls hidden" id="adminControls">
-      <button onclick="sendEmail()">📧 Email Receipt</button>
-      <button onclick="sendWhatsApp()">📲 WhatsApp Receipt</button>
-      <button onclick="window.print()">🖨️ Print PDF</button>
+    <div class="owner-only hidden" id="ownerPanel">
+      <h3>🧑‍💼 Admin Panel</h3>
+      <label>Attendance (days)</label>
+      <input type="number" id="inputAttendance" min="0" max="6" />
+      <label>Deliveries Made</label>
+      <input type="number" id="inputDeliveries" min="0" />
+      <label>Food Allowance Given?</label>
+      <select id="inputFood">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <label>Payout Released?</label>
+      <select id="inputPayout">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <button onclick="saveToSheet()">💾 Save to Google Sheets</button>
     </div>
   </div>
 
   <script>
+    const sheetUrl = "https://script.google.com/macros/s/AKfycbxoKh3-TTJm1QYcOU3nQqiIsA9gRZhtYvzaCWOBt5B53NGPSbdueHbZr2_R4uOmsXqVSA/exec";
     const users = {
       owner: { otp: "dalaAdmin2024", role: "admin" },
-      riders: {
-        "Juan Dela Cruz": "riderOne",
-        "Maria Santos": "riderTwo",
-        "Carlos Reyes": "riderThree",
-        "Ana Lopez": "assistantRAD"
-      }
+      lynn: { otp: "rider1otp", role: "staff" },
+      mark: { otp: "rider2otp", role: "staff" },
+      jane: { otp: "rider3otp", role: "staff" },
+      karl: { otp: "assistantotp", role: "staff" },
     };
+    let currentUser = {};
 
-    let currentUser = "";
-    let currentRole = "";
-
-    function handleLogin() {
-      const name = document.getElementById('loginName').value.trim();
-      const otp = document.getElementById('loginOTP').value.trim();
-
-      if (otp === users.owner.otp) {
-        currentUser = "Owner";
-        currentRole = "admin";
-      } else if (users.riders[name] === otp) {
-        currentUser = name;
-        currentRole = "staff";
+    function login() {
+      const name = document.getElementById("loginName").value.trim().toLowerCase();
+      const otp = document.getElementById("loginOTP").value.trim();
+      if (users[name] && users[name].otp === otp) {
+        currentUser = { name, role: users[name].role };
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("dashboardView").classList.remove("hidden");
+        document.getElementById("userName").innerText = name;
+        if (currentUser.role === 'admin') document.getElementById("ownerPanel").classList.remove("hidden");
+        renderPayslip();
       } else {
-        alert("Invalid name or OTP");
-        return;
+        alert("Invalid login credentials");
       }
-
-      document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
-      document.getElementById('userRole').innerText = `👤 Logged in as ${currentUser}`;
-      if (currentRole === 'admin') document.getElementById('adminControls').classList.remove('hidden');
-      renderWeek();
     }
 
     function logout() {
+      currentUser = {};
       location.reload();
     }
 
-    function renderWeek() {
-      const week = document.getElementById('weekSelect').value;
-      const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-      const weekKey = `week${week}_${currentUser}`;
-      const data = JSON.parse(localStorage.getItem(weekKey)) || {
-        attendance: {},
-        deliveries: 0,
-        paid: false,
-        notes: ""
-      };
+    function renderPayslip() {
+      const week = document.getElementById("weekSelect").value;
+      const attendance = localStorage.getItem(week + "_att_" + currentUser.name) || 0;
+      const deliveries = localStorage.getItem(week + "_del_" + currentUser.name) || 0;
+      const food = localStorage.getItem(week + "_food_" + currentUser.name) || "No";
+      const payout = localStorage.getItem(week + "_payout_" + currentUser.name) || "No";
+      let total = 0;
+      if (food === "Yes") total += 250;
+      if (payout === "Yes") total += 500;
 
-      let html = `<div class='week-section'><h3>Week ${week}</h3>`;
-
-      days.forEach(day => {
-        const checked = data.attendance[day] ? "checked" : "";
-        html += `<div class='day-row'>
-          <label><input type='checkbox' ${checked} ${currentRole === 'staff' ? 'disabled' : ''} onchange='toggleDay("${weekKey}", "${day}", this.checked)'/> ${day} Present</label>
-        </div>`;
-      });
-
-      html += `<label>📦 Deliveries:</label>
-        <input type='number' value='${data.deliveries}' onchange='updateDeliveries("${weekKey}", this.value)' ${currentRole === 'staff' ? 'disabled' : ''} />
-        <label>📝 Notes:</label>
-        <input type='text' value='${data.notes}' onchange='updateNotes("${weekKey}", this.value)' ${currentRole === 'staff' ? 'disabled' : ''} />
-        <label><input type='checkbox' ${data.paid ? "checked" : ""} onchange='togglePaid("${weekKey}", this.checked)' ${currentRole === 'staff' ? 'disabled' : ''} /> 💵 Mark as Paid</label>
-        </div>`;
-
-      document.getElementById("weekData").innerHTML = html;
-      document.getElementById("summary").innerHTML = `
-        <div class='receipt-style'>
-👤 ${currentUser}
-📅 Week ${week}
-✅ Attendance: ${Object.values(data.attendance).filter(Boolean).length}/5 days
-📦 Deliveries: ${data.deliveries}
-💵 Paid: ${data.paid ? "Yes" : "No"}
-📝 Notes: ${data.notes || 'N/A'}
-        </div>
-      `;
-    }
-
-    function toggleDay(key, day, isChecked) {
-      const data = JSON.parse(localStorage.getItem(key)) || { attendance: {} };
-      data.attendance[day] = isChecked;
-      localStorage.setItem(key, JSON.stringify(data));
-      renderWeek();
-    }
-
-    function updateDeliveries(key, val) {
-      const data = JSON.parse(localStorage.getItem(key)) || {};
-      data.deliveries = parseInt(val);
-      localStorage.setItem(key, JSON.stringify(data));
-    }
-
-    function updateNotes(key, val) {
-      const data = JSON.parse(localStorage.getItem(key)) || {};
-      data.notes = val;
-      localStorage.setItem(key, JSON.stringify(data));
-    }
-
-    function togglePaid(key, isPaid) {
-      const data = JSON.parse(localStorage.getItem(key)) || {};
-      data.paid = isPaid;
-      localStorage.setItem(key, JSON.stringify(data));
-      renderWeek();
+      const slip = `
+📅 ${week.toUpperCase()}
+👤 ${currentUser.name.toUpperCase()}
+✅ Attendance: ${attendance} day(s)
+🚚 Deliveries: ${deliveries}
+🍱 Food Allowance: ${food === 'Yes' ? '₱250' : '❌'}
+💵 Weekly Payout: ${payout === 'Yes' ? '₱500' : '❌'}
+📊 TOTAL RECEIVED: ₱${total}`;
+      document.getElementById("payslipContent").innerText = slip;
     }
 
     function sendWhatsApp() {
-      const msg = document.getElementById('summary').innerText;
-      const number = "63XXXXXXXXXX";
-      window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`, '_blank');
+      const msg = encodeURIComponent(document.getElementById("payslipContent").innerText);
+      window.open(`https://wa.me/?text=${msg}`);
     }
 
     function sendEmail() {
-      const emailURL = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
-      const payload = {
-        name: currentUser,
-        week: document.getElementById('weekSelect').value,
-        summary: document.getElementById('summary').innerText
-      };
-      fetch(emailURL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      }).then(() => alert("📧 Email sent!"));
+      const email = prompt("Enter email address to send receipt:");
+      if (!email) return;
+      const week = document.getElementById("weekSelect").value;
+      const content = document.getElementById("payslipContent").innerText;
+      fetch(sheetUrl, {
+        method: "POST",
+        body: JSON.stringify({ action: "email", email, content, week, user: currentUser.name })
+      });
+      alert("📧 Sent email (if connected)");
+    }
+
+    function saveToSheet() {
+      const week = document.getElementById("weekSelect").value;
+      const name = currentUser.name;
+      const att = document.getElementById("inputAttendance").value;
+      const del = document.getElementById("inputDeliveries").value;
+      const food = document.getElementById("inputFood").value;
+      const payout = document.getElementById("inputPayout").value;
+
+      localStorage.setItem(week + "_att_" + name, att);
+      localStorage.setItem(week + "_del_" + name, del);
+      localStorage.setItem(week + "_food_" + name, food);
+      localStorage.setItem(week + "_payout_" + name, payout);
+
+      renderPayslip();
+
+      fetch(sheetUrl, {
+        method: "POST",
+        body: JSON.stringify({ action: "save", name, week, att, del, food, payout })
+      });
+
+      alert("Saved and synced with sheet");
     }
   </script>
 </body>
