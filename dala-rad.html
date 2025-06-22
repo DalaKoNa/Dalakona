@@ -3,205 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD – Rider Attendance & Payout Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <title>Dala🚲na RAD – Rider Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fefcfb;
       margin: 0;
-      padding: 0;
+      background: #fffaf7;
+      color: #333;
     }
     header {
       background: #a0527b;
       color: white;
       padding: 1rem;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logout {
+      font-size: 0.85rem;
+      text-align: right;
     }
     .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 1.5rem;
-    }
-    .section {
-      background: #fff;
-      border: 1px solid #ddd;
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
       border-radius: 10px;
-      margin-bottom: 1.5rem;
-      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .section h2 {
-      margin-top: 0;
-      color: #a0527b;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    input[type="text"], input[type="number"], select {
-      width: 100%;
-      padding: 0.5rem;
+    select, button, input {
+      padding: 0.6rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background: #a0527b;
-      color: white;
-      padding: 0.75rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      width: 100%;
       font-size: 1rem;
     }
-    button.logout-btn {
-      background: #666;
-      margin-top: 1rem;
-      font-size: 0.85rem;
-    }
-    .week-box {
-      border: 1px solid #eee;
+    .hidden { display: none; }
+    .payslip {
+      background: #fff0ec;
       padding: 1rem;
-      margin-bottom: 1rem;
-      background: #fdf7f9;
       border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.95rem;
     }
-    .summary {
-      background: #fff6f1;
-      padding: 1rem;
-      border-radius: 10px;
-      border: 1px solid #f3d9ce;
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    button.primary {
+      background: #a0527b;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button.secondary {
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .footer-logout {
+      margin-top: 2rem;
       text-align: center;
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-    .history-log {
-      max-height: 300px;
-      overflow-y: auto;
-      background: #f9f9f9;
-      border: 1px dashed #ccc;
-      padding: 1rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Dala🚲na Rider Attendance Dashboard</h1>
+    <h2>Dala🚲na RAD</h2>
+    <div id="userRole"></div>
   </header>
 
-  <div class="container">
+  <div class="container" id="loginScreen">
+    <h3>🔐 Login</h3>
+    <input type="text" id="loginName" placeholder="Enter full name (e.g., Owner or Staff)" required />
+    <input type="password" id="loginOTP" placeholder="Enter OTP" required />
+    <button class="primary" onclick="login()">Login</button>
+  </div>
 
-    <div class="section" id="loginSection">
-      <h2>🔐 Admin Login</h2>
-      <label for="adminName">Full Name</label>
-      <input type="text" id="adminName" placeholder="Enter full name" />
-      <label for="otp">OTP</label>
-      <input type="text" id="otp" placeholder="Enter OTP" />
-      <button onclick="verifyLogin()">Login</button>
+  <div class="container hidden" id="dashboard">
+    <label>Select Week:</label>
+    <select id="weekSelector" onchange="renderPayslip()">
+      <option value="week1">Week 1</option>
+      <option value="week2">Week 2</option>
+      <option value="week3">Week 3</option>
+      <option value="week4">Week 4</option>
+    </select>
+
+    <div class="payslip" id="payslipContent">
+      <!-- Dynamically inserted -->
     </div>
 
-    <div class="section hidden" id="dashboard">
-      <h2>📊 Weekly Payout & Attendance</h2>
-      <div id="weeksContainer"></div>
-      <div class="summary" id="summaryDisplay"></div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="btn-group" id="ownerButtons">
+      <button class="primary" onclick="sendEmail()">📧 Send Email Receipt</button>
+      <button class="primary" onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
+      <button class="secondary" onclick="window.print()">🖨️ Print Payslip</button>
     </div>
 
-    <div class="section hidden" id="historySection">
-      <h2>📜 History Log</h2>
-      <div class="history-log" id="historyLog">No logs yet.</div>
+    <div class="footer-logout">
+      <button onclick="logout()">🚪 Logout</button>
     </div>
-
   </div>
 
   <script>
     const OTP = "123456";
-    const weeks = 4;
-    const allowance = 250;
-    const payout = 500;
+    let role = "staff";
 
-    function verifyLogin() {
-      const name = document.getElementById("adminName").value.trim();
-      const otp = document.getElementById("otp").value.trim();
-      if (name && otp === OTP) {
-        localStorage.setItem("adminLoggedIn", true);
-        document.getElementById("loginSection").classList.add("hidden");
+    const payslipData = {
+      week1: { food: 250, payout: 500, attendance: 5, deliveries: 20 },
+      week2: { food: 250, payout: 500, attendance: 5, deliveries: 18 },
+      week3: { food: 250, payout: 500, attendance: 4, deliveries: 16 },
+      week4: { food: 250, payout: 500, attendance: 5, deliveries: 22 }
+    };
+
+    function login() {
+      const name = document.getElementById("loginName").value.trim();
+      const otp = document.getElementById("loginOTP").value.trim();
+
+      if (otp === OTP) {
+        role = name.toLowerCase() === 'owner' ? 'owner' : 'staff';
+        document.getElementById("loginScreen").classList.add("hidden");
         document.getElementById("dashboard").classList.remove("hidden");
-        document.getElementById("historySection").classList.remove("hidden");
-        renderWeeks();
+        document.getElementById("userRole").innerText = `Logged in as: ${name}`;
+        document.getElementById("ownerButtons").style.display = role === 'owner' ? 'flex' : 'none';
+        renderPayslip();
       } else {
-        alert("Invalid credentials");
+        alert("Invalid OTP");
       }
     }
 
     function logout() {
-      localStorage.removeItem("adminLoggedIn");
       location.reload();
     }
 
-    function renderWeeks() {
-      const container = document.getElementById("weeksContainer");
-      container.innerHTML = "";
-      let total = 0;
-      for (let i = 1; i <= weeks; i++) {
-        const aKey = `w${i}_allowance`;
-        const pKey = `w${i}_payout`;
-        const aChecked = localStorage.getItem(aKey) === "true";
-        const pChecked = localStorage.getItem(pKey) === "true";
-        if (aChecked) total += allowance;
-        if (pChecked) total += payout;
-        const box = document.createElement("div");
-        box.className = "week-box";
-        box.innerHTML = `
-          <h3>Week ${i}</h3>
-          <label><input type="checkbox" onchange="toggle('${aKey}', this.checked)" ${aChecked ? "checked" : ""}> ₱${allowance} Food Allowance</label>
-          <label><input type="checkbox" onchange="toggle('${pKey}', this.checked)" ${pChecked ? "checked" : ""}> ₱${payout} Weekly Payout</label>
-          <label>📦 Deliveries: <input type="number" id="delivery${i}" onchange="saveDelivery(${i})" value="${localStorage.getItem(`delivery${i}`) || 0}" min="0" /></label>
-          <label>📅 Attendance: <input type="number" id="attendance${i}" onchange="saveAttendance(${i})" value="${localStorage.getItem(`attendance${i}`) || 0}" min="0" /></label>
-        `;
-        container.appendChild(box);
-      }
-      document.getElementById("summaryDisplay").innerText = `Total Paid: ₱${total.toLocaleString()}`;
+    function renderPayslip() {
+      const week = document.getElementById("weekSelector").value;
+      const data = payslipData[week];
+
+      const html = `
+        <h4>📄 Payslip for ${week.toUpperCase()}</h4>
+        <p>🍛 Food Allowance: ₱${data.food}</p>
+        <p>💵 Payout: ₱${data.payout}</p>
+        <p>📅 Attendance: ${data.attendance} days</p>
+        <p>📦 Deliveries: ${data.deliveries}</p>
+        <hr/>
+        <strong>💰 Total: ₱${data.food + data.payout}</strong>
+      `;
+
+      document.getElementById("payslipContent").innerHTML = html;
     }
 
-    function toggle(key, checked) {
-      localStorage.setItem(key, checked);
-      const entry = `${new Date().toLocaleString()} – ${key} set to ${checked}`;
-      const prevLog = localStorage.getItem("radHistory") || "";
-      localStorage.setItem("radHistory", `${entry}\n${prevLog}`);
-      renderWeeks();
-      renderHistory();
+    function sendEmail() {
+      const week = document.getElementById("weekSelector").value;
+      const data = payslipData[week];
+      const emailAPI = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
+
+      const payload = {
+        week: week,
+        total: data.food + data.payout,
+        attendance: data.attendance,
+        deliveries: data.deliveries
+      };
+
+      fetch(emailAPI + `?week=${week}&total=${payload.total}&att=${payload.attendance}&del=${payload.deliveries}`)
+        .then(() => alert("📧 Email sent!"))
+        .catch(() => alert("Failed to send email"));
     }
 
-    function saveDelivery(i) {
-      const val = document.getElementById(`delivery${i}`).value;
-      localStorage.setItem(`delivery${i}`, val);
-      renderHistory();
+    function sendWhatsApp() {
+      const week = document.getElementById("weekSelector").value;
+      const data = payslipData[week];
+      const message = encodeURIComponent(`📄 Dala🚲na Payslip for ${week.toUpperCase()}\n🍛 Food: ₱${data.food}\n💵 Payout: ₱${data.payout}\n📅 Attendance: ${data.attendance} days\n📦 Deliveries: ${data.deliveries}\n💰 Total: ₱${data.food + data.payout}`);
+      const phone = "63XXXXXXXXXX"; // Update with real number
+      window.open(`https://wa.me/${phone}?text=${message}`);
     }
-
-    function saveAttendance(i) {
-      const val = document.getElementById(`attendance${i}`).value;
-      localStorage.setItem(`attendance${i}`, val);
-      renderHistory();
-    }
-
-    function renderHistory() {
-      const log = localStorage.getItem("radHistory") || "No logs yet.";
-      document.getElementById("historyLog").innerText = log;
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.getItem("adminLoggedIn")) {
-        document.getElementById("loginSection").classList.add("hidden");
-        document.getElementById("dashboard").classList.remove("hidden");
-        document.getElementById("historySection").classList.remove("hidden");
-        renderWeeks();
-        renderHistory();
-      }
-    });
   </script>
 </body>
 </html>
