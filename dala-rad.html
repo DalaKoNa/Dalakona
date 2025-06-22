@@ -4,14 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲na RAD – Rider Admin Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: #fffaf7;
-      color: #333;
-    }
+    body { font-family: 'Inter', sans-serif; background: #fffaf7; margin: 0; padding: 0; }
     header {
       background: #a0527b;
       color: white;
@@ -20,165 +15,185 @@
       justify-content: space-between;
       align-items: center;
     }
-    .logout {
-      font-size: 0.85rem;
-      text-align: right;
+    header h1 { margin: 0; font-size: 1.2rem; }
+    header button { background: white; color: #a0527b; border: none; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+    .container { max-width: 800px; margin: 2rem auto; padding: 1rem; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+    .login-modal, .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
     }
-    .container {
-      max-width: 700px;
-      margin: 2rem auto;
+    .login-modal form {
       background: white;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      min-width: 300px;
     }
-    select, button, input {
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      width: 100%;
-      font-size: 1rem;
+    .login-modal input, select {
+      width: 100%; padding: 0.75rem; margin-bottom: 1rem;
+      border: 1px solid #ccc; border-radius: 6px;
     }
-    .hidden { display: none; }
+    .login-modal button {
+      width: 100%; padding: 0.75rem;
+      background: #a0527b; color: white; border: none; border-radius: 6px;
+      font-weight: bold; font-size: 1rem;
+    }
+
     .payslip {
-      background: #fff0ec;
+      border: 1px dashed #ccc;
       padding: 1rem;
+      background: #f8f4f0;
       border-radius: 8px;
       margin-top: 1rem;
-      font-size: 0.95rem;
     }
-    .btn-group {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    button.primary {
-      background: #a0527b;
-      color: white;
+    .payslip h3 { margin-top: 0; }
+
+    .controls button {
+      margin: 0.25rem 0.25rem 0;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.85rem;
       border: none;
+      border-radius: 5px;
+      background: #eee;
       cursor: pointer;
-      border-radius: 6px;
     }
-    button.secondary {
-      background: #f0f0f0;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-    .footer-logout {
-      margin-top: 2rem;
-      text-align: center;
+
+    .owner-only input[type="checkbox"]:not([data-owner="true"]) {
+      pointer-events: none;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h2>Dala🚲na RAD</h2>
-    <div id="userRole"></div>
-  </header>
 
-  <div class="container" id="loginScreen">
-    <h3>🔐 Login</h3>
-    <input type="text" id="loginName" placeholder="Enter full name (e.g., Owner or Staff)" required />
-    <input type="password" id="loginOTP" placeholder="Enter OTP" required />
-    <button class="primary" onclick="login()">Login</button>
-  </div>
+<header>
+  <h1>Dala🚲na RAD – Rider Payouts</h1>
+  <button onclick="logout()">Logout</button>
+</header>
 
-  <div class="container hidden" id="dashboard">
-    <label>Select Week:</label>
-    <select id="weekSelector" onchange="renderPayslip()">
-      <option value="week1">Week 1</option>
-      <option value="week2">Week 2</option>
-      <option value="week3">Week 3</option>
-      <option value="week4">Week 4</option>
+<div class="login-modal" id="loginModal">
+  <form onsubmit="handleLogin(event)">
+    <h2 style="text-align:center; color:#a0527b">🔐 Login</h2>
+    <select id="loginRole">
+      <option value="staff">Staff</option>
+      <option value="owner">Owner</option>
     </select>
+    <input type="text" id="loginName" placeholder="Full Name" required />
+    <input type="password" id="loginOTP" placeholder="OTP" required />
+    <button type="submit">Login</button>
+  </form>
+</div>
 
-    <div class="payslip" id="payslipContent">
-      <!-- Dynamically inserted -->
-    </div>
+<div class="container hidden" id="dashboard">
+  <h2 id="welcomeTitle"></h2>
+  <label>Select Week:</label>
+  <select id="weekSelector" onchange="renderPayslip()">
+    <option value="week1">Week 1</option>
+    <option value="week2">Week 2</option>
+    <option value="week3">Week 3</option>
+    <option value="week4">Week 4</option>
+  </select>
 
-    <div class="btn-group" id="ownerButtons">
-      <button class="primary" onclick="sendEmail()">📧 Send Email Receipt</button>
-      <button class="primary" onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
-      <button class="secondary" onclick="window.print()">🖨️ Print Payslip</button>
-    </div>
-
-    <div class="footer-logout">
-      <button onclick="logout()">🚪 Logout</button>
-    </div>
+  <div class="payslip" id="payslipArea">
+    <!-- Payslip will render here -->
   </div>
 
-  <script>
-    const OTP = "123456";
-    let role = "staff";
+  <div class="controls">
+    <button onclick="sendWhatsApp()">📲 WhatsApp Receipt</button>
+    <button onclick="sendEmail()">📧 Email Receipt</button>
+    <button onclick="window.print()">🖨️ Print Receipt</button>
+  </div>
+</div>
 
-    const payslipData = {
-      week1: { food: 250, payout: 500, attendance: 5, deliveries: 20 },
-      week2: { food: 250, payout: 500, attendance: 5, deliveries: 18 },
-      week3: { food: 250, payout: 500, attendance: 4, deliveries: 16 },
-      week4: { food: 250, payout: 500, attendance: 5, deliveries: 22 }
+<script>
+  const OTP_CODES = {
+    owner: "radAdmin2024",
+    staff: "radStaff123"
+  };
+
+  let userRole = null;
+  let userName = null;
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const role = document.getElementById("loginRole").value;
+    const name = document.getElementById("loginName").value.trim();
+    const otp = document.getElementById("loginOTP").value;
+
+    if (otp !== OTP_CODES[role]) return alert("Invalid OTP");
+
+    userRole = role;
+    userName = name;
+    document.getElementById("loginModal").style.display = "none";
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("welcomeTitle").innerText = `👤 ${name} (${role})`;
+    renderPayslip();
+  }
+
+  function logout() {
+    location.reload();
+  }
+
+  function renderPayslip() {
+    const week = document.getElementById("weekSelector").value;
+    const payslipArea = document.getElementById("payslipArea");
+    const isOwner = userRole === "owner";
+
+    payslipArea.innerHTML = `
+      <h3>🧾 Payslip Summary for ${week.toUpperCase()}</h3>
+      <label><input type="checkbox" ${isOwner ? "data-owner=true" : ""} ${localStorage.getItem(week+"_food") === "true" ? "checked" : ""} onchange="togglePayout('${week}_food', this.checked)"> ₱250 Food Allowance</label><br>
+      <label><input type="checkbox" ${isOwner ? "data-owner=true" : ""} ${localStorage.getItem(week+"_salary") === "true" ? "checked" : ""} onchange="togglePayout('${week}_salary', this.checked)"> ₱500 Weekly Salary</label><br>
+      <label><input type="checkbox" ${isOwner ? "data-owner=true" : ""} ${localStorage.getItem(week+"_attendance") === "true" ? "checked" : ""} onchange="togglePayout('${week}_attendance', this.checked)"> ✅ Attendance</label><br>
+      <label><input type="checkbox" ${isOwner ? "data-owner=true" : ""} ${localStorage.getItem(week+"_delivery") === "true" ? "checked" : ""} onchange="togglePayout('${week}_delivery', this.checked)"> 📦 Delivery Completed</label>
+    `;
+  }
+
+  function togglePayout(key, checked) {
+    if (userRole !== "owner") return alert("Only owner can change this");
+    localStorage.setItem(key, checked);
+    renderPayslip();
+  }
+
+  function sendWhatsApp() {
+    const week = document.getElementById("weekSelector").value;
+    const msg = generateReceiptText(week);
+    const number = "63XXXXXXXXXX"; // Change to real number
+    window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`);
+  }
+
+  function sendEmail() {
+    const week = document.getElementById("weekSelector").value;
+    const data = {
+      email: prompt("Enter email to send receipt:"),
+      message: generateReceiptText(week),
     };
+    fetch("https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }).then(() => alert("📧 Email sent!"));
+  }
 
-    function login() {
-      const name = document.getElementById("loginName").value.trim();
-      const otp = document.getElementById("loginOTP").value.trim();
+  function generateReceiptText(week) {
+    const checks = ["food", "salary", "attendance", "delivery"];
+    const labels = {
+      food: "₱250 Food Allowance",
+      salary: "₱500 Weekly Salary",
+      attendance: "✅ Attendance",
+      delivery: "📦 Delivery Completed"
+    };
+    let text = `🧾 Dala🚲na Weekly Payslip – ${week.toUpperCase()}\n👤 ${userName} (${userRole})\n`;
+    checks.forEach(k => {
+      const key = `${week}_${k}`;
+      if (localStorage.getItem(key) === "true") text += `✔️ ${labels[k]}\n`;
+    });
+    return text;
+  }
+</script>
 
-      if (otp === OTP) {
-        role = name.toLowerCase() === 'owner' ? 'owner' : 'staff';
-        document.getElementById("loginScreen").classList.add("hidden");
-        document.getElementById("dashboard").classList.remove("hidden");
-        document.getElementById("userRole").innerText = `Logged in as: ${name}`;
-        document.getElementById("ownerButtons").style.display = role === 'owner' ? 'flex' : 'none';
-        renderPayslip();
-      } else {
-        alert("Invalid OTP");
-      }
-    }
-
-    function logout() {
-      location.reload();
-    }
-
-    function renderPayslip() {
-      const week = document.getElementById("weekSelector").value;
-      const data = payslipData[week];
-
-      const html = `
-        <h4>📄 Payslip for ${week.toUpperCase()}</h4>
-        <p>🍛 Food Allowance: ₱${data.food}</p>
-        <p>💵 Payout: ₱${data.payout}</p>
-        <p>📅 Attendance: ${data.attendance} days</p>
-        <p>📦 Deliveries: ${data.deliveries}</p>
-        <hr/>
-        <strong>💰 Total: ₱${data.food + data.payout}</strong>
-      `;
-
-      document.getElementById("payslipContent").innerHTML = html;
-    }
-
-    function sendEmail() {
-      const week = document.getElementById("weekSelector").value;
-      const data = payslipData[week];
-      const emailAPI = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
-
-      const payload = {
-        week: week,
-        total: data.food + data.payout,
-        attendance: data.attendance,
-        deliveries: data.deliveries
-      };
-
-      fetch(emailAPI + `?week=${week}&total=${payload.total}&att=${payload.attendance}&del=${payload.deliveries}`)
-        .then(() => alert("📧 Email sent!"))
-        .catch(() => alert("Failed to send email"));
-    }
-
-    function sendWhatsApp() {
-      const week = document.getElementById("weekSelector").value;
-      const data = payslipData[week];
-      const message = encodeURIComponent(`📄 Dala🚲na Payslip for ${week.toUpperCase()}\n🍛 Food: ₱${data.food}\n💵 Payout: ₱${data.payout}\n📅 Attendance: ${data.attendance} days\n📦 Deliveries: ${data.deliveries}\n💰 Total: ₱${data.food + data.payout}`);
-      const phone = "63XXXXXXXXXX"; // Update with real number
-      window.open(`https://wa.me/${phone}?text=${message}`);
-    }
-  </script>
 </body>
 </html>
