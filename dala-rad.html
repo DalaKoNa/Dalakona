@@ -2,202 +2,222 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Dala🚲na RAD – Rider Payout Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na RAD – Rider Allowance Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #fffaf7;
+      margin: 0;
       color: #333;
     }
-
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #a0527b;
+      color: white;
+    }
+    header .hamburger {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1rem;
+      color: #a0527b;
+    }
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 999;
     }
-
     .modal {
       background: white;
       padding: 2rem;
-      border-radius: 10px;
-      width: 90%;
+      border-radius: 12px;
       max-width: 400px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    .modal h2 {
-      margin-top: 0;
-      color: #a0527b;
+      width: 90%;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
       text-align: center;
     }
-
-    input {
+    .modal input {
       width: 100%;
       padding: 10px;
+      margin-top: 1rem;
       margin-bottom: 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
       border: 1px solid #ccc;
+      border-radius: 8px;
     }
-
-    button {
-      width: 100%;
-      padding: 10px;
+    .modal button {
       background: #a0527b;
       color: white;
       border: none;
-      font-size: 1rem;
-      border-radius: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
     }
-
     .dashboard {
-      max-width: 700px;
+      max-width: 800px;
       margin: 2rem auto;
       background: white;
       padding: 2rem;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    .week {
-      background: #fdf5f2;
+    .week-entry {
       padding: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 10px;
       margin-bottom: 1rem;
+      background: #fdf2ef;
+      border-left: 5px solid #a0527b;
     }
-
-    .week h3 {
-      margin-top: 0;
-    }
-
-    label {
+    .week-entry label {
       display: flex;
       align-items: center;
+      margin: 0.5rem 0;
+    }
+    .week-entry input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    .summary-box {
+      background: #f3f0ec;
+      padding: 1.2rem;
+      border-radius: 10px;
+      font-family: monospace;
+      margin-top: 1rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-top: 1rem;
     }
-
-    .summary {
-      background: #fff2ea;
-      padding: 1rem;
-      border-radius: 8px;
-      font-weight: bold;
-      text-align: center;
+    .actions button {
+      flex: 1;
+      background: #008060;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .logout {
-      text-align: right;
-      margin-bottom: 1rem;
-    }
-
-    .logout button {
-      background: #bbb;
-      padding: 6px 12px;
-      font-size: 0.8rem;
+    .actions button:hover {
+      background: #006a50;
     }
   </style>
 </head>
 <body>
+  <header>
+    <button class="hamburger" onclick="alert('Sidebar soon!')">☰</button>
+    <h2>Dala🚲na RAD</h2>
+  </header>
+
   <div id="loginModal" class="modal-backdrop">
     <div class="modal">
-      <h2>🔐 Login to Dala🚲na RAD</h2>
-      <input type="text" id="userName" placeholder="Full Name" />
-      <input type="password" id="otp" placeholder="Enter OTP" />
-      <button onclick="handleLogin()">Login</button>
-      <p id="loginError" style="color:red; text-align:center; display:none;">Invalid OTP or Name</p>
+      <h2>👑 Owner/Admin Login</h2>
+      <input id="adminName" placeholder="Full Name" />
+      <input id="adminOTP" placeholder="One-Time Passcode" />
+      <button onclick="verifyAdmin()">Access Dashboard</button>
     </div>
   </div>
 
-  <div class="dashboard hidden" id="dashboard">
-    <div class="logout">
-      <button onclick="logout()">Logout</button>
+  <div class="dashboard hidden" id="radDashboard">
+    <h1>🧾 Payout Control Panel</h1>
+    <div id="payoutList"></div>
+    <div class="summary-box" id="summaryBox">Loading…</div>
+    <div class="actions">
+      <button onclick="sendWhatsApp()">📲 WhatsApp Summary</button>
+      <button onclick="window.print()">🖨️ Print Payslip</button>
+      <button onclick="sendEmail()">📧 Email Receipt</button>
     </div>
-    <div id="riderHeader"></div>
-    <div id="salaryWeeks"></div>
-    <div class="summary" id="salarySummary"></div>
   </div>
 
   <script>
-    const schedule = [
-      { week: 1, start: "2025-06-02" },
-      { week: 2, start: "2025-06-09" },
-      { week: 3, start: "2025-06-16" },
-      { week: 4, start: "2025-06-23" },
-    ];
+    const ADMIN = "Dala Owner";
+    const OTP = "123456";
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbx_S4xpebcAOgeWyAR5_SLMEynlvlifOWUMLQv18FWWpMq8CnQNvQPWvLmrNXVInm5xkA/exec";
 
-    const ALLOWANCE = 250;
-    const PAYOUT = 500;
-    const ADMIN_NAME = "owner";
-    const ADMIN_OTP = "123456";
-    const STAFF_OTP = "246810";
+    const weeks = ["Week 1", "Week 2", "Week 3", "Week 4"];
+    const food = 250;
+    const payout = 500;
 
-    let isAdmin = false;
-
-    function handleLogin() {
-      const name = document.getElementById("userName").value.trim().toLowerCase();
-      const otp = document.getElementById("otp").value.trim();
-
-      if ((name === ADMIN_NAME && otp === ADMIN_OTP) || otp === STAFF_OTP) {
-        isAdmin = (name === ADMIN_NAME);
-        localStorage.setItem("riderName", name);
-        localStorage.setItem("isAdmin", isAdmin);
-        document.getElementById("loginModal").classList.add("hidden");
-        showDashboard(name);
+    function verifyAdmin() {
+      const name = document.getElementById("adminName").value.trim();
+      const pass = document.getElementById("adminOTP").value.trim();
+      if (name === ADMIN && pass === OTP) {
+        document.getElementById("loginModal").style.display = 'none';
+        document.getElementById("radDashboard").classList.remove("hidden");
+        loadPayouts();
       } else {
-        document.getElementById("loginError").style.display = "block";
+        alert("❌ Incorrect login");
       }
     }
 
-    function showDashboard(name) {
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("riderHeader").innerText = `👤 ${name}`;
-      const salaryWeeks = document.getElementById("salaryWeeks");
-      salaryWeeks.innerHTML = "";
-      let totalPaid = 0;
+    function loadPayouts() {
+      const container = document.getElementById("payoutList");
+      container.innerHTML = "";
+      let total = 0;
 
-      schedule.forEach(({ week, start }) => {
-        const foodKey = `week${week}_food`;
-        const payoutKey = `week${week}_payout`;
-        const foodGiven = JSON.parse(localStorage.getItem(foodKey)) || false;
-        const payoutGiven = JSON.parse(localStorage.getItem(payoutKey)) || false;
+      weeks.forEach((w, i) => {
+        const foodId = `w${i+1}_food`;
+        const payId = `w${i+1}_pay`;
+        const f = localStorage.getItem(foodId) === 'true';
+        const p = localStorage.getItem(payId) === 'true';
+        if (f) total += food;
+        if (p) total += payout;
 
-        if (foodGiven) totalPaid += ALLOWANCE;
-        if (payoutGiven) totalPaid += PAYOUT;
-
-        const weekDiv = document.createElement("div");
-        weekDiv.className = "week";
-        weekDiv.innerHTML = `
-          <h3>📅 Week ${week} (${start})</h3>
-          <label><input type="checkbox" ${foodGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${foodKey}', this.checked)"> ₱250 Food Allowance</label>
-          <label><input type="checkbox" ${payoutGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${payoutKey}', this.checked)"> ₱500 Payout</label>
+        container.innerHTML += `
+          <div class="week-entry">
+            <h3>📅 ${w}</h3>
+            <label><input type="checkbox" ${f ? 'checked' : ''} onchange="toggle('${foodId}', this.checked)"> ₱${food} Food Allowance</label>
+            <label><input type="checkbox" ${p ? 'checked' : ''} onchange="toggle('${payId}', this.checked)"> ₱${payout} Weekly Payout</label>
+          </div>
         `;
-        salaryWeeks.appendChild(weekDiv);
       });
 
-      document.getElementById("salarySummary").innerText = `✨ Total Paid: ₱${totalPaid.toLocaleString()} of ₱3,000`;
+      document.getElementById("summaryBox").innerText = `Total Paid: ₱${total} / ₱3000`;
     }
 
-    function toggle(key, checked) {
-      localStorage.setItem(key, checked);
-      showDashboard(localStorage.getItem("riderName"));
+    function toggle(key, value) {
+      localStorage.setItem(key, value);
+      loadPayouts();
     }
 
-    function logout() {
-      localStorage.clear();
-      location.reload();
+    function sendWhatsApp() {
+      const summary = document.getElementById("summaryBox").innerText;
+      const msg = encodeURIComponent(`🧾 Dala🚲na RAD Summary\n${summary}`);
+      const number = "63XXXXXXXXXX"; // change to actual
+      window.open(`https://wa.me/${number}?text=${msg}`, '_blank');
     }
+
+    function sendEmail() {
+      const payload = {
+        action: "email",
+        name: ADMIN,
+        summary: document.getElementById("summaryBox").innerText
+      };
+
+      fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      }).then(r => r.json())
+        .then(res => alert("📧 Email sent!"))
+        .catch(err => alert("❌ Failed to email"));
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("w1_food")) loadPayouts();
+    });
   </script>
 </body>
 </html>
