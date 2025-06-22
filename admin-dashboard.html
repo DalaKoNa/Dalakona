@@ -215,6 +215,40 @@ DALA🚲NA PAYSLIP SUMMARY
           else alert("❌ Save failed");
         });
     }
+<script>
+  const ADMIN_ACCESS = {
+    name: "HR Admin",
+    otp: "radAdmin2024"
+  };
+
+  function verifyLogin() {
+    const inputName = document.getElementById("adminName").value.trim();
+    const inputOtp = document.getElementById("adminOtp").value.trim();
+
+    if (inputName === ADMIN_ACCESS.name && inputOtp === ADMIN_ACCESS.otp) {
+      document.getElementById("loginModal").style.display = "none";
+      alert("✅ Welcome, HR Admin!");
+    } else {
+      alert("❌ Invalid credentials");
+    }
+  }
+
+  // Block dashboard until verified
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("loginModal").style.display = "flex";
+  });
+</script>
+
   </script>
+<!-- 🔐 Secure Login Modal -->
+<div id="loginModal" style="display:flex; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:9999;">
+  <div style="background:white; padding:2rem; border-radius:12px; width:90%; max-width:400px; box-shadow:0 0 10px rgba(0,0,0,0.2); text-align:center;">
+    <h2 style="margin-top:0;">🔐 HR Admin Login</h2>
+    <input type="text" id="adminName" placeholder="Full Name (e.g., HR Admin)" style="width:100%; margin-bottom:1rem;" />
+    <input type="password" id="adminOtp" placeholder="Access Code" style="width:100%;" />
+    <button onclick="verifyLogin()" style="margin-top:1rem; background:#8a3c63; color:white; padding:10px 20px; border:none; border-radius:6px;">Login</button>
+  </div>
+</div>
+
 </body>
 </html>
