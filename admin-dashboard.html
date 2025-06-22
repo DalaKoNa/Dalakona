@@ -3,184 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na | RAD Unified Dashboard</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <title>Dala🚲na RAD Dashboard</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #fffaf6;
-      color: #333;
-    }
-    header {
-      background: #a0527b;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    .login-modal, .dashboard, .payslip-card {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    button {
-      background: #a0527b;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+    body { font-family: 'Arial', sans-serif; background: #fdfdfc; margin: 0; padding: 0; }
+    header { background: #a0527b; color: white; padding: 1rem; text-align: center; font-size: 1.4rem; }
+    .container { padding: 2rem; max-width: 900px; margin: auto; }
+    .login-box, .dashboard { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     .hidden { display: none; }
-    .logout-btn { text-align: right; }
-    .tab-menu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 1rem;
-    }
-    .tab-menu button {
-      flex: 1;
-      background: #eee;
-      color: #333;
-    }
-    .tab-menu button.active {
-      background: #a0527b;
-      color: white;
-    }
-    .payslip-card {
-      border: 1px solid #ddd;
-      padding: 1rem;
-      border-radius: 10px;
-      background: #f9f5f2;
-    }
-    .payslip-card h3 { margin: 0 0 1rem; }
-    .actions button {
-      width: auto;
-      margin-right: 0.5rem;
-    }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border-radius: 6px; border: 1px solid #ccc; }
+    button { margin-top: 1rem; background: #a0527b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; }
+    .logout-btn { background: #999; font-size: 0.8rem; padding: 0.4rem 1rem; float: right; }
+    .payslip { background: #fef9f6; border: 1px solid #ddd; padding: 1rem; border-radius: 10px; margin-top: 1rem; line-height: 1.5; }
+    .admin-actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .admin-actions button { background: #00695c; }
+    .entry-field { margin-top: 1rem; }
+    .entry-field input { width: 120px; display: inline-block; margin-right: 10px; }
+    .tabs { margin-top: 2rem; display: flex; gap: 1rem; }
+    .tab { background: #eee; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+    .tab.active { background: #a0527b; color: white; }
   </style>
 </head>
 <body>
-  <header>Dala🚲na | Rider Salary System</header>
-
-  <div class="login-modal" id="loginModal">
-    <h2>Login</h2>
-    <label>Name</label>
-    <input type="text" id="loginName" />
-    <label>OTP Code</label>
-    <input type="password" id="loginOTP" />
-    <button onclick="login()">Login</button>
-  </div>
-
-  <div class="dashboard hidden" id="dashboard">
-    <div class="logout-btn">
-      <button onclick="logout()">Logout</button>
+  <header>Dala🚲na RAD Dashboard</header>
+  <div class="container">
+    <div id="loginBox" class="login-box">
+      <label>Full Name</label>
+      <input type="text" id="nameInput" />
+      <label>OTP / Password</label>
+      <input type="password" id="otpInput" />
+      <button onclick="login()">Login</button>
     </div>
-    <div id="tabMenu" class="tab-menu"></div>
-    <div id="tabContent"></div>
+
+    <div id="dashboard" class="dashboard hidden">
+      <button class="logout-btn" onclick="logout()">Logout</button>
+      <h2 id="welcome"></h2>
+      <div id="tabs" class="tabs hidden"></div>
+      <div id="staffView"></div>
+      <div class="admin-actions hidden" id="adminActions">
+        <button onclick="sendWhatsApp()">📲 WhatsApp</button>
+        <button onclick="sendEmail()">📧 Email</button>
+        <button onclick="window.print()">🖨️ Print Payslip</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    const USERS = [
-      { name: "HR Admin", role: "admin", otp: "radAdmin2024" },
-      { name: "Lynn Tebban", role: "staff", otp: "lynn123" },
-      { name: "Mario Lopez", role: "staff", otp: "mario123" },
-      { name: "Jenny Cruz", role: "staff", otp: "jenny123" },
-      { name: "Assistant Joan", role: "staff", otp: "joan123" },
-    ];
+    const users = {
+      'HR Admin': { role: 'admin', otp: 'radAdmin2024' },
+      'Lynn Tebban': { role: 'staff', otp: 'lynn123' },
+      'Mario Lopez': { role: 'staff', otp: 'mario123' },
+      'Jenny Cruz': { role: 'staff', otp: 'jenny123' },
+      'Assistant Joan': { role: 'staff', otp: 'joan123' },
+    };
 
-    let currentUser = null;
-    let currentRole = null;
+    const profiles = {
+      'Lynn Tebban': { basic: 2000, allowance: 300, advance: 450, deliveries: 25, attendance: 18 },
+      'Mario Lopez': { basic: 2000, allowance: 300, advance: 450, deliveries: 25, attendance: 18 },
+      'Jenny Cruz': { basic: 2000, allowance: 300, advance: 450, deliveries: 25, attendance: 18 },
+      'Assistant Joan': { basic: 2000, allowance: 300, advance: 450, deliveries: 25, attendance: 18 },
+    };
+
+    let currentUser = "";
+    let isAdmin = false;
 
     function login() {
-      const name = document.getElementById('loginName').value.trim();
-      const otp = document.getElementById('loginOTP').value.trim();
-      const found = USERS.find(u => u.name === name && u.otp === otp);
-      if (!found) return alert("Invalid credentials");
-      currentUser = found.name;
-      currentRole = found.role;
-      document.getElementById('loginModal').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
-      loadDashboard();
+      const name = document.getElementById("nameInput").value.trim();
+      const otp = document.getElementById("otpInput").value.trim();
+      const user = users[name];
+      if (user && user.otp === otp) {
+        currentUser = name;
+        isAdmin = user.role === 'admin';
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+        document.getElementById("welcome").innerText = isAdmin ? `Welcome HR Admin` : `Payslip: ${name}`;
+        if (isAdmin) buildAdminTabs(); else showPayslip(name);
+      } else {
+        alert("Invalid login");
+      }
     }
 
     function logout() {
       location.reload();
     }
 
-    function loadDashboard() {
-      const tabMenu = document.getElementById("tabMenu");
-      const tabContent = document.getElementById("tabContent");
-      tabMenu.innerHTML = "";
-      tabContent.innerHTML = "";
-
-      const staff = USERS.filter(u => u.role === "staff");
-      const showUsers = currentRole === "admin" ? staff : staff.filter(u => u.name === currentUser);
-
-      showUsers.forEach((user, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = user.name;
-        if (i === 0) btn.classList.add("active");
-        btn.onclick = () => switchTab(user.name);
-        tabMenu.appendChild(btn);
+    function buildAdminTabs() {
+      const tabs = document.getElementById("tabs");
+      tabs.innerHTML = "";
+      tabs.classList.remove("hidden");
+      Object.keys(profiles).forEach(name => {
+        const tab = document.createElement("div");
+        tab.className = "tab";
+        tab.innerText = name;
+        tab.onclick = () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          showPayslip(name, true);
+        };
+        tabs.appendChild(tab);
       });
-
-      showUsers.forEach((user, i) => {
-        const div = document.createElement("div");
-        div.id = `tab-${user.name}`;
-        div.classList.add("payslip-card");
-        if (i !== 0) div.classList.add("hidden");
-        div.innerHTML = `
-          <h3>${user.name}'s Payslip</h3>
-          <p>✨ Basic Pay: ₱1,000</p>
-          <p>🚚 Deliveries: 25</p>
-          <p>📅 Attendance: 18 days</p>
-          <p>💸 Total Pay: ₱3,000</p>
-          ${currentRole === 'admin' ? `
-          <div class="actions">
-            <button onclick="sendWhatsApp('${user.name}')">WhatsApp</button>
-            <button onclick="sendEmail('${user.name}')">Email</button>
-            <button onclick="printPayslip('${user.name}')">PDF</button>
-          </div>` : ''}
-        `;
-        tabContent.appendChild(div);
-      });
+      document.getElementById("adminActions").classList.remove("hidden");
     }
 
-    function switchTab(name) {
-      document.querySelectorAll(".tab-menu button").forEach(b => b.classList.remove("active"));
-      const activeBtn = [...document.querySelectorAll(".tab-menu button")].find(b => b.innerText === name);
-      if (activeBtn) activeBtn.classList.add("active");
-      document.querySelectorAll(".payslip-card").forEach(c => c.classList.add("hidden"));
-      document.getElementById(`tab-${name}`).classList.remove("hidden");
+    function showPayslip(name, editable = false) {
+      const data = profiles[name];
+      const total = data.basic + data.allowance + data.advance;
+      let html = `<div class='payslip'><h3>📄 Payslip for ${name}</h3>`;
+      html += `<p>📅 Attendance: ${editable ? `<input type='number' value='${data.attendance}' onchange='update("${name}", "attendance", this.value)' />` : data.attendance}</p>`;
+      html += `<p>🚚 Deliveries: ${editable ? `<input type='number' value='${data.deliveries}' onchange='update("${name}", "deliveries", this.value)' />` : data.deliveries}</p>`;
+      html += `<p>✨ Basic Pay: ₱${editable ? `<input type='number' value='${data.basic}' onchange='update("${name}", "basic", this.value)' />` : data.basic}</p>`;
+      html += `<p>🍱 Meal/Load Allowance: ₱${editable ? `<input type='number' value='${data.allowance}' onchange='update("${name}", "allowance", this.value)' />` : data.allowance}</p>`;
+      html += `<p>📦 Weekly Advance: ₱${editable ? `<input type='number' value='${data.advance}' onchange='update("${name}", "advance", this.value)' />` : data.advance}</p>`;
+      html += `<hr><p><strong>💸 Total Pay: ₱${total.toLocaleString()}</strong></p>`;
+      html += `</div>`;
+      document.getElementById("staffView").innerHTML = html;
     }
 
-    function sendWhatsApp(name) {
-      alert(`📲 Sending WhatsApp payout to ${name}`);
+    function update(name, field, value) {
+      profiles[name][field] = parseInt(value);
+      showPayslip(name, true);
     }
 
-    function sendEmail(name) {
-      alert(`📧 Sending email receipt to ${name}`);
+    function sendWhatsApp() {
+      const name = document.querySelector('.tab.active')?.innerText;
+      if (!name) return alert("Select a rider");
+      const d = profiles[name];
+      const total = d.basic + d.allowance + d.advance;
+      const msg = `📄 Dala🚲na Payslip for ${name}\nAttendance: ${d.attendance} days\nDeliveries: ${d.deliveries}\nBasic: ₱${d.basic}\nAllowance: ₱${d.allowance}\nAdvance: ₱${d.advance}\n💸 Total: ₱${total}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
     }
 
-    function printPayslip(name) {
-      const content = document.getElementById(`tab-${name}`).innerHTML;
-      const win = window.open('', '', 'width=800,height=600');
-      win.document.write('<html><head><title>Payslip</title></head><body>' + content + '</body></html>');
-      win.document.close();
-      win.print();
+    function sendEmail() {
+      alert("📧 Email sending not yet configured. This will auto-send weekly in final version.");
     }
   </script>
 </body>
