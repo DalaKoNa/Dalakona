@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dala🚲na RAD – Rider/Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body { font-family: 'Arial', sans-serif; background: #fffaf7; color: #333; padding: 2rem; margin: 0; }
+    h1 { text-align: center; font-size: 1.8rem; color: #a0527b; }
+    .login-box, .dashboard { max-width: 700px; margin: 2rem auto; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    label { font-size: 0.9rem; display: block; margin-bottom: 5px; }
+    input { width: 100%; padding: 8px; font-size: 0.95rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 6px; }
+    button { width: 100%; padding: 10px; background: #a0527b; color: white; border: none; font-size: 1rem; border-radius: 8px; cursor: pointer; }
+    .hidden { display: none; }
+    .logout { text-align: right; font-size: 0.8rem; margin-bottom: 1rem; }
+    .week { background: #f8f4f0; margin-bottom: 1rem; padding: 1rem; border-radius: 10px; border: 1px solid #ddd; }
+    .week h3 { margin: 0 0 0.5rem; }
+    .summary { background: #fff2ea; padding: 1rem; border-radius: 8px; font-weight: bold; text-align: center; }
+    .admin-actions { display: flex; gap: 10px; justify-content: center; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>🚴 Dala🚲na RAD</h1>
+
+  <div class="login-box" id="loginBox">
+    <label>Name</label>
+    <input type="text" id="userName" />
+    <label>Employee/Admin ID</label>
+    <input type="text" id="userId" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="dashboard hidden" id="dashboard">
+    <div class="logout"><button onclick="logout()">Logout</button></div>
+    <div id="userHeader"></div>
+    <div id="salaryWeeks"></div>
+    <div class="summary" id="salarySummary"></div>
+    <div class="admin-actions hidden" id="adminActions">
+      <button onclick="downloadPDF()">📄 Download PDF</button>
+      <button onclick="sendWhatsApp()">💌 Send via WhatsApp</button>
+      <button onclick="sendEmail()">📧 Send via Email</button>
+    </div>
+  </div>
+
+  <script>
+    const ALLOWANCE = 250;
+    const PAYOUT = 500;
+    const TOTAL = 3000;
+    const schedule = [
+      { week: 1, start: "2025-06-02" },
+      { week: 2, start: "2025-06-09" },
+      { week: 3, start: "2025-06-16" },
+      { week: 4, start: "2025-06-23" }
+    ];
+
+    function login() {
+      const name = document.getElementById("userName").value.trim();
+      const id = document.getElementById("userId").value.trim();
+      if (!name || !id) return alert("Enter name and ID");
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userId", id);
+      showDashboard(name, id);
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    function showDashboard(name, id) {
+      const isAdmin = id === "dalaAdmin2024";
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("userHeader").innerText = `👤 ${name} | ID: ${id} ${isAdmin ? '(Admin)' : ''}`;
+
+      let totalPaid = 0;
+      const salaryWeeks = document.getElementById("salaryWeeks");
+      salaryWeeks.innerHTML = "";
+
+      schedule.forEach(({ week, start }) => {
+        const foodKey = `w${week}_food_${id}`;
+        const payoutKey = `w${week}_pay_${id}`;
+
+        const foodGiven = JSON.parse(localStorage.getItem(foodKey)) || false;
+        const payoutGiven = JSON.parse(localStorage.getItem(payoutKey)) || false;
+
+        if (foodGiven) totalPaid += ALLOWANCE;
+        if (payoutGiven) totalPaid += PAYOUT;
+
+        const weekDiv = document.createElement("div");
+        weekDiv.className = "week";
+        weekDiv.innerHTML = `
+          <h3>🗓️ Week ${week} (${start})</h3>
+          <label><input type="checkbox" ${foodGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${foodKey}', this.checked)"> ₱250 Food Allowance</label>
+          <label><input type="checkbox" ${payoutGiven ? "checked" : ""} ${!isAdmin ? "disabled" : ""} onchange="toggle('${payoutKey}', this.checked)"> ₱500 Payout</label>
+        `;
+        salaryWeeks.appendChild(weekDiv);
+      });
+
+      document.getElementById("salarySummary").innerText = `✨ Total Paid: ₱${totalPaid.toLocaleString()} of ₱${TOTAL}`;
+      if (isAdmin) document.getElementById("adminActions").classList.remove("hidden");
+    }
+
+    function toggle(key, value) {
+      localStorage.setItem(key, value);
+      showDashboard(localStorage.getItem("userName"), localStorage.getItem("userId"));
+    }
+
+    function generateSummary() {
+      const name = localStorage.getItem("userName");
+      const id = localStorage.getItem("userId");
+      let output = `🗓️ June 2025 Payout Summary\n👤 Rider: ${name} | ID: ${id}\n------------------------------------\n`;
+      let total = 0;
+
+      schedule.forEach(({ week, start }) => {
+        const food = JSON.parse(localStorage.getItem(`w${week}_food_${id}`));
+        const pay = JSON.parse(localStorage.getItem(`w${week}_pay_${id}`));
+        let line = `Week ${week}: `;
+        if (food) { line += `₱250 (Food) `; total += ALLOWANCE; }
+        if (pay) { line += `+ ₱500 (Payout)`; total += PAYOUT; }
+        output += line + "\n";
+      });
+      output += `\nTOTAL: ₱${total}`;
+      return output;
+    }
+
+    function downloadPDF() {
+      const element = document.createElement("div");
+      element.innerText = generateSummary();
+      html2pdf().from(element).save("Dala-RAD-Receipt.pdf");
+    }
+
+    function sendWhatsApp() {
+      const message = encodeURIComponent(generateSummary());
+      window.open(`https://wa.me/?text=${message}`, '_blank');
+    }
+
+    function sendEmail() {
+      const subject = encodeURIComponent("Dala🕊️na Rider Salary Receipt");
+      const body = encodeURIComponent(generateSummary());
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("userName");
+      const id = localStorage.getItem("userId");
+      if (name && id) showDashboard(name, id);
+    });
+  </script>
+</body>
+</html>
