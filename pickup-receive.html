@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receive an Item – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fffaf7;
+      margin: 0;
+      padding: 1rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .back-btn {
+      font-size: 1.5rem;
+      color: #333;
+      text-decoration: none;
+    }
+    .logo {
+      font-weight: 700;
+      color: #008060;
+      font-size: 1.2rem;
+    }
+    .hero {
+      text-align: center;
+      margin: 1.5rem 0 1rem;
+    }
+    .hero h1 {
+      font-size: 1.6rem;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background: #008060;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .terms {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="pickup-options.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <div class="logo">Dalakona-subong dayon!</div>
+    <div></div>
+  </header>
+
+  <section class="hero">
+    <h1>📥 Receive an Item</h1>
+    <p><em>Padala nga item? Kuhaon namon para sa imo!</em></p>
+  </section>
+
+  <form onsubmit="sendWhatsApp(); return false;">
+    <label>📍 Pickup Location<br /><small><em>Diin kuhaon ang item</em></small></label>
+    <input type="text" id="pickup-location" required />
+
+    <label>📦 Item Description<br /><small><em>Ano ang kuhaon nga item</em></small></label>
+    <textarea id="item-description" rows="2" required></textarea>
+
+    <label>🎯 Delivery Address<br /><small><em>Diin ihatag ang item</em></small></label>
+    <input type="text" id="delivery-address" required />
+
+    <label>🧾 Item Type</label>
+    <select id="item-type">
+      <option>Documents</option>
+      <option>Food or Pasalubong</option>
+      <option>Clothes / Accessories</option>
+      <option>Non-fragile items (under 4kg)</option>
+    </select>
+
+    <label>📅 Preferred Time</label>
+    <input type="time" id="preferred-time" />
+
+    <label>📞 Your Contact Number</label>
+    <input type="tel" id="contact-number" required />
+
+    <button type="submit">📲 Confirm & Send via WhatsApp</button>
+
+    <div class="terms">
+      ⚠️ We reserve the right to inspect the item for safety. Item must not exceed 4kg.<br />
+      <em>Pwede namon usisahon ang sulod sang item para sa seguridad. Indi maglapaw sa 4kg ang bug-at.</em>
+    </div>
+  </form>
+
+  <script>
+    function sendWhatsApp() {
+      const item = document.getElementById('item-description').value;
+      const pickup = document.getElementById('pickup-location').value;
+      const drop = document.getElementById('delivery-address').value;
+      const type = document.getElementById('item-type').value;
+      const time = document.getElementById('preferred-time').value;
+      const contact = document.getElementById('contact-number').value;
+
+      const msg = `📥 RECEIVE ITEM REQUEST\n` +
+        `📍 Pickup Location: ${pickup}\n` +
+        `🎯 Delivery Address: ${drop}\n` +
+        `📦 Item: ${item} (${type})\n` +
+        `🕒 Time: ${time || 'Anytime'}\n` +
+        `📞 Contact: ${contact}`;
+
+      const encoded = encodeURIComponent(msg);
+      const waURL = `https://wa.me/63XXXXXXXXXX?text=${encoded}`;
+      window.open(waURL, '_blank');
+    }
+  </script>
+</body>
+</html>
 
