@@ -3,136 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Padala Sang Item – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Send an Item – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #fffaf7;
+      background: #fffaf7;
       margin: 0;
-      padding: 1rem;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .logo {
-      font-family: 'Cinzel', serif;
-      color: #008060;
-      font-size: 1.3rem;
-      font-weight: 600;
+      padding: 1.5rem;
     }
     .container {
-      max-width: 700px;
+      max-width: 600px;
       margin: auto;
       background: white;
-      padding: 2rem;
-      border-radius: 16px;
+      padding: 1.5rem;
+      border-radius: 14px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     h1 {
-      font-family: 'Cinzel', serif;
       color: #008060;
       text-align: center;
+      margin-bottom: 1rem;
     }
     label {
-      display: block;
-      margin-top: 1rem;
       font-weight: 600;
+      margin-top: 1rem;
+      display: block;
     }
     input, select, textarea {
       width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 0.7rem;
       margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 1rem;
     }
     button {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       width: 100%;
       padding: 0.8rem;
       background: #008060;
       color: white;
-      font-size: 1rem;
+      font-size: 1.1rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
     }
+    .fee-display {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #008060;
+    }
     .terms {
-      margin-top: 1.5rem;
       font-size: 0.9rem;
-      color: #666;
-      background: #f0f0f0;
-      padding: 1rem;
-      border-radius: 8px;
+      margin-top: 1rem;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="pickup-options.html" style="text-decoration: none; color: #008060; font-size: 1.2rem">←</a>
-    <div class="logo">Dalakona-Subong Dayon!</div>
-    <div></div>
-  </header>
+<div class="container">
+  <h1>📤 Send an Item</h1>
+  
+  <label for="sender-name">Your Name</label>
+  <input type="text" id="sender-name" required />
 
-  <div class="container">
-    <h1>📤 Send an Item<br><small style="font-size: 1rem; color:#444">Magpadala sang Imo Item</small></h1>
+  <label for="sender-phone">Your Phone Number</label>
+  <input type="text" id="sender-phone" required />
 
-    <label for="pickup">📍 Pickup Location <small>(Diin namon kuhaon)</small></label>
-    <input type="text" id="pickup" placeholder="Ex: 123 Lopez Jaena St, Bacolod" />
+  <label for="pickup-location">Pickup Location</label>
+  <input type="text" id="pickup-location" required />
 
-    <label for="dropoff">🏠 Delivery Address <small>(Diin ipadala)</small></label>
-    <input type="text" id="dropoff" placeholder="Ex: Brgy. Singcang, Bacolod" />
+  <label for="delivery-location">Delivery Address</label>
+  <input type="text" id="delivery-location" required />
 
-    <label for="item">📦 Item Description <small>(Deskripsyon sang item)</small></label>
-    <textarea id="item" rows="2" placeholder="Documents, food, small box... (max 4kg)"></textarea>
+  <label for="barangay">Barangay</label>
+  <select id="barangay" onchange="calculateFee()">
+    <option value="">Select Barangay</option>
+    <option value="Handumanan">Handumanan</option>
+    <option value="Cabug">Cabug</option>
+    <option value="Felisa">Felisa</option>
+    <option value="Alijis">Alijis</option>
+    <option value="Mansilingan">Mansilingan</option>
+  </select>
 
-    <label for="type">✅ Accepted Item Type</label>
-    <select id="type">
-      <option>Documents</option>
-      <option>Small Box</option>
-      <option>Food/Drinks (sealed)</option>
-      <option>Groceries</option>
-      <option>Others (non-restricted)</option>
-    </select>
+  <label for="item-description">Item Description</label>
+  <textarea id="item-description" rows="3"></textarea>
 
-    <label for="notes">📝 Additional Notes <small>(Opsyonal)</small></label>
-    <textarea id="notes" rows="2"></textarea>
+  <div class="fee-display">Service Fee: ₱<span id="service-fee">0</span></div>
 
-    <div class="terms">
-      ⚠️ By proceeding, you agree that <strong>DalaKoNa</strong> has the right to inspect items for security purposes.<br>
-      ❗ Maximum weight: <strong>4kg</strong> only.<br>
-      <em>Paandam: May katungdanan kami nga usisahon ang item para sa seguridad. Indi maglapaw 4kg ang bug-at.</em>
-    </div>
-
-    <button onclick="confirmSend()">📲 Confirm & Send via WhatsApp</button>
+  <div class="terms">
+    ⚠️ By submitting, you agree that items will be checked for safety. Items must not exceed 4kg.<br>
+    <em>⚖️ Ang item indi maglapaw sa 4kg kag may posibilidad nga usisahon para sa seguridad.</em>
   </div>
 
-  <script>
-    function confirmSend() {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
-      const item = document.getElementById('item').value.trim();
-      const notes = document.getElementById('notes').value.trim();
-      const type = document.getElementById('type').value;
+  <button onclick="submitPickupForm()">🚀 Submit and Confirm via WhatsApp</button>
+</div>
 
-      if (!pickup || !dropoff || !item) {
-        alert('❗ Please complete all required fields.');
-        return;
-      }
+<script>
+  const driverNumber = "63XXXXXXXXXX";
+  const adminNumber = "63YYYYYYYYYY";
 
-      const message = `🚲 *DalaKoNa - Pickup to Send Order*\n\n` +
-                      `📍 *Pickup From:* ${pickup}\n🏠 *Deliver To:* ${dropoff}\n📦 *Item:* ${item} (${type})\n` +
-                      (notes ? `📝 Notes: ${notes}\n` : '') +
-                      `\n✅ I agree to terms and 4kg limit.`;
+  function calculateFee() {
+    const brgy = document.getElementById('barangay').value;
+    const feeMap = {
+      Handumanan: 39,
+      Cabug: 49,
+      Felisa: 59,
+      Alijis: 59,
+      Mansilingan: 59
+    };
+    const fee = feeMap[brgy] || 0;
+    document.getElementById('service-fee').innerText = fee;
+  }
 
-      const encodedMsg = encodeURIComponent(message);
-      const whatsappURL = `https://wa.me/63XXXXXXXXXX?text=${encodedMsg}`; // Replace with your WhatsApp number
-      window.open(whatsappURL, '_blank');
+  function submitPickupForm() {
+    const data = {
+      customerName: document.getElementById('sender-name').value.trim(),
+      customerPhone: document.getElementById('sender-phone').value.trim(),
+      pickupLocation: document.getElementById('pickup-location').value.trim(),
+      deliveryLocation: document.getElementById('delivery-location').value.trim(),
+      barangay: document.getElementById('barangay').value,
+      itemDesc: document.getElementById('item-description').value.trim(),
+      fee: document.getElementById('service-fee').innerText
+    };
+
+    if (!data.customerName || !data.customerPhone || !data.pickupLocation || !data.deliveryLocation || !data.barangay || !data.itemDesc) {
+      alert("Please complete all fields.");
+      return;
     }
-  </script>
+
+    const summary = `📦 *New Delivery Request*\n\n🧑 Sender: ${data.customerName}\n📱 Phone: ${data.customerPhone}\n🏘️ Pickup: ${data.pickupLocation}\n📍 Delivery: ${data.deliveryLocation}\n📌 Barangay: ${data.barangay}\n📝 Item: ${data.itemDesc}\n💰 Fee: ₱${data.fee}`;
+
+    // WhatsApp messages
+    window.open(`https://wa.me/${driverNumber}?text=${encodeURIComponent("🛵 Delivery Task:\n" + summary)}`);
+    window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent("🔔 New Delivery Notification:\n" + summary)}`);
+    window.open(`https://wa.me/${data.customerPhone}?text=${encodeURIComponent("✅ Your request has been received! We'll pick up your item shortly.\n\n" + summary)}`);
+  }
+</script>
 </body>
 </html>
