@@ -1,1 +1,77 @@
+<!-- pickup-send.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Send an Item – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Cinzel&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fffaf7; margin: 0; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .logo { font-family: 'Cinzel', serif; color: #008060; font-size: 1.3rem; }
+    .form-box { max-width: 700px; background: white; margin: auto; padding: 2rem; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    h2 { text-align: center; font-family: 'Cinzel', serif; color: #008060; margin-bottom: 1rem; }
+    label { display: block; margin-top: 1rem; font-weight: 600; color: #333; }
+    input, textarea, select { width: 100%; padding: 0.7rem; margin-top: 0.3rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    button { margin-top: 1.5rem; width: 100%; padding: 0.8rem; background: #008060; color: white; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; }
+    .notice { font-size: 0.9rem; margin-top: 1rem; color: #777; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="pickup-options.html">← Back</a>
+    <div class="logo">Dalakona-subong dayon!</div>
+    <div></div>
+  </header>
+
+  <div class="form-box">
+    <h2>📤 Send an Item<br><small><em>Padala sang Imo Item</em></small></h2>
+    <form onsubmit="submitSend(event)">
+      <label for="pickup-location">Pickup Location <br><em>(Diin kuhaon ang item)</em></label>
+      <input type="text" id="pickup-location" required />
+
+      <label for="delivery-address">Delivery Address <br><em>(Diin ipadala ang item)</em></label>
+      <input type="text" id="delivery-address" required />
+
+      <label for="item">Item Description <br><em>(Deskripsyon sang item)</em></label>
+      <input type="text" id="item" required />
+
+      <label for="item-type">Accepted Item Type</label>
+      <select id="item-type" required>
+        <option value="">-- Select --</option>
+        <option>Documents</option>
+        <option>Small Parcels</option>
+        <option>Food or Pasalubong</option>
+        <option>Clothing</option>
+        <option>Others below 4kg</option>
+      </select>
+
+      <label for="notes">Additional Notes <em>(Opsyonal)</em></label>
+      <textarea id="notes" rows="3"></textarea>
+
+      <div class="notice">
+        ⚠️ We reserve the right to inspect items for safety. Items must not exceed 4kg.<br>
+        <em>May katungdanan kami nga usisahon ang sulod sang item para sa seguridad. Indi maglapaw sa 4kg.</em>
+      </div>
+
+      <button type="submit">Send via WhatsApp</button>
+    </form>
+  </div>
+
+  <script>
+    function submitSend(e) {
+      e.preventDefault();
+      const loc = document.getElementById('pickup-location').value;
+      const del = document.getElementById('delivery-address').value;
+      const item = document.getElementById('item').value;
+      const type = document.getElementById('item-type').value;
+      const notes = document.getElementById('notes').value;
+
+      const msg = `📤 DalaKoNa – Send Item\nPickup: ${loc}\nDeliver To: ${del}\nItem: ${item} (${type})\nNotes: ${notes}`;
+      window.location.href = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`;
+    }
+  </script>
+</body>
+</html>
 
