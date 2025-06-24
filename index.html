@@ -71,31 +71,60 @@
       </a>
     </div>
 
+<!-- Pickup & Delivery Options Section (Styled for Index Theme) -->
+<section style="padding: 3rem 1rem; background-color: #f8f8f8; text-align: center;">
+  <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #008060; margin-bottom: 1rem;">
+    🛵 DalaKoNa Pickup Options
+  </h2>
+  <p style="font-size: 1rem; color: #555; max-width: 700px; margin: auto auto 2.5rem;">
+    Choose what you want to do — <strong>send</strong> or <strong>receive</strong> an item across town. 
+    <br />
+    <em>Pili kung magpadala ukon magbaton sang item — subong dayon!</em>
+  </p>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+
+    <!-- TO SEND CARD -->
+    <a href="pickup-send.html" style="text-decoration: none;">
+      <div style="
+        width: 300px;
+        background: #ffffff;
+        border: 1.5px solid #008060;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        transition: transform 0.2s ease;
+        font-family: 'Inter', sans-serif;
+      " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" style="width: 64px; margin-bottom: 1rem;" />
+        <h3 style="color: #008060; font-family: 'Cinzel', serif;">📤 To Send</h3>
+        <p style="font-size: 0.9rem; color: #444;">
+          Send an item to someone — we’ll pick it up and deliver it for you.<br />
+          <em>Magpadala sang item — kuhaon namon kag ihatod.</em>
+        </p>
+      </div>
+    </a>
+
     <!-- TO RECEIVE CARD -->
-    <div style="
-      width: 320px;
-      background: white;
-      border: 2px solid #008060;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform 0.3s;
-      font-family: 'Inter', sans-serif;
-      text-align: left;
-    " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'"><h3 style="color: #008060; font-family: 'Cinzel', serif;">📥 To Receive an Item</h3>
-      <p style="font-size: 0.95rem; color: #333;">
-        Someone has your item? We’ll pick it up from them and deliver it to you.<br />
-        <em>May ara sang item mo? Amo na ang kuhaon namon kag ihatag sa imo!</em>
-      </p>
-      <ul style="font-size: 0.9rem; color: #444; padding-left: 1rem;">
-        <li><strong>Pickup Location:</strong> Where your item is currently located<br /><em>Diin ara ang item subong</em></li>
-        <li><strong>Delivery Address:</strong> Where you want to receive it<br /><em>Diin mo gusto nga i-deliver</em></li>
-        <li><strong>Item Description:</strong> What are we retrieving?<br /><em>Deskripsyon sang item</em></li>
-      </ul>
-      <a href="pickup-receive.html" style="display: inline-block; margin-top: 1rem; padding: 0.6rem 1.2rem; background: #008060; color: white; text-decoration: none; border-radius: 8px;">
-        📦 Proceed to Receive<br /><small><em>Padayon sa Pagbaton</em></small>
-      </a>
-    </div>
+    <a href="pickup-receive.html" style="text-decoration: none;">
+      <div style="
+        width: 300px;
+        background: #ffffff;
+        border: 1.5px solid #008060;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        transition: transform 0.2s ease;
+        font-family: 'Inter', sans-serif;
+      " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" style="width: 64px; margin-bottom: 1rem;" />
+        <h3 style="color: #008060; font-family: 'Cinzel', serif;">📥 To Receive</h3>
+        <p style="font-size: 0.9rem; color: #444;">
+          Someone has your item? We’ll retrieve and deliver it to you.<br />
+          <em>May item ka? Amo na ang kuhaon kag dal-on namon.</em>
+        </p>
+      </div>
+    </a>
 
   </div>
 </section>
