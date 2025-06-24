@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pick Up & Deliver – Dala🚲Na</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -56,7 +56,7 @@
       background: #00684a;
     }
 
-    /* Modal styling */
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -65,7 +65,7 @@
       background: rgba(0,0,0,0.6);
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 999;
     }
     .modal iframe {
       width: 90%;
@@ -95,29 +95,29 @@
 
   <section class="hero">
     <h1>🚚 Pick Up & Deliver</h1>
-    <p>Need to send or receive something across town? We got you!</p>
-    <button onclick="openModal('send')">📤 Send an Item</button>
-    <button onclick="openModal('receive')">📥 Receive an Item</button>
+    <p>Need to send or receive something across town? We got you covered!</p>
+    <button onclick="openFillout('Send Item')">📤 Send an Item</button>
+    <button onclick="openFillout('Receive Item')">📥 Receive an Item</button>
   </section>
 
-  <!-- Send Modal -->
-  <div class="modal" id="modal-send">
-    <button class="modal-close" onclick="closeModal('send')">✖</button>
-    <iframe src="https://forms.fillout.com/t/oMZACWUnvFus?serviceType=Send%20Item" title="Send Item Form"></iframe>
-  </div>
-
-  <!-- Receive Modal -->
-  <div class="modal" id="modal-receive">
-    <button class="modal-close" onclick="closeModal('receive')">✖</button>
-    <iframe src="https://forms.fillout.com/t/oMZACWUnvFus?serviceType=Receive%20Item" title="Receive Item Form"></iframe>
+  <!-- Shared Modal -->
+  <div class="modal" id="fillout-modal">
+    <button class="modal-close" onclick="closeFillout()">✖</button>
+    <iframe id="fillout-iframe" title="Fillout Form"></iframe>
   </div>
 
   <script>
-    function openModal(type) {
-      document.getElementById('modal-' + type).style.display = 'flex';
+    function openFillout(serviceType) {
+      const modal = document.getElementById('fillout-modal');
+      const iframe = document.getElementById('fillout-iframe');
+      const encodedType = encodeURIComponent(serviceType);
+      iframe.src = `https://forms.fillout.com/t/oMZACWUnvFus?serviceType=${encodedType}`;
+      modal.style.display = 'flex';
     }
-    function closeModal(type) {
-      document.getElementById('modal-' + type).style.display = 'none';
+
+    function closeFillout() {
+      document.getElementById('fillout-modal').style.display = 'none';
+      document.getElementById('fillout-iframe').src = ''; // unload for cleanup
     }
   </script>
 </body>
