@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Payment – DalaKoNa</title>
+  <title>Pickup Payment – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
   <style>
@@ -14,127 +14,110 @@
       padding: 2rem 1rem;
       color: #333;
     }
-
     h1 {
       font-family: 'Cinzel', serif;
+      text-align: center;
       color: #008060;
-      text-align: center;
-      margin-bottom: 0.5rem;
     }
-
-    p.subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 2rem;
-    }
-
-    .payment-container {
+    .container {
       max-width: 600px;
+      margin: 2rem auto;
       background: white;
-      margin: auto;
       padding: 2rem;
       border-radius: 16px;
-      border: 1.5px solid #008060;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 2px solid #008060;
     }
-
     label {
       display: block;
-      margin: 1.2rem 0 0.5rem;
+      margin-top: 1rem;
       font-weight: bold;
     }
-
-    select, input[type="text"] {
+    select {
       width: 100%;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
       font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
-
-    .note {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 0.3rem;
+    .qr-container {
+      display: none;
+      margin-top: 1.5rem;
+      background: #f2f2f2;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
     }
-
-    .pay-btn {
+    .qr-container img {
+      max-width: 160px;
+      margin-top: 0.5rem;
+    }
+    button {
       margin-top: 2rem;
-      padding: 0.8rem 1.5rem;
-      background-color: #008060;
+      width: 100%;
+      padding: 0.8rem;
+      background: #008060;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 1rem;
-      cursor: pointer;
-      display: block;
-      width: 100%;
-      text-align: center;
-    }
-
-    .pay-btn:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    .qr-container {
-      text-align: center;
-      margin-top: 1.5rem;
-      display: none;
-    }
-
-    .qr-container img {
-      width: 180px;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-    }
-
-    .gcash-info {
-      color: #008060;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <h1>💳 Payment Options</h1>
-  <p class="subtitle">Choose how you'd like to pay for your delivery.<br />
-    <em>Pili sang paagi nga bayad para sa imo padala.</em>
-  </p>
+  <h1>💸 Payment for Pickup Service</h1>
 
-  <div class="payment-container">
-    <label for="paymentMethod">Payment Method</label>
-    <select id="paymentMethod" onchange="toggleQR()">
-      <option value="">Select a method...</option>
-      <option value="cash">💵 Cash on Delivery</option>
-      <option value="gcash">📱 GCash</option>
-      <option value="maya">📲 Maya</option>
+  <div class="container">
+    <label>Select Payment Method:</label>
+    <select id="paymentMethod" onchange="showPaymentInstructions()">
+      <option value="">-- Choose Method --</option>
+      <option value="cod">Cash on Delivery (COD)</option>
+      <option value="gcash">GCash</option>
+      <option value="paymaya">PayMaya</option>
     </select>
 
-    <div class="qr-container" id="qrGCash">
-      <img src="gcash-qr-placeholder.png" alt="GCash QR Code" />
-      <p>Send your payment to <span class="gcash-info">0917 123 4567</span></p>
+    <div class="qr-container" id="gcashQR">
+      <p><strong>Pay via GCash:</strong></p>
+      <p>Send ₱39 or ₱78 to <strong>09171234567</strong></p>
+      <img src="https://via.placeholder.com/160x160.png?text=GCash+QR" alt="GCash QR Code">
     </div>
 
-    <div class="qr-container" id="qrMaya">
-      <img src="maya-qr-placeholder.png" alt="Maya QR Code" />
-      <p>Send your payment to <span class="gcash-info">0923 456 7890</span></p>
+    <div class="qr-container" id="paymayaQR">
+      <p><strong>Pay via PayMaya:</strong></p>
+      <p>Send ₱39 or ₱78 to <strong>09181234567</strong></p>
+      <img src="https://via.placeholder.com/160x160.png?text=PayMaya+QR" alt="PayMaya QR Code">
     </div>
 
-    <a href="pickup-checkout.html" id="continueBtn" class="pay-btn" style="display: none;">➡️ Continue to Checkout</a>
+    <button onclick="confirmPayment()">✅ Confirm and Finish</button>
   </div>
 
   <script>
-    function toggleQR() {
-      const method = document.getElementById("paymentMethod").value;
-      document.getElementById("qrGCash").style.display = method === "gcash" ? "block" : "none";
-      document.getElementById("qrMaya").style.display = method === "maya" ? "block" : "none";
+    function showPaymentInstructions() {
+      const method = document.getElementById('paymentMethod').value;
+      document.getElementById('gcashQR').style.display = method === 'gcash' ? 'block' : 'none';
+      document.getElementById('paymayaQR').style.display = method === 'paymaya' ? 'block' : 'none';
+    }
 
-      const continueBtn = document.getElementById("continueBtn");
-      continueBtn.style.display = method !== "" ? "block" : "none";
+    function confirmPayment() {
+      const method = document.getElementById('paymentMethod').value;
+      if (!method) {
+        alert("Please select a payment method.");
+        return;
+      }
+
+      if (method === 'cod') {
+        alert("Cash on Delivery confirmed. Your pickup has been scheduled.");
+        window.location.href = "index.html";
+      } else {
+        const confirmMsg = confirm("Have you sent your payment?");
+        if (confirmMsg) {
+          alert("Payment confirmed. Your pickup has been scheduled.");
+          window.location.href = "index.html";
+        }
+      }
     }
   </script>
 
 </body>
 </html>
-
