@@ -206,15 +206,18 @@
     });
   }
 
-  async function submitOrder() {
-    const name=document.getElementById('customer-name').value.trim(),
-          phone=document.getElementById('customer-phone').value.trim(),
-          email=document.getElementById('customer-email').value.trim(),
-          address=document.getElementById('delivery-address').value.trim(),
-   const notes = document.getElementById('delivery-notes').value.trim();
-          date=document.getElementById('delivery-date').value,
-          time=document.getElementById('delivery-time').value,
-          method=document.getElementById('payment-method').value;
+async function submitOrder() {
+  const name = document.getElementById('customer-name').value.trim(),
+        phone = document.getElementById('customer-phone').value.trim(),
+        email = document.getElementById('customer-email').value.trim(),
+        address = document.getElementById('delivery-address').value.trim(),
+        notes = document.getElementById('delivery-notes').value.trim(),
+        date = document.getElementById('delivery-date').value,
+        time = document.getElementById('delivery-time').value,
+        method = document.getElementById('payment-method').value;
+        
+  // ... rest of your code ...
+}
 
     const items=Object.values(cart).map(i=>`${i.qty}x ${i.name}`).join(', ');
     const subtotal=Object.values(cart).reduce((s,i)=>s+i.qty*i.price,0),
