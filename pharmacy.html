@@ -121,5 +121,40 @@
 
     window.onload = renderProducts;
   </script>
+<div class="cart-modal hidden" id="cart-modal">
+  <div class="close-btn" onclick="toggleCart()">&times;</div>
+  <div class="cart-summary" id="cart-summary">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p id="subtotal">Subtotal: ₱0.00</p>
+    <p id="service-fee">Service Fee: ₱29.99</p>
+    <div class="line-break"></div>
+    <h4 id="total">Total: ₱0.00</h4>
+  </div>
+
+  <div class="form-section">
+    <h3>Customer Info</h3>
+    <input type="text" id="customer-name" placeholder="Full Name" required>
+    <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+    <input type="email" id="customer-email" placeholder="Email Address" required>
+
+    <h3>Delivery Info</h3>
+    <input type="text" id="delivery-address" placeholder="Address or Google Maps link" required>
+    <input type="date" id="delivery-date">
+    <input type="time" id="delivery-time">
+
+    <h3>Payment</h3>
+    <select id="payment-method">
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+      <option value="Cash">Cash on Delivery</option>
+    </select>
+
+    <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>
+      Checkout via WhatsApp
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
