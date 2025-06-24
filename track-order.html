@@ -1,160 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Track My Order – Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      text-align: center;
-      padding: 2rem;
-      background: #f3f4f6;
+      background: #f8f8f8;
       color: #333;
+      padding: 2rem;
     }
-
-    .box {
-      max-width: 500px;
-      margin: auto;
+    .container {
       background: white;
       padding: 2rem;
-      border-radius: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
-    h1 {
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
       color: #008060;
-      margin-bottom: 1rem;
+      margin-bottom: 0.2rem;
     }
-
-    input {
-      width: 80%;
-      padding: 0.7rem;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+    h2 {
+      color: #008060;
+      margin-bottom: 0.5rem;
     }
-
-    button {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
+    .section {
+      margin-top: 1.5rem;
     }
-
-    button:hover {
-      background: #005f45;
-    }
-
-    .status {
-      margin-top: 2rem;
-      font-size: 1.2rem;
+    .section-title {
       font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #555;
     }
-
-    .hil {
-      font-size: 0.95rem;
-      color: #666;
-      margin-top: 0.3rem;
+    .item {
+      margin-bottom: 0.3rem;
     }
-
-    .not-found {
-      margin-top: 2rem;
-      color: #c00;
-      font-weight: 500;
-    }
-
-    .back {
+    .footer {
       margin-top: 2rem;
       font-size: 0.9rem;
+      color: #777;
+      text-align: center;
     }
-
-    .back a {
-      color: #008060;
-      text-decoration: underline;
+    .hil {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>📦 Track My Order</h1>
-    <input type="text" id="ref" placeholder="Enter your Reference Number (e.g. DALA-123456)" />
-    <br />
-    <button onclick="track()">🔍 Check Status</button>
-    
-    <div class="status" id="status"></div>
-    <div class="hil" id="hil"></div>
-    <div class="not-found" id="not-found"></div>
+  <div class="container">
+    <div class="header">
+      <div class="brand">Dala🚲Na – Subong Dayon!</div>
+      <h2>🧾 Order Receipt</h2>
+      <p><strong>Merchant:</strong> Ellen’s Cakes</p>
+    </div>
 
-    <div class="back">
-      <a href="index.html">← Back to Home</a>
+    <div><strong>Reference No.:</strong> DALA-123456</div>
+    <div class="hil">Numero sang order mo</div>
+
+    <div class="section">
+      <div class="section-title">📋 Items Ordered</div>
+      <div class="hil">Mga gin-order nga items</div>
+      <div class="item">2x Paracetamol</div>
+      <div class="item">1x Vitamin C 500mg</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📍 Delivery Details</div>
+      <div class="hil">Detalye sang delivery</div>
+      <p><strong>Address:</strong> #123 Lopez Jaena St., Brgy. 3</p>
+      <p><strong>Date:</strong> 2025-06-25</p>
+      <p><strong>Time:</strong> 10:00 AM</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">💳 Payment Method</div>
+      <div class="hil">Paagi sang bayad</div>
+      <p>GCash</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">💰 Total</div>
+      <div class="hil">Kabug-usan nga bayad</div>
+      <p>₱259.99</p>
+    </div>
+
+    <div class="footer">
+      🙏 Thank you for ordering with Dala🚲Na!<br />
+      <span class="hil">Salamat guid sa pag-order sa Dala🚲Na!</span><br /><br />
+      ❗ If you didn’t place this order, please contact support.<br />
+      <span class="hil">Kon indi ikaw ang nag-order, palihog kontaka ang support.</span>
     </div>
   </div>
-
-  <script>
-    const BASE = 'appISjv70ZQ4pxBxv'; // your Airtable base
-    const TABLE = 'Orders'; // your Airtable table
-    const TOKEN = 'YOUR_AIRTABLE_API_TOKEN'; // replace this with your actual PAT
-
-    const mapHI = {
-      "Pending": "Gina-process pa ang order.",
-      "Confirmed": "Na-confirm na ang order.",
-      "Preparing": "Gina-preparar na ang order.",
-      "On the way": "Ara na sa dalan ang order.",
-      "Delivered": "Na-deliver na ang order."
-    };
-
-    async function track() {
-      const ref = document.getElementById('ref').value.trim();
-      const statusBox = document.getElementById('status');
-      const hilBox = document.getElementById('hil');
-      const notFoundBox = document.getElementById('not-found');
-
-      statusBox.innerText = '';
-      hilBox.innerText = '';
-      notFoundBox.innerText = '';
-
-      if (!ref) {
-        notFoundBox.innerText = "Please enter a valid Reference Number.";
-        return;
-      }
-
-      try {
-        const res = await fetch(`https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula={ReferenceID}='${ref}'`, {
-          headers: { Authorization: `Bearer ${TOKEN}` }
-        });
-        const json = await res.json();
-        const rec = json.records?.[0];
-
-        if (!rec) {
-          notFoundBox.innerText = "❌ Order not found. Please double-check your reference number.";
-          return;
-        }
-
-        const status = rec.fields['Order Status'] || 'Unknown';
-        statusBox.innerText = `Order Status: ${status}`;
-        hilBox.innerText = mapHI[status] || '';
-      } catch (error) {
-        notFoundBox.innerText = "⚠️ Error retrieving order. Please try again later.";
-        console.error(error);
-      }
-    }
-
-    // Auto-track if ?ref=DALA-XXXXXX is present
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      const ref = params.get('ref');
-      if (ref) {
-        document.getElementById('ref').value = ref;
-        track();
-      }
-    };
-  </script>
 </body>
 </html>
