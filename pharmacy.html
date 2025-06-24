@@ -210,8 +210,8 @@ async function submitOrder() {
   const name = document.getElementById('customer-name').value.trim(),
         phone = document.getElementById('customer-phone').value.trim(),
         email = document.getElementById('customer-email').value.trim(),
-        address = document.getElementById('delivery-address').value.trim(),
-        notes = document.getElementById('delivery-notes').value.trim(),
+  const address = document.getElementById('delivery-address').value.trim();
+  const notes = document.getElementById('delivery-notes').value.trim();
         date = document.getElementById('delivery-date').value,
         time = document.getElementById('delivery-time').value,
         method = document.getElementById('payment-method').value;
@@ -264,27 +264,36 @@ const enc=encodeURIComponent(msg);
     window.location.href=`thankyou.html?ref=${confirmation}`;
   }
 
-  window.onload = () => {
-    renderProducts();
-    const today = new Date();
-    const localDate = today.toISOString().split('T')[0];
-    const dDate=document.getElementById('delivery-date'), dTime=document.getElementById('delivery-time'), dNote=document.getElementById('delivery-note');
-    dDate.value = localDate;
-    const updateTime = () => {
-      const selDate=new Date(dDate.value), now=new Date();
-      if (selDate.toDateString() === now.toDateString()) {
-        const autoTime=new Date(now.getTime()+70*60000);
-        dTime.value = autoTime.toTimeString().slice(0,5);
-        dTime.disabled=true;
-        dNote.style.display="block";
-      } else {
-        dTime.disabled=false;
-        dNote.style.display="none";
-      }
-    };
-    updateTime();
-    dDate.addEventListener('change', updateTime);
+  window.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  updateCartSummary();
+  validateForm();
+
+  // Setup delivery date and time auto logic
+  const today = new Date();
+  const localDate = today.toISOString().split('T')[0];
+  const dDate = document.getElementById('delivery-date');
+  const dTime = document.getElementById('delivery-time');
+  const dNote = document.getElementById('delivery-note');
+
+  dDate.value = localDate;
+
+  const updateTime = () => {
+    const selDate = new Date(dDate.value), now = new Date();
+    if (selDate.toDateString() === now.toDateString()) {
+      const autoTime = new Date(now.getTime() + 70 * 60000);
+      dTime.value = autoTime.toTimeString().slice(0, 5);
+      dTime.disabled = true;
+      dNote.style.display = "block";
+    } else {
+      dTime.disabled = false;
+      dNote.style.display = "none";
+    }
   };
+
+  updateTime();
+  dDate.addEventListener('change', updateTime);
+});
 
   document.getElementById('payment-method').addEventListener('change', function(){
     const m=this.value, link=document.getElementById('payment-link');
