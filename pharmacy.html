@@ -1,160 +1,179 @@
+<!-- Save as pharmacy.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Pharmacy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pharmacy - Dala🚲Na</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { background: #fffaf7; padding: 1rem; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
-    .cart-count {
-      position: absolute; top: -8px; right: -10px; background: red; color: white;
-      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
-      text-align: center; line-height: 16px;
+    .cart-slide {
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(100%);
     }
-    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
-    .search-bar { margin-bottom: 1rem; text-align: center; }
-    .search-bar input {
-      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
-    }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-    .card {
-      background: white; border: 1px solid #ddd; border-radius: 12px;
-      padding: 1rem; display: flex; flex-direction: column;
-      justify-content: space-between; height: 100%; text-align: center;
-    }
-    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
-    .qty-controls {
-      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
-    }
-    .qty-controls button {
-      background: #333; color: white; border: none;
-      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
+    .cart-slide.open {
+      transform: translateX(0);
     }
   </style>
 </head>
-<body>
-  <header>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na Pharmacy</h1>
-    <div class="cart-btn">
-      <i class="fas fa-receipt"></i>
-      <span class="cart-count" id="cart-count">0</span>
-    </div>
-  </header>
-
-  <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search meds...">
+<body class="bg-blue-50 font-sans text-gray-800">
+  <!-- Back Arrow -->
+  <div class="p-4">
+    <a href="select-store.html" class="text-blue-600 text-lg">← Back to Stores</a>
   </div>
 
-  <div class="grid" id="product-list"></div>
+  <!-- Header -->
+  <header class="text-center p-4">
+    <h1 class="text-3xl font-bold">🏥 Dala Na Pharmacy</h1>
+    <p class="text-gray-600">Affordable everyday essentials</p>
+  </header>
 
+  <!-- Search -->
+  <div class="flex justify-center mb-4">
+    <input id="search" type="text" placeholder="Search medicines..." class="border p-2 rounded w-2/3">
+    <button onclick="searchProducts()" class="ml-2 bg-blue-600 text-white px-4 py-2 rounded">Search</button>
+  </div>
+
+  <!-- Product Grid -->
+  <section id="product-list" class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 pb-20"></section>
+
+  <!-- Floating Cart Button -->
+  <button onclick="toggleCart()" class="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-md z-50">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <!-- Slide-out Cart -->
+  <div id="cart" class="fixed top-0 right-0 w-full sm:w-96 bg-white h-full shadow-lg cart-slide z-40">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-xl font-bold">📝 Dala-Cart</h2>
+      <button onclick="toggleCart()" class="text-red-600 text-xl">✕</button>
+    </div>
+    <div class="p-4 overflow-y-auto h-3/5">
+      <ul id="cart-items" class="space-y-2"></ul>
+    </div>
+    <div class="p-4 border-t text-sm">
+      <p>Subtotal: ₱<span id="subtotal">0.00</span></p>
+      <p>VAT (12%): ₱<span id="vat">0.00</span></p>
+      <p>Service Fee: ₱<span id="service-fee">29.99</span></p>
+      <hr class="my-2">
+      <p class="font-bold">Total: ₱<span id="total">0.00</span></p>
+      <div class="mt-4">
+        <button id="checkout-btn" onclick="openForm()" class="bg-green-600 text-white w-full py-2 rounded" disabled>
+          Checkout
+        </button>
+        <p class="text-xs text-gray-500 mt-2">
+          By checking out, you agree to our Terms & Conditions.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fillout Modal -->
+  <div id="form-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white w-11/12 sm:w-2/3 lg:w-1/2 p-6 rounded shadow-lg">
+      <h3 class="text-xl font-bold mb-4">Complete Your Order</h3>
+      <iframe id="fillout-frame" src="" class="w-full h-[500px]" frameborder="0"></iframe>
+      <div class="text-right mt-4">
+        <button onclick="closeForm()" class="text-blue-600">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script>
     const products = [
-      { name: "Paracetamol 500mg (10 tabs)", price: 60, image: "https://via.placeholder.com/100" },
-      { name: "Ibuprofen 200mg (10 tabs)", price: 75, image: "https://via.placeholder.com/100" },
-      { name: "Vitamin C 1000mg (10 tabs)", price: 120, image: "https://via.placeholder.com/100" },
-      { name: "Multivitamins (30 caps)", price: 250, image: "https://via.placeholder.com/100" },
-      { name: "Cough Syrup 100ml", price: 180, image: "https://via.placeholder.com/100" },
-      { name: "Antacid 20 tabs", price: 90, image: "https://via.placeholder.com/100" },
-      { name: "Allergy Relief 10 tabs", price: 150, image: "https://via.placeholder.com/100" },
-      { name: "Topical Ointment 30g", price: 85, image: "https://via.placeholder.com/100" },
-      { name: "Hydrocortisone Cream 20g", price: 110, image: "https://via.placeholder.com/100" },
-      { name: "First Aid Kit", price: 350, image: "https://via.placeholder.com/100" }
+      { name: "Paracetamol", price: 3, desc: "For fever & pain", img: "https://source.unsplash.com/featured/?pill" },
+      { name: "Bioflu", price: 8, desc: "Cold relief", img: "https://source.unsplash.com/featured/?tablet" },
+      { name: "Vitamin C 500mg", price: 5, desc: "Immunity booster", img: "https://source.unsplash.com/featured/?vitamin" },
+      { name: "Loperamide", price: 6, desc: "Anti-diarrhea", img: "https://source.unsplash.com/featured/?medicine" },
+      { name: "Antacid", price: 7, desc: "Stomach relief", img: "https://source.unsplash.com/featured/?antacid" },
+      { name: "Hydrite", price: 12, desc: "Oral rehydration", img: "https://source.unsplash.com/featured/?rehydration" },
+      { name: "Salbutamol", price: 10, desc: "For asthma", img: "https://source.unsplash.com/featured/?salbutamol" },
+      { name: "Multivitamins", price: 6, desc: "Daily supplement", img: "https://source.unsplash.com/featured/?multivitamins" },
+      { name: "Alcohol 70%", price: 35, desc: "Disinfectant", img: "https://source.unsplash.com/featured/?alcohol" },
+      { name: "Digital Thermometer", price: 150, desc: "For fever check", img: "https://source.unsplash.com/featured/?thermometer" }
     ];
 
     const cart = {};
+    const serviceFee = 29.99;
 
     function renderProducts() {
       const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <img src="${item.image}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>₱${item.price.toFixed(2)}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
+      products.forEach(p => {
+        const html = `
+          <div class="bg-white shadow-md p-4 rounded-xl">
+            <img src="${p.img}" alt="${p.name}" class="rounded mb-2">
+            <h3 class="font-bold">${p.name}</h3>
+            <p class="text-sm text-gray-600">${p.desc}</p>
+            <p class="font-semibold mt-1">₱${p.price.toFixed(2)}</p>
+            <div class="flex mt-2">
+              <button onclick="updateQty('${p.name}', ${p.price}, -1)" class="px-2 bg-gray-300 rounded">−</button>
+              <span id="qty-${p.name}" class="mx-2">0</span>
+              <button onclick="updateQty('${p.name}', ${p.price}, 1)" class="px-2 bg-gray-300 rounded">+</button>
             </div>
-          </div>`;
+          </div>
+        `;
+        list.insertAdjacentHTML('beforeend', html);
       });
     }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
+    function updateQty(name, price, change) {
+      if (!cart[name]) cart[name] = { qty: 0, price };
+      cart[name].qty += change;
+      if (cart[name].qty < 0) cart[name].qty = 0;
+      document.getElementById(`qty-${name}`).innerText = cart[name].qty;
+      updateCartDisplay();
     }
 
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
+    function updateCartDisplay() {
+      const list = document.getElementById("cart-items");
+      list.innerHTML = "";
+      let subtotal = 0;
+      let count = 0;
+      for (let item in cart) {
+        const { qty, price } = cart[item];
+        if (qty === 0) continue;
+        count += qty;
+        const total = qty * price;
+        subtotal += total;
+        list.innerHTML += `<li>${item} x${qty} = ₱${total.toFixed(2)}</li>`;
       }
-      updateQty(i);
+      const vat = subtotal * 0.12;
+      const total = subtotal + vat + serviceFee;
+      document.getElementById("cart-count").innerText = count;
+      document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+      document.getElementById("vat").innerText = vat.toFixed(2);
+      document.getElementById("total").innerText = total.toFixed(2);
+      document.getElementById("checkout-btn").disabled = count === 0;
     }
 
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    function toggleCart() {
+      document.getElementById("cart").classList.toggle("open");
     }
 
-    function filterProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.card').forEach(c => {
-        const name = c.dataset.name;
-        c.style.display = name.includes(q) ? 'block' : 'none';
+    function openForm() {
+      const items = Object.entries(cart).filter(([_, v]) => v.qty > 0);
+      const summary = items.map(([k, v]) => `${k} x${v.qty}`).join(', ');
+      const url = `https://forms.fillout.com/t/oMZACWUnvFus?cartSummary=${encodeURIComponent(summary)}`;
+      document.getElementById("fillout-frame").src = url;
+      document.getElementById("form-modal").classList.remove("hidden");
+    }
+
+    function closeForm() {
+      document.getElementById("form-modal").classList.add("hidden");
+      toggleCart();
+    }
+
+    function searchProducts() {
+      const search = document.getElementById("search").value.toLowerCase();
+      const cards = document.querySelectorAll("#product-list > div");
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(search) ? "" : "none";
       });
     }
 
     window.onload = renderProducts;
   </script>
-<div class="cart-modal hidden" id="cart-modal">
-  <div class="close-btn" onclick="toggleCart()">&times;</div>
-  <div class="cart-summary" id="cart-summary">
-    <h3>Your Cart</h3>
-    <ul id="cart-items"></ul>
-    <p id="subtotal">Subtotal: ₱0.00</p>
-    <p id="service-fee">Service Fee: ₱29.99</p>
-    <div class="line-break"></div>
-    <h4 id="total">Total: ₱0.00</h4>
-  </div>
-
-  <div class="form-section">
-    <h3>Customer Info</h3>
-    <input type="text" id="customer-name" placeholder="Full Name" required>
-    <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-    <input type="email" id="customer-email" placeholder="Email Address" required>
-
-    <h3>Delivery Info</h3>
-    <input type="text" id="delivery-address" placeholder="Address or Google Maps link" required>
-    <input type="date" id="delivery-date">
-    <input type="time" id="delivery-time">
-
-    <h3>Payment</h3>
-    <select id="payment-method">
-      <option value="GCash">GCash</option>
-      <option value="PayMaya">PayMaya</option>
-      <option value="Cash">Cash on Delivery</option>
-    </select>
-
-    <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>
-      Checkout via WhatsApp
-    </button>
-  </div>
-</div>
-
 </body>
 </html>
