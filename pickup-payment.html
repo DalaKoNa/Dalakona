@@ -4,56 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pickup Payment – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Cinzel&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #fff9e6;
       margin: 0;
-      padding: 2rem 1rem;
+      background: #fff9e6;
+      padding: 2rem;
       color: #333;
     }
-    h1 {
-      font-family: 'Cinzel', serif;
-      text-align: center;
-      color: #008060;
-    }
+
     .container {
       max-width: 600px;
-      margin: 2rem auto;
+      margin: auto;
       background: white;
-      padding: 2rem;
       border-radius: 16px;
-      border: 2px solid #008060;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: #008060;
+      text-align: center;
+    }
+
     label {
       display: block;
       margin-top: 1rem;
       font-weight: bold;
     }
-    select {
+
+    select, input, textarea {
       width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 6px;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
       border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
     }
-    .qr-container {
-      display: none;
+
+    .fee-box {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #008060;
+    }
+
+    .payment-options {
       margin-top: 1.5rem;
-      background: #f2f2f2;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
     }
-    .qr-container img {
-      max-width: 160px;
-      margin-top: 0.5rem;
+
+    .payment-options label {
+      font-weight: normal;
+      display: block;
+      margin: 0.5rem 0;
     }
+
+    .confirm-box {
+      margin-top: 1.5rem;
+    }
+
     button {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       width: 100%;
       padding: 0.8rem;
       background: #008060;
@@ -61,63 +73,89 @@
       border: none;
       border-radius: 8px;
       font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-
-  <h1>💸 Payment for Pickup Service</h1>
-
   <div class="container">
-    <label>Select Payment Method:</label>
-    <select id="paymentMethod" onchange="showPaymentInstructions()">
-      <option value="">-- Choose Method --</option>
-      <option value="cod">Cash on Delivery (COD)</option>
-      <option value="gcash">GCash</option>
-      <option value="paymaya">PayMaya</option>
+    <h1>🛵 Confirm Pickup</h1>
+
+    <label>From</label>
+    <select id="from">
+      <option value="">Select Area</option>
+      <option value="Handumanan">Handumanan</option>
+      <option value="Felisa">Felisa</option>
+      <option value="Cabug">Cabug</option>
+      <option value="Mansilingan">Mansilingan</option>
+      <option value="Alijis">Alijis</option>
     </select>
 
-    <div class="qr-container" id="gcashQR">
-      <p><strong>Pay via GCash:</strong></p>
-      <p>Send ₱39 or ₱78 to <strong>09171234567</strong></p>
-      <img src="https://via.placeholder.com/160x160.png?text=GCash+QR" alt="GCash QR Code">
+    <label>To</label>
+    <select id="to">
+      <option value="">Select Area</option>
+      <option value="Handumanan">Handumanan</option>
+      <option value="Felisa">Felisa</option>
+      <option value="Cabug">Cabug</option>
+      <option value="Mansilingan">Mansilingan</option>
+      <option value="Alijis">Alijis</option>
+    </select>
+
+    <label>Item Description</label>
+    <textarea id="item" rows="2" placeholder="e.g. Grocery package from Hypermarket"></textarea>
+
+    <div class="fee-box">Estimated Fee: ₱<span id="fee">0</span></div>
+
+    <div class="payment-options">
+      <label><strong>Choose Payment Method:</strong></label>
+      <label><input type="radio" name="payment" value="Cash"> Cash (COD)</label>
+      <label><input type="radio" name="payment" value="GCash"> GCash</label>
+      <label><input type="radio" name="payment" value="Bank Transfer"> Bank Transfer</label>
     </div>
 
-    <div class="qr-container" id="paymayaQR">
-      <p><strong>Pay via PayMaya:</strong></p>
-      <p>Send ₱39 or ₱78 to <strong>09181234567</strong></p>
-      <img src="https://via.placeholder.com/160x160.png?text=PayMaya+QR" alt="PayMaya QR Code">
+    <div class="confirm-box">
+      <label>
+        <input type="checkbox" id="confirmCheck"> I confirm I have prepared the item and agreed to the terms.
+      </label>
     </div>
 
-    <button onclick="confirmPayment()">✅ Confirm and Finish</button>
+    <button id="confirmBtn" onclick="submitOrder()" disabled>✔️ Confirm Order</button>
   </div>
 
   <script>
-    function showPaymentInstructions() {
-      const method = document.getElementById('paymentMethod').value;
-      document.getElementById('gcashQR').style.display = method === 'gcash' ? 'block' : 'none';
-      document.getElementById('paymayaQR').style.display = method === 'paymaya' ? 'block' : 'none';
+    const from = document.getElementById('from');
+    const to = document.getElementById('to');
+    const fee = document.getElementById('fee');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const confirmCheck = document.getElementById('confirmCheck');
+
+    function updateFee() {
+      if (from.value && to.value) {
+        fee.innerText = from.value === to.value ? "39.00" : "78.00";
+      } else {
+        fee.innerText = "0";
+      }
     }
 
-    function confirmPayment() {
-      const method = document.getElementById('paymentMethod').value;
-      if (!method) {
-        alert("Please select a payment method.");
-        return;
-      }
+    from.addEventListener('change', updateFee);
+    to.addEventListener('change', updateFee);
 
-      if (method === 'cod') {
-        alert("Cash on Delivery confirmed. Your pickup has been scheduled.");
-        window.location.href = "index.html";
-      } else {
-        const confirmMsg = confirm("Have you sent your payment?");
-        if (confirmMsg) {
-          alert("Payment confirmed. Your pickup has been scheduled.");
-          window.location.href = "index.html";
-        }
-      }
+    confirmCheck.addEventListener('change', () => {
+      confirmBtn.disabled = !confirmCheck.checked;
+    });
+
+    function submitOrder() {
+      const paymentMethod = document.querySelector('input[name="payment"]:checked');
+      if (!paymentMethod) return alert("Please select a payment method.");
+
+      const url = `pickup-summary.html?from=${from.value}&to=${to.value}&item=${encodeURIComponent(document.getElementById('item').value)}&fee=${fee.innerText}&payment=${paymentMethod.value}`;
+      window.location.href = url;
     }
   </script>
-
 </body>
 </html>
