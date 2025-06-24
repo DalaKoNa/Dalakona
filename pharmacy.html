@@ -42,7 +42,7 @@
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Dala🚲Na Pharmacy</h1>
-    <div class="cart-btn" onclick="toggleCart()">
+    <div class="cart-btn">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
@@ -88,11 +88,6 @@
       });
     }
 
-    function filterProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.card').forEach(c => c.style.display = c.dataset.name.includes(q) ? 'block' : 'none');
-    }
-
     function increaseQty(i) {
       const item = products[i];
       if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
@@ -110,18 +105,21 @@
     }
 
     function updateQty(i) {
-      const item = products[i], qty = cart[item.name]?.qty || 0;
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
       document.getElementById(`qty-${i}`).innerText = qty;
       document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
     }
 
-    function toggleCart() {
-      alert("Cart will be shown here.");
+    function filterProducts() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(c => {
+        const name = c.dataset.name;
+        c.style.display = name.includes(q) ? 'block' : 'none';
+      });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      renderProducts();
-    });
+    window.onload = renderProducts;
   </script>
 </body>
 </html>
