@@ -34,26 +34,55 @@
       margin: 2rem 0 1.5rem;
     }
     .hero h1 {
-      font-size: 1.7rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 0.7rem;
     }
     .hero p {
       color: #666;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .form-container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    .hero button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background: #008060;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0.5rem;
     }
-    iframe {
-      width: 100%;
-      height: 85vh;
+    .hero button:hover {
+      background: #00684a;
+    }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal iframe {
+      width: 90%;
+      height: 90%;
       border: none;
       border-radius: 12px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background: white;
+      border: none;
+      font-size: 1.2rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -65,17 +94,31 @@
   </header>
 
   <section class="hero">
-    <h1>📦 Pick Up & Deliver</h1>
-    <p>Need something sent across town? We'll pick it up and deliver it for you.</p>
+    <h1>🚚 Pick Up & Deliver</h1>
+    <p>Need to send or receive something across town? We got you!</p>
+    <button onclick="openModal('send')">📤 Send an Item</button>
+    <button onclick="openModal('receive')">📥 Receive an Item</button>
   </section>
 
-  <div class="form-container">
-    <iframe
-      src="https://forms.fillout.com/t/oMZACWUnvFus?serviceType=Pick%20Up%20%26%20Deliver"
-      title="Pick Up & Deliver Form"
-      allowfullscreen
-    ></iframe>
+  <!-- Send Modal -->
+  <div class="modal" id="modal-send">
+    <button class="modal-close" onclick="closeModal('send')">✖</button>
+    <iframe src="https://forms.fillout.com/t/oMZACWUnvFus?serviceType=Send%20Item" title="Send Item Form"></iframe>
   </div>
 
+  <!-- Receive Modal -->
+  <div class="modal" id="modal-receive">
+    <button class="modal-close" onclick="closeModal('receive')">✖</button>
+    <iframe src="https://forms.fillout.com/t/oMZACWUnvFus?serviceType=Receive%20Item" title="Receive Item Form"></iframe>
+  </div>
+
+  <script>
+    function openModal(type) {
+      document.getElementById('modal-' + type).style.display = 'flex';
+    }
+    function closeModal(type) {
+      document.getElementById('modal-' + type).style.display = 'none';
+    }
+  </script>
 </body>
 </html>
