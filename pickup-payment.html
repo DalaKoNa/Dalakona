@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Payment – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
       color: #333;
     }
     .container {
-      max-width: 720px;
+      max-width: 600px;
       margin: auto;
       padding: 2rem 1rem;
     }
@@ -23,129 +23,137 @@
       font-family: 'Cinzel', serif;
       color: #008060;
       text-align: center;
-      margin-bottom: 1rem;
     }
-    .section {
-      background: white;
+    .form-box {
+      background: #fff;
+      border: 1.5px solid #ccc;
       border-radius: 16px;
       padding: 2rem;
-      border: 1.5px solid #ccc;
-      margin-top: 1rem;
     }
-    label {
+    .form-box label {
       display: block;
       margin-top: 1rem;
       font-weight: bold;
     }
-    input[type="text"], input[type="number"], select {
+    .form-box select,
+    .form-box input {
       width: 100%;
       padding: 0.5rem;
       margin-top: 0.3rem;
       border-radius: 6px;
       border: 1px solid #aaa;
     }
-    .cod-terms {
-      font-size: 0.9rem;
-      margin-top: 0.8rem;
-      background: #f8f8f8;
-      padding: 0.8rem;
-      border-left: 4px solid #008060;
-    }
-    .button {
-      display: block;
-      margin-top: 2rem;
-      padding: 0.8rem 1.2rem;
+    .form-box button {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
       background: #008060;
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 1rem;
-      width: 100%;
       cursor: pointer;
-      opacity: 0.5;
-      pointer-events: none;
+      width: 100%;
     }
-    .button.enabled {
-      opacity: 1;
-      pointer-events: auto;
+    #continueBtn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    #codTerms {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 0.5rem;
+    }
+    #paymentInstructions {
+      display: none;
+      background: #f0f9f8;
+      padding: 0.8rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>💳 Choose Payment Method</h1>
-
-    <div class="section">
-      <label for="paymentMethod">Payment Method</label>
-      <select id="paymentMethod" onchange="toggleReferenceInput()">
-        <option value="">-- Select Payment Method --</option>
-        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+    <h1>💳 Select Payment Method</h1>
+    <div class="form-box">
+      <label>Payment Method</label>
+      <select id="paymentMethod" onchange="toggleRefBox()">
+        <option value="">-- Select --</option>
+        <option value="Cash">Cash</option>
         <option value="GCash">GCash</option>
         <option value="PayMaya">PayMaya</option>
-        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="Bank">Bank Transfer</option>
       </select>
 
-      <div id="referenceInputContainer" style="display:none;">
-        <label for="refNumber">Reference Number</label>
-        <input type="text" id="refNumber" placeholder="e.g. GCash transaction number"/>
+      <div id="paymentInstructions">
+        <strong>Send payment to:</strong><br>
+        <span id="paymentDetails">—</span>
       </div>
 
-      <div id="codTerms" class="cod-terms" style="display:none;">
-        ⚠️ <strong>Cash on Delivery Terms:</strong> Please prepare the exact amount. Riders are instructed to wait only 5 minutes at the drop-off point. Unpaid deliveries may be blacklisted.
+      <div id="refBox" style="display: none;">
+        <label>Reference Number</label>
+        <input type="text" id="referenceNumber" placeholder="e.g. 123456789" />
       </div>
 
-      <button id="continueBtn" class="button" onclick="goToSummary()">➡️ Continue to Summary</button>
+      <div id="codTerms" style="display: none;">
+        <p><em>Bayad pag-abot sang item. Palihog andam sang hustong bayad. COD is final upon delivery.</em></p>
+      </div>
+
+      <button id="continueBtn" onclick="goNext()" disabled>➡️ Proceed to Summary</button>
     </div>
   </div>
 
   <script>
-    const paymentSelect = document.getElementById('paymentMethod');
-    const refContainer = document.getElementById('referenceInputContainer');
-    const refInput = document.getElementById('refNumber');
-    const codTerms = document.getElementById('codTerms');
-    const continueBtn = document.getElementById('continueBtn');
+    const methodEl = document.getElementById("paymentMethod");
+    const refBox = document.getElementById("refBox");
+    const codTerms = document.getElementById("codTerms");
+    const continueBtn = document.getElementById("continueBtn");
+    const refInput = document.getElementById("referenceNumber");
+    const paymentInstructions = document.getElementById("paymentInstructions");
+    const paymentDetails = document.getElementById("paymentDetails");
 
-    function toggleReferenceInput() {
-      const method = paymentSelect.value;
-
-      if (method === "Cash on Delivery") {
-        refContainer.style.display = "none";
+    function toggleRefBox() {
+      const method = methodEl.value;
+      if (method === "Cash") {
+        refBox.style.display = "none";
         codTerms.style.display = "block";
+        paymentInstructions.style.display = "none";
         refInput.value = "";
       } else if (method) {
-        refContainer.style.display = "block";
+        refBox.style.display = "block";
         codTerms.style.display = "none";
+        paymentInstructions.style.display = "block";
+        if (method === "GCash") {
+          paymentDetails.innerHTML = "📱 0917-123-4567 (Juan GCash)";
+        } else if (method === "PayMaya") {
+          paymentDetails.innerHTML = "📱 0928-456-7890 (Maya Account)";
+        } else if (method === "Bank") {
+          paymentDetails.innerHTML = "🏦 BPI – 1234 5678 9012 – DalaKoNa Services";
+        } else {
+          paymentDetails.innerHTML = "—";
+        }
       } else {
-        refContainer.style.display = "none";
+        refBox.style.display = "none";
         codTerms.style.display = "none";
-        refInput.value = "";
+        paymentInstructions.style.display = "none";
       }
-
-      validateFields();
+      validateForm();
     }
 
-    function validateFields() {
-      const method = paymentSelect.value;
-      const refVal = refInput.value.trim();
-      const isValid = (
-        method === "Cash on Delivery" ||
-        (method !== "" && refVal !== "")
-      );
-
-      if (isValid) {
-        continueBtn.classList.add("enabled");
+    function validateForm() {
+      const method = methodEl.value;
+      const ref = refInput.value.trim();
+      if (method === "Cash" || (method && ref)) {
+        continueBtn.disabled = false;
       } else {
-        continueBtn.classList.remove("enabled");
+        continueBtn.disabled = true;
       }
     }
 
-    paymentSelect.addEventListener("change", validateFields);
-    refInput.addEventListener("input", validateFields);
+    refInput.addEventListener("input", validateForm);
 
-    function goToSummary() {
-      if (!continueBtn.classList.contains("enabled")) return;
-
-      localStorage.setItem("paymentMethod", paymentSelect.value);
+    function goNext() {
+      localStorage.setItem("paymentMethod", methodEl.value);
       localStorage.setItem("referenceNumber", refInput.value.trim());
       window.location.href = "pickup-summary.html";
     }
