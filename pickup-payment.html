@@ -15,25 +15,29 @@
       color: #333;
     }
     .container {
-      max-width: 500px;
-      margin: 3rem auto;
-      background: white;
-      border-radius: 16px;
-      border: 1.5px solid #ccc;
-      padding: 2rem;
+      max-width: 720px;
+      margin: auto;
+      padding: 2rem 1rem;
     }
     h1 {
       font-family: 'Cinzel', serif;
       color: #008060;
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
+    }
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1.5px solid #ccc;
+      margin-top: 1rem;
     }
     label {
       display: block;
       margin-top: 1rem;
       font-weight: bold;
     }
-    select, input[type="text"] {
+    input[type="text"], input[type="number"], select {
       width: 100%;
       padding: 0.5rem;
       margin-top: 0.3rem;
@@ -41,25 +45,29 @@
       border: 1px solid #aaa;
     }
     .cod-terms {
-      background: #fef9d6;
-      padding: 1rem;
-      border: 1px dashed #999;
       font-size: 0.9rem;
-      margin-top: 1rem;
-      display: none;
+      margin-top: 0.8rem;
+      background: #f8f8f8;
+      padding: 0.8rem;
+      border-left: 4px solid #008060;
     }
-    button {
+    .button {
+      display: block;
       margin-top: 2rem;
       padding: 0.8rem 1.2rem;
-      width: 100%;
       background: #008060;
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 1rem;
+      width: 100%;
       cursor: pointer;
       opacity: 0.5;
       pointer-events: none;
+    }
+    .button.enabled {
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -67,78 +75,80 @@
   <div class="container">
     <h1>💳 Choose Payment Method</h1>
 
-    <label>Payment Method</label>
-    <select id="paymentMethod" onchange="handlePaymentChange()">
-      <option value="">-- Select --</option>
-      <option value="Cash">Cash on Delivery (COD)</option>
-      <option value="GCash">GCash</option>
-      <option value="PayMaya">PayMaya</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-    </select>
+    <div class="section">
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" onchange="toggleReferenceInput()">
+        <option value="">-- Select Payment Method --</option>
+        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+      </select>
 
-    <div id="referenceSection" style="display:none;">
-      <label>Reference Number</label>
-      <input type="text" id="referenceNumber" placeholder="Enter Reference No." />
+      <div id="referenceInputContainer" style="display:none;">
+        <label for="refNumber">Reference Number</label>
+        <input type="text" id="refNumber" placeholder="e.g. GCash transaction number"/>
+      </div>
+
+      <div id="codTerms" class="cod-terms" style="display:none;">
+        ⚠️ <strong>Cash on Delivery Terms:</strong> Please prepare the exact amount. Riders are instructed to wait only 5 minutes at the drop-off point. Unpaid deliveries may be blacklisted.
+      </div>
+
+      <button id="continueBtn" class="button" onclick="goToSummary()">➡️ Continue to Summary</button>
     </div>
-
-    <div id="codTerms" class="cod-terms">
-      <strong>📝 COD Terms:</strong><br/>
-      Please prepare the exact amount. Rider will collect payment upon delivery. Repeated cancellations may lead to account restriction.
-    </div>
-
-    <button id="proceedBtn" onclick="goToSummary()">✅ Proceed to Confirmation</button>
   </div>
 
   <script>
-    function handlePaymentChange() {
-      const method = document.getElementById("paymentMethod").value;
-      const referenceSection = document.getElementById("referenceSection");
-      const codTerms = document.getElementById("codTerms");
+    const paymentSelect = document.getElementById('paymentMethod');
+    const refContainer = document.getElementById('referenceInputContainer');
+    const refInput = document.getElementById('refNumber');
+    const codTerms = document.getElementById('codTerms');
+    const continueBtn = document.getElementById('continueBtn');
 
-      if (method === "Cash") {
-        referenceSection.style.display = "none";
+    function toggleReferenceInput() {
+      const method = paymentSelect.value;
+
+      if (method === "Cash on Delivery") {
+        refContainer.style.display = "none";
         codTerms.style.display = "block";
+        refInput.value = "";
       } else if (method) {
-        referenceSection.style.display = "block";
+        refContainer.style.display = "block";
         codTerms.style.display = "none";
       } else {
-        referenceSection.style.display = "none";
+        refContainer.style.display = "none";
         codTerms.style.display = "none";
+        refInput.value = "";
       }
 
-      validateForm();
+      validateFields();
     }
 
-    function validateForm() {
-      const method = document.getElementById("paymentMethod").value;
-      const refNum = document.getElementById("referenceNumber").value.trim();
-      const btn = document.getElementById("proceedBtn");
+    function validateFields() {
+      const method = paymentSelect.value;
+      const refVal = refInput.value.trim();
+      const isValid = (
+        method === "Cash on Delivery" ||
+        (method !== "" && refVal !== "")
+      );
 
-      const isCash = method === "Cash";
-      const isValid = (isCash || (refNum.length >= 5));
-
-      if (method && isValid) {
-        btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto";
+      if (isValid) {
+        continueBtn.classList.add("enabled");
       } else {
-        btn.style.opacity = "0.5";
-        btn.style.pointerEvents = "none";
+        continueBtn.classList.remove("enabled");
       }
     }
+
+    paymentSelect.addEventListener("change", validateFields);
+    refInput.addEventListener("input", validateFields);
 
     function goToSummary() {
-      const method = document.getElementById("paymentMethod").value;
-      const refNum = document.getElementById("referenceNumber").value.trim();
+      if (!continueBtn.classList.contains("enabled")) return;
 
-      // Store payment data in localStorage or pass to the next page
-      localStorage.setItem("paymentMethod", method);
-      localStorage.setItem("referenceNumber", refNum);
-
-      // Redirect
+      localStorage.setItem("paymentMethod", paymentSelect.value);
+      localStorage.setItem("referenceNumber", refInput.value.trim());
       window.location.href = "pickup-summary.html";
     }
-
-    document.getElementById("referenceNumber").addEventListener("input", validateForm);
   </script>
 </body>
 </html>
