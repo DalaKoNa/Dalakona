@@ -11,98 +11,105 @@
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
       margin: 0;
-      padding: 2rem 1rem;
+      padding: 0;
       color: #333;
     }
+    .container {
+      max-width: 680px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
     h1 {
-      text-align: center;
       font-family: 'Cinzel', serif;
       color: #008060;
-      margin-bottom: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
     }
     .summary-box {
       background: #fff;
-      max-width: 500px;
-      margin: auto;
       border: 1.5px solid #ccc;
       border-radius: 16px;
       padding: 2rem;
     }
-    .summary-box h3 {
-      font-family: 'Cinzel', serif;
-      color: #008060;
-      margin-bottom: 1rem;
-    }
     .summary-box p {
-      margin: 0.4rem 0;
-      font-size: 0.95rem;
+      margin: 0.6rem 0;
     }
-    #cancelBtn {
-      margin-top: 1.5rem;
-      background-color: #e74c3c;
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
+    .summary-box strong {
+      color: #008060;
     }
     .countdown-text {
+      font-size: 0.95rem;
+      color: #aa0000;
       margin-top: 1rem;
-      font-weight: bold;
-      color: #555;
     }
-    .note {
-      font-size: 0.9rem;
-      margin-top: 0.8rem;
-      color: #666;
-      text-align: center;
+    .cancel-btn {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background: #ccc;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
-<body>
-  <h1>📦 Pickup Summary</h1>
+<body onload="loadSummary()">
+  <div class="container">
+    <h1>🧾 Pickup Summary</h1>
+    <div class="summary-box">
+      <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+      <p><strong>To:</strong> <span id="sumTo">-</span></p>
+      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+      <p><strong>Estimated Delivery Time:</strong> <span id="sumEta">≈ 1 hour</span></p>
+      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+      <p><strong>Payment Method:</strong> <span id="sumPayment">-</span></p>
+      <p><strong>Reference No:</strong> <span id="sumRef">-</span></p>
+      <p><strong>Confirmation No:</strong> <span id="confirmationNumber">DKN000000</span></p>
 
-  <div class="summary-box">
-    <h3>🧾 Order Summary</h3>
-    <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-    <p><strong>To:</strong> <span id="sumTo">-</span></p>
-    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-    <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-    <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-    <p><strong>Estimated Delivery Time:</strong> <span id="sumEta">≈ 1 hour</span></p>
-    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
-    <p><strong>Payment:</strong> <span id="sumPayment">-</span></p>
-    <p><strong>Reference No:</strong> <span id="sumRef">-</span></p>
-    <p><strong>Confirmation No:</strong> <span id="confirmationNumber">-</span></p>
-
-    <p class="countdown-text">⏱️ Confirming in <span id="countdown">60</span>s...</p>
-    <button id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
-    <p class="note">⏳ Palihog hulata lang sang isa ka minuto. Kung indi mo gusto padayon, i-cancel anay.</p>
+      <p class="countdown-text">⏱️ Auto-confirming in <span id="countdown">60</span>s...
+        <br><em style="font-size: 0.85rem; color: #555;">Kung gusto mo kanselahon ang request, i-press ang "Cancel Request" antes matapos ang 1 minuto.</em>
+      </p>
+      <button id="cancelBtn" class="cancel-btn" onclick="cancelRequest()">❌ Cancel Request</button>
+    </div>
   </div>
 
   <script>
+    function get(key) {
+      return localStorage.getItem(key) || "-";
+    }
+
+    function generateConfirmationNumber() {
+      const code = "DKN" + Math.floor(Math.random() * 900000 + 100000);
+      localStorage.setItem("confirmationNumber", code);
+      return code;
+    }
+
     function loadSummary() {
-      const get = key => localStorage.getItem(key) || "-";
       document.getElementById("sumFrom").innerText = get("fromArea");
       document.getElementById("sumTo").innerText = get("toArea");
       document.getElementById("sumPickupAddr").innerText = get("pickupAddr");
       document.getElementById("sumDeliveryAddr").innerText = get("deliveryAddr");
       document.getElementById("sumPickupDate").innerText = get("pickupDate");
       document.getElementById("sumItem").innerText = get("item");
-      document.getElementById("sumFee").innerText = get("sumFee") || "0.00";
       document.getElementById("sumPayment").innerText = get("paymentMethod");
       document.getElementById("sumRef").innerText = get("referenceNumber") || "N/A";
-      document.getElementById("sumEta").innerText = (get("fromArea") === get("toArea")) ? "≈ 1 hour" : "≈ 1 hour 10 mins";
 
-      const confNum = generateConfirmationNumber();
-      document.getElementById("confirmationNumber").innerText = confNum;
-      localStorage.setItem("confirmationNumber", confNum);
-    }
+      const from = get("fromArea");
+      const to = get("toArea");
+      const eta = (from === to) ? "≈ 1 hour" : "≈ 1 hour 10 mins";
+      document.getElementById("sumEta").innerText = eta;
 
-    function generateConfirmationNumber() {
-      return "DKN" + Math.floor(Math.random() * 900000 + 100000);
+      let fee = get("sumFee");
+      if (!fee || fee === "-" || fee === "0.00") {
+        fee = (from && to && from !== to) ? "78.00" : (from && to ? "39.00" : "0.00");
+      }
+      document.getElementById("sumFee").innerText = fee;
+      localStorage.setItem("sumFee", fee);
+
+      const confirmationNumber = generateConfirmationNumber();
+      document.getElementById("confirmationNumber").innerText = confirmationNumber;
     }
 
     function cancelRequest() {
@@ -112,18 +119,40 @@
     }
 
     function sendToWhatsApp() {
-      const get = key => localStorage.getItem(key) || "-";
-      const msg = `🧾 *Pickup Summary*\nFrom: ${get("fromArea")}\nTo: ${get("toArea")}\nPickup Address: ${get("pickupAddr")}\nDelivery Address: ${get("deliveryAddr")}\nPickup Date: ${get("pickupDate")}\nItem: ${get("item")}\nEstimated Delivery: ${(get("fromArea") === get("toArea")) ? "≈ 1 hour" : "≈ 1 hour 10 mins"}\nEstimated Fee: ₱${get("sumFee") || "0.00"}\nPayment: ${get("paymentMethod")}\nReference No: ${get("referenceNumber") || "N/A"}\nConfirmation No: ${get("confirmationNumber")}`;
-      
-      const phoneNumber = "63XXXXXXXXXX"; // Replace with actual admin or rider number
-      const encoded = encodeURIComponent(msg);
-      window.location.href = `https://wa.me/${phoneNumber}?text=${encoded}`;
+      const from = get("fromArea");
+      const to = get("toArea");
+      const pickupAddr = get("pickupAddr");
+      const deliveryAddr = get("deliveryAddr");
+      const pickupDate = get("pickupDate");
+      const item = get("item");
+      const fee = get("sumFee");
+      const method = get("paymentMethod");
+      const ref = get("referenceNumber");
+      const confirmation = get("confirmationNumber");
+
+      const message = 
+`🧾 DalaKoNa Pickup Summary:
+From: ${from}
+To: ${to}
+Pickup: ${pickupAddr}
+Drop-off: ${deliveryAddr}
+Pickup Date: ${pickupDate}
+Item: ${item}
+Estimated Fee: ₱${fee}
+Payment Method: ${method}
+Reference No: ${ref}
+Confirmation No: ${confirmation}`;
+
+      const encodedMsg = encodeURIComponent(message);
+      const whatsappLink = `https://wa.me/63XXXXXXXXXX?text=${encodedMsg}`; // Replace with actual admin/merchant number
+      window.location.href = whatsappLink;
     }
 
-    // Countdown logic
+    // 1-minute timer
     let timeLeft = 60;
     const countdownEl = document.getElementById("countdown");
     const cancelBtn = document.getElementById("cancelBtn");
+
     const interval = setInterval(() => {
       timeLeft--;
       countdownEl.innerText = timeLeft;
@@ -133,8 +162,6 @@
         sendToWhatsApp();
       }
     }, 1000);
-
-    window.onload = loadSummary;
   </script>
 </body>
 </html>
