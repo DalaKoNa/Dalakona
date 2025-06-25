@@ -4,131 +4,141 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pickup Payment – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
       color: #333;
     }
-    h1, h3 {
+    .container {
+      max-width: 500px;
+      margin: 3rem auto;
+      background: white;
+      border-radius: 16px;
+      border: 1.5px solid #ccc;
+      padding: 2rem;
+    }
+    h1 {
       font-family: 'Cinzel', serif;
       color: #008060;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 2rem;
     }
     label {
-      margin-top: 1rem;
       display: block;
+      margin-top: 1rem;
       font-weight: bold;
     }
-    .btn {
+    select, input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
+    .cod-terms {
+      background: #fef9d6;
+      padding: 1rem;
+      border: 1px dashed #999;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      display: none;
+    }
+    button {
       margin-top: 2rem;
-      background-color: #008060;
+      padding: 0.8rem 1.2rem;
+      width: 100%;
+      background: #008060;
       color: white;
-      padding: 0.8rem 1.5rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #00664d;
-    }
-    #refBox {
-      display: none;
+      opacity: 0.5;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>💰 Payment & Confirmation</h1>
-    <p>Fill out the final details to confirm your pickup request.</p>
+    <h1>💳 Choose Payment Method</h1>
 
-    <h3>🧾 Payment Method</h3>
-    <label><input type="radio" name="payment" value="COD" onclick="toggleRefField()"> Cash on Delivery (COD)</label>
-    <label><input type="radio" name="payment" value="GCash" onclick="toggleRefField()"> GCash</label>
-    <label><input type="radio" name="payment" value="Bank Transfer" onclick="toggleRefField()"> Bank Transfer</label>
+    <label>Payment Method</label>
+    <select id="paymentMethod" onchange="handlePaymentChange()">
+      <option value="">-- Select --</option>
+      <option value="Cash">Cash on Delivery (COD)</option>
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
 
-    <div id="refBox" style="margin-top: 1rem;">
-      <label>GCash/Bank Reference Number</label>
-      <input type="text" id="refNum" placeholder="e.g. Ref# 12345ABC"/>
+    <div id="referenceSection" style="display:none;">
+      <label>Reference Number</label>
+      <input type="text" id="referenceNumber" placeholder="Enter Reference No." />
     </div>
 
-    <h3>👤 Customer Information</h3>
-    <label>Pickup Name</label>
-    <input type="text" id="pickupName" placeholder="e.g. Juan Dela Cruz"/>
+    <div id="codTerms" class="cod-terms">
+      <strong>📝 COD Terms:</strong><br/>
+      Please prepare the exact amount. Rider will collect payment upon delivery. Repeated cancellations may lead to account restriction.
+    </div>
 
-    <label>Pickup Contact</label>
-    <input type="text" id="pickupContact" placeholder="e.g. 09XXXXXXXXX"/>
-
-    <label>Receiver Name</label>
-    <input type="text" id="deliveryName" placeholder="e.g. Maria Santos"/>
-
-    <label>Receiver Contact</label>
-    <input type="text" id="deliveryContact" placeholder="e.g. 09XXXXXXXXX"/>
-
-    <button class="btn" onclick="validateAndProceed()">✅ Confirm Request</button>
-
-    <p style="margin-top: 2rem; font-size: 0.9rem; color: #555;">
-      📌 <strong>Note:</strong> If you chose GCash or Bank Transfer, please ensure payment is made and reference number is valid.
-      <br/>By confirming, you agree to our <a href="terms.html" target="_blank">Terms & Conditions</a>.
-    </p>
+    <button id="proceedBtn" onclick="goToSummary()">✅ Proceed to Confirmation</button>
   </div>
 
   <script>
-    function toggleRefField() {
-      const selected = document.querySelector('input[name="payment"]:checked');
-      const refBox = document.getElementById("refBox");
-      if (!selected) return;
-      refBox.style.display = (selected.value === "COD") ? "none" : "block";
-    }
+    function handlePaymentChange() {
+      const method = document.getElementById("paymentMethod").value;
+      const referenceSection = document.getElementById("referenceSection");
+      const codTerms = document.getElementById("codTerms");
 
-    function validateAndProceed() {
-      const pickupName = document.getElementById("pickupName").value.trim();
-      const pickupContact = document.getElementById("pickupContact").value.trim();
-      const deliveryName = document.getElementById("deliveryName").value.trim();
-      const deliveryContact = document.getElementById("deliveryContact").value.trim();
-      const paymentMethod = document.querySelector('input[name="payment"]:checked');
-      const refNum = document.getElementById("refNum").value.trim();
-
-      if (!pickupName || !pickupContact || !deliveryName || !deliveryContact || !paymentMethod) {
-        alert("❗ Please fill out all required fields.");
-        return;
+      if (method === "Cash") {
+        referenceSection.style.display = "none";
+        codTerms.style.display = "block";
+      } else if (method) {
+        referenceSection.style.display = "block";
+        codTerms.style.display = "none";
+      } else {
+        referenceSection.style.display = "none";
+        codTerms.style.display = "none";
       }
 
-      const method = paymentMethod.value;
-      if ((method === "GCash" || method === "Bank Transfer") && refNum === "") {
-        alert("❗ Reference number is required for GCash or Bank Transfer.");
-        return;
-      }
-
-      const params = new URLSearchParams(window.location.search);
-      params.set("pickupName", pickupName);
-      params.set("pickupContact", pickupContact);
-      params.set("deliveryName", deliveryName);
-      params.set("deliveryContact", deliveryContact);
-      params.set("payment", method);
-      params.set("ref", refNum || "N/A");
-
-      window.location.href = "pickup-summary.html?" + params.toString();
+      validateForm();
     }
+
+    function validateForm() {
+      const method = document.getElementById("paymentMethod").value;
+      const refNum = document.getElementById("referenceNumber").value.trim();
+      const btn = document.getElementById("proceedBtn");
+
+      const isCash = method === "Cash";
+      const isValid = (isCash || (refNum.length >= 5));
+
+      if (method && isValid) {
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      } else {
+        btn.style.opacity = "0.5";
+        btn.style.pointerEvents = "none";
+      }
+    }
+
+    function goToSummary() {
+      const method = document.getElementById("paymentMethod").value;
+      const refNum = document.getElementById("referenceNumber").value.trim();
+
+      // Store payment data in localStorage or pass to the next page
+      localStorage.setItem("paymentMethod", method);
+      localStorage.setItem("referenceNumber", refNum);
+
+      // Redirect
+      window.location.href = "pickup-summary.html";
+    }
+
+    document.getElementById("referenceNumber").addEventListener("input", validateForm);
   </script>
 </body>
 </html>
