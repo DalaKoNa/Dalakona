@@ -12,7 +12,6 @@
       background-color: #fff9e6;
       margin: 0;
       padding: 0;
-      color: #333;
     }
     .container {
       max-width: 1080px;
@@ -85,6 +84,7 @@
   <div class="container">
     <h1>📥 To Receive an Item</h1>
     <div class="two-column">
+      <!-- FORM -->
       <div class="form-box">
         <label>From Area</label>
         <select id="fromArea">
@@ -107,87 +107,84 @@
         </select>
 
         <label>Pickup Name</label>
-        <input type="text" id="pickupName" name="name" autocomplete="name" placeholder="e.g. Maria Sender" required />
+        <input type="text" id="pickupName" />
 
         <label>Pickup Contact</label>
-        <input type="tel" id="pickupContact" name="phone" autocomplete="tel" placeholder="e.g. 0917xxxxxxx" required />
+        <input type="text" id="pickupContact" />
 
         <label>Pickup Address</label>
-        <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa" required />
+        <input type="text" id="pickupAddr" />
 
         <label>Receiver Name</label>
-        <input type="text" id="receiverName" placeholder="e.g. Juan Dela Cruz" required />
+        <input type="text" id="receiverName" />
 
         <label>Receiver Contact</label>
-        <input type="tel" id="receiverContact" placeholder="e.g. 0939xxxxxxx" required />
+        <input type="text" id="receiverContact" />
 
         <label>Delivery Address</label>
-        <input type="text" id="deliveryAddr" placeholder="e.g. Zone 2, Alijis" required />
+        <input type="text" id="deliveryAddr" />
 
         <label>Pickup Date</label>
-        <input type="date" id="pickupDate" required />
+        <input type="date" id="pickupDate" />
 
         <label>Item Description</label>
-        <textarea id="item" rows="2" placeholder="e.g. Documents or Package" required></textarea>
+        <textarea id="item"></textarea>
 
         <button onclick="updateSummary()">📝 Preview Summary</button>
       </div>
-<!-- SUMMARY -->
-<div class="summary-box">
-  <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Order Summary</h3>
-  <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-  <p><strong>To:</strong> <span id="sumTo">-</span></p>
-  <p><strong>Pickup Name:</strong> <span id="sumPickupName">-</span></p>
-  <p><strong>Pickup Contact:</strong> <span id="sumPickupContact">-</span></p>
-  <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-  <p><strong>Receiver Name:</strong> <span id="sumReceiverName">-</span></p>
-  <p><strong>Receiver Contact:</strong> <span id="sumReceiverContact">-</span></p>
-  <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-  <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-  <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-  <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
 
-  <a href="pickup-payment.html" class="button-link" id="continueBtn" style="pointer-events: none; opacity: 0.5;">➡️ Continue to Payment</a>
-</div>
-
+      <!-- SUMMARY -->
+      <div class="summary-box">
+        <h3>🧾 Order Summary</h3>
+        <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+        <p><strong>To:</strong> <span id="sumTo">-</span></p>
+        <p><strong>Pickup Name:</strong> <span id="sumPickupName">-</span></p>
+        <p><strong>Pickup Contact:</strong> <span id="sumPickupContact">-</span></p>
+        <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+        <p><strong>Receiver Name:</strong> <span id="sumReceiverName">-</span></p>
+        <p><strong>Receiver Contact:</strong> <span id="sumReceiverContact">-</span></p>
+        <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+        <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+        <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+        <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+        <a href="pickup-payment.html" id="continueBtn" class="button-link">➡️ Continue to Payment</a>
+      </div>
     </div>
   </div>
 
   <script>
-  function updateSummary() {
-    const from = document.getElementById("fromArea").value;
-    const to = document.getElementById("toArea").value;
-    const pickupName = document.getElementById("pickupName").value.trim();
-    const pickupContact = document.getElementById("pickupContact").value.trim();
-    const pickupAddr = document.getElementById("pickupAddr").value.trim();
-    const receiverName = document.getElementById("receiverName").value.trim();
-    const receiverContact = document.getElementById("receiverContact").value.trim();
-    const deliveryAddr = document.getElementById("deliveryAddr").value.trim();
-    const pickupDate = document.getElementById("pickupDate").value;
-    const item = document.getElementById("item").value.trim();
+    function updateSummary() {
+      const from = document.getElementById("fromArea").value;
+      const to = document.getElementById("toArea").value;
+      const pickupName = document.getElementById("pickupName").value.trim();
+      const pickupContact = document.getElementById("pickupContact").value.trim();
+      const pickupAddr = document.getElementById("pickupAddr").value.trim();
+      const receiverName = document.getElementById("receiverName").value.trim();
+      const receiverContact = document.getElementById("receiverContact").value.trim();
+      const deliveryAddr = document.getElementById("deliveryAddr").value.trim();
+      const pickupDate = document.getElementById("pickupDate").value;
+      const item = document.getElementById("item").value.trim();
 
-    const allFilled = from && to && pickupName && pickupContact && pickupAddr && receiverName && receiverContact && deliveryAddr && pickupDate && item;
+      const allFilled = from && to && pickupName && pickupContact && pickupAddr && receiverName && receiverContact && deliveryAddr && pickupDate && item;
 
-    document.getElementById("sumFrom").innerText = from;
-    document.getElementById("sumTo").innerText = to;
-    document.getElementById("sumPickupName").innerText = pickupName;
-    document.getElementById("sumPickupContact").innerText = pickupContact;
-    document.getElementById("sumPickupAddr").innerText = pickupAddr;
-    document.getElementById("sumReceiverName").innerText = receiverName;
-    document.getElementById("sumReceiverContact").innerText = receiverContact;
-    document.getElementById("sumDeliveryAddr").innerText = deliveryAddr;
-    document.getElementById("sumPickupDate").innerText = pickupDate;
-    document.getElementById("sumItem").innerText = item;
+      document.getElementById("sumFrom").innerText = from;
+      document.getElementById("sumTo").innerText = to;
+      document.getElementById("sumPickupName").innerText = pickupName;
+      document.getElementById("sumPickupContact").innerText = pickupContact;
+      document.getElementById("sumPickupAddr").innerText = pickupAddr;
+      document.getElementById("sumReceiverName").innerText = receiverName;
+      document.getElementById("sumReceiverContact").innerText = receiverContact;
+      document.getElementById("sumDeliveryAddr").innerText = deliveryAddr;
+      document.getElementById("sumPickupDate").innerText = pickupDate;
+      document.getElementById("sumItem").innerText = item;
 
-    const fee = (from && to && from !== to) ? 78 : (from && to ? 39 : 0);
-    document.getElementById("sumFee").innerText = fee.toFixed(2);
+      const fee = (from && to && from !== to) ? 78 : (from && to ? 39 : 0);
+      document.getElementById("sumFee").innerText = fee.toFixed(2);
 
-    // Enable button if all fields are filled
-    const continueBtn = document.getElementById("continueBtn");
-    continueBtn.style.pointerEvents = allFilled ? "auto" : "none";
-    continueBtn.style.opacity = allFilled ? "1" : "0.5";
-  }
-</script>
-
+      const continueBtn = document.getElementById("continueBtn");
+      continueBtn.style.pointerEvents = allFilled ? "auto" : "none";
+      continueBtn.style.opacity = allFilled ? "1" : "0.5";
+    }
+  </script>
 </body>
 </html>
