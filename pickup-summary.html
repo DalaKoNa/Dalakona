@@ -2,148 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pickup Request Summary | DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
       background-color: #fff9e6;
-      padding: 2rem;
-      color: #333;
     }
-    .summary-container {
-      max-width: 600px;
+    .container {
+      padding: 2rem;
+      max-width: 900px;
       margin: auto;
-      background: white;
-      border-radius: 16px;
-      border: 2px solid #008060;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    h2 {
+    h1, h3 {
       font-family: 'Cinzel', serif;
       color: #008060;
       text-align: center;
     }
-    .summary-details p {
-      margin: 0.3rem 0;
+    .summary-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+      justify-content: center;
     }
-    .countdown {
-      color: red;
+    .summary-box {
+      background: white;
+      border: 1.5px solid #ccc;
+      border-radius: 16px;
+      padding: 1.5rem;
+      flex: 1 1 350px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+    .timer {
       font-weight: bold;
-      margin: 1rem 0;
-    }
-    .button-row {
+      color: red;
       text-align: center;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
     }
-    .cancel-btn {
-      background: red;
+    .button-link {
+      display: inline-block;
+      background: #008060;
       color: white;
       padding: 0.6rem 1.2rem;
-      border: none;
       border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
+      text-decoration: none;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
     }
-    .confirm-code {
-      background: #d1f7cc;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-top: 1rem;
+    .action-buttons {
       text-align: center;
-      font-weight: bold;
-      font-size: 1.1rem;
+      margin-top: 2rem;
+    }
+    .cancel-button {
+      background-color: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 1rem;
     }
     .terms {
       font-size: 0.85rem;
+      color: #444;
       margin-top: 2rem;
-      color: #555;
+      text-align: center;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>🧾 Pickup Request Summary</h1>
 
-  <div class="summary-container">
-    <h2>🧾 Pickup Summary</h2>
+    <div class="summary-wrapper">
+      <div class="summary-box">
+        <h3>Order Details</h3>
+        <p><strong>Confirmation #:</strong> <span id="confirmationCode">---</span></p>
+        <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+        <p><strong>To:</strong> <span id="sumTo">-</span></p>
+        <p><strong>Pickup Name:</strong> <span id="sumPickupName">-</span></p>
+        <p><strong>Pickup Contact:</strong> <span id="sumPickupContact">-</span></p>
+        <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+        <p><strong>Receiver Name:</strong> <span id="sumDeliveryName">-</span></p>
+        <p><strong>Receiver Contact:</strong> <span id="sumDeliveryContact">-</span></p>
+        <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+        <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+        <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+        <p><strong>Payment Method:</strong> <span id="sumPayment">-</span></p>
+        <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+        <p><strong>Estimated Delivery Time:</strong> <span id="sumTime">-</span></p>
 
-    <div class="summary-details">
-      <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
-      <p><strong>To:</strong> <span id="sumTo">Alijis</span></p>
-      <p><strong>Pickup Location:</strong> <span id="sumPickup">Felisa Market</span></p>
-      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">Gate 2, Brgy. Felisa</span></p>
-      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">Across Alijis Gym</span></p>
-      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">2025-06-24</span></p>
-      <p><strong>Item:</strong> <span id="sumItem">Documents</span></p>
-      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">78.00</span></p>
-      <hr />
-      <p><strong>Customer Name:</strong> <span id="sumCustomerName">Juan Dela Cruz</span></p>
-      <p><strong>Customer Contact:</strong> <span id="sumCustomerContact">09123456789</span></p>
-      <p><strong>Receiver Name:</strong> <span id="sumReceiverName">Ana Santos</span></p>
-      <p><strong>Receiver Contact:</strong> <span id="sumReceiverContact">09998887777</span></p>
+        <div class="timer" id="cancelTimer">⏳ You can cancel within 2:00</div>
+        <button class="cancel-button" id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
+      </div>
     </div>
 
-    <div class="countdown" id="countdown">⏱ Auto-confirming in 2:00</div>
-
-    <div class="button-row">
-      <button class="cancel-btn" id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
-    </div>
-
-    <div class="confirm-code" id="confirmBox" style="display:none;">
-      ✅ Request Confirmed!<br/>
-      Confirmation Code: <span id="confirmCode">DLK12345</span>
+    <div class="action-buttons">
+      <a href="index.html" class="button-link">🏠 Back to Home</a>
+      <a href="pickup-send.html" class="button-link">🆕 New Request</a>
     </div>
 
     <div class="terms">
-      📌 <strong>Terms & Conditions:</strong><br/>
-      - COD (Cash on Delivery) must be exact change. No change provided.<br/>
-      - If cancelled within 2 minutes, no charges will apply.<br/>
-      - After confirmation, cancellation is no longer allowed.<br/>
-      - For bank transfers, send proof to our official DalaKoNa WhatsApp.
+      <p><strong>Note:</strong> Cash on Delivery (COD) is available only if receiver is present.</p>
+      <p>If rider arrives and recipient is unreachable, your order may be marked as failed and not retried.</p>
     </div>
   </div>
 
   <script>
-    let timeLeft = 120;
-    const countdownEl = document.getElementById("countdown");
-    const confirmBox = document.getElementById("confirmBox");
+    const urlParams = new URLSearchParams(window.location.search);
+    const get = key => urlParams.get(key) || '-';
+
+    const fee = parseFloat(get("fee")) || 39.00;
+    const from = get("from");
+    const to = get("to");
+    const sameArea = from === to;
+    const deliveryTime = sameArea ? "⏱️ Within 1 hour" : "⏱️ Within 1 hour and 10 minutes";
+    const confirmationCode = "DALA-" + Math.floor(100000 + Math.random() * 900000);
+
+    document.getElementById("confirmationCode").textContent = confirmationCode;
+    document.getElementById("sumFrom").textContent = from;
+    document.getElementById("sumTo").textContent = to;
+    document.getElementById("sumPickupName").textContent = get("pickupName");
+    document.getElementById("sumPickupContact").textContent = get("pickupContact");
+    document.getElementById("sumPickupAddr").textContent = get("pickupAddr");
+    document.getElementById("sumDeliveryName").textContent = get("deliveryName");
+    document.getElementById("sumDeliveryContact").textContent = get("deliveryContact");
+    document.getElementById("sumDeliveryAddr").textContent = get("deliveryAddr");
+    document.getElementById("sumPickupDate").textContent = get("pickupDate");
+    document.getElementById("sumItem").textContent = get("item");
+    document.getElementById("sumPayment").textContent = get("payment");
+    document.getElementById("sumFee").textContent = fee.toFixed(2);
+    document.getElementById("sumTime").textContent = deliveryTime;
+
+    // Timer logic
+    let seconds = 120;
+    const timerDisplay = document.getElementById("cancelTimer");
     const cancelBtn = document.getElementById("cancelBtn");
-    const confirmCode = "DLK" + Math.floor(10000 + Math.random() * 89999);
 
     const countdown = setInterval(() => {
-      if (timeLeft <= 0) {
+      seconds--;
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      timerDisplay.textContent = `⏳ You can cancel within ${min}:${sec < 10 ? '0' : ''}${sec}`;
+
+      if (seconds <= 0) {
         clearInterval(countdown);
-        cancelBtn.disabled = true;
-        cancelBtn.style.opacity = 0.5;
-        countdownEl.textContent = "✅ Request confirmed!";
-        document.getElementById("confirmBox").style.display = "block";
-        document.getElementById("confirmCode").textContent = confirmCode;
-        sendWhatsAppConfirmation();
-      } else {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        countdownEl.textContent = `⏱ Auto-confirming in ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-        timeLeft--;
+        timerDisplay.textContent = "✅ Your request is now final.";
+        cancelBtn.style.display = "none";
+        sendToWhatsApp();
       }
     }, 1000);
 
     function cancelRequest() {
       clearInterval(countdown);
-      countdownEl.textContent = "❌ Request Cancelled.";
-      cancelBtn.disabled = true;
-      cancelBtn.style.opacity = 0.5;
-      confirmBox.style.display = "none";
+      alert("❌ Your request has been canceled.");
+      window.location.href = "index.html";
     }
 
-    function sendWhatsAppConfirmation() {
-      const message = `📦 New Pickup Request Confirmed\n\nPickup: Felisa Market\nDrop-off: Alijis\nItem: Documents\nFee: ₱78.00\nCustomer: Juan Dela Cruz\nContact: 09123456789\nConfirmation Code: ${confirmCode}`;
-      const phone = "63XXXXXXXXXX"; // Admin/rider number
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
+    function sendToWhatsApp() {
+      const summary = `📦 New Pickup Request:
+Confirmation Code: ${confirmationCode}
+From: ${from} (${get("pickupAddr")})
+To: ${to} (${get("deliveryAddr")})
+Item: ${get("item")}
+Pickup: ${get("pickupDate")}
+Customer: ${get("pickupName")} (${get("pickupContact")})
+Receiver: ${get("deliveryName")} (${get("deliveryContact")})
+Payment: ${get("payment")}
+Estimated Fee: ₱${fee.toFixed(2)}`;
+
+      const message = encodeURIComponent(summary);
+      const adminNumber = "63XXXXXXXXXX"; // Replace with real admin/rider number
+      window.open(`https://wa.me/${adminNumber}?text=${message}`, '_blank');
     }
   </script>
-
 </body>
 </html>
