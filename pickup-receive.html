@@ -127,22 +127,19 @@
       </div>
 
       <!-- SUMMARY -->
-      <div class="summary-box">
-        <h3>🧾 Order Summary</h3>
-        <p><strong>Name:</strong> <span id="sumName">-</span></p>
-        <p><strong>Contact:</strong> <span id="sumContact">-</span></p>
-        <p><strong>Email:</strong> <span id="sumEmail">-</span></p>
-        <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-        <p><strong>To:</strong> <span id="sumTo">-</span></p>
-        <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-        <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-        <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-        <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+<div class="summary-box">
+  <h3>🧾 Order Summary</h3>
+  <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
+  <p><strong>To:</strong> <span id="sumTo">Handumanan</span></p>
+  <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
+  <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+  <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+  <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+  <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+  <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">39.00</span></p>
 
-        <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
-      </div>
-    </div>
-  </div>
+  <a id="continueBtn" href="pickup-payment.html" class="button-link" style="pointer-events: none; opacity: 0.5;">➡️ Continue to Payment</a>
+</div>
 
   <script>
     const formFields = ["receiverName", "receiverContact", "email", "fromArea", "toArea", "deliveryAddr", "pickupDate", "item"];
@@ -153,20 +150,40 @@
       });
     });
 
-    function updateSummary() {
-      const from = document.getElementById("fromArea").value;
-      const to = document.getElementById("toArea").value;
-      document.getElementById("sumName").innerText = document.getElementById("receiverName").value;
-      document.getElementById("sumContact").innerText = document.getElementById("receiverContact").value;
-      document.getElementById("sumEmail").innerText = document.getElementById("email").value;
-      document.getElementById("sumFrom").innerText = from;
-      document.getElementById("sumTo").innerText = to;
-      document.getElementById("sumDeliveryAddr").innerText = document.getElementById("deliveryAddr").value;
-      document.getElementById("sumPickupDate").innerText = document.getElementById("pickupDate").value;
-      document.getElementById("sumItem").innerText = document.getElementById("item").value;
-      const fee = from && to && from !== to ? 78 : (from && to ? 39 : 0);
-      document.getElementById("sumFee").innerText = fee.toFixed(2);
+    <script>
+  function updateSummary() {
+    const from = document.getElementById("fromArea").value;
+    const to = document.getElementById("toArea").value;
+    const pickup = document.getElementById("pickup").value.trim();
+    const pickupAddr = document.getElementById("pickupAddr").value.trim();
+    const deliveryAddr = document.getElementById("deliveryAddr").value.trim();
+    const pickupDate = document.getElementById("pickupDate").value;
+    const item = document.getElementById("item").value.trim();
+
+    const allFilled = from && to && pickup && pickupAddr && deliveryAddr && pickupDate && item;
+
+    document.getElementById("sumFrom").innerText = from;
+    document.getElementById("sumTo").innerText = to;
+    document.getElementById("sumPickup").innerText = pickup;
+    document.getElementById("sumPickupAddr").innerText = pickupAddr;
+    document.getElementById("sumDeliveryAddr").innerText = deliveryAddr;
+    document.getElementById("sumPickupDate").innerText = pickupDate;
+    document.getElementById("sumItem").innerText = item;
+
+    const fee = (from && to && from !== to) ? 78 : (from && to ? 39 : 0);
+    document.getElementById("sumFee").innerText = fee.toFixed(2);
+
+    // Enable button only if all fields are filled
+    const continueBtn = document.getElementById("continueBtn");
+    if (allFilled) {
+      continueBtn.style.pointerEvents = "auto";
+      continueBtn.style.opacity = "1";
+    } else {
+      continueBtn.style.pointerEvents = "none";
+      continueBtn.style.opacity = "0.5";
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
