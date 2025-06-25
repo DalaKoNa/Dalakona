@@ -3,140 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup - Send Item | DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
+  <title>DalaKoNa – Pickup Send</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #fff9e6;
-    }
-    header {
-      background-color: #008060;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-family: 'Cinzel', serif;
+      background: #fff9e6;
     }
     .container {
-      max-width: 900px;
+      padding: 2rem 1rem;
+      max-width: 960px;
       margin: auto;
-      padding: 2rem;
+    }
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: #008060;
+      text-align: center;
     }
     .form-box, .summary-box {
       background: #fff;
-      border: 1.5px solid #008060;
       border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
+      padding: 2rem;
+      margin-top: 1.5rem;
+      border: 1.5px solid #008060;
     }
     label {
       display: block;
       margin-top: 1rem;
-      font-weight: bold;
     }
     input, select, textarea {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.6rem;
       margin-top: 0.3rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
     }
-    .button-link, button {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.6rem 1.2rem;
+    .button-link {
+      display: block;
       background: #008060;
-      color: white;
-      text-decoration: none;
+      color: #fff;
+      text-align: center;
+      padding: 0.6rem;
       border-radius: 8px;
-      border: none;
-      cursor: pointer;
+      margin-top: 1.5rem;
+      text-decoration: none;
+    }
+    .flexbox {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    📤 Send an Item
-  </header>
-
   <div class="container">
-    <div class="form-box">
-      <label>From Area</label>
-      <select id="fromArea">
-        <option value="">-- Choose Area --</option>
-        <option value="Handumanan">Handumanan</option>
-        <option value="Felisa">Felisa</option>
-        <option value="Cabug">Cabug</option>
-        <option value="Mansilingan">Mansilingan</option>
-        <option value="Alijis">Alijis</option>
-      </select>
+    <h1>📤 Send an Item</h1>
+    <p style="text-align:center;">Fill in the details below to send your item.<br><em>I-type ang impormasyon para sa pagpadala sang imo item.</em></p>
 
-      <label style="margin-top: 1rem;">To Area</label>
-      <select id="toArea">
-        <option value="">-- Choose Area --</option>
-        <option value="Handumanan">Handumanan</option>
-        <option value="Felisa">Felisa</option>
-        <option value="Cabug">Cabug</option>
-        <option value="Mansilingan">Mansilingan</option>
-        <option value="Alijis">Alijis</option>
-      </select>
+    <div class="flexbox">
+      <!-- FORM -->
+      <div class="form-box">
+        <label>From Area</label>
+        <select id="fromArea">
+          <option value="">-- Choose Area --</option>
+          <option value="Handumanan">Handumanan</option>
+          <option value="Felisa">Felisa</option>
+          <option value="Cabug">Cabug</option>
+          <option value="Mansilingan">Mansilingan</option>
+          <option value="Alijis">Alijis</option>
+        </select>
 
-      <label>Pickup Date</label>
-      <input type="date" id="pickupDate" />
+        <label style="margin-top: 1rem;">To Area</label>
+        <select id="toArea">
+          <option value="">-- Choose Area --</option>
+          <option value="Handumanan">Handumanan</option>
+          <option value="Felisa">Felisa</option>
+          <option value="Cabug">Cabug</option>
+          <option value="Mansilingan">Mansilingan</option>
+          <option value="Alijis">Alijis</option>
+        </select>
 
-      <label>Pickup Location</label>
-      <input type="text" id="pickup" placeholder="e.g. 7-Eleven Handumanan"/>
+        <label style="margin-top: 1rem;">Pickup Date</label>
+        <input type="date" id="pickupDate" />
 
-      <label>Exact Pickup Address</label>
-      <input type="text" id="pickupAddr" placeholder="e.g. Gate 1, Felisa Road"/>
+        <label>Pickup Location</label>
+        <input type="text" id="pickup" placeholder="e.g. 7-Eleven Handumanan" />
 
-      <label>Delivery Location</label>
-      <input type="text" id="delivery" placeholder="e.g. Blk 3 Lot 8, Alijis"/>
+        <label>Exact Pickup Address</label>
+        <input type="text" id="pickupAddr" placeholder="e.g. Gate 1, Felisa Road" />
 
-      <label>Exact Delivery Address</label>
-      <input type="text" id="deliveryAddr" placeholder="e.g. Zone 5, Brgy. Alijis near chapel"/>
+        <label>Delivery Location</label>
+        <input type="text" id="delivery" placeholder="e.g. Blk 3 Lot 8, Alijis" />
 
-      <label>Item Description</label>
-      <textarea id="item" rows="2" placeholder="e.g. Grocery package or McDo delivery"></textarea>
+        <label>Exact Delivery Address</label>
+        <input type="text" id="deliveryAddr" placeholder="e.g. Zone 5, Brgy. Alijis near chapel" />
 
-      <button onclick="updateSummary()">📝 Preview Summary</button>
-    </div>
+        <label>Item Description</label>
+        <textarea id="item" rows="2" placeholder="e.g. Grocery package or McDo delivery"></textarea>
 
-    <div class="summary-box">
-      <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Order Summary</h3>
-      <p><strong>Pickup Date:</strong> <span id="sumDate">-</span></p>
-      <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-      <p><strong>To:</strong> <span id="sumTo">-</span></p>
-      <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
-      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-      <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
-      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+        <button onclick="updateSummary()">📝 Preview Summary</button>
+      </div>
 
-      <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
+      <!-- SUMMARY -->
+      <div class="summary-box">
+        <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Order Summary</h3>
+        <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+        <p><strong>To:</strong> <span id="sumTo">-</span></p>
+        <p><strong>Pickup Date:</strong> <span id="sumDate">-</span></p>
+        <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
+        <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+        <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
+        <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+        <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+        <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+
+        <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
+      </div>
     </div>
   </div>
 
   <script>
     function updateSummary() {
-      const from = document.getElementById("fromArea").value;
-      const to = document.getElementById("toArea").value;
-      const fee = (from === to && from !== "") ? 78 : (from && to ? 88 : '-');
+      const from = document.getElementById('fromArea').value;
+      const to = document.getElementById('toArea').value;
+
+      let fee = (from && to && from === to) ? 39 : 78;
 
       document.getElementById("sumFrom").innerText = from;
       document.getElementById("sumTo").innerText = to;
+      document.getElementById("sumDate").innerText = document.getElementById("pickupDate").value;
       document.getElementById("sumPickup").innerText = document.getElementById("pickup").value;
       document.getElementById("sumPickupAddr").innerText = document.getElementById("pickupAddr").value;
       document.getElementById("sumDelivery").innerText = document.getElementById("delivery").value;
       document.getElementById("sumDeliveryAddr").innerText = document.getElementById("deliveryAddr").value;
       document.getElementById("sumItem").innerText = document.getElementById("item").value;
-      document.getElementById("sumDate").innerText = document.getElementById("pickupDate").value;
-      document.getElementById("sumFee").innerText = fee;
+      document.getElementById("sumFee").innerText = fee.toFixed(2);
     }
   </script>
 </body>
