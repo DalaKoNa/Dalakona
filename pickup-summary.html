@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Summary – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
@@ -39,16 +39,22 @@
     .summary-box p {
       margin: 0.4rem 0;
     }
+    .btn {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      cursor: pointer;
+    }
     .cancel-btn {
-      margin-top: 1.5rem;
       background: #ff5252;
       color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
+    }
+    .confirm-btn {
+      background: #008060;
+      color: white;
     }
     .countdown-note {
       font-style: italic;
@@ -56,22 +62,11 @@
       margin-top: 0.6rem;
       font-size: 0.95rem;
     }
-    .confirm-btn {
-      margin-top: 1rem;
-      background: #008060;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-    }
   </style>
 </head>
 <body onload="loadSummary()">
   <div class="container">
-    <h1>🧾 Pickup Summary</h1>
+    <h1>📎 Pickup Summary</h1>
     <div class="summary-box">
       <h3>Order Summary</h3>
       <p><strong>From:</strong> <span id="sumFrom">-</span></p>
@@ -88,10 +83,14 @@
       <p><strong>Reference No:</strong> <span id="sumRef">N/A</span></p>
       <p><strong>Confirmation No:</strong> <span id="confirmationNumber">-</span></p>
       <p>⏱️ Confirming in <span id="countdown">60</span>s...</p>
-      <button id="cancelBtn" class="cancel-btn" onclick="cancelRequest()">❌ Cancel Request</button>
-      <p class="countdown-note">⏳ *Ginahatagan ikaw sang isa ka minuto antes ma-confirm ang request mo.*</p>
+      <button id="cancelBtn" class="btn cancel-btn" onclick="cancelRequest()">❌ Cancel Request</button>
+      <button id="confirmBtn" class="btn confirm-btn" onclick="sendToWhatsApp()" disabled>✅ Confirm Order</button>
+      <p class="countdown-note">⏳ *Ginahatagan ikaw sang isa ka minuto antes ma-confirm ang request mo.*
+      </p>
     </div>
   </div>
+
+  <audio id="dingSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
   <script>
     function get(key) {
@@ -129,7 +128,9 @@
     }
 
     function sendToWhatsApp() {
-      const message = `🧾 Pickup Summary\n` +
+      document.getElementById("dingSound").play();
+
+      const message = `📎 Pickup Summary\n` +
         `From: ${get("fromArea")}\n` +
         `To: ${get("toArea")}\n` +
         `Sender: ${get("pickupName")} | ${get("pickupContact")}\n` +
@@ -149,37 +150,46 @@
       const rider = "63YYYYYYYYYY";
       window.open(`https://wa.me/${admin}?text=${encoded}`, "_blank");
       window.open(`https://wa.me/${rider}?text=${encoded}`, "_blank");
+
+      // Firebase/Airtable/Webhook logging (example only)
+      fetch("https://hook.us1.make.com/your-webhook-id", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          confirmationNumber: get("confirmationNumber"),
+          from: get("fromArea"),
+          to: get("toArea"),
+          pickupName: get("pickupName"),
+          pickupContact: get("pickupContact"),
+          receiverName: get("receiverName"),
+          receiverContact: get("receiverContact"),
+          fee: get("sumFee"),
+          date: get("pickupDate"),
+          item: get("item"),
+          payment: get("paymentMethod"),
+          reference: get("referenceNumber")
+        })
+      });
     }
 
     let timeLeft = 60;
     const countdownEl = document.getElementById("countdown");
+    const confirmBtn = document.getElementById("confirmBtn");
     const cancelBtn = document.getElementById("cancelBtn");
-
-    const confirmBtn = document.createElement("button");
-    confirmBtn.innerText = "✅ Confirm Order Now";
-    confirmBtn.className = "confirm-btn";
-    confirmBtn.onclick = () => {
-      clearInterval(interval);
-      cancelBtn.disabled = true;
-      sendToWhatsApp();
-    };
 
     const interval = setInterval(() => {
       timeLeft--;
       countdownEl.innerText = timeLeft;
 
-      // Show confirm button at 30s
-      if (timeLeft === 30) {
-        document.querySelector(".summary-box").appendChild(confirmBtn);
-      }
+      if (timeLeft === 30) confirmBtn.disabled = false;
 
-      // Auto confirm after 1 minute
-if (timeLeft <= 0) {
-  clearInterval(interval);
-  cancelBtn.disabled = true;
-  confirmBtn.disabled = true;
-  sendToWhatsApp();
-}
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        confirmBtn.disabled = true;
+        cancelBtn.disabled = true;
+        setTimeout(() => sendToWhatsApp(), 3000); // 3s grace period
+      }
+    }, 1000);
   </script>
 </body>
 </html>
