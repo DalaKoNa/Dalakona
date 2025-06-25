@@ -3,58 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup Send | DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Pickup Send – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
+      padding: 2rem;
       margin: 0;
-      padding: 2rem 1rem;
     }
-    h2 {
-      text-align: center;
+    h1, h3 {
       font-family: 'Cinzel', serif;
-      color: #008060;
     }
-    .form-summary-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-      margin-top: 2rem;
+    .container {
+      max-width: 1024px;
+      margin: auto;
     }
     .form-box, .summary-box {
-      background: #fff;
-      border: 1.5px solid #ccc;
+      background: white;
+      border: 1.5px solid #008060;
       border-radius: 16px;
-      padding: 2rem;
-      width: 340px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .form-box label, .form-box input, .form-box select, .form-box textarea {
+      display: block;
+      width: 100%;
+      margin-top: 0.8rem;
     }
     .form-box input, .form-box select, .form-box textarea {
-      width: 100%;
-      margin-top: 0.3rem;
       padding: 0.5rem;
-      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
     .button-link {
-      display: block;
-      margin-top: 1.5rem;
-      text-align: center;
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.6rem 1.2rem;
       background: #008060;
       color: white;
-      padding: 0.6rem;
-      border-radius: 8px;
       text-decoration: none;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <h2>📦 Pickup & Send Form</h2>
-  <div class="form-summary-container">
-    <!-- FORM -->
+  <div class="container">
+    <h1>📤 Send an Item</h1>
+    <p>Fill in the form below to schedule your pickup and delivery.</p>
+
     <div class="form-box">
+      <label>Sender Name</label>
+      <input type="text" id="senderName" placeholder="e.g. Juan Dela Cruz" />
+
+      <label>Sender Contact Number</label>
+      <input type="text" id="senderContact" placeholder="e.g. 09123456789" />
+
+      <label>Receiver Name</label>
+      <input type="text" id="receiverName" placeholder="e.g. Maria Santos" />
+
+      <label>Receiver Contact Number</label>
+      <input type="text" id="receiverContact" placeholder="e.g. 09987654321" />
+
       <label>From Area</label>
       <select id="fromArea">
         <option value="">-- Choose Area --</option>
@@ -75,29 +86,17 @@
         <option value="Alijis">Alijis</option>
       </select>
 
-      <label>Sender Name</label>
-      <input type="text" id="senderName" placeholder="e.g. Juan Dela Cruz" />
-
-      <label>Sender Contact</label>
-      <input type="tel" id="senderContact" placeholder="e.g. 09XXXXXXXXX" />
-
-      <label>Receiver Name</label>
-      <input type="text" id="receiverName" placeholder="e.g. Maria Dela Cruz" />
-
-      <label>Receiver Contact</label>
-      <input type="tel" id="receiverContact" placeholder="e.g. 09XXXXXXXXX" />
-
       <label>Pickup Location</label>
-      <input type="text" id="pickup" placeholder="e.g. Felisa Market"/>
+      <input type="text" id="pickup" placeholder="e.g. Felisa Market" />
 
       <label>Exact Pickup Address</label>
-      <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa"/>
+      <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa" />
 
       <label>Delivery Location</label>
-      <input type="text" id="delivery" placeholder="e.g. Zone 2, Alijis"/>
+      <input type="text" id="delivery" placeholder="e.g. Zone 2, Alijis" />
 
       <label>Exact Delivery Address</label>
-      <input type="text" id="deliveryAddr" placeholder="e.g. Across Alijis Gym"/>
+      <input type="text" id="deliveryAddr" placeholder="e.g. Across Alijis Gym" />
 
       <label>Pickup Date</label>
       <input type="date" id="pickupDate" />
@@ -108,13 +107,11 @@
       <button onclick="updateSummary()">📝 Preview Summary</button>
     </div>
 
-    <!-- SUMMARY -->
     <div class="summary-box">
-      <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Order Summary</h3>
-      <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-      <p><strong>To:</strong> <span id="sumTo">-</span></p>
-      <p><strong>Sender:</strong> <span id="sumSenderName">-</span> (<span id="sumSenderContact">-</span>)</p>
-      <p><strong>Receiver:</strong> <span id="sumReceiverName">-</span> (<span id="sumReceiverContact">-</span>)</p>
+      <h3>🧾 Order Summary</h3>
+      <p><strong>Sender:</strong> <span id="sumSender">-</span> (<span id="sumSenderContact">-</span>)</p>
+      <p><strong>Receiver:</strong> <span id="sumReceiver">-</span> (<span id="sumReceiverContact">-</span>)</p>
+      <p><strong>From:</strong> <span id="sumFrom">-</span> to <span id="sumTo">-</span></p>
       <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
       <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
       <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
@@ -131,21 +128,22 @@
     function updateSummary() {
       const from = document.getElementById("fromArea").value;
       const to = document.getElementById("toArea").value;
-      const fee = (from === to && from !== "") ? 39 : (from && to) ? 78 : "-";
+      let fee = (from && to && from === to) ? 39 : 78;
+
+      document.getElementById("sumSender").innerText = document.getElementById("senderName").value;
+      document.getElementById("sumSenderContact").innerText = document.getElementById("senderContact").value;
+      document.getElementById("sumReceiver").innerText = document.getElementById("receiverName").value;
+      document.getElementById("sumReceiverContact").innerText = document.getElementById("receiverContact").value;
 
       document.getElementById("sumFrom").innerText = from;
       document.getElementById("sumTo").innerText = to;
-      document.getElementById("sumSenderName").innerText = document.getElementById("senderName").value;
-      document.getElementById("sumSenderContact").innerText = document.getElementById("senderContact").value;
-      document.getElementById("sumReceiverName").innerText = document.getElementById("receiverName").value;
-      document.getElementById("sumReceiverContact").innerText = document.getElementById("receiverContact").value;
       document.getElementById("sumPickup").innerText = document.getElementById("pickup").value;
       document.getElementById("sumPickupAddr").innerText = document.getElementById("pickupAddr").value;
       document.getElementById("sumDelivery").innerText = document.getElementById("delivery").value;
       document.getElementById("sumDeliveryAddr").innerText = document.getElementById("deliveryAddr").value;
       document.getElementById("sumPickupDate").innerText = document.getElementById("pickupDate").value;
       document.getElementById("sumItem").innerText = document.getElementById("item").value;
-      document.getElementById("sumFee").innerText = fee;
+      document.getElementById("sumFee").innerText = fee.toFixed(2);
     }
   </script>
 </body>
