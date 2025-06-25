@@ -1,109 +1,150 @@
-<!-- pickup-send.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DalaKoNa – Pickup Send</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <title>Pickup Send | DalaKoNa</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff9e6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem 1rem;
+    }
+    .form-box, .summary-box {
+      background: #fff;
+      border: 1.5px solid #ccc;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 340px;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+    }
+    .button-link, button {
+      display: block;
+      margin-top: 1.5rem;
+      background: #008060;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+    }
+    h2, h3 {
+      font-family: 'Cinzel', serif;
+      color: #008060;
+    }
+  </style>
 </head>
-<body style="background-color: #fff9e6; font-family: 'Inter', sans-serif;">
-  <header class="navbar">
-    <a href="index.html" class="back-btn">⬅️ Back</a>
-    <h1 style="font-family: 'Cinzel', serif; color: #008060;">📤 Send an Item</h1>
-  </header>
-
-  <section style="padding: 2rem 1rem; text-align: center;">
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
-
-      <!-- FORM -->
-      <div class="form-box" style="background: white; border: 1.5px solid #008060; border-radius: 16px; padding: 2rem; width: 360px; text-align: left;">
-        <label><strong>From Area</strong></label>
-        <select id="fromArea">
-          <option value="">-- Choose Area --</option>
-          <option value="Handumanan">Handumanan</option>
-          <option value="Felisa">Felisa</option>
-          <option value="Cabug">Cabug</option>
-          <option value="Mansilingan">Mansilingan</option>
-          <option value="Alijis">Alijis</option>
-        </select>
-
-        <label style="margin-top: 1rem;"><strong>To Area</strong></label>
-        <select id="toArea">
-          <option value="">-- Choose Area --</option>
-          <option value="Handumanan">Handumanan</option>
-          <option value="Felisa">Felisa</option>
-          <option value="Cabug">Cabug</option>
-          <option value="Mansilingan">Mansilingan</option>
-          <option value="Alijis">Alijis</option>
-        </select>
-
-        <label style="margin-top: 1rem;"><strong>Pickup Address</strong></label>
-        <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa"/>
-
-        <label style="margin-top: 1rem;"><strong>Delivery Address</strong></label>
-        <input type="text" id="deliveryAddr" placeholder="e.g. Across Alijis Gym"/>
-
-        <label style="margin-top: 1rem;"><strong>Pickup Date</strong></label>
-        <input type="date" id="pickupDate" />
-
-        <label style="margin-top: 1rem;"><strong>Item Description</strong></label>
-        <textarea id="item" rows="2" placeholder="e.g. Documents or Package"></textarea>
-
-        <label style="margin-top: 1rem;"><strong>Your Name</strong></label>
-        <input type="text" id="senderName" placeholder="Juan Dela Cruz"/>
-
-        <label style="margin-top: 1rem;"><strong>Your Contact Number</strong></label>
-        <input type="text" id="senderContact" placeholder="09123456789"/>
-
-        <label style="margin-top: 1rem;"><strong>Receiver's Name</strong></label>
-        <input type="text" id="receiverName" placeholder="Maria Santos"/>
-
-        <label style="margin-top: 1rem;"><strong>Receiver's Contact</strong></label>
-        <input type="text" id="receiverContact" placeholder="09129876543"/>
-
-        <button onclick="updateSummary()" style="margin-top: 1.5rem; background-color: #008060; color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 8px;">📝 Preview Summary</button>
-      </div>
-
-      <!-- SUMMARY -->
-      <div class="summary-box" style="background: white; border: 1.5px solid #ccc; border-radius: 16px; padding: 2rem; width: 300px; text-align: left;">
-        <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Order Summary</h3>
-        <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-        <p><strong>To:</strong> <span id="sumTo">-</span></p>
-        <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-        <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-        <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-        <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-        <p><strong>Sender:</strong> <span id="sumSender">-</span></p>
-        <p><strong>Sender Contact:</strong> <span id="sumSenderContact">-</span></p>
-        <p><strong>Receiver:</strong> <span id="sumReceiver">-</span></p>
-        <p><strong>Receiver Contact:</strong> <span id="sumReceiverContact">-</span></p>
-        <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
-
-        <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
-      </div>
-    </div>
+<body>
+  <section style="text-align:center; padding-top: 2rem;">
+    <h2>📤 Pickup – Send Item</h2>
+    <p>Please fill out the details accurately.<br /><em>I-type ang eksakto nga detalye sang pagpadala.</em></p>
   </section>
+
+  <div class="container">
+    <!-- FORM -->
+    <div class="form-box">
+      <label>From Area</label>
+      <select id="fromArea">
+        <option value="">-- Choose Area --</option>
+        <option value="Handumanan">Handumanan</option>
+        <option value="Felisa">Felisa</option>
+        <option value="Cabug">Cabug</option>
+        <option value="Mansilingan">Mansilingan</option>
+        <option value="Alijis">Alijis</option>
+      </select>
+
+      <label>To Area</label>
+      <select id="toArea">
+        <option value="">-- Choose Area --</option>
+        <option value="Handumanan">Handumanan</option>
+        <option value="Felisa">Felisa</option>
+        <option value="Cabug">Cabug</option>
+        <option value="Mansilingan">Mansilingan</option>
+        <option value="Alijis">Alijis</option>
+      </select>
+
+      <label>Exact Pickup Address</label>
+      <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa" />
+
+      <label>Exact Delivery Address</label>
+      <input type="text" id="deliveryAddr" placeholder="e.g. Zone 2, Alijis" />
+
+      <label>Pickup Date</label>
+      <input type="date" id="pickupDate" />
+
+      <label>Item Description</label>
+      <textarea id="item" rows="2" placeholder="e.g. Documents or Package"></textarea>
+
+      <label>Sender Name</label>
+      <input type="text" id="senderName" placeholder="Juan Dela Cruz" />
+
+      <label>Sender Contact</label>
+      <input type="tel" id="senderContact" placeholder="09XXXXXXXXX" />
+
+      <label>Receiver Name</label>
+      <input type="text" id="receiverName" placeholder="Maria Santos" />
+
+      <label>Receiver Contact</label>
+      <input type="tel" id="receiverContact" placeholder="09XXXXXXXXX" />
+
+      <button onclick="updateSummary()">📝 Preview Summary</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-box">
+      <h3>🧾 Order Summary</h3>
+      <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+      <p><strong>To:</strong> <span id="sumTo">-</span></p>
+      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+      <p><strong>Sender:</strong> <span id="sumSender">-</span> (<span id="sumSenderContact">-</span>)</p>
+      <p><strong>Receiver:</strong> <span id="sumReceiver">-</span> (<span id="sumReceiverContact">-</span>)</p>
+      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+
+      <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
+    </div>
+  </div>
 
   <script>
     function updateSummary() {
       const from = document.getElementById("fromArea").value;
       const to = document.getElementById("toArea").value;
-      const sameArea = from === to;
+      const sameArea = from && to && from === to;
       const fee = sameArea ? 39 : 78;
 
-      document.getElementById("sumFrom").textContent = from;
-      document.getElementById("sumTo").textContent = to;
-      document.getElementById("sumPickupAddr").textContent = document.getElementById("pickupAddr").value;
-      document.getElementById("sumDeliveryAddr").textContent = document.getElementById("deliveryAddr").value;
-      document.getElementById("sumPickupDate").textContent = document.getElementById("pickupDate").value;
-      document.getElementById("sumItem").textContent = document.getElementById("item").value;
-      document.getElementById("sumSender").textContent = document.getElementById("senderName").value;
-      document.getElementById("sumSenderContact").textContent = document.getElementById("senderContact").value;
-      document.getElementById("sumReceiver").textContent = document.getElementById("receiverName").value;
-      document.getElementById("sumReceiverContact").textContent = document.getElementById("receiverContact").value;
-      document.getElementById("sumFee").textContent = fee.toFixed(2);
+      document.getElementById("sumFrom").innerText = from;
+      document.getElementById("sumTo").innerText = to;
+      document.getElementById("sumPickupAddr").innerText = document.getElementById("pickupAddr").value;
+      document.getElementById("sumDeliveryAddr").innerText = document.getElementById("deliveryAddr").value;
+      document.getElementById("sumPickupDate").innerText = document.getElementById("pickupDate").value;
+      document.getElementById("sumItem").innerText = document.getElementById("item").value;
+      document.getElementById("sumSender").innerText = document.getElementById("senderName").value;
+      document.getElementById("sumSenderContact").innerText = document.getElementById("senderContact").value;
+      document.getElementById("sumReceiver").innerText = document.getElementById("receiverName").value;
+      document.getElementById("sumReceiverContact").innerText = document.getElementById("receiverContact").value;
+      document.getElementById("sumFee").innerText = fee.toFixed(2);
     }
   </script>
 </body>
