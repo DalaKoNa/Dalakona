@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pickup Summary – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -13,140 +13,114 @@
       margin: 0;
       padding: 2rem 1rem;
       color: #333;
+      text-align: center;
     }
-    .container {
-      max-width: 640px;
+    .summary-box {
+      max-width: 720px;
       margin: auto;
-      background: #fff;
-      border: 1.5px solid #ccc;
-      border-radius: 16px;
+      background: white;
       padding: 2rem;
+      border-radius: 16px;
+      border: 1.5px solid #ccc;
+      text-align: left;
     }
     h1 {
       font-family: 'Cinzel', serif;
       color: #008060;
-      text-align: center;
-      margin-bottom: 1rem;
     }
-    .summary {
-      margin-top: 1.5rem;
-    }
-    .summary p {
+    .summary-box p {
       margin: 0.5rem 0;
-      line-height: 1.4;
     }
-    .highlight {
-      font-weight: bold;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.6rem 1.2rem;
-      background: #d9534f;
+    .cancel-btn {
+      background: #cc0000;
       color: white;
       border: none;
       border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      margin-top: 1.5rem;
       cursor: pointer;
     }
+    .timer {
+      font-weight: bold;
+      color: #cc0000;
+    }
     .note {
-      font-size: 0.9rem;
-      color: #666;
+      font-size: 0.95rem;
       margin-top: 1rem;
-      text-align: center;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🧾 Order Summary</h1>
-
-    <div class="summary">
-      <p><span class="highlight">Confirmation #:</span> <span id="confirmCode">-</span></p>
-      <p><span class="highlight">From:</span> <span id="sumFrom">-</span></p>
-      <p><span class="highlight">To:</span> <span id="sumTo">-</span></p>
-      <p><span class="highlight">Pickup Name:</span> <span id="pickupName">-</span></p>
-      <p><span class="highlight">Pickup Contact:</span> <span id="pickupContact">-</span></p>
-      <p><span class="highlight">Pickup Address:</span> <span id="sumPickupAddr">-</span></p>
-      <p><span class="highlight">Receiver Name:</span> <span id="receiverName">-</span></p>
-      <p><span class="highlight">Receiver Contact:</span> <span id="receiverContact">-</span></p>
-      <p><span class="highlight">Delivery Address:</span> <span id="sumDeliveryAddr">-</span></p>
-      <p><span class="highlight">Pickup Date:</span> <span id="sumPickupDate">-</span></p>
-      <p><span class="highlight">Item:</span> <span id="sumItem">-</span></p>
-      <p><span class="highlight">Estimated Fee:</span> ₱<span id="sumFee">-</span></p>
-      <p><span class="highlight">Estimated Delivery Time:</span> <span id="deliveryTime">~</span></p>
-    </div>
-
-    <div id="countdownSection">
-      <button id="cancelBtn" class="btn" onclick="cancelRequest()">❌ Cancel Request</button>
-      <p class="note">⏱️ May 1 minuto ka nga makansela sang request. Paglabay sini, ipadala ini nga request sa WhatsApp.</p>
-    </div>
+  <h1>🦾 Pickup Summary</h1>
+  <div class="summary-box">
+    <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+    <p><strong>To:</strong> <span id="sumTo">-</span></p>
+    <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
+    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+    <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+    <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+    <p><strong>Estimated Delivery Time:</strong> <span id="sumEta">-</span></p>
+    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+    <p><strong>Payment:</strong> <span id="sumPayment">-</span></p>
+    <p><strong>Reference #:</strong> <span id="sumRef">-</span></p>
+    <p><strong>Confirmation No:</strong> <span id="confirmationNumber"></span></p>
+    <p class="timer">⏱️ Confirming in <span id="countdown">60</span>s...
+    </p>
+    <button class="cancel-btn" id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
+    <p class="note">⏳ <em>Ang request i-auto confirm pagkatapos sang 1 minuto. Kon indi sigurado, i-cancel anay.</em></p>
   </div>
 
   <script>
-    function getFromStorage(key) {
-      return localStorage.getItem(key) || "-";
+    function loadSummary() {
+      const get = key => localStorage.getItem(key) || "-";
+      document.getElementById("sumFrom").innerText = get("fromArea");
+      document.getElementById("sumTo").innerText = get("toArea");
+      document.getElementById("sumPickup").innerText = get("pickup");
+      document.getElementById("sumPickupAddr").innerText = get("pickupAddr");
+      document.getElementById("sumDeliveryAddr").innerText = get("deliveryAddr");
+      document.getElementById("sumPickupDate").innerText = get("pickupDate");
+      document.getElementById("sumItem").innerText = get("item");
+      document.getElementById("sumFee").innerText = get("sumFee") || "0.00";
+      document.getElementById("sumPayment").innerText = get("paymentMethod");
+      document.getElementById("sumRef").innerText = get("referenceNumber") || "N/A";
+      document.getElementById("sumEta").innerText = (get("fromArea") === get("toArea")) ? "≈ 1 hour" : "≈ 1 hour 10 mins";
+      document.getElementById("confirmationNumber").innerText = generateConfirmationNumber();
+    }
+
+    function generateConfirmationNumber() {
+      const code = "DKN" + Math.floor(Math.random() * 900000 + 100000);
+      localStorage.setItem("confirmationNumber", code);
+      return code;
     }
 
     function cancelRequest() {
-      clearInterval(timer);
-      document.getElementById("countdownSection").innerHTML = "<p style='color:red;'>❌ Request Cancelled.</p>";
+      alert("Your pickup request has been cancelled.");
+      localStorage.clear();
+      window.location.href = "index.html";
     }
+
+    // Timer for 1-minute auto-confirm
+    let timeLeft = 60;
+    const countdownEl = document.getElementById("countdown");
+    const interval = setInterval(() => {
+      timeLeft--;
+      countdownEl.innerText = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        document.getElementById("cancelBtn").disabled = true;
+        sendToWhatsApp();
+      }
+    }, 1000);
 
     function sendToWhatsApp() {
+      const message = `🧾 Pickup Summary\nFrom: ${localStorage.getItem("fromArea")}\nTo: ${localStorage.getItem("toArea")}\nPickup: ${localStorage.getItem("pickup")}\nPickup Address: ${localStorage.getItem("pickupAddr")}\nDelivery Address: ${localStorage.getItem("deliveryAddr")}\nPickup Date: ${localStorage.getItem("pickupDate")}\nItem: ${localStorage.getItem("item")}\nFee: ₱${localStorage.getItem("sumFee")}\nPayment: ${localStorage.getItem("paymentMethod")}\nRef: ${localStorage.getItem("referenceNumber") || "N/A"}\nConfirmation #: ${localStorage.getItem("confirmationNumber")}`;
       const adminNumber = "63XXXXXXXXXX";
-      const from = getFromStorage("fromArea");
-      const to = getFromStorage("toArea");
-      const pickupName = getFromStorage("pickupName");
-      const pickupContact = getFromStorage("pickupContact");
-      const pickupAddr = getFromStorage("pickupAddr");
-      const receiverName = getFromStorage("receiverName");
-      const receiverContact = getFromStorage("receiverContact");
-      const deliveryAddr = getFromStorage("deliveryAddr");
-      const pickupDate = getFromStorage("pickupDate");
-      const item = getFromStorage("item");
-      const fee = getFromStorage("estimatedFee");
-      const confirmCode = document.getElementById("confirmCode").innerText;
-
-      const message = `🧾 DalaKoNa Pickup Request\n\n` +
-        `Confirmation #: ${confirmCode}\n` +
-        `From: ${from}\nTo: ${to}\n\n` +
-        `Pickup: ${pickupName} (${pickupContact})\nAddress: ${pickupAddr}\n` +
-        `Receiver: ${receiverName} (${receiverContact})\nDelivery: ${deliveryAddr}\n` +
-        `Pickup Date: ${pickupDate}\nItem: ${item}\nFee: ₱${fee}`;
-
-      const whatsappURL = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
-      window.location.href = whatsappURL;
+      window.location.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
     }
 
-    function estimateDeliveryTime(from, to) {
-      if (!from || !to) return "-";
-      return from === to ? "1 hr" : "1 hr 10 mins";
-    }
-
-    // Populate fields from localStorage
-    window.onload = () => {
-      document.getElementById("sumFrom").innerText = getFromStorage("fromArea");
-      document.getElementById("sumTo").innerText = getFromStorage("toArea");
-      document.getElementById("pickupName").innerText = getFromStorage("pickupName");
-      document.getElementById("pickupContact").innerText = getFromStorage("pickupContact");
-      document.getElementById("sumPickupAddr").innerText = getFromStorage("pickupAddr");
-      document.getElementById("receiverName").innerText = getFromStorage("receiverName");
-      document.getElementById("receiverContact").innerText = getFromStorage("receiverContact");
-      document.getElementById("sumDeliveryAddr").innerText = getFromStorage("deliveryAddr");
-      document.getElementById("sumPickupDate").innerText = getFromStorage("pickupDate");
-      document.getElementById("sumItem").innerText = getFromStorage("item");
-      document.getElementById("sumFee").innerText = getFromStorage("estimatedFee");
-      document.getElementById("deliveryTime").innerText = estimateDeliveryTime(
-        getFromStorage("fromArea"),
-        getFromStorage("toArea")
-      );
-      document.getElementById("confirmCode").innerText = "DALA-" + Math.floor(100000 + Math.random() * 900000);
-    };
-
-    // 1-minute countdown
-    let timer = setTimeout(() => {
-      sendToWhatsApp();
-    }, 60000);
+    loadSummary();
   </script>
 </body>
 </html>
