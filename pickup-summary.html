@@ -1,98 +1,124 @@
-<!-- pickup-summary.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Summary – DalaKoNa</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Inter', sans-serif; background: #fff9e6; padding: 2rem; text-align: center; }
-    .summary-box { background: white; border: 2px solid #008060; border-radius: 16px; padding: 2rem; max-width: 480px; margin: auto; }
-    .summary-box h2 { color: #008060; font-family: 'Cinzel', serif; }
-    .summary-box p { text-align: left; }
-    .button { margin-top: 1rem; padding: 0.6rem 1.2rem; border: none; border-radius: 8px; background: #008060; color: white; cursor: pointer; }
-    .cancelled { color: red; font-weight: bold; }
-    .terms { font-size: 0.9rem; color: #555; margin-top: 1rem; text-align: left; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff9e6;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    .summary-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border: 2px solid #008060;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      color: #008060;
+      margin-top: 0;
+    }
+    p {
+      line-height: 1.5;
+    }
+    .highlight {
+      font-weight: bold;
+    }
+    .button {
+      background-color: #008060;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .cancel-button {
+      background-color: #d9534f;
+      margin-left: 1rem;
+    }
+    .summary-item {
+      margin: 0.3rem 0;
+    }
+    #cancelMsg {
+      margin-top: 1rem;
+      color: #555;
+    }
   </style>
 </head>
 <body>
-  <div class="summary-box">
+  <div class="summary-container">
     <h2>🧾 Pickup Request Summary</h2>
-    <p><strong>Confirmation No.:</strong> <span id="confirmation">DLN-25423</span></p>
-    <p><strong>Pickup:</strong> 7-Eleven Handumanan</p>
-    <p><strong>Pickup Address:</strong> Gate 1, Felisa Road</p>
-    <p><strong>Delivery:</strong> Zone 5, Brgy. Alijis</p>
-    <p><strong>Item:</strong> McDo Family Set</p>
-    <p><strong>Pickup Date:</strong> June 24, 2025</p>
-    <p><strong>Payment:</strong> COD (To be collected)</p>
-    <p><strong>Auto-assigned Pickup Time:</strong> ~2:45 PM</p>
-    <p><strong>Estimated Delivery Time:</strong> 1 hr 10 mins</p>
-    <p><strong>Fee:</strong> ₱78.00</p>
 
-    <p id="countdown">⏳ Sending confirmation in 2:00...</p>
-    <button class="button" onclick="cancelRequest()" id="cancelBtn">❌ Cancel Request</button>
-    <p id="cancelMessage" class="cancelled" style="display: none;">Request has been cancelled.</p>
-  </div>
+    <p class="summary-item"><span class="highlight">Customer Name:</span> Juan Dela Cruz</p>
+    <p class="summary-item"><span class="highlight">Contact:</span> 0917-123-4567</p>
+    <p class="summary-item"><span class="highlight">From Area:</span> Handumanan</p>
+    <p class="summary-item"><span class="highlight">To Area:</span> Alijis</p>
+    <p class="summary-item"><span class="highlight">Pickup Location:</span> 7-Eleven Handumanan</p>
+    <p class="summary-item"><span class="highlight">Exact Pickup Address:</span> Gate 1, Felisa Road</p>
+    <p class="summary-item"><span class="highlight">Delivery Location:</span> Blk 3 Lot 8, Alijis</p>
+    <p class="summary-item"><span class="highlight">Exact Delivery Address:</span> Zone 5, Brgy. Alijis</p>
+    <p class="summary-item"><span class="highlight">Item Description:</span> Grocery Package</p>
+    <p class="summary-item"><span class="highlight">Pickup Date:</span> June 25, 2025</p>
+    <p class="summary-item"><span class="highlight">Auto-assigned Pickup Time:</span> ~1:30 from request</p>
+    <p class="summary-item"><span class="highlight">Estimated Drop-off Time:</span> ~1h 10m</p>
+    <p class="summary-item"><span class="highlight">Estimated Fee:</span> ₱78.00</p>
 
-  <div class="terms">
-    <h4>📌 Terms & Conditions for COD</h4>
-    <ul>
-      <li>Customer must be available at the delivery location.</li>
-      <li>Exact payment must be prepared upon delivery.</li>
-      <li>Non-payment may result in account suspension.</li>
-    </ul>
+    <div id="cancelMsg">⏱️ You have 2 minutes to cancel this request.</div>
+
+    <button class="button" onclick="window.location.href='https://wa.me/63XXXXXXXXXX?text=Confirmed%20Pickup:%20Handumanan%20to%20Alijis%20-%20Grocery%20Package.%20Fee:%20PHP%2078.%20Pickup%20at%207-Eleven%20Handumanan.%20Thanks!'">
+      ✅ Send to WhatsApp
+    </button>
+    <button id="cancelBtn" class="button cancel-button" onclick="cancelRequest()">
+      ❌ Cancel Request
+    </button>
+
+    <p style="font-size: 0.9rem; color: #888; margin-top: 2rem;">
+      ⚠️ <strong>Cash on Delivery</strong> orders must be paid in full upon delivery. Exact change preferred. If you cancel within 2 minutes, no charges will apply. After that, rider assignment will proceed.
+    </p>
   </div>
 
   <script>
-    let timer = 120;
-    let countdown = document.getElementById("countdown");
-    let cancelBtn = document.getElementById("cancelBtn");
-    let cancelMessage = document.getElementById("cancelMessage");
+    setTimeout(() => {
+      const cancelBtn = document.getElementById("cancelBtn");
+      if (cancelBtn) {
+        cancelBtn.disabled = true;
+        cancelBtn.innerText = "❌ Cancel Unavailable (Request Locked)";
+        cancelBtn.style.backgroundColor = "#ccc";
+      }
+      const cancelMsg = document.getElementById("cancelMsg");
+      if (cancelMsg) {
+        cancelMsg.innerHTML = "<strong>✅ Request locked. Rider will be notified.</strong>";
+      }
+    }, 2 * 60 * 1000); // 2 minutes
 
-    const adminNumber = "63XXXXXXXXXX";
-    const riderNumber = "63YYYYYYYYYY";
-    const summaryText = encodeURIComponent(`
-🧾 DalaKoNa Pickup Request
-
-✅ CONFIRMATION #DLN-25423
-🕑 Auto-assigned pickup time: ~2:45 PM
-📍 From: Handumanan
-📍 Pickup Address: Gate 1, Felisa Road
-📍 To: Alijis
-📍 Delivery Address: Zone 5, Brgy. Alijis
-📦 Item: McDo Family Set
-💸 Payment Method: COD
-📅 Pickup Date: June 24, 2025
-💰 Fee: ₱78.00
-⏳ ETA: 1 hr 10 mins
-    `);
+    setTimeout(() => {
+      alert("✅ Request complete. Returning to homepage.");
+      window.location.href = "index.html";
+    }, 5 * 60 * 1000); // auto-redirect in 5 minutes
 
     function cancelRequest() {
-      clearInterval(countdownInterval);
-      cancelMessage.style.display = "block";
-      countdown.textContent = "❌ Request cancelled.";
-      cancelBtn.disabled = true;
-    }
-
-    const countdownInterval = setInterval(() => {
-      if (timer > 0) {
-        timer--;
-        let mins = Math.floor(timer / 60);
-        let secs = timer % 60;
-        countdown.textContent = `⏳ Sending confirmation in ${mins}:${secs.toString().padStart(2, "0")}...`;
-      } else {
-        clearInterval(countdownInterval);
-        if (!cancelBtn.disabled) {
-          countdown.textContent = "✅ Confirmation sent to Admin and Rider.";
-          window.open(`https://wa.me/${adminNumber}?text=${summaryText}`, "_blank");
-          setTimeout(() => {
-            window.open(`https://wa.me/${riderNumber}?text=${summaryText}`, "_blank");
-          }, 1500);
-          cancelBtn.disabled = true;
-        }
+      const confirmCancel = confirm("Are you sure you want to cancel this pickup request?");
+      if (confirmCancel) {
+        document.getElementById("cancelMsg").innerHTML =
+          "<strong>❌ Your request has been canceled.</strong><br>Please try again or contact support.";
+        const btn = document.getElementById("cancelBtn");
+        btn.disabled = true;
+        btn.style.backgroundColor = "#ccc";
       }
-    }, 1000);
+    }
   </script>
 </body>
 </html>
