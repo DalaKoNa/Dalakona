@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DalaKoNa – Receive Item</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <title>Pickup Receive - DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
       background-color: #fff9e6;
-      color: #333;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      max-width: 1200px;
+      max-width: 900px;
       margin: auto;
-      padding: 2rem 1rem;
+      padding: 2rem;
     }
     h2 {
       font-family: 'Cinzel', serif;
@@ -37,7 +37,7 @@
       padding: 2rem;
       width: 340px;
     }
-    .form-box label {
+    label {
       display: block;
       margin-top: 1rem;
     }
@@ -45,39 +45,23 @@
       width: 100%;
       margin-top: 0.3rem;
       padding: 0.5rem;
-      font-family: 'Inter', sans-serif;
-    }
-    button {
-      margin-top: 1.5rem;
-      padding: 0.6rem 1.2rem;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
     }
     .button-link {
       display: block;
-      margin-top: 1.5rem;
       text-align: center;
       background: #008060;
       color: white;
       padding: 0.6rem;
       border-radius: 8px;
       text-decoration: none;
-    }
-    .summary-box {
-      border-color: #ccc;
+      margin-top: 1.5rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>🚞 Receive an Item</h2>
-    <p style="text-align:center; max-width:600px; margin:auto;">
-      Fill out the form and preview your summary below.<br />
-      <em>I-type ang detalye kag tan-awa ang imo summary.</em>
-    </p>
+    <h2>📥 Receive an Item via DalaKoNa</h2>
+    <p style="text-align: center; color: #555;">Ipa-pickup ang item halin sa ila pakadto sa imo. Fill out the form below.<br /><em>Kuhaon kag ihatag namon ang imo item!</em></p>
 
     <div class="form-summary-wrapper">
       <!-- FORM -->
@@ -103,22 +87,22 @@
         </select>
 
         <label>Pickup Location</label>
-        <input type="text" id="pickup" placeholder="e.g. 7-Eleven Cabug"/>
+        <input type="text" id="pickup" placeholder="e.g. Felisa Market"/>
 
         <label>Exact Pickup Address</label>
-        <input type="text" id="pickupAddr" placeholder="e.g. Zone 1, Cabug Terminal"/>
+        <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa"/>
 
         <label>Delivery Location</label>
-        <input type="text" id="delivery" placeholder="e.g. Blk 3 Lot 8, Alijis"/>
+        <input type="text" id="delivery" placeholder="e.g. Zone 2, Alijis"/>
 
         <label>Exact Delivery Address</label>
-        <input type="text" id="deliveryAddr" placeholder="e.g. Zone 5, Brgy. Alijis near chapel"/>
-
-        <label>Item Description</label>
-        <textarea id="item" rows="2" placeholder="e.g. Box of clothes"></textarea>
+        <input type="text" id="deliveryAddr" placeholder="e.g. Across Alijis Gym"/>
 
         <label>Pickup Date</label>
         <input type="date" id="pickupDate" />
+
+        <label>Item Description</label>
+        <textarea id="item" rows="2" placeholder="e.g. Documents or Package"></textarea>
 
         <button onclick="updateSummary()">📝 Preview Summary</button>
       </div>
@@ -132,8 +116,8 @@
         <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
         <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
         <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+        <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
         <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-        <p><strong>Date:</strong> <span id="sumDate">-</span></p>
         <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
 
         <a href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
@@ -143,19 +127,21 @@
 
   <script>
     function updateSummary() {
-      const from = document.getElementById('fromArea').value;
-      const to = document.getElementById('toArea').value;
-      const fee = (from && to && from === to) ? 78 : 88;
-      
+      const from = document.getElementById("fromArea").value;
+      const to = document.getElementById("toArea").value;
+
+      const sameArea = from && to && from === to;
+      const fee = sameArea ? 39 : 78;
+
       document.getElementById("sumFrom").innerText = from;
       document.getElementById("sumTo").innerText = to;
       document.getElementById("sumPickup").innerText = document.getElementById("pickup").value;
       document.getElementById("sumPickupAddr").innerText = document.getElementById("pickupAddr").value;
       document.getElementById("sumDelivery").innerText = document.getElementById("delivery").value;
       document.getElementById("sumDeliveryAddr").innerText = document.getElementById("deliveryAddr").value;
+      document.getElementById("sumPickupDate").innerText = document.getElementById("pickupDate").value;
       document.getElementById("sumItem").innerText = document.getElementById("item").value;
-      document.getElementById("sumDate").innerText = document.getElementById("pickupDate").value;
-      document.getElementById("sumFee").innerText = fee;
+      document.getElementById("sumFee").innerText = fee.toFixed(2);
     }
   </script>
 </body>
