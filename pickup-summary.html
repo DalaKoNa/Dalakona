@@ -2,161 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dala🚲na - Pickup Summary</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Cinzel&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pickup Summary – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
+      margin: 0;
       padding: 2rem;
       color: #333;
     }
-    h2 {
-      font-family: 'Cinzel', serif;
-      text-align: center;
-      color: #008060;
-    }
-    .summary-container {
+    .container {
       max-width: 700px;
       margin: auto;
       background: #fff;
-      border: 1.5px solid #ccc;
-      border-radius: 16px;
       padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .summary-container p {
-      margin: 0.5rem 0;
-    }
-    .highlight {
-      font-weight: bold;
+    h1, h3 {
+      font-family: 'Cinzel', serif;
       color: #008060;
     }
+    .summary-item {
+      margin-bottom: 1rem;
+    }
     .btn {
-      margin-top: 1.5rem;
-      padding: 0.7rem 1.2rem;
       background-color: #008060;
-      color: #fff;
+      color: white;
+      padding: 0.8rem 1.2rem;
       border: none;
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
     }
-    .btn:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
+    .btn.cancel {
+      background-color: #cc0000;
+      margin-left: 1rem;
     }
     .note {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #555;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>📦 Pickup Request Summary</h1>
+    <p class="summary-item"><strong>Pickup Name:</strong> <span id="pickupName">-</span></p>
+    <p class="summary-item"><strong>Pickup Contact:</strong> <span id="pickupContact">-</span></p>
+    <p class="summary-item"><strong>Receiver Name:</strong> <span id="deliveryName">-</span></p>
+    <p class="summary-item"><strong>Receiver Contact:</strong> <span id="deliveryContact">-</span></p>
+    <p class="summary-item"><strong>Payment Method:</strong> <span id="payment">-</span></p>
+    <p class="summary-item"><strong>Reference Number:</strong> <span id="ref">-</span></p>
+    <p class="summary-item"><strong>Estimated Delivery Time:</strong> <span id="eta">-</span></p>
+    <p class="summary-item"><strong>Confirmation Number:</strong> <span id="confirmation">-</span></p>
+    <p class="summary-item"><strong>Status:</strong> <span id="status">⏱️ Awaiting rider...</span></p>
+    <p class="summary-item"><strong>Auto-cancel in:</strong> <span id="timer">2:00</span></p>
 
-  <h2>✅ Pickup Request Submitted</h2>
+    <button class="btn" id="confirmBtn" disabled>✅ Confirmed</button>
+    <button class="btn cancel" onclick="cancelRequest()">❌ Cancel Request</button>
 
-  <div class="summary-container">
-    <p><strong>Confirmation #:</strong> <span id="confirmation">DALAXXXX</span></p>
-    <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-    <p><strong>To:</strong> <span id="sumTo">-</span></p>
-    <p><strong>Pickup Name:</strong> <span id="sumPickupName">-</span></p>
-    <p><strong>Pickup Contact:</strong> <span id="sumPickupContact">-</span></p>
-    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-    <p><strong>Receiver Name:</strong> <span id="sumDeliveryName">-</span></p>
-    <p><strong>Receiver Contact:</strong> <span id="sumDeliveryContact">-</span></p>
-    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-    <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-    <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-    <p><strong>Payment:</strong> <span id="sumPayment">-</span></p>
-    <p><strong>Reference:</strong> <span id="sumRef">-</span></p>
-    <p><strong>Estimated Delivery Time:</strong> <span id="eta">Calculating...</span></p>
-    <p><strong>Total Fee:</strong> ₱<span id="sumFee">-</span></p>
-
-    <div style="margin-top: 1.5rem;">
-      <p class="highlight">⏱️ Auto-confirming in <span id="countdown">120</span> seconds...</p>
-      <button id="cancelBtn" class="btn" onclick="cancelRequest()">❌ Cancel Request</button>
-    </div>
-
-    <div class="note">
-      <p><strong>Terms:</strong> Once the 2-minute window passes, the rider will be notified and your request cannot be canceled. COD must be exact amount. For GCash/Bank, send proof with correct reference number.</p>
-    </div>
+    <p class="note">
+      📝 By continuing, you agree that Cash on Delivery orders must be paid upon delivery. Once the timer ends, your request is forwarded to a rider. Cancelling after this time is not allowed.
+    </p>
   </div>
 
   <script>
-    // Fill summary from URL parameters
+    // Extract from URL
     const params = new URLSearchParams(window.location.search);
-    const $ = id => document.getElementById(id);
+    const pickupName = params.get("pickupName") || "-";
+    const pickupContact = params.get("pickupContact") || "-";
+    const deliveryName = params.get("deliveryName") || "-";
+    const deliveryContact = params.get("deliveryContact") || "-";
+    const payment = params.get("payment") || "-";
+    const ref = params.get("ref") || "N/A";
+    const fromArea = params.get("fromArea") || "";
+    const toArea = params.get("toArea") || "";
 
-    const fields = [
-      "from", "to", "pickupName", "pickupContact", "pickupAddr",
-      "deliveryName", "deliveryContact", "deliveryAddr",
-      "pickupDate", "item", "payment", "ref", "fee"
-    ];
+    // Delivery time logic
+    const eta = (fromArea === toArea) ? "⏰ ~1 hour" : "⏰ ~1 hour 10 minutes";
+    const confirmation = "DLK-" + Math.floor(Math.random() * 90000 + 10000);
 
-    fields.forEach(key => {
-      $(`sum${capitalize(key)}`).innerText = params.get(key) || "-";
-    });
+    document.getElementById("pickupName").innerText = pickupName;
+    document.getElementById("pickupContact").innerText = pickupContact;
+    document.getElementById("deliveryName").innerText = deliveryName;
+    document.getElementById("deliveryContact").innerText = deliveryContact;
+    document.getElementById("payment").innerText = payment;
+    document.getElementById("ref").innerText = ref;
+    document.getElementById("eta").innerText = eta;
+    document.getElementById("confirmation").innerText = confirmation;
 
-    function capitalize(s) {
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    }
+    // Timer & WhatsApp logic
+    let time = 120; // 2 minutes
+    const timerEl = document.getElementById("timer");
+    const statusEl = document.getElementById("status");
+    const confirmBtn = document.getElementById("confirmBtn");
 
-    // Generate random confirmation number
-    const randomCode = "DALA" + Math.floor(1000 + Math.random() * 9000);
-    $("confirmation").innerText = randomCode;
+    const interval = setInterval(() => {
+      const mins = Math.floor(time / 60);
+      const secs = time % 60;
+      timerEl.innerText = `${mins}:${secs.toString().padStart(2, '0')}`;
+      time--;
 
-    // Delivery time estimate
-    const from = params.get("from");
-    const to = params.get("to");
-    const eta = (from === to) ? "≈ 1 hour" : "≈ 1 hour 10 minutes";
-    $("eta").innerText = eta;
-
-    // WhatsApp message template
-    const waMessage = `
-Pickup Request Confirmation #${randomCode}
-From: ${params.get("from")} ➡️ To: ${params.get("to")}
-Pickup: ${params.get("pickupName")} - ${params.get("pickupContact")}
-Pickup Address: ${params.get("pickupAddr")}
-Receiver: ${params.get("deliveryName")} - ${params.get("deliveryContact")}
-Delivery Address: ${params.get("deliveryAddr")}
-Pickup Date: ${params.get("pickupDate")}
-Item: ${params.get("item")}
-Payment: ${params.get("payment")}
-Ref: ${params.get("ref")}
-Fee: ₱${params.get("fee")}
-ETA: ${eta}
-`.trim();
-
-    let timer = 120;
-    const countdownEl = $("countdown");
-    const cancelBtn = $("cancelBtn");
-
-    const countdown = setInterval(() => {
-      timer--;
-      countdownEl.innerText = timer;
-      if (timer <= 0) {
-        clearInterval(countdown);
-        cancelBtn.disabled = true;
-
-        // Send WhatsApp message (auto)
-        const adminNumber = "63XXXXXXXXXX"; // Replace with actual WhatsApp admin #
-        const encodedMsg = encodeURIComponent(waMessage);
-        const waLink = `https://wa.me/${adminNumber}?text=${encodedMsg}`;
-        window.location.href = waLink;
-
-        // Optional: redirect to homepage after delay
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 5000);
+      if (time < 0) {
+        clearInterval(interval);
+        document.querySelector(".btn.cancel").disabled = true;
+        confirmBtn.disabled = false;
+        statusEl.innerText = "✅ Rider assigned. Order confirmed!";
+        sendWhatsApp();
+        setTimeout(() => window.location.href = "index.html", 5000);
       }
     }, 1000);
 
     function cancelRequest() {
-      clearInterval(countdown);
-      alert("❌ Pickup request has been cancelled.");
+      alert("❌ Request cancelled.");
       window.location.href = "index.html";
+    }
+
+    function sendWhatsApp() {
+      const message = `*New Pickup Request – DalaKoNa*\n\n` +
+        `📦 Confirmation: ${confirmation}\n` +
+        `👤 Pickup: ${pickupName} (${pickupContact})\n` +
+        `🎯 Receiver: ${deliveryName} (${deliveryContact})\n` +
+        `💸 Payment: ${payment}\n` +
+        `🔖 Reference: ${ref}\n` +
+        `🚚 ETA: ${eta}\n\n` +
+        `Sent via DalaKoNa system.`;
+
+      const encoded = encodeURIComponent(message);
+      const waURL = `https://wa.me/63XXXXXXXXXX?text=${encoded}`; // Replace with actual admin number
+      window.open(waURL, "_blank");
     }
   </script>
 </body>
