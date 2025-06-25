@@ -5,115 +5,136 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Payment - DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
       padding: 2rem;
-      color: #333;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
     h2 {
       font-family: 'Cinzel', serif;
       color: #008060;
+      text-align: center;
+      margin-bottom: 1rem;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 16px;
-      border: 1.5px solid #008060;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .summary {
-      background: #f9f9f9;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-top: 1.5rem;
+    .section {
+      margin-bottom: 2rem;
     }
     label {
       display: block;
-      margin-top: 1.2rem;
+      margin-top: 1rem;
       font-weight: bold;
     }
-    input[type="text"], input[type="number"] {
+    input, select, textarea {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.6rem;
       margin-top: 0.3rem;
-      border: 1px solid #ccc;
       border-radius: 8px;
+      border: 1px solid #ccc;
     }
-    .button {
+    .summary-box {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 12px;
       margin-top: 2rem;
-      display: inline-block;
+    }
+    .button-primary {
       background: #008060;
       color: white;
-      padding: 0.7rem 1.5rem;
-      text-decoration: none;
-      border-radius: 10px;
-      text-align: center;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      display: block;
+      width: 100%;
     }
     .terms {
-      font-size: 0.85rem;
-      color: #666;
+      font-size: 0.9rem;
+      color: #555;
       margin-top: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>💳 Payment Options</h2>
-    <p>Please complete your payment to proceed. Choose your preferred method:</p>
+    <h2>💳 Confirm Payment Details</h2>
 
-    <div class="summary">
-      <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
-      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-      <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
-      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
-      <p><strong>Customer Name:</strong> <span id="sumName">-</span></p>
-      <p><strong>Customer Contact:</strong> <span id="sumContact">-</span></p>
+    <div class="section">
+      <label>Payment Method</label>
+      <select id="paymentMethod">
+        <option value="COD">Cash on Delivery (COD)</option>
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+      </select>
+
+      <div id="referenceBox" style="display:none;">
+        <label>Reference Number</label>
+        <input type="text" id="refNumber" placeholder="Enter GCash/Bank Reference Number" />
+      </div>
+
+      <div class="summary-box">
+        <h3 style="font-family: 'Cinzel', serif; color: #008060;">🧾 Summary</h3>
+        <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
+        <p><strong>To:</strong> <span id="sumTo">Felisa</span></p>
+        <p><strong>Pickup Date:</strong> <span id="sumDate">June 25</span></p>
+        <p><strong>Item:</strong> <span id="sumItem">Documents</span></p>
+        <p><strong>Delivery Fee:</strong> ₱<span id="sumFee">78</span></p>
+        <p><strong>Customer Name:</strong> <span id="custName">Juan Dela Cruz</span></p>
+        <p><strong>Contact:</strong> <span id="custContact">09171234567</span></p>
+      </div>
+
+      <div class="terms">
+        <p>📝 By continuing, you agree to DalaKoNa’s <a href="terms.html">Terms & Conditions</a>.</p>
+        <p>❌ COD orders cannot be canceled once the rider is dispatched.</p>
+      </div>
+
+      <button class="button-primary" onclick="confirmPayment()">✅ Confirm and Send via WhatsApp</button>
     </div>
-
-    <label>Mode of Payment</label>
-    <select id="paymentMethod">
-      <option value="">-- Select Method --</option>
-      <option value="COD">Cash on Delivery (COD)</option>
-      <option value="GCash">GCash</option>
-      <option value="PayMaya">PayMaya</option>
-      <option value="Bank">Bank Transfer</option>
-    </select>
-
-    <div id="bankDetails" style="display:none;">
-      <label>Reference Number</label>
-      <input type="text" id="bankRef" placeholder="Enter bank ref number" />
-      <p style="font-size: 0.85rem; color: #888;">Send to BPI Acct: 1234 5678 9012 (DalaKoNa PH)</p>
-    </div>
-
-    <div class="terms">
-      <p>📌 <strong>Auto-cancel</strong> if no confirmation within 2 minutes.</p>
-      <p>❗ COD requires exact cash. Rider may not carry change.</p>
-    </div>
-
-    <a href="pickup-summary.html" class="button" id="proceedBtn">✅ Confirm & Continue</a>
   </div>
 
   <script>
-    // Example: Load summary from localStorage (or any temp storage you use)
-    document.addEventListener("DOMContentLoaded", () => {
-      const get = id => localStorage.getItem(id) || "-";
-      ["sumPickup","sumPickupAddr","sumDelivery","sumDeliveryAddr","sumPickupDate","sumItem","sumFee","sumName","sumContact"].forEach(id => {
-        document.getElementById(id).innerText = get(id);
-      });
+    const paymentSelect = document.getElementById('paymentMethod');
+    const referenceBox = document.getElementById('referenceBox');
+
+    paymentSelect.addEventListener('change', function() {
+      if (this.value === 'GCash' || this.value === 'PayMaya' || this.value === 'Bank') {
+        referenceBox.style.display = 'block';
+      } else {
+        referenceBox.style.display = 'none';
+      }
     });
 
-    // Show bank reference input if Bank is selected
-    document.getElementById("paymentMethod").addEventListener("change", function() {
-      document.getElementById("bankDetails").style.display = this.value === "Bank" ? "block" : "none";
-    });
+    function confirmPayment() {
+      const method = paymentSelect.value;
+      const ref = document.getElementById('refNumber').value;
+
+      if ((method !== 'COD') && ref.trim() === '') {
+        alert('Please enter a reference number.');
+        return;
+      }
+
+      // Send to WhatsApp and redirect
+      const message = `📦 *DalaKoNa Order*\n\nFrom: Handumanan\nTo: Felisa\nPickup Date: June 25\nItem: Documents\nFee: ₱78\nName: Juan Dela Cruz\nContact: 09171234567\nPayment: ${method}${ref ? `\nReference: ${ref}` : ''}`;
+      window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`, '_blank');
+
+      // Redirect to summary
+      window.location.href = 'pickup-summary.html';
+    }
   </script>
 </body>
 </html>
