@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pickup Summary – DalaKoNa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Cinzel&display=swap" rel="stylesheet">
+  <title>Pickup Summary – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
-      padding: 2rem;
+      margin: 0;
+      padding: 0;
       color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 2rem 1rem;
     }
     h1 {
       font-family: 'Cinzel', serif;
@@ -18,76 +25,76 @@
       text-align: center;
     }
     .summary-box {
-      max-width: 600px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
+      background: #fff;
+      border: 1.5px solid #ccc;
       border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-top: 2rem;
     }
     .summary-box p {
-      margin: 0.5rem 0;
+      margin: 0.6rem 0;
     }
     .highlight {
       font-weight: bold;
-      color: #008060;
     }
-    .countdown {
-      margin-top: 1.5rem;
-      font-size: 1.2rem;
-      text-align: center;
-    }
-    .btn-cancel {
-      display: block;
-      margin: 1rem auto;
+    #cancelBtn {
       background: #cc0000;
       color: white;
-      padding: 0.6rem 1.2rem;
       border: none;
+      padding: 0.6rem 1.2rem;
       border-radius: 8px;
       cursor: pointer;
-    }
-    .terms {
-      font-size: 0.85rem;
       margin-top: 1rem;
-      text-align: center;
+    }
+    #cancelBtn:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+    .note {
+      margin-top: 1.5rem;
+      font-style: italic;
       color: #666;
+      text-align: center;
     }
   </style>
 </head>
 <body onload="loadSummary()">
-  <h1>🧾 Pickup Summary</h1>
-  <div class="summary-box">
-    <p><strong>From:</strong> <span id="sumFrom">-</span></p>
-    <p><strong>To:</strong> <span id="sumTo">-</span></p>
-    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
-    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
-    <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
-    <p><strong>Item:</strong> <span id="sumItem">-</span></p>
-    <p><strong>Estimated Delivery Time:</strong> <span id="sumEta">≈ 1 hour</span></p>
-    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
-    <p><strong>Payment:</strong> <span id="sumPayment">-</span></p>
-    <p><strong>Reference No:</strong> <span id="sumRef">-</span></p>
-    <p><strong>Confirmation No:</strong> <span id="confirmationNumber">DKN-XXXXXX</span></p>
+  <div class="container">
+    <h1>🧾 Pickup Summary</h1>
 
-    <div class="countdown">
-      ⏱️ <span class="highlight">Auto-confirming in <span id="countdown">60</span>s…</span><br/>
-      <small style="font-style: italic; color: #444;">Kung gusto mo i-cancel ang request, i-press ang button sa idalum sa sulod sang 1 minuto.</small>
-    </div>
-
-    <button id="cancelBtn" onclick="cancelRequest()" class="btn-cancel">❌ Cancel Request</button>
-
-    <div class="terms">
-      ⚠️ COD is final upon confirmation. Please prepare exact amount.  
+    <div class="summary-box">
+      <p><strong>From:</strong> <span id="sumFrom">-</span></p>
+      <p><strong>To:</strong> <span id="sumTo">-</span></p>
+      <p><strong>Sender:</strong> <span id="sumPickupName">-</span> (<span id="sumPickupContact">-</span>)</p>
+      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+      <p><strong>Receiver:</strong> <span id="sumReceiverName">-</span> (<span id="sumReceiverContact">-</span>)</p>
+      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+      <p><strong>Estimated Delivery Time:</strong> <span id="sumEta">-</span></p>
+      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">0.00</span></p>
+      <p><strong>Payment Method:</strong> <span id="sumPayment">-</span></p>
+      <p><strong>Reference No.:</strong> <span id="sumRef">N/A</span></p>
+      <p><strong>Confirmation No.:</strong> <span id="confirmationNumber">-</span></p>
+      <p><strong>⏱️ Confirming in <span id="countdown">60</span>s...</strong></p>
+      <button id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
+      <p class="note">Kung gusto mo kanselahon, i-press lang ang Cancel Request sulod sang 1 minuto.</p>
     </div>
   </div>
 
   <script>
+    function get(key) {
+      return localStorage.getItem(key) || "-";
+    }
+
     function loadSummary() {
-      const get = key => localStorage.getItem(key) || "-";
       document.getElementById("sumFrom").innerText = get("fromArea");
       document.getElementById("sumTo").innerText = get("toArea");
+      document.getElementById("sumPickupName").innerText = get("pickupName");
+      document.getElementById("sumPickupContact").innerText = get("pickupContact");
       document.getElementById("sumPickupAddr").innerText = get("pickupAddr");
+      document.getElementById("sumReceiverName").innerText = get("receiverName");
+      document.getElementById("sumReceiverContact").innerText = get("receiverContact");
       document.getElementById("sumDeliveryAddr").innerText = get("deliveryAddr");
       document.getElementById("sumPickupDate").innerText = get("pickupDate");
       document.getElementById("sumItem").innerText = get("item");
@@ -95,19 +102,22 @@
       document.getElementById("sumPayment").innerText = get("paymentMethod");
       document.getElementById("sumRef").innerText = get("referenceNumber") || "N/A";
       document.getElementById("sumEta").innerText = (get("fromArea") === get("toArea")) ? "≈ 1 hour" : "≈ 1 hour 10 mins";
+      document.getElementById("confirmationNumber").innerText = generateConfirmationNumber();
+    }
 
-      const confirmation = "DKN" + Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem("confirmationNumber", confirmation);
-      document.getElementById("confirmationNumber").innerText = confirmation;
+    function generateConfirmationNumber() {
+      const code = "DKN" + Math.floor(Math.random() * 900000 + 100000);
+      localStorage.setItem("confirmationNumber", code);
+      return code;
     }
 
     function cancelRequest() {
-      alert("✅ Your pickup request has been cancelled.");
+      alert("Your pickup request has been cancelled.");
       localStorage.clear();
       window.location.href = "index.html";
     }
 
-    // ⏱ 1-minute countdown logic
+    // Timer for 1-minute auto-confirm
     let timeLeft = 60;
     const countdownEl = document.getElementById("countdown");
     const interval = setInterval(() => {
@@ -121,36 +131,24 @@
     }, 1000);
 
     function sendToWhatsApp() {
-      const get = key => localStorage.getItem(key) || "-";
-      const message = `
-🧾 *Pickup Request Confirmed*
-From: ${get("fromArea")}
-To: ${get("toArea")}
-Pickup Address: ${get("pickupAddr")}
-Delivery Address: ${get("deliveryAddr")}
-Pickup Date: ${get("pickupDate")}
-Item: ${get("item")}
-Fee: ₱${get("sumFee")}
-Payment: ${get("paymentMethod")}
-Ref: ${get("referenceNumber")}
-Confirmation No: ${localStorage.getItem("confirmationNumber")}
-Estimated Delivery Time: ${get("fromArea") === get("toArea") ? "≈ 1 hour" : "≈ 1 hour 10 mins"}
-      `.trim();
+      const message = `🧾 *Pickup Request Summary*\n\n` +
+        `📍 *From:* ${get("fromArea")}\n` +
+        `📍 *To:* ${get("toArea")}\n\n` +
+        `👤 *Sender:* ${get("pickupName")} (${get("pickupContact")})\n` +
+        `📦 *Pickup Address:* ${get("pickupAddr")}\n` +
+        `🧍 *Receiver:* ${get("receiverName")} (${get("receiverContact")})\n` +
+        `🏠 *Delivery Address:* ${get("deliveryAddr")}\n\n` +
+        `📅 *Pickup Date:* ${get("pickupDate")}\n` +
+        `📝 *Item:* ${get("item")}\n` +
+        `💸 *Fee:* ₱${get("sumFee")}\n` +
+        `💳 *Payment:* ${get("paymentMethod")}\n` +
+        `📄 *Reference No.:* ${get("referenceNumber") || "N/A"}\n\n` +
+        `🔐 *Confirmation No.:* ${get("confirmationNumber")}\n` +
+        `⏱️ *Estimated Delivery:* ${(get("fromArea") === get("toArea")) ? "≈ 1 hour" : "≈ 1 hour 10 mins"}`;
 
-      // ✅ Webhook to admin/rider (Make.com)
-      fetch("https://hook.us1.make.com/your-make-webhook", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message,
-          name: localStorage.getItem("fullName"),
-          contact: localStorage.getItem("contact"),
-          email: localStorage.getItem("email")
-        })
-      });
-
-      // WhatsApp Redirect (Customer copy)
-      window.location.href = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
+      const whatsappNumber = "63XXXXXXXXXX"; // Replace with actual merchant/rider
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      window.location.href = url;
     }
   </script>
 </body>
