@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Payment – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
       margin: 0;
       padding: 0;
+      color: #333;
     }
     .container {
-      max-width: 600px;
+      max-width: 720px;
       margin: auto;
       padding: 2rem 1rem;
     }
@@ -23,45 +24,42 @@
       color: #008060;
       text-align: center;
     }
+    .form-box {
+      background: #fff;
+      border: 1.5px solid #ccc;
+      border-radius: 16px;
+      padding: 2rem;
+    }
     label {
       display: block;
-      margin-top: 1.2rem;
+      margin-top: 1rem;
       font-weight: bold;
     }
-    select, input[type="text"] {
+    input, select {
       width: 100%;
-      padding: 0.6rem;
+      padding: 0.5rem;
       margin-top: 0.3rem;
       border-radius: 6px;
       border: 1px solid #aaa;
     }
+    .hidden {
+      display: none;
+    }
     .cod-terms {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #555;
       margin-top: 0.5rem;
-      background: #f5f5f5;
-      padding: 0.5rem;
-      border-radius: 8px;
-    }
-    .payment-instructions {
-      font-size: 0.9rem;
-      color: #333;
-      background: #fff;
-      border-left: 4px solid #008060;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 8px;
     }
     button {
       margin-top: 2rem;
-      padding: 0.8rem 1.2rem;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
       background: #008060;
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
-      width: 100%;
       opacity: 0.5;
       pointer-events: none;
     }
@@ -73,73 +71,98 @@
 </head>
 <body>
   <div class="container">
-    <h1>💸 Payment Method</h1>
+    <h1>💵 Choose Payment Method</h1>
+    <div class="form-box">
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" onchange="handlePaymentChange()">
+        <option value="">-- Select Payment Method --</option>
+        <option value="Cash">Cash on Delivery</option>
+        <option value="GCash">GCash</option>
+        <option value="Maya">Maya</option>
+        <option value="Bank">Bank Transfer</option>
+      </select>
 
-    <label for="paymentMethod">Select Payment Method</label>
-    <select id="paymentMethod" onchange="handlePaymentChange()">
-      <option value="">-- Select --</option>
-      <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-      <option value="GCash">GCash</option>
-      <option value="PayMaya">PayMaya</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-    </select>
+      <div id="referenceSection" class="hidden">
+        <label for="referenceNumber">Reference Number</label>
+        <input type="text" id="referenceNumber" placeholder="e.g. GCash Ref No." />
+      </div>
 
-    <div id="codTerms" class="cod-terms" style="display: none;">
-      ✅ <strong>Terms:</strong> Please ensure someone is available to pay the rider upon delivery. Orders without payment will be returned.
+      <div id="bankDetails" class="hidden">
+        <p><strong>Bank Transfer Instructions:</strong><br />
+        BDO Account: 1234 5678 9012<br />
+        Account Name: DalaKoNa Services</p>
+      </div>
+
+      <div id="codTerms" class="hidden cod-terms">
+        📌 COD Policy: Please prepare exact amount. Riders do not carry change. Payment is collected upon delivery.
+      </div>
+
+      <button id="proceedBtn" onclick="submitPayment()">➡️ Proceed</button>
     </div>
-
-    <div id="bankInstructions" class="payment-instructions" style="display: none;">
-      💳 Please transfer the amount to:<br/>
-      <strong>Bank:</strong> BDO<br/>
-      <strong>Account Name:</strong> DalaKoNa Services<br/>
-      <strong>Account Number:</strong> 0000-1234-5678<br/><br/>
-      After sending, enter the reference number below.
-    </div>
-
-    <label for="referenceNumber" id="refLabel" style="display: none;">Reference Number</label>
-    <input type="text" id="referenceNumber" placeholder="e.g. GCASH123456" style="display: none;" />
-
-    <button id="proceedBtn" onclick="proceed()" disabled>➡️ Proceed to Summary</button>
   </div>
 
   <script>
-    const methodSelect = document.getElementById("paymentMethod");
-    const refInput = document.getElementById("referenceNumber");
-    const refLabel = document.getElementById("refLabel");
     const proceedBtn = document.getElementById("proceedBtn");
-    const codTerms = document.getElementById("codTerms");
-    const bankInstructions = document.getElementById("bankInstructions");
 
     function handlePaymentChange() {
-      const method = methodSelect.value;
-      localStorage.setItem("paymentMethod", method);
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const refSection = document.getElementById("referenceSection");
+      const codTerms = document.getElementById("codTerms");
+      const bankDetails = document.getElementById("bankDetails");
 
-      const needsRef = method !== "Cash on Delivery" && method !== "";
-
-      refInput.style.display = needsRef ? "block" : "none";
-      refLabel.style.display = needsRef ? "block" : "none";
-      codTerms.style.display = method === "Cash on Delivery" ? "block" : "none";
-      bankInstructions.style.display = method === "Bank Transfer" ? "block" : "none";
-
-      validateFields();
+      // Show/hide sections
+      if (paymentMethod === "Cash") {
+        refSection.classList.add("hidden");
+        codTerms.classList.remove("hidden");
+        bankDetails.classList.add("hidden");
+        enableProceed();
+      } else if (paymentMethod === "Bank") {
+        refSection.classList.remove("hidden");
+        codTerms.classList.add("hidden");
+        bankDetails.classList.remove("hidden");
+        disableProceed();
+      } else if (paymentMethod === "GCash" || paymentMethod === "Maya") {
+        refSection.classList.remove("hidden");
+        codTerms.classList.add("hidden");
+        bankDetails.classList.add("hidden");
+        disableProceed();
+      } else {
+        refSection.classList.add("hidden");
+        codTerms.classList.add("hidden");
+        bankDetails.classList.add("hidden");
+        disableProceed();
+      }
     }
 
-    refInput.addEventListener("input", validateFields);
-    methodSelect.addEventListener("change", validateFields);
-
-    function validateFields() {
-      const method = methodSelect.value;
-      const needsRef = method !== "Cash on Delivery" && method !== "";
-      const hasRef = refInput.value.trim() !== "";
-
-      const isValid = method && (!needsRef || hasRef);
-
-      proceedBtn.disabled = !isValid;
-      proceedBtn.classList.toggle("enabled", isValid);
+    function enableProceed() {
+      proceedBtn.classList.add("enabled");
     }
 
-    function proceed() {
-      localStorage.setItem("referenceNumber", refInput.value.trim());
+    function disableProceed() {
+      proceedBtn.classList.remove("enabled");
+    }
+
+    document.getElementById("referenceNumber").addEventListener("input", function () {
+      const ref = this.value.trim();
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      if ((paymentMethod === "GCash" || paymentMethod === "Maya" || paymentMethod === "Bank") && ref !== "") {
+        enableProceed();
+      } else {
+        disableProceed();
+      }
+    });
+
+    function submitPayment() {
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const referenceNumber = document.getElementById("referenceNumber").value.trim();
+
+      localStorage.setItem("paymentMethod", paymentMethod);
+      if (paymentMethod !== "Cash") {
+        localStorage.setItem("referenceNumber", referenceNumber);
+      } else {
+        localStorage.setItem("referenceNumber", "N/A");
+      }
+      // Redirect to summary page
       window.location.href = "pickup-summary.html";
     }
   </script>
