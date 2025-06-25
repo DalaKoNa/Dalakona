@@ -108,22 +108,19 @@
         </select>
 
         <label>Sender Name</label>
-        <input type="text" id="pickupName" placeholder="e.g. Maria Sender" autocomplete="name" />
+        <input type="text" id="senderName" name="name" autocomplete="name" placeholder="e.g. Maria Sender" required />
 
         <label>Sender Contact</label>
-        <input type="tel" id="pickupContact" placeholder="e.g. 0917xxxxxxx" autocomplete="tel" />
+        <input type="tel" id="senderContact" name="phone" autocomplete="tel" placeholder="e.g. 09XXXXXXXXX" required />
 
-        <label>Pickup Location</label>
-        <input type="text" id="pickup" placeholder="e.g. Felisa Market" />
-
-        <label>Exact Pickup Address</label>
+        <label>Pickup Address</label>
         <input type="text" id="pickupAddr" placeholder="e.g. Gate 2, Brgy. Felisa" />
 
         <label>Receiver Name</label>
-        <input type="text" id="receiverName" placeholder="e.g. Juan Dela Cruz" />
+        <input type="text" id="receiverName" autocomplete="name" placeholder="e.g. Juan Dela Cruz" />
 
         <label>Receiver Contact</label>
-        <input type="text" id="receiverContact" placeholder="e.g. 0939xxxxxxx" />
+        <input type="tel" id="receiverContact" autocomplete="tel" placeholder="e.g. 0939xxxxxxx" />
 
         <label>Delivery Address</label>
         <input type="text" id="deliveryAddr" placeholder="e.g. Zone 2, Alijis" />
@@ -142,14 +139,13 @@
         <h3>🧾 Order Summary</h3>
         <p><strong>From:</strong> <span id="sumFrom">-</span></p>
         <p><strong>To:</strong> <span id="sumTo">-</span></p>
-        <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
         <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
         <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
         <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
         <p><strong>Item:</strong> <span id="sumItem">-</span></p>
         <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
 
-        <a id="continueBtn" href="pickup-payment.html" class="button-link">➡️ Continue to Payment</a>
+        <a href="pickup-payment.html" id="continueBtn" class="button-link">➡️ Continue to Payment</a>
       </div>
     </div>
   </div>
@@ -158,17 +154,15 @@
     function updateSummary() {
       const from = document.getElementById("fromArea").value;
       const to = document.getElementById("toArea").value;
-      const pickup = document.getElementById("pickup").value.trim();
       const pickupAddr = document.getElementById("pickupAddr").value.trim();
       const deliveryAddr = document.getElementById("deliveryAddr").value.trim();
       const pickupDate = document.getElementById("pickupDate").value;
       const item = document.getElementById("item").value.trim();
 
-      const allFilled = from && to && pickup && pickupAddr && deliveryAddr && pickupDate && item;
+      const allFilled = from && to && pickupAddr && deliveryAddr && pickupDate && item;
 
       document.getElementById("sumFrom").innerText = from;
       document.getElementById("sumTo").innerText = to;
-      document.getElementById("sumPickup").innerText = pickup;
       document.getElementById("sumPickupAddr").innerText = pickupAddr;
       document.getElementById("sumDeliveryAddr").innerText = deliveryAddr;
       document.getElementById("sumPickupDate").innerText = pickupDate;
