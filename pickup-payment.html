@@ -3,145 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup Payment – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <title>Pickup Payment - DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #fff9e6;
       font-family: 'Inter', sans-serif;
-      margin: 0;
+      background-color: #fff9e6;
       padding: 2rem;
       color: #333;
     }
-    h1 {
+    h2 {
       font-family: 'Cinzel', serif;
       color: #008060;
     }
-    .payment-container {
-      max-width: 600px;
+    .container {
+      max-width: 800px;
       margin: auto;
-      background: white;
+      background: #fff;
       padding: 2rem;
+      border-radius: 16px;
+      border: 1.5px solid #008060;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .summary {
+      background: #f9f9f9;
+      padding: 1rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin-top: 1.5rem;
     }
     label {
       display: block;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
       font-weight: bold;
     }
-    select, input[type="text"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
       padding: 0.5rem;
       margin-top: 0.3rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
     }
-    .btn {
-      margin-top: 1.5rem;
+    .button {
+      margin-top: 2rem;
+      display: inline-block;
       background: #008060;
       color: white;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .cancel-btn {
-      background: #c0392b;
-      margin-left: 1rem;
+      padding: 0.7rem 1.5rem;
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
     }
     .terms {
-      font-size: 0.9rem;
-      color: #555;
+      font-size: 0.85rem;
+      color: #666;
       margin-top: 1rem;
-    }
-    .summary-box {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      border: 1px solid #008060;
-      border-radius: 12px;
-      background-color: #fefefe;
     }
   </style>
 </head>
 <body>
-  <div class="payment-container">
-    <h1>💳 Complete Your Payment</h1>
+  <div class="container">
+    <h2>💳 Payment Options</h2>
+    <p>Please complete your payment to proceed. Choose your preferred method:</p>
 
-    <label>Payment Method</label>
+    <div class="summary">
+      <p><strong>Pickup:</strong> <span id="sumPickup">-</span></p>
+      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
+      <p><strong>Delivery:</strong> <span id="sumDelivery">-</span></p>
+      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">-</span></p>
+      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">-</span></p>
+      <p><strong>Item:</strong> <span id="sumItem">-</span></p>
+      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
+      <p><strong>Customer Name:</strong> <span id="sumName">-</span></p>
+      <p><strong>Customer Contact:</strong> <span id="sumContact">-</span></p>
+    </div>
+
+    <label>Mode of Payment</label>
     <select id="paymentMethod">
-      <option value="">-- Select Payment Method --</option>
-      <option value="COD">Cash on Delivery</option>
+      <option value="">-- Select Method --</option>
+      <option value="COD">Cash on Delivery (COD)</option>
       <option value="GCash">GCash</option>
       <option value="PayMaya">PayMaya</option>
-      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Bank">Bank Transfer</option>
     </select>
 
-    <div id="bankInfo" style="display:none;">
-      <p style="margin-top:1rem; font-size:0.95rem;">
-        <strong>Bank Name:</strong> BDO<br>
-        <strong>Account Name:</strong> DalaKoNa Services<br>
-        <strong>Account Number:</strong> 1234-5678-9012<br>
-        <strong>Note:</strong> After transfer, enter the reference number below.
-      </p>
-
-      <label>Bank Transfer Reference Number</label>
-      <input type="text" id="bankRef" placeholder="e.g. 1234567890" />
+    <div id="bankDetails" style="display:none;">
+      <label>Reference Number</label>
+      <input type="text" id="bankRef" placeholder="Enter bank ref number" />
+      <p style="font-size: 0.85rem; color: #888;">Send to BPI Acct: 1234 5678 9012 (DalaKoNa PH)</p>
     </div>
 
-    <div class="summary-box">
-      <h3 style="color:#008060; font-family:'Cinzel', serif;">🧾 Order Summary</h3>
-      <p><strong>Pickup:</strong> <span id="pickupSummary">(from form)</span></p>
-      <p><strong>Delivery:</strong> <span id="deliverySummary">(from form)</span></p>
-      <p><strong>Item:</strong> <span id="itemSummary">(from form)</span></p>
-      <p><strong>Fee:</strong> ₱<span id="feeSummary">39.00</span></p>
-      <p><strong>Status:</strong> <span id="status">Awaiting Payment</span></p>
+    <div class="terms">
+      <p>📌 <strong>Auto-cancel</strong> if no confirmation within 2 minutes.</p>
+      <p>❗ COD requires exact cash. Rider may not carry change.</p>
     </div>
 
-    <button class="btn" onclick="startConfirmationTimer()">✅ Confirm & Pay</button>
-    <button id="cancelBtn" class="btn cancel-btn" style="display:none" onclick="cancelRequest()">❌ Cancel Request</button>
-
-    <p class="terms">
-      ⚠️ By continuing, you agree to our terms. COD orders must be paid in full upon delivery.<br>
-      No cancellations allowed after 2 minutes from confirmation.
-    </p>
+    <a href="pickup-summary.html" class="button" id="proceedBtn">✅ Confirm & Continue</a>
   </div>
 
   <script>
-    let timer;
-    let cancelled = false;
-
-    document.getElementById("paymentMethod").addEventListener("change", function() {
-      const bankRef = document.getElementById("bankInfo");
-      bankRef.style.display = this.value === "Bank Transfer" ? "block" : "none";
+    // Example: Load summary from localStorage (or any temp storage you use)
+    document.addEventListener("DOMContentLoaded", () => {
+      const get = id => localStorage.getItem(id) || "-";
+      ["sumPickup","sumPickupAddr","sumDelivery","sumDeliveryAddr","sumPickupDate","sumItem","sumFee","sumName","sumContact"].forEach(id => {
+        document.getElementById(id).innerText = get(id);
+      });
     });
 
-    function startConfirmationTimer() {
-      document.getElementById("status").innerText = "Confirmed. Processing...";
-      document.getElementById("cancelBtn").style.display = "inline-block";
-      timer = setTimeout(() => {
-        if (!cancelled) {
-          document.getElementById("cancelBtn").style.display = "none";
-          sendToWhatsApp();
-        }
-      }, 2 * 60 * 1000);
-    }
-
-    function cancelRequest() {
-      cancelled = true;
-      clearTimeout(timer);
-      alert("Your request has been cancelled.");
-      document.getElementById("status").innerText = "❌ Cancelled by user";
-      document.getElementById("cancelBtn").style.display = "none";
-    }
-
-    function sendToWhatsApp() {
-      const phone = '63XXXXXXXXXX';
-      const message = encodeURIComponent(`📦 DalaKoNa Pickup Request\n\n✅ Confirmed Order:\nPickup: ${document.getElementById("pickupSummary").innerText}\nDelivery: ${document.getElementById("deliverySummary").innerText}\nItem: ${document.getElementById("itemSummary").innerText}\nFee: ₱${document.getElementById("feeSummary").innerText}\nPayment: ${document.getElementById("paymentMethod").value}`);
-      window.location.href = `https://wa.me/${phone}?text=${message}`;
-    }
+    // Show bank reference input if Bank is selected
+    document.getElementById("paymentMethod").addEventListener("change", function() {
+      document.getElementById("bankDetails").style.display = this.value === "Bank" ? "block" : "none";
+    });
   </script>
 </body>
 </html>
