@@ -2,126 +2,145 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Summary – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
   <style>
     body {
-      background: #fff9e6;
       font-family: 'Inter', sans-serif;
-      padding: 2rem 1rem;
+      margin: 0;
+      background-color: #fff9e6;
       color: #333;
     }
+    header {
+      padding: 1rem;
+      background-color: #008060;
+      color: white;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+    }
     .container {
+      padding: 2rem;
       max-width: 600px;
       margin: auto;
       background: white;
-      border: 2px solid #008060;
       border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    h1 {
-      font-family: 'Cinzel', serif;
-      color: #008060;
-      text-align: center;
-      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
     .summary p {
-      margin: 0.5rem 0;
+      margin: 0.6rem 0;
     }
-    .btn {
-      background: #008060;
-      color: white;
-      padding: 0.8rem;
-      margin-top: 1.5rem;
-      text-align: center;
-      border: none;
-      width: 100%;
+    .highlight {
+      font-weight: bold;
+      color: #008060;
+    }
+    .cancel-btn, .confirm-btn {
+      display: inline-block;
+      margin: 1rem 0.5rem;
+      padding: 0.6rem 1rem;
       border-radius: 8px;
+      border: none;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 1rem;
     }
     .cancel-btn {
-      background: #cc0000;
-      margin-top: 1rem;
+      background-color: #ccc;
     }
-    .notice {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: #555;
+    .confirm-btn {
+      background-color: #008060;
+      color: white;
     }
-    .timer {
-      font-weight: bold;
-      color: #cc0000;
+    .terms {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 1.5rem;
+    }
+    .success-message {
+      text-align: center;
+      padding: 1rem;
+      display: none;
     }
   </style>
 </head>
 <body>
+  <header>
+    📦 Pickup Summary Confirmation
+  </header>
+
   <div class="container">
-    <h1>🧾 Pickup Summary</h1>
     <div class="summary">
-      <p><strong>From:</strong> <span id="fromArea">-</span></p>
-      <p><strong>To:</strong> <span id="toArea">-</span></p>
-      <p><strong>Fee:</strong> ₱<span id="fee">-</span></p>
-      <p><strong>Payment Method:</strong> <span id="method">-</span></p>
-      <p><strong>Reference No:</strong> <span id="ref">-</span></p>
-      <p><strong>Confirmation in:</strong> <span class="timer" id="countdown">2:00</span></p>
+      <p><strong>Confirmation Number:</strong> <span id="confirmationNumber">DALA-<span id="code">----</span></span></p>
+      <p><strong>From:</strong> <span id="fromArea">Handumanan</span></p>
+      <p><strong>To:</strong> <span id="toArea">Alijis</span></p>
+      <p><strong>Pickup:</strong> 7-Eleven Handumanan</p>
+      <p><strong>Pickup Address:</strong> Gate 1, Felisa Road</p>
+      <p><strong>Delivery:</strong> Blk 3 Lot 8, Alijis</p>
+      <p><strong>Delivery Address:</strong> Zone 5, Brgy. Alijis</p>
+      <p><strong>Item:</strong> Grocery package</p>
+      <p><strong>Estimated Fee:</strong> ₱78</p>
+      <p><strong>Auto-assigned Delivery Time:</strong> <span id="deliveryEstimate">1 hour 10 minutes</span></p>
     </div>
 
-    <button class="btn" id="confirmBtn" disabled>✅ Confirm via WhatsApp</button>
-    <button class="btn cancel-btn" onclick="cancelOrder()">❌ Cancel Order</button>
+    <div style="margin-top: 2rem; text-align: center;">
+      <p>⏳ This request will auto-confirm in <span id="countdown">2:00</span> minutes</p>
+      <button class="cancel-btn" onclick="cancelRequest()">❌ Cancel Request</button>
+      <button class="confirm-btn" onclick="confirmNow()">✅ Confirm Now</button>
+    </div>
 
-    <div class="notice">
-      <p>Note: You have 2 minutes to cancel this order before it auto-confirms and sends to the DalaKoNa team.</p>
-      <p>By continuing, you agree to our delivery terms. Make sure all details are accurate.</p>
+    <div class="success-message" id="successBox">
+      <h3>✅ Request Confirmed!</h3>
+      <p>Your pickup has been sent to our admin and rider group via WhatsApp.</p>
+      <a href="index.html">⬅️ Return to Homepage</a>
+    </div>
+
+    <div class="terms">
+      <p><strong>Note:</strong> If you choose <em>Cash on Delivery</em>, please prepare exact change. Cancellation after confirmation may be subject to fees.</p>
     </div>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const from = urlParams.get('from');
-    const to = urlParams.get('to');
-    const fee = urlParams.get('fee');
-    const method = urlParams.get('method');
-    const ref = urlParams.get('ref') || '-';
+    function generateConfirmationCode() {
+      const digits = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("code").textContent = digits;
+    }
 
-    document.getElementById('fromArea').innerText = from;
-    document.getElementById('toArea').innerText = to;
-    document.getElementById('fee').innerText = fee;
-    document.getElementById('method').innerText = method;
-    document.getElementById('ref').innerText = ref;
-
-    let secondsLeft = 120;
-    const countdownEl = document.getElementById('countdown');
-    const confirmBtn = document.getElementById('confirmBtn');
-
-    const countdown = setInterval(() => {
-      secondsLeft--;
-      const min = Math.floor(secondsLeft / 60);
-      const sec = secondsLeft % 60;
-      countdownEl.innerText = `${min}:${sec < 10 ? '0' + sec : sec}`;
-      
-      if (secondsLeft <= 0) {
-        clearInterval(countdown);
-        confirmBtn.disabled = false;
-        autoSendToWhatsApp();
-      }
-    }, 1000);
-
-    function cancelOrder() {
-      clearInterval(countdown);
-      alert("Your pickup request has been cancelled.");
+    function cancelRequest() {
+      clearInterval(timer);
+      alert("Your request has been cancelled. Thank you.");
       window.location.href = "index.html";
     }
 
-    function autoSendToWhatsApp() {
-      const message = `DalaKoNa Pickup Summary:%0AFrom: ${from}%0ATo: ${to}%0AFee: ₱${fee}%0APayment: ${method}%0ARef: ${ref}`;
-      const phone = '63XXXXXXXXXX';
-      const waUrl = `https://wa.me/${phone}?text=${message}`;
-      window.location.href = waUrl;
+    function confirmNow() {
+      clearInterval(timer);
+      showConfirmation();
     }
+
+    function showConfirmation() {
+      document.querySelector(".summary").style.display = "none";
+      document.querySelector(".cancel-btn").style.display = "none";
+      document.querySelector(".confirm-btn").style.display = "none";
+      document.getElementById("successBox").style.display = "block";
+      // Trigger WhatsApp (sample number)
+      const msg = encodeURIComponent(`New DalaKoNa Request\nPickup: 7-Eleven Handumanan\nDrop-off: Alijis\nItem: Grocery package\nFee: ₱78\nETA: 1h10min`);
+      window.open(`https://wa.me/63XXXXXXXXXX?text=${msg}`, '_blank');
+    }
+
+    let seconds = 120;
+    const countdownEl = document.getElementById("countdown");
+
+    const timer = setInterval(() => {
+      seconds--;
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      countdownEl.textContent = `${min}:${sec < 10 ? '0' + sec : sec}`;
+
+      if (seconds <= 0) {
+        clearInterval(timer);
+        showConfirmation();
+      }
+    }, 1000);
+
+    generateConfirmationCode();
   </script>
 </body>
 </html>
