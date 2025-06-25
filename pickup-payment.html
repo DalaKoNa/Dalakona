@@ -3,142 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DalaKoNa – Pickup Payment</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Pickup Payment – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
+      background-color: #fff9e6;
       font-family: 'Inter', sans-serif;
-      background: #fff9e6;
+      margin: 0;
       padding: 2rem;
       color: #333;
     }
-    .form-box, .summary-box {
-      background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: #008060;
     }
-    .form-box label {
+    .payment-container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    label {
       display: block;
       margin-top: 1rem;
+      font-weight: bold;
     }
-    input, select, textarea {
+    select, input[type="text"] {
       width: 100%;
-      margin-top: 0.3rem;
       padding: 0.5rem;
-      border-radius: 8px;
+      margin-top: 0.3rem;
       border: 1px solid #ccc;
+      border-radius: 6px;
     }
-    .button-link, button {
+    .btn {
+      margin-top: 1.5rem;
       background: #008060;
       color: white;
-      padding: 0.7rem 1.4rem;
-      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
       border: none;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 1.5rem;
-      font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
     }
-    .hidden { display: none; }
-    .summary-box p { margin: 0.5rem 0; }
+    .cancel-btn {
+      background: #c0392b;
+      margin-left: 1rem;
+    }
+    .terms {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 1rem;
+    }
+    .summary-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border: 1px solid #008060;
+      border-radius: 12px;
+      background-color: #fefefe;
+    }
   </style>
 </head>
 <body>
+  <div class="payment-container">
+    <h1>💳 Complete Your Payment</h1>
 
-  <h2 style="font-family: 'Cinzel', serif; color: #008060; text-align: center;">💳 Pickup Payment & Confirmation</h2>
-  <p style="text-align: center;">Review your request, enter contact details, and confirm the pickup.</p>
-
-  <!-- FORM -->
-  <div class="form-box">
-    <label>Customer Name</label>
-    <input type="text" id="custName" placeholder="Juan Dela Cruz" />
-
-    <label>Contact Number</label>
-    <input type="text" id="custPhone" placeholder="0917xxxxxxx" />
-
-    <label>Choose Payment Method</label>
-    <select id="payment">
+    <label>Payment Method</label>
+    <select id="paymentMethod">
+      <option value="">-- Select Payment Method --</option>
       <option value="COD">Cash on Delivery</option>
       <option value="GCash">GCash</option>
-      <option value="Bank">Bank Transfer</option>
+      <option value="PayMaya">PayMaya</option>
+      <option value="Bank Transfer">Bank Transfer</option>
     </select>
 
-    <button onclick="confirmRequest()">✅ Confirm Request</button>
-  </div>
+    <div id="bankInfo" style="display:none;">
+      <p style="margin-top:1rem; font-size:0.95rem;">
+        <strong>Bank Name:</strong> BDO<br>
+        <strong>Account Name:</strong> DalaKoNa Services<br>
+        <strong>Account Number:</strong> 1234-5678-9012<br>
+        <strong>Note:</strong> After transfer, enter the reference number below.
+      </p>
 
-  <!-- SUMMARY -->
-  <div class="summary-box">
-    <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Request Summary</h3>
-    <p><strong>Name:</strong> <span id="sumName">-</span></p>
-    <p><strong>Phone:</strong> <span id="sumPhone">-</span></p>
-    <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
-    <p><strong>To:</strong> <span id="sumTo">Felisa</span></p>
-    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">Gate 1, Handumanan</span></p>
-    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">Blk 3, Felisa</span></p>
-    <p><strong>Item:</strong> <span id="sumItem">1 Jollibee package</span></p>
-    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">78.00</span></p>
-    <p><strong>Auto-assigned Pickup Time:</strong> ~<span id="sumTime">1h 10m</span></p>
-    <p><strong>Payment Method:</strong> <span id="sumPayment">-</span></p>
-
-    <div id="confirmBox" class="hidden">
-      <p><strong>Confirmation Code:</strong> <span id="confCode"></span></p>
-      <p><strong>Status:</strong> Waiting for rider. You may cancel within 2 minutes.</p>
-      <button onclick="cancelRequest()" style="background: red;">❌ Cancel Request</button>
-      <p id="countdown" style="margin-top: 1rem;"></p>
+      <label>Bank Transfer Reference Number</label>
+      <input type="text" id="bankRef" placeholder="e.g. 1234567890" />
     </div>
 
-    <p style="margin-top: 2rem; font-size: 0.9rem; color: #555;">
-      <strong>Terms:</strong> Cash on Delivery is only valid if receiver is present. Cancellation beyond 2 minutes is not allowed.
+    <div class="summary-box">
+      <h3 style="color:#008060; font-family:'Cinzel', serif;">🧾 Order Summary</h3>
+      <p><strong>Pickup:</strong> <span id="pickupSummary">(from form)</span></p>
+      <p><strong>Delivery:</strong> <span id="deliverySummary">(from form)</span></p>
+      <p><strong>Item:</strong> <span id="itemSummary">(from form)</span></p>
+      <p><strong>Fee:</strong> ₱<span id="feeSummary">39.00</span></p>
+      <p><strong>Status:</strong> <span id="status">Awaiting Payment</span></p>
+    </div>
+
+    <button class="btn" onclick="startConfirmationTimer()">✅ Confirm & Pay</button>
+    <button id="cancelBtn" class="btn cancel-btn" style="display:none" onclick="cancelRequest()">❌ Cancel Request</button>
+
+    <p class="terms">
+      ⚠️ By continuing, you agree to our terms. COD orders must be paid in full upon delivery.<br>
+      No cancellations allowed after 2 minutes from confirmation.
     </p>
   </div>
 
   <script>
     let timer;
-    function confirmRequest() {
-      const name = document.getElementById('custName').value;
-      const phone = document.getElementById('custPhone').value;
-      const payment = document.getElementById('payment').value;
+    let cancelled = false;
 
-      if (!name || !phone) {
-        alert("Please complete name and contact.");
-        return;
-      }
+    document.getElementById("paymentMethod").addEventListener("change", function() {
+      const bankRef = document.getElementById("bankInfo");
+      bankRef.style.display = this.value === "Bank Transfer" ? "block" : "none";
+    });
 
-      document.getElementById('sumName').innerText = name;
-      document.getElementById('sumPhone').innerText = phone;
-      document.getElementById('sumPayment').innerText = payment;
-
-      const code = 'DL-' + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('confCode').innerText = code;
-      document.getElementById('confirmBox').classList.remove('hidden');
-
-      let seconds = 120;
-      timer = setInterval(() => {
-        seconds--;
-        document.getElementById('countdown').innerText = `⏳ ${seconds} seconds left to cancel...`;
-        if (seconds <= 0) {
-          clearInterval(timer);
-          document.getElementById('countdown').innerText = "✅ Request locked. Riders notified.";
-          sendToWhatsApp(name, phone, code);
+    function startConfirmationTimer() {
+      document.getElementById("status").innerText = "Confirmed. Processing...";
+      document.getElementById("cancelBtn").style.display = "inline-block";
+      timer = setTimeout(() => {
+        if (!cancelled) {
+          document.getElementById("cancelBtn").style.display = "none";
+          sendToWhatsApp();
         }
-      }, 1000);
+      }, 2 * 60 * 1000);
     }
 
     function cancelRequest() {
-      clearInterval(timer);
-      document.getElementById('countdown').innerText = "❌ Request cancelled.";
-      document.getElementById('confirmBox').innerHTML = "<p style='color: red;'>You have cancelled your request.</p>";
+      cancelled = true;
+      clearTimeout(timer);
+      alert("Your request has been cancelled.");
+      document.getElementById("status").innerText = "❌ Cancelled by user";
+      document.getElementById("cancelBtn").style.display = "none";
     }
 
-    function sendToWhatsApp(name, phone, code) {
-      const msg = encodeURIComponent(`🧾 New Pickup Request\nCode: ${code}\nName: ${name}\nPhone: ${phone}\nPickup: Handumanan\nDropoff: Felisa\nItem: Jollibee Package\nFee: ₱78\nPayment: ${document.getElementById('payment').value}`);
-      window.location.href = `https://wa.me/63XXXXXXXXXX?text=${msg}`;
+    function sendToWhatsApp() {
+      const phone = '63XXXXXXXXXX';
+      const message = encodeURIComponent(`📦 DalaKoNa Pickup Request\n\n✅ Confirmed Order:\nPickup: ${document.getElementById("pickupSummary").innerText}\nDelivery: ${document.getElementById("deliverySummary").innerText}\nItem: ${document.getElementById("itemSummary").innerText}\nFee: ₱${document.getElementById("feeSummary").innerText}\nPayment: ${document.getElementById("paymentMethod").value}`);
+      window.location.href = `https://wa.me/${phone}?text=${message}`;
     }
   </script>
-
 </body>
 </html>
