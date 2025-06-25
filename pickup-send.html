@@ -76,6 +76,8 @@
       padding: 0.6rem;
       border-radius: 8px;
       text-decoration: none;
+      pointer-events: none;
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -124,10 +126,10 @@
         <input type="text" id="deliveryAddr" placeholder="e.g. Zone 2, Alijis" required />
 
         <label>Pickup Date</label>
-        <input type="date" id="pickupDate" required />
+        <input type="date" id="pickupDate" />
 
         <label>Item Description</label>
-        <textarea id="item" rows="2" placeholder="e.g. Documents or Package" required></textarea>
+        <textarea id="item" rows="2" placeholder="e.g. Documents or Package"></textarea>
 
         <button onclick="updateSummary()">📝 Preview Summary</button>
       </div>
@@ -147,7 +149,7 @@
         <p><strong>Item:</strong> <span id="sumItem">-</span></p>
         <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">-</span></p>
 
-        <a href="pickup-payment.html" id="continueBtn" class="button-link" style="pointer-events: none; opacity: 0.5;">➡️ Continue to Payment</a>
+        <a href="pickup-payment.html" class="button-link" id="continueBtn">➡️ Continue to Payment</a>
       </div>
     </div>
   </div>
@@ -178,8 +180,20 @@
       document.getElementById("sumPickupDate").innerText = pickupDate;
       document.getElementById("sumItem").innerText = item;
 
-      const fee = (from && to && from !== to) ? 78 : (from && to ? 39 : 0);
+      const fee = from && to && from !== to ? 78 : (from && to ? 39 : 0);
       document.getElementById("sumFee").innerText = fee.toFixed(2);
+
+      localStorage.setItem("fromArea", from);
+      localStorage.setItem("toArea", to);
+      localStorage.setItem("pickupName", pickupName);
+      localStorage.setItem("pickupContact", pickupContact);
+      localStorage.setItem("pickupAddr", pickupAddr);
+      localStorage.setItem("receiverName", receiverName);
+      localStorage.setItem("receiverContact", receiverContact);
+      localStorage.setItem("deliveryAddr", deliveryAddr);
+      localStorage.setItem("pickupDate", pickupDate);
+      localStorage.setItem("item", item);
+      localStorage.setItem("sumFee", fee.toFixed(2));
 
       const continueBtn = document.getElementById("continueBtn");
       if (allFilled) {
