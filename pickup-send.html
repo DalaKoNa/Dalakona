@@ -139,7 +139,7 @@
         <h3>🧾 Order Summary</h3>
         <p><strong>From:</strong> <span id="sumFrom">-</span></p>
         <p><strong>To:</strong> <span id="sumTo">-</span></p>
-        <p><strong>Sender Name:</strong> <span id="sumPickupName">-</span></p>
+        <p><strong>Sender:</strong> <span id="sumPickupName">-</span></p>
         <p><strong>Sender Contact:</strong> <span id="sumPickupContact">-</span></p>
         <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">-</span></p>
         <p><strong>Receiver Name:</strong> <span id="sumReceiverName">-</span></p>
@@ -183,6 +183,7 @@
       const fee = from && to && from !== to ? 78 : (from && to ? 39 : 0);
       document.getElementById("sumFee").innerText = fee.toFixed(2);
 
+      // Save to localStorage
       localStorage.setItem("fromArea", from);
       localStorage.setItem("toArea", to);
       localStorage.setItem("pickupName", pickupName);
@@ -195,6 +196,7 @@
       localStorage.setItem("item", item);
       localStorage.setItem("sumFee", fee.toFixed(2));
 
+      // Enable continue button
       const continueBtn = document.getElementById("continueBtn");
       if (allFilled) {
         continueBtn.style.pointerEvents = "auto";
