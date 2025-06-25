@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Summary – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
@@ -11,141 +11,145 @@
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
       margin: 0;
-      padding: 2rem 1rem;
+      padding: 0;
       color: #333;
     }
     .container {
-      max-width: 680px;
+      max-width: 720px;
       margin: auto;
-      background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      border: 2px solid #008060;
+      padding: 2rem 1rem;
+      text-align: center;
     }
     h1 {
       font-family: 'Cinzel', serif;
       color: #008060;
-      text-align: center;
       margin-bottom: 1rem;
     }
-    .summary {
-      line-height: 1.6;
-      font-size: 1rem;
-      margin-top: 1.5rem;
+    .summary-box {
+      background: #fff;
+      border: 1.5px solid #ccc;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: left;
     }
-    .timer {
-      text-align: center;
+    .summary-box p {
+      margin: 0.5rem 0;
+    }
+    .highlight {
       font-weight: bold;
-      margin: 1.5rem 0;
-      font-size: 1.2rem;
+      color: #008060;
     }
-    .cancel-btn {
-      background: #cc0000;
+    #countdown {
+      font-size: 1.2rem;
+      color: #d35400;
+      font-weight: bold;
+    }
+    #cancelBtn {
+      background: #ff4d4d;
       color: white;
-      padding: 0.6rem 1rem;
       border: none;
+      padding: 0.6rem 1rem;
       border-radius: 8px;
       cursor: pointer;
-      display: block;
-      margin: 0 auto;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.6;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🧾 Pickup Request Summary</h1>
-    <div class="summary" id="orderSummary">
-      Loading summary...
+    <h1>🧾 Pickup Summary</h1>
+
+    <div class="summary-box" id="summaryBox">
+      <p><span class="highlight">From:</span> <span id="sumFrom">-</span></p>
+      <p><span class="highlight">To:</span> <span id="sumTo">-</span></p>
+      <p><span class="highlight">Pickup:</span> <span id="sumPickup">-</span></p>
+      <p><span class="highlight">Pickup Address:</span> <span id="sumPickupAddr">-</span></p>
+      <p><span class="highlight">Delivery Address:</span> <span id="sumDeliveryAddr">-</span></p>
+      <p><span class="highlight">Pickup Date:</span> <span id="sumPickupDate">-</span></p>
+      <p><span class="highlight">Item:</span> <span id="sumItem">-</span></p>
+      <p><span class="highlight">Estimated Delivery Time:</span> <span id="sumETA">-</span></p>
+      <p><span class="highlight">Estimated Fee:</span> ₱<span id="sumFee">-</span></p>
+      <p><span class="highlight">Confirmation No:</span> <span id="confirmCode">-</span></p>
+
+      <p style="margin-top: 1rem;">⏱️ Confirming in <span id="countdown">60s</span>...</p>
+      <button id="cancelBtn">❌ Cancel Request</button>
+      <div id="confirmSection" style="margin-top: 1rem; display: none;"></div>
     </div>
-    <div class="timer">
-      ⏱️ Auto-confirming in <span id="countdown">120</span> seconds...
-    </div>
-    <button id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
   </div>
 
   <script>
-    let cancel = false;
-    let confirmCode = "DALA" + Math.floor(Math.random() * 100000);
-    let timer = 120;
-
-    function populateSummary() {
-      const from = localStorage.getItem("fromArea") || "-";
-      const to = localStorage.getItem("toArea") || "-";
-      const pickup = localStorage.getItem("pickup") || "-";
-      const pickupAddr = localStorage.getItem("pickupAddr") || "-";
-      const deliveryAddr = localStorage.getItem("deliveryAddr") || "-";
-      const pickupDate = localStorage.getItem("pickupDate") || "-";
-      const item = localStorage.getItem("item") || "-";
-      const fee = localStorage.getItem("fee") || "0.00";
-      const name = localStorage.getItem("fullName") || "-";
-      const contact = localStorage.getItem("contact") || "-";
-      const email = localStorage.getItem("email") || "-";
-
-      let estTime = "within 1 hour";
-      if (from !== to) estTime = "1 hour 10 minutes";
-
-      const summaryText = `
-        🔐 Confirmation No.: <strong>${confirmCode}</strong><br/>
-        <strong>From:</strong> ${from}<br/>
-        <strong>To:</strong> ${to}<br/>
-        <strong>Pickup:</strong> ${pickup}<br/>
-        <strong>Pickup Address:</strong> ${pickupAddr}<br/>
-        <strong>Delivery Address:</strong> ${deliveryAddr}<br/>
-        <strong>Pickup Date:</strong> ${pickupDate}<br/>
-        <strong>Item:</strong> ${item}<br/>
-        <strong>Estimated Fee:</strong> ₱${fee}<br/>
-        <strong>Estimated Delivery:</strong> ${estTime}<br/><br/>
-        <strong>Customer:</strong> ${name}<br/>
-        <strong>Contact:</strong> ${contact}<br/>
-        <strong>Email:</strong> ${email}
-      `;
-
-      document.getElementById("orderSummary").innerHTML = summaryText;
-
-      // Store full message for WhatsApp
-      window._whatsappMessage = 
-        `🧾 DalaKoNa Pickup Request\n` +
-        `Confirmation: ${confirmCode}\n\n` +
-        `From: ${from}\nTo: ${to}\nPickup: ${pickup}\nPickup Address: ${pickupAddr}\nDelivery Address: ${deliveryAddr}\nPickup Date: ${pickupDate}\nItem: ${item}\n\n` +
-        `Estimated Fee: ₱${fee}\nETA: ${estTime}\n\n` +
-        `Customer: ${name}\nContact: ${contact}\nEmail: ${email}`;
+    function getItem(key) {
+      return localStorage.getItem(key) || '-';
     }
 
-    function cancelRequest() {
-      cancel = true;
-      document.querySelector(".timer").innerHTML = "❌ Request cancelled.";
-      document.getElementById("cancelBtn").classList.add("disabled");
+    function fillSummary() {
+      const from = getItem("fromArea");
+      const to = getItem("toArea");
+
+      document.getElementById("sumFrom").innerText = from;
+      document.getElementById("sumTo").innerText = to;
+      document.getElementById("sumPickup").innerText = getItem("pickup");
+      document.getElementById("sumPickupAddr").innerText = getItem("pickupAddr");
+      document.getElementById("sumDeliveryAddr").innerText = getItem("deliveryAddr");
+      document.getElementById("sumPickupDate").innerText = getItem("pickupDate");
+      document.getElementById("sumItem").innerText = getItem("item");
+      document.getElementById("sumFee").innerText = getItem("fee") || '0.00';
+
+      // Estimated delivery time
+      const eta = from === to ? '≈ 1 hour' : '≈ 1 hour 10 mins';
+      document.getElementById("sumETA").innerText = eta;
+
+      // Generate confirmation code
+      const code = 'DKN' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById("confirmCode").innerText = code;
+
+      localStorage.setItem("confirmationCode", code);
     }
 
-    function autoConfirm() {
-      const interval = setInterval(() => {
-        if (cancel) {
-          clearInterval(interval);
-          return;
-        }
+    function sendToWhatsApp() {
+      const message = `🧾 *Pickup Request Confirmation*\n\n` +
+        `From: ${getItem("fromArea")}\n` +
+        `To: ${getItem("toArea")}\n` +
+        `Pickup: ${getItem("pickup")}\n` +
+        `Pickup Address: ${getItem("pickupAddr")}\n` +
+        `Delivery Address: ${getItem("deliveryAddr")}\n` +
+        `Pickup Date: ${getItem("pickupDate")}\n` +
+        `Item: ${getItem("item")}\n` +
+        `Estimated Fee: ₱${getItem("fee")}\n` +
+        `ETA: ${document.getElementById("sumETA").innerText}\n` +
+        `Confirmation No: ${localStorage.getItem("confirmationCode")}`;
 
-        timer--;
-        document.getElementById("countdown").innerText = timer;
-
-        if (timer <= 0) {
-          clearInterval(interval);
-          sendWhatsApp();
-        }
-      }, 1000);
+      const phone = '63XXXXXXXXXX'; // Admin or rider WhatsApp number
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.location.href = url;
     }
 
-    function sendWhatsApp() {
-      const number = "63XXXXXXXXXX"; // 🔁 Replace with admin or merchant number
-      const msg = encodeURIComponent(window._whatsappMessage);
-      window.location.href = `https://wa.me/${number}?text=${msg}`;
-    }
+    fillSummary();
 
-    populateSummary();
-    autoConfirm();
+    let countdown = 60;
+    const timerDisplay = document.getElementById("countdown");
+    const cancelButton = document.getElementById("cancelBtn");
+    const confirmSection = document.getElementById("confirmSection");
+
+    const timer = setInterval(() => {
+      countdown--;
+      timerDisplay.innerText = countdown + "s";
+
+      if (countdown <= 0) {
+        clearInterval(timer);
+        cancelButton.style.display = "none";
+        confirmSection.style.display = "block";
+        confirmSection.innerHTML = "<p style='color: green;'>✅ Request confirmed and sent to DalaKoNa!</p>";
+        sendToWhatsApp();
+      }
+    }, 1000);
+
+    cancelButton.addEventListener("click", () => {
+      clearInterval(timer);
+      timerDisplay.innerText = "Cancelled";
+      confirmSection.innerHTML = "<p style='color: red;'>❌ Request cancelled. You may go back and edit details.</p>";
+      cancelButton.style.display = "none";
+    });
   </script>
 </body>
 </html>
