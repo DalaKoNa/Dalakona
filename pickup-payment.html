@@ -2,167 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pickup Payment – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DalaKoNa – Pickup Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background: #fff9e6;
       font-family: 'Inter', sans-serif;
-      padding: 2rem 1rem;
+      background: #fff9e6;
+      padding: 2rem;
       color: #333;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
+    .form-box, .summary-box {
       background: white;
-      border: 2px solid #008060;
       border-radius: 16px;
       padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
-    h1 {
-      font-family: 'Cinzel', serif;
-      color: #008060;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    label {
+    .form-box label {
       display: block;
       margin-top: 1rem;
-      font-weight: bold;
     }
-    select, input, textarea {
+    input, select, textarea {
       width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.4rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    .fee-box {
-      background: #f0fdf7;
-      margin-top: 1.5rem;
-      padding: 1rem;
-      border: 1px solid #008060;
+      margin-top: 0.3rem;
+      padding: 0.5rem;
       border-radius: 8px;
+      border: 1px solid #ccc;
     }
-    .btn {
+    .button-link, button {
       background: #008060;
       color: white;
-      padding: 0.8rem;
-      margin-top: 1.5rem;
-      text-align: center;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
       border: none;
-      width: 100%;
-      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 1rem;
     }
-    .payment-instructions {
-      background: #fef3c7;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-    }
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
+    .summary-box p { margin: 0.5rem 0; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💳 Payment & Fee Estimator</h1>
 
-    <label for="fromArea">From Area</label>
-    <select id="fromArea">
-      <option value="">Select</option>
-      <option value="Handumanan">Handumanan</option>
-      <option value="Felisa">Felisa</option>
-      <option value="Cabug">Cabug</option>
-      <option value="Mansilingan">Mansilingan</option>
-      <option value="Alijis">Alijis</option>
-    </select>
+  <h2 style="font-family: 'Cinzel', serif; color: #008060; text-align: center;">💳 Pickup Payment & Confirmation</h2>
+  <p style="text-align: center;">Review your request, enter contact details, and confirm the pickup.</p>
 
-    <label for="toArea">To Area</label>
-    <select id="toArea">
-      <option value="">Select</option>
-      <option value="Handumanan">Handumanan</option>
-      <option value="Felisa">Felisa</option>
-      <option value="Cabug">Cabug</option>
-      <option value="Mansilingan">Mansilingan</option>
-      <option value="Alijis">Alijis</option>
-    </select>
+  <!-- FORM -->
+  <div class="form-box">
+    <label>Customer Name</label>
+    <input type="text" id="custName" placeholder="Juan Dela Cruz" />
 
-    <div class="fee-box">
-      <p><strong>Estimated Fee:</strong> ₱<span id="feeAmount">0.00</span></p>
-    </div>
+    <label>Contact Number</label>
+    <input type="text" id="custPhone" placeholder="0917xxxxxxx" />
 
-    <label for="paymentMethod">Payment Method</label>
-    <select id="paymentMethod" onchange="showPaymentInstructions()">
-      <option value="">Choose</option>
+    <label>Choose Payment Method</label>
+    <select id="payment">
+      <option value="COD">Cash on Delivery</option>
       <option value="GCash">GCash</option>
-      <option value="Maya">Maya</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="COD">Cash on Delivery (COD)</option>
+      <option value="Bank">Bank Transfer</option>
     </select>
 
-    <div class="payment-instructions hidden" id="nonCodFields">
-      <p>Pay via <span id="selectedMethod">GCash</span> to: <strong>0917-XXXXXXX</strong></p>
-      <label for="refNum">Reference Number</label>
-      <input type="text" id="refNum" placeholder="Enter transaction ref #">
+    <button onclick="confirmRequest()">✅ Confirm Request</button>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-box">
+    <h3 style="color: #008060; font-family: 'Cinzel', serif;">🧾 Request Summary</h3>
+    <p><strong>Name:</strong> <span id="sumName">-</span></p>
+    <p><strong>Phone:</strong> <span id="sumPhone">-</span></p>
+    <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
+    <p><strong>To:</strong> <span id="sumTo">Felisa</span></p>
+    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">Gate 1, Handumanan</span></p>
+    <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">Blk 3, Felisa</span></p>
+    <p><strong>Item:</strong> <span id="sumItem">1 Jollibee package</span></p>
+    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">78.00</span></p>
+    <p><strong>Auto-assigned Pickup Time:</strong> ~<span id="sumTime">1h 10m</span></p>
+    <p><strong>Payment Method:</strong> <span id="sumPayment">-</span></p>
+
+    <div id="confirmBox" class="hidden">
+      <p><strong>Confirmation Code:</strong> <span id="confCode"></span></p>
+      <p><strong>Status:</strong> Waiting for rider. You may cancel within 2 minutes.</p>
+      <button onclick="cancelRequest()" style="background: red;">❌ Cancel Request</button>
+      <p id="countdown" style="margin-top: 1rem;"></p>
     </div>
 
-    <button class="btn" onclick="continueToSummary()">✅ Continue to Summary</button>
+    <p style="margin-top: 2rem; font-size: 0.9rem; color: #555;">
+      <strong>Terms:</strong> Cash on Delivery is only valid if receiver is present. Cancellation beyond 2 minutes is not allowed.
+    </p>
   </div>
 
   <script>
-    const from = document.getElementById('fromArea');
-    const to = document.getElementById('toArea');
-    const feeAmount = document.getElementById('feeAmount');
-    const paymentMethod = document.getElementById('paymentMethod');
-    const nonCodFields = document.getElementById('nonCodFields');
-    const selectedMethod = document.getElementById('selectedMethod');
+    let timer;
+    function confirmRequest() {
+      const name = document.getElementById('custName').value;
+      const phone = document.getElementById('custPhone').value;
+      const payment = document.getElementById('payment').value;
 
-    from.addEventListener('change', calculateFee);
-    to.addEventListener('change', calculateFee);
-
-    function calculateFee() {
-      if (from.value && to.value) {
-        const fee = (from.value === to.value) ? 39 : 78;
-        feeAmount.innerText = fee.toFixed(2);
-      }
-    }
-
-    function showPaymentInstructions() {
-      if (paymentMethod.value === "COD" || paymentMethod.value === "") {
-        nonCodFields.classList.add("hidden");
-      } else {
-        nonCodFields.classList.remove("hidden");
-        selectedMethod.innerText = paymentMethod.value;
-      }
-    }
-
-    function continueToSummary() {
-      const fee = feeAmount.innerText;
-      const method = paymentMethod.value;
-      if (!from.value || !to.value || !method) {
-        alert("Please complete all fields.");
+      if (!name || !phone) {
+        alert("Please complete name and contact.");
         return;
       }
 
-      if (method !== "COD" && !document.getElementById('refNum').value) {
-        alert("Enter payment reference number.");
-        return;
-      }
+      document.getElementById('sumName').innerText = name;
+      document.getElementById('sumPhone').innerText = phone;
+      document.getElementById('sumPayment').innerText = payment;
 
-      // Redirect to summary with query params
-      const ref = document.getElementById('refNum').value || '';
-      const url = `pickup-summary.html?from=${from.value}&to=${to.value}&fee=${fee}&method=${method}&ref=${ref}`;
-      window.location.href = url;
+      const code = 'DL-' + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('confCode').innerText = code;
+      document.getElementById('confirmBox').classList.remove('hidden');
+
+      let seconds = 120;
+      timer = setInterval(() => {
+        seconds--;
+        document.getElementById('countdown').innerText = `⏳ ${seconds} seconds left to cancel...`;
+        if (seconds <= 0) {
+          clearInterval(timer);
+          document.getElementById('countdown').innerText = "✅ Request locked. Riders notified.";
+          sendToWhatsApp(name, phone, code);
+        }
+      }, 1000);
+    }
+
+    function cancelRequest() {
+      clearInterval(timer);
+      document.getElementById('countdown').innerText = "❌ Request cancelled.";
+      document.getElementById('confirmBox').innerHTML = "<p style='color: red;'>You have cancelled your request.</p>";
+    }
+
+    function sendToWhatsApp(name, phone, code) {
+      const msg = encodeURIComponent(`🧾 New Pickup Request\nCode: ${code}\nName: ${name}\nPhone: ${phone}\nPickup: Handumanan\nDropoff: Felisa\nItem: Jollibee Package\nFee: ₱78\nPayment: ${document.getElementById('payment').value}`);
+      window.location.href = `https://wa.me/63XXXXXXXXXX?text=${msg}`;
     }
   </script>
+
 </body>
 </html>
