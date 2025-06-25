@@ -2,123 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup Summary – DalaKoNa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pickup Request Summary | DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fff9e6;
-      margin: 0;
       padding: 2rem;
       color: #333;
     }
     .summary-container {
       max-width: 600px;
       margin: auto;
-      background: #fff;
-      border: 2px solid #008060;
+      background: white;
       border-radius: 16px;
+      border: 2px solid #008060;
       padding: 2rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     h2 {
       font-family: 'Cinzel', serif;
       color: #008060;
-      margin-top: 0;
+      text-align: center;
     }
-    p {
-      line-height: 1.5;
-    }
-    .highlight {
-      font-weight: bold;
-    }
-    .button {
-      background-color: #008060;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      text-decoration: none;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 1rem;
-    }
-    .cancel-button {
-      background-color: #d9534f;
-      margin-left: 1rem;
-    }
-    .summary-item {
+    .summary-details p {
       margin: 0.3rem 0;
     }
-    #cancelMsg {
+    .countdown {
+      color: red;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+    .button-row {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .cancel-btn {
+      background: red;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .confirm-code {
+      background: #d1f7cc;
+      padding: 1rem;
+      border-radius: 12px;
       margin-top: 1rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .terms {
+      font-size: 0.85rem;
+      margin-top: 2rem;
       color: #555;
     }
   </style>
 </head>
 <body>
+
   <div class="summary-container">
-    <h2>🧾 Pickup Request Summary</h2>
+    <h2>🧾 Pickup Summary</h2>
 
-    <p class="summary-item"><span class="highlight">Customer Name:</span> Juan Dela Cruz</p>
-    <p class="summary-item"><span class="highlight">Contact:</span> 0917-123-4567</p>
-    <p class="summary-item"><span class="highlight">From Area:</span> Handumanan</p>
-    <p class="summary-item"><span class="highlight">To Area:</span> Alijis</p>
-    <p class="summary-item"><span class="highlight">Pickup Location:</span> 7-Eleven Handumanan</p>
-    <p class="summary-item"><span class="highlight">Exact Pickup Address:</span> Gate 1, Felisa Road</p>
-    <p class="summary-item"><span class="highlight">Delivery Location:</span> Blk 3 Lot 8, Alijis</p>
-    <p class="summary-item"><span class="highlight">Exact Delivery Address:</span> Zone 5, Brgy. Alijis</p>
-    <p class="summary-item"><span class="highlight">Item Description:</span> Grocery Package</p>
-    <p class="summary-item"><span class="highlight">Pickup Date:</span> June 25, 2025</p>
-    <p class="summary-item"><span class="highlight">Auto-assigned Pickup Time:</span> ~1:30 from request</p>
-    <p class="summary-item"><span class="highlight">Estimated Drop-off Time:</span> ~1h 10m</p>
-    <p class="summary-item"><span class="highlight">Estimated Fee:</span> ₱78.00</p>
+    <div class="summary-details">
+      <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
+      <p><strong>To:</strong> <span id="sumTo">Alijis</span></p>
+      <p><strong>Pickup Location:</strong> <span id="sumPickup">Felisa Market</span></p>
+      <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">Gate 2, Brgy. Felisa</span></p>
+      <p><strong>Delivery Address:</strong> <span id="sumDeliveryAddr">Across Alijis Gym</span></p>
+      <p><strong>Pickup Date:</strong> <span id="sumPickupDate">2025-06-24</span></p>
+      <p><strong>Item:</strong> <span id="sumItem">Documents</span></p>
+      <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">78.00</span></p>
+      <hr />
+      <p><strong>Customer Name:</strong> <span id="sumCustomerName">Juan Dela Cruz</span></p>
+      <p><strong>Customer Contact:</strong> <span id="sumCustomerContact">09123456789</span></p>
+      <p><strong>Receiver Name:</strong> <span id="sumReceiverName">Ana Santos</span></p>
+      <p><strong>Receiver Contact:</strong> <span id="sumReceiverContact">09998887777</span></p>
+    </div>
 
-    <div id="cancelMsg">⏱️ You have 2 minutes to cancel this request.</div>
+    <div class="countdown" id="countdown">⏱ Auto-confirming in 2:00</div>
 
-    <button class="button" onclick="window.location.href='https://wa.me/63XXXXXXXXXX?text=Confirmed%20Pickup:%20Handumanan%20to%20Alijis%20-%20Grocery%20Package.%20Fee:%20PHP%2078.%20Pickup%20at%207-Eleven%20Handumanan.%20Thanks!'">
-      ✅ Send to WhatsApp
-    </button>
-    <button id="cancelBtn" class="button cancel-button" onclick="cancelRequest()">
-      ❌ Cancel Request
-    </button>
+    <div class="button-row">
+      <button class="cancel-btn" id="cancelBtn" onclick="cancelRequest()">❌ Cancel Request</button>
+    </div>
 
-    <p style="font-size: 0.9rem; color: #888; margin-top: 2rem;">
-      ⚠️ <strong>Cash on Delivery</strong> orders must be paid in full upon delivery. Exact change preferred. If you cancel within 2 minutes, no charges will apply. After that, rider assignment will proceed.
-    </p>
+    <div class="confirm-code" id="confirmBox" style="display:none;">
+      ✅ Request Confirmed!<br/>
+      Confirmation Code: <span id="confirmCode">DLK12345</span>
+    </div>
+
+    <div class="terms">
+      📌 <strong>Terms & Conditions:</strong><br/>
+      - COD (Cash on Delivery) must be exact change. No change provided.<br/>
+      - If cancelled within 2 minutes, no charges will apply.<br/>
+      - After confirmation, cancellation is no longer allowed.<br/>
+      - For bank transfers, send proof to our official DalaKoNa WhatsApp.
+    </div>
   </div>
 
   <script>
-    setTimeout(() => {
-      const cancelBtn = document.getElementById("cancelBtn");
-      if (cancelBtn) {
-        cancelBtn.disabled = true;
-        cancelBtn.innerText = "❌ Cancel Unavailable (Request Locked)";
-        cancelBtn.style.backgroundColor = "#ccc";
-      }
-      const cancelMsg = document.getElementById("cancelMsg");
-      if (cancelMsg) {
-        cancelMsg.innerHTML = "<strong>✅ Request locked. Rider will be notified.</strong>";
-      }
-    }, 2 * 60 * 1000); // 2 minutes
+    let timeLeft = 120;
+    const countdownEl = document.getElementById("countdown");
+    const confirmBox = document.getElementById("confirmBox");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const confirmCode = "DLK" + Math.floor(10000 + Math.random() * 89999);
 
-    setTimeout(() => {
-      alert("✅ Request complete. Returning to homepage.");
-      window.location.href = "index.html";
-    }, 5 * 60 * 1000); // auto-redirect in 5 minutes
+    const countdown = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        cancelBtn.disabled = true;
+        cancelBtn.style.opacity = 0.5;
+        countdownEl.textContent = "✅ Request confirmed!";
+        document.getElementById("confirmBox").style.display = "block";
+        document.getElementById("confirmCode").textContent = confirmCode;
+        sendWhatsAppConfirmation();
+      } else {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        countdownEl.textContent = `⏱ Auto-confirming in ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        timeLeft--;
+      }
+    }, 1000);
 
     function cancelRequest() {
-      const confirmCancel = confirm("Are you sure you want to cancel this pickup request?");
-      if (confirmCancel) {
-        document.getElementById("cancelMsg").innerHTML =
-          "<strong>❌ Your request has been canceled.</strong><br>Please try again or contact support.";
-        const btn = document.getElementById("cancelBtn");
-        btn.disabled = true;
-        btn.style.backgroundColor = "#ccc";
-      }
+      clearInterval(countdown);
+      countdownEl.textContent = "❌ Request Cancelled.";
+      cancelBtn.disabled = true;
+      cancelBtn.style.opacity = 0.5;
+      confirmBox.style.display = "none";
+    }
+
+    function sendWhatsAppConfirmation() {
+      const message = `📦 New Pickup Request Confirmed\n\nPickup: Felisa Market\nDrop-off: Alijis\nItem: Documents\nFee: ₱78.00\nCustomer: Juan Dela Cruz\nContact: 09123456789\nConfirmation Code: ${confirmCode}`;
+      const phone = "63XXXXXXXXXX"; // Admin/rider number
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
     }
   </script>
+
 </body>
 </html>
