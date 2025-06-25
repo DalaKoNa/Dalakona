@@ -1,141 +1,98 @@
+<!-- pickup-summary.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup Summary – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fff9e6;
-      margin: 0;
-      padding: 2rem;
-      color: #333;
-    }
-    .summary-box {
-      background: white;
-      border: 2px solid #008060;
-      border-radius: 16px;
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    h2, h3 {
-      font-family: 'Cinzel', serif;
-      color: #008060;
-    }
-    .countdown {
-      font-weight: bold;
-      color: red;
-      margin: 1rem 0;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .btn-confirm {
-      background: #008060;
-      color: white;
-    }
-    .btn-cancel {
-      background: #ddd;
-      color: #000;
-    }
-    .terms {
-      font-size: 0.9rem;
-      margin-top: 2rem;
-      color: #666;
-    }
-    .hidden { display: none; }
+    body { font-family: 'Inter', sans-serif; background: #fff9e6; padding: 2rem; text-align: center; }
+    .summary-box { background: white; border: 2px solid #008060; border-radius: 16px; padding: 2rem; max-width: 480px; margin: auto; }
+    .summary-box h2 { color: #008060; font-family: 'Cinzel', serif; }
+    .summary-box p { text-align: left; }
+    .button { margin-top: 1rem; padding: 0.6rem 1.2rem; border: none; border-radius: 8px; background: #008060; color: white; cursor: pointer; }
+    .cancelled { color: red; font-weight: bold; }
+    .terms { font-size: 0.9rem; color: #555; margin-top: 1rem; text-align: left; }
   </style>
 </head>
 <body>
-
   <div class="summary-box">
-    <h2>🧾 Pickup Summary</h2>
-    <p><strong>Confirmation Number:</strong> <span id="confirmCode"></span></p>
-    <p><strong>From:</strong> <span id="sumFrom">Handumanan</span></p>
-    <p><strong>To:</strong> <span id="sumTo">Alijis</span></p>
-    <p><strong>Pickup:</strong> <span id="sumPickup">7-Eleven Handumanan</span></p>
-    <p><strong>Pickup Address:</strong> <span id="sumPickupAddr">Gate 1, Felisa Road</span></p>
-    <p><strong>Delivery:</strong> <span id="sumDelivery">Blk 3 Lot 8, Alijis</span></p>
-    <p><strong>Item:</strong> <span id="sumItem">Grocery Package</span></p>
-    <p><strong>Pickup Date:</strong> <span id="sumDate"></span></p>
-    <p><strong>Estimated Time:</strong> <span id="eta"></span></p>
-    <p><strong>Estimated Fee:</strong> ₱<span id="sumFee">78.00</span></p>
+    <h2>🧾 Pickup Request Summary</h2>
+    <p><strong>Confirmation No.:</strong> <span id="confirmation">DLN-25423</span></p>
+    <p><strong>Pickup:</strong> 7-Eleven Handumanan</p>
+    <p><strong>Pickup Address:</strong> Gate 1, Felisa Road</p>
+    <p><strong>Delivery:</strong> Zone 5, Brgy. Alijis</p>
+    <p><strong>Item:</strong> McDo Family Set</p>
+    <p><strong>Pickup Date:</strong> June 24, 2025</p>
+    <p><strong>Payment:</strong> COD (To be collected)</p>
+    <p><strong>Auto-assigned Pickup Time:</strong> ~2:45 PM</p>
+    <p><strong>Estimated Delivery Time:</strong> 1 hr 10 mins</p>
+    <p><strong>Fee:</strong> ₱78.00</p>
 
-    <div class="countdown">⏳ Confirm within <span id="timer">2:00</span> or auto-cancel</div>
-    <button class="btn btn-cancel" onclick="cancelOrder()">❌ Cancel</button>
-  </div>
-
-  <div id="canceledBox" class="summary-box hidden">
-    <h3>❌ Order Canceled</h3>
-    <p>Your request has been canceled.</p>
-  </div>
-
-  <div id="successBox" class="summary-box hidden">
-    <h3>✅ Order Confirmed</h3>
-    <p>Riders have been notified. You'll receive your delivery soon!</p>
+    <p id="countdown">⏳ Sending confirmation in 2:00...</p>
+    <button class="button" onclick="cancelRequest()" id="cancelBtn">❌ Cancel Request</button>
+    <p id="cancelMessage" class="cancelled" style="display: none;">Request has been cancelled.</p>
   </div>
 
   <div class="terms">
-    <strong>Note:</strong> By continuing, you agree to our Terms & Conditions. For Cash on Delivery (COD), please prepare the exact amount. Cancellation after 2 minutes may incur a penalty.
+    <h4>📌 Terms & Conditions for COD</h4>
+    <ul>
+      <li>Customer must be available at the delivery location.</li>
+      <li>Exact payment must be prepared upon delivery.</li>
+      <li>Non-payment may result in account suspension.</li>
+    </ul>
   </div>
 
   <script>
-    const confirmCode = 'DALA' + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById("confirmCode").innerText = confirmCode;
+    let timer = 120;
+    let countdown = document.getElementById("countdown");
+    let cancelBtn = document.getElementById("cancelBtn");
+    let cancelMessage = document.getElementById("cancelMessage");
 
-    const today = new Date().toLocaleDateString();
-    document.getElementById("sumDate").innerText = today;
+    const adminNumber = "63XXXXXXXXXX";
+    const riderNumber = "63YYYYYYYYYY";
+    const summaryText = encodeURIComponent(`
+🧾 DalaKoNa Pickup Request
 
-    const from = document.getElementById("sumFrom").innerText;
-    const to = document.getElementById("sumTo").innerText;
+✅ CONFIRMATION #DLN-25423
+🕑 Auto-assigned pickup time: ~2:45 PM
+📍 From: Handumanan
+📍 Pickup Address: Gate 1, Felisa Road
+📍 To: Alijis
+📍 Delivery Address: Zone 5, Brgy. Alijis
+📦 Item: McDo Family Set
+💸 Payment Method: COD
+📅 Pickup Date: June 24, 2025
+💰 Fee: ₱78.00
+⏳ ETA: 1 hr 10 mins
+    `);
 
-    // Calculate ETA
-    let eta = "~1 hour";
-    if (from !== to) eta = "~1 hour and 10 minutes";
-    document.getElementById("eta").innerText = eta;
+    function cancelRequest() {
+      clearInterval(countdownInterval);
+      cancelMessage.style.display = "block";
+      countdown.textContent = "❌ Request cancelled.";
+      cancelBtn.disabled = true;
+    }
 
-    // Countdown timer
-    let seconds = 120;
-    const timerDisplay = document.getElementById("timer");
-    const interval = setInterval(() => {
-      seconds--;
-      const mins = Math.floor(seconds / 60);
-      const secs = seconds % 60;
-      timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-      if (seconds <= 0) {
-        clearInterval(interval);
-        sendToWhatsApp();
+    const countdownInterval = setInterval(() => {
+      if (timer > 0) {
+        timer--;
+        let mins = Math.floor(timer / 60);
+        let secs = timer % 60;
+        countdown.textContent = `⏳ Sending confirmation in ${mins}:${secs.toString().padStart(2, "0")}...`;
+      } else {
+        clearInterval(countdownInterval);
+        if (!cancelBtn.disabled) {
+          countdown.textContent = "✅ Confirmation sent to Admin and Rider.";
+          window.open(`https://wa.me/${adminNumber}?text=${summaryText}`, "_blank");
+          setTimeout(() => {
+            window.open(`https://wa.me/${riderNumber}?text=${summaryText}`, "_blank");
+          }, 1500);
+          cancelBtn.disabled = true;
+        }
       }
     }, 1000);
-
-    function cancelOrder() {
-      clearInterval(interval);
-      document.querySelector(".summary-box").classList.add("hidden");
-      document.getElementById("canceledBox").classList.remove("hidden");
-    }
-
-    function sendToWhatsApp() {
-      document.querySelector(".summary-box").classList.add("hidden");
-      document.getElementById("successBox").classList.remove("hidden");
-
-      const message = `NEW DELIVERY REQUEST:\n\nConfirmation No: ${confirmCode}\nPickup: ${document.getElementById("sumPickup").innerText}\nAddress: ${document.getElementById("sumPickupAddr").innerText}\nDelivery: ${document.getElementById("sumDelivery").innerText}\nItem: ${document.getElementById("sumItem").innerText}\nETA: ${eta}\nFee: ₱78.00`;
-
-      const waLink = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
-      setTimeout(() => {
-        window.location.href = waLink;
-      }, 3000);
-    }
   </script>
 </body>
 </html>
