@@ -295,8 +295,16 @@ footer {
   height: 40px;
   background: repeating-linear-gradient(
     45deg,
-    #333 0 10px,
-    #fff 10px 20px
+    #e97451,
+    #e97451 20px,
+    #fff 20px,
+    #fff 40px
+  );
+  clip-path: polygon(
+    0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+    30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+    60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+    90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
   );
 }
 
@@ -363,4 +371,21 @@ footer {
   height: 64px;
   object-fit: contain;
   margin-bottom: 0.5rem;
+}
+.storefront-header {
+  background-color: #fff9e6;
+  text-align: center;
+  padding-bottom: 1rem;
+  animation: slideFadeIn 0.8s ease-out;
+}
+
+@keyframes slideFadeIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
