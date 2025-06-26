@@ -6,10 +6,13 @@
   <title>Dala🚲na – Subong Dayon!</title>
   <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city." />
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
+
   <!-- Sidebar Nav -->
   <nav id="sidebar" class="sidebar">
     <a href="#" class="close-btn" id="closeBtn">&times;</a>
@@ -22,13 +25,12 @@
   <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
-    <div class="cart-auth">
-      <div class="cart">🛒 <span id="cart-count">0</span> dala‑Cart</div>
-      <div id="auth-container">
-        <button id="loginBtn">🔐 Login</button>
-        <span id="user-info" style="display:none; cursor: pointer;">👋</span>
-        <button id="logoutBtn" style="display:none; margin-left: 8px; background-color: #e74c3c; color: #fff; border: none; border-radius: 4px; padding: 5px 10px;">🚪 Logout</button>
+    <div class="title">
+      <a href="#" onclick="scrollToTop(event)">Dala🚲na</a>
+      <div class="cart-auth">
+        <span id="user-info"></span>
+        <button id="loginBtn">Login</button>
+        <span id="logoutBtn" style="display:none; cursor:pointer; color:#007bff">Logout</span>
       </div>
     </div>
   </header>
@@ -36,43 +38,37 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-image">
-      <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" />
+      <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon">
       <a href="#partners" class="cta-overlay">🛒 Order Now</a>
     </div>
     <h1>DalaKoNa.</h1>
     <p>Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
   </section>
 
-  <!-- Pickup & Delivery Options -->
-  <section>
-    <h2>🛵 DalaKoNa Pickup Options</h2>
-    <div class="pickup-options">
-      <a href="pickup-send.html" style="text-decoration: none;">
-        <div class="pickup-card">
-          <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" />
-          <h3>📤 To Send</h3>
-          <p>Send an item to someone — we’ll pick it up and deliver it for you.<br /><em>Magpadala sang item — kuhaon namon kag ihatod.</em></p>
-        </div>
-      </a>
-      <a href="pickup-receive.html" style="text-decoration: none;">
-        <div class="pickup-card">
-          <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" />
-          <h3>📥 To Receive</h3>
-          <p>Someone has your item? We’ll retrieve and deliver it to you.<br /><em>May item ka? Amo na ang kuhaon kag dal-on namon.</em></p>
-        </div>
-      </a>
-    </div>
+  <!-- Pickup & Delivery Options Section -->
+  <section class="pickup-options">
+    <a href="pickup-send.html" class="pickup-card" data-aos="fade-up">
+      <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item">
+      <h3>📤 To Send</h3>
+      <p>Send an item to someone — we’ll pick it up and deliver it for you.<br><em>Magpadala sang item — kuhaon namon kag ihatod.</em></p>
+    </a>
+
+    <a href="pickup-receive.html" class="pickup-card" data-aos="fade-up" data-aos-delay="100">
+      <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item">
+      <h3>📥 To Receive</h3>
+      <p>Someone has your item? We’ll retrieve and deliver it to you.<br><em>May item ka? Amo na ang kuhaon kag dal-on namon.</em></p>
+    </a>
   </section>
 
   <!-- Merchant List -->
   <section class="partners" id="partners">
-    <h2>🛍️ Our Merchants</h2>
+    <h2 data-aos="fade-in">Our Merchants / Mga Ka-partner nga Tindahan</h2>
     <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+      <a href="handumanan-hypermarket.html" class="merchant-card" data-aos="fade-right">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card" data-aos="fade-right" data-aos-delay="100">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card" data-aos="fade-right" data-aos-delay="200">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card" data-aos="fade-right" data-aos-delay="300">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card" data-aos="fade-right" data-aos-delay="400">Ellen’s Cake</a>
     </div>
   </section>
 
@@ -97,70 +93,8 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script>
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "250px";
-    });
-    document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "0";
-    });
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
-
-  <!-- Firebase Auth -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "dalahub-f8268.firebaseapp.com",
-      projectId: "dalahub-f8268",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    const loginBtn = document.getElementById("loginBtn");
-    const userInfo = document.getElementById("user-info");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    loginBtn.addEventListener("click", () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          const user = result.user;
-          localStorage.setItem("dalaUserName", user.displayName || user.email);
-        });
-    });
-
-    auth.onAuthStateChanged(user => {
-      const saved = localStorage.getItem("dalaUserName");
-      if (user || saved) {
-        loginBtn.style.display = "none";
-        userInfo.style.display = "inline";
-        userInfo.textContent = `👋 ${saved || user.displayName || user.email}`;
-        logoutBtn.style.display = "none";
-      }
-    });
-
-    userInfo.addEventListener("click", () => {
-      logoutBtn.style.display = logoutBtn.style.display === "none" ? "inline-block" : "none";
-    });
-
-    logoutBtn.addEventListener("click", () => {
-      auth.signOut().then(() => {
-        localStorage.removeItem("dalaUserName");
-        window.location.reload();
-      });
-    });
-  </script>
-
   <!-- WhatsApp Elder Support Button -->
-  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!"
+  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
      class="whatsapp-float" target="_blank" aria-label="Chat with Support">
     🚴🛍️
   </a>
@@ -175,11 +109,26 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script>
+    document.getElementById("hamburger").addEventListener("click", () => {
+      document.getElementById("sidebar").style.width = "250px";
+    });
+
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      document.getElementById("sidebar").style.width = "0";
+    });
+
+    function scrollToTop(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function closeElderPopup() {
       document.getElementById("elder-popup").style.display = "none";
       localStorage.setItem("elderPopupSeen", "true");
     }
+
     document.addEventListener("DOMContentLoaded", () => {
       const seen = localStorage.getItem("elderPopupSeen");
       if (!seen) {
@@ -187,7 +136,42 @@
           document.getElementById("elder-popup").style.display = "flex";
         }, 2500);
       }
+
+      AOS.init();
     });
+
+    // Firebase Login Logic
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userInfo = document.getElementById("user-info");
+
+    // Dummy Firebase emulator
+    loginBtn.addEventListener("click", () => {
+      const name = "Juan Dala";
+      localStorage.setItem("dalaUser", name);
+      updateLoginState(name);
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("dalaUser");
+      updateLoginState(null);
+    });
+
+    function updateLoginState(name) {
+      if (name) {
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline";
+        userInfo.textContent = `👋 ${name}`;
+      } else {
+        loginBtn.style.display = "inline";
+        logoutBtn.style.display = "none";
+        userInfo.textContent = "";
+      }
+    }
+
+    const storedUser = localStorage.getItem("dalaUser");
+    if (storedUser) updateLoginState(storedUser);
   </script>
+
 </body>
 </html>
