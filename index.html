@@ -8,67 +8,53 @@
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
-    .storefront-section {
-      background-color: #fff9e6;
-      padding: 3rem 1rem;
-      text-align: center;
-    }
-    .storefront-section h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      color: #008060;
+    .hero img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      max-height: 400px;
     }
     .storefront-wrapper {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 2rem;
-      margin-top: 2rem;
+      padding: 2rem 1rem;
     }
     .storefront-card {
-      width: 300px;
-      background-image: url('/mnt/data/zhen-yao-kHkYP2ERSnk-unsplash.jpg');
-      background-size: cover;
-      background-position: center;
-      border-radius: 12px;
+      width: 280px;
+      background: linear-gradient(to bottom, #f7f3e9, #fff);
+      border: 2px solid #d4a373;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      text-align: center;
       transition: transform 0.3s ease;
-      text-decoration: none;
-      color: #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     }
     .storefront-card:hover {
       transform: scale(1.03);
     }
-    .awning {
-      background: repeating-linear-gradient(
-        45deg,
-        #333 0px,
-        #333 20px,
-        #fff 20px,
-        #fff 40px
-      );
-      height: 40px;
-    }
     .storefront-content {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 2rem 1rem;
-      backdrop-filter: brightness(0.9);
+      padding: 1rem;
     }
     .storefront-content img {
       width: 64px;
       margin-bottom: 1rem;
     }
-    .storefront-content h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.3rem;
-      margin: 0.2rem 0;
+    .awning {
+      height: 40px;
+      background: repeating-linear-gradient(
+        45deg,
+        #333 0 10px,
+        #fff 10px 20px
+      );
     }
-    .storefront-content p {
-      font-size: 0.9rem;
-      max-width: 230px;
-      margin: 0 auto;
+    @media (max-width: 768px) {
+      .hero img {
+        max-height: 240px;
+      }
     }
   </style>
 </head>
@@ -78,7 +64,13 @@
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
-    <div class="cart">👤</div>
+    <div class="user-menu" id="userMenu">
+      <span id="userIcon">👤</span>
+      <div class="dropdown" id="dropdownMenu">
+        <p id="userName">Guest</p>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
   </header>
 
   <!-- Sidebar -->
@@ -98,11 +90,11 @@
     <a href="#partners" class="cta">🛒 Order Now</a>
   </section>
 
-  <!-- Storefront Style To Send / Receive Cards -->
+  <!-- Storefront Cards -->
   <section class="storefront-section">
     <h2>🛵 DalaKoNa Pickup Options</h2>
     <div class="storefront-wrapper">
-      <a href="pickup-send.html" class="storefront-card">
+      <a href="pickup-send.html" class="storefront-card" data-aos="fade-up">
         <div class="awning"></div>
         <div class="storefront-content">
           <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Icon" />
@@ -110,7 +102,7 @@
           <p>Magpadala sang item — kuhaon namon kag ihatod.</p>
         </div>
       </a>
-      <a href="pickup-receive.html" class="storefront-card">
+      <a href="pickup-receive.html" class="storefront-card" data-aos="fade-up">
         <div class="awning"></div>
         <div class="storefront-content">
           <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Icon" />
@@ -155,20 +147,37 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    AOS.init();
     document.getElementById("hamburger").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "250px";
     });
-
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "0";
     });
-
     function scrollToTop(e) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+    const userMenu = document.getElementById("userMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const userName = document.getElementById("userName");
+    document.getElementById("userIcon").addEventListener("click", () => {
+      dropdownMenu.classList.toggle("show");
+    });
+    window.addEventListener("click", function (e) {
+      if (!userMenu.contains(e.target)) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+    const storedName = localStorage.getItem("dalaUserName") || "Guest";
+    userName.textContent = storedName;
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("dalaUserName");
+      userName.textContent = "Guest";
+      alert("You have been logged out.");
+    });
   </script>
-
 </body>
 </html>
