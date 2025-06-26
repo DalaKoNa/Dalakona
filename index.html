@@ -6,63 +6,64 @@
   <title>Dala🚲na – Subong Dayon!</title>
   <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city." />
   <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
 </head>
 <body>
-
   <!-- Sidebar Nav -->
   <nav id="sidebar" class="sidebar">
     <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Google Form</a>
-    <a href="#partners">🤝 Partner Merchants</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider (Airtable)</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant (Airtable)</a>
+    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Join as Merchant (Google Form)</a>
+    <a href="#partners">🤝 Our Partner Merchants</a>
   </nav>
 
-  <!-- Navbar -->
+  <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
-    <div class="cart">🛒</div>
+    <div class="cart">🛒 dala‑Cart</div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero" style="background: linear-gradient(145deg, #fffdee, #fff6d6); padding: 4rem 1rem; text-align: center;">
-    <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" style="max-width: 100%; border-radius: 20px; margin-bottom: 1.5rem;" />
-    <h1 style="font-family: 'Cinzel', serif; font-size: 2.5rem; color: #cc8b00;">DalaKoNa</h1>
-    <p style="font-size: 1.1rem; color: #444; max-width: 600px; margin: 0 auto;">Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
-    <a href="#partners" class="cta" style="margin-top: 1.5rem; display: inline-block;">🛒 Order Now</a>
+  <section class="hero" style="text-align: center; padding: 2rem 1rem; background-color: #fff;">
+    <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" style="max-width: 100%; border-radius: 12px; margin-bottom: 1rem;" />
+    <h1 style="font-size: 2.2rem; color: #0066cc; margin: 0.5rem 0;">DalaKoNa.</h1>
+    <p style="font-size: 1rem; color: #555;">Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
+    <a href="#partners" class="cta">🛒 Order Now</a>
   </section>
 
-  <!-- Pickup Options -->
-  <section style="padding: 3rem 1rem; background: #fffaf0;">
-    <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; text-align: center; color: #008060; margin-bottom: 2rem;">
-      🛵 Pickup Options
-    </h2>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
-      <a href="pickup-send.html" class="merchant-card" data-aos="fade-up">
-        <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" style="width: 60px; margin-bottom: 1rem;" />
-        <h3>📤 To Send</h3>
-        <p>Magpadala sang item — kuhaon namon kag ihatod.</p>
+  <!-- Pickup & Delivery Options -->
+  <section>
+    <h2>🛵 DalaKoNa Pickup Options</h2>
+    <div class="pickup-options">
+      <a href="pickup-send.html" style="text-decoration: none;">
+        <div class="pickup-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" />
+          <h3>📤 To Send</h3>
+          <p>Send an item to someone — we’ll pick it up and deliver it for you.<br /><em>Magpadala sang item — kuhaon namon kag ihatod.</em></p>
+        </div>
       </a>
-      <a href="pickup-receive.html" class="merchant-card" data-aos="fade-up">
-        <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" style="width: 60px; margin-bottom: 1rem;" />
-        <h3>📥 To Receive</h3>
-        <p>Amo na ang kuhaon kag dal-on namon sa imo balay.</p>
+      <a href="pickup-receive.html" style="text-decoration: none;">
+        <div class="pickup-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" />
+          <h3>📥 To Receive</h3>
+          <p>Someone has your item? We’ll retrieve and deliver it to you.<br /><em>May item ka? Amo na ang kuhaon kag dal-on namon.</em></p>
+        </div>
       </a>
     </div>
   </section>
 
-  <!-- Merchants Section -->
+  <!-- Merchant List -->
   <section class="partners" id="partners">
-    <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #008060; text-align: center;">Partner Merchants</h2>
+    <h2>🛍️ Our Merchants</h2>
     <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card" data-aos="fade-up">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card" data-aos="fade-up">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card" data-aos="fade-up">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card" data-aos="fade-up">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card" data-aos="fade-up">Ellen’s Cake</a>
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
     </div>
   </section>
 
@@ -75,51 +76,49 @@
         <a href="https://instagram.com" target="_blank">IG</a>
         <a href="https://x.com" target="_blank">X</a>
       </div>
-      <p>Connect with us online!</p>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
     <div class="footer-right">
-      <a href="about.html">About</a>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="offers.html">Promos</a>
-      <a href="careers.html">Careers</a>
-      <p>© 2025 Dala🚲na</p>
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- WhatsApp Button -->
-  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" class="whatsapp-float" target="_blank" aria-label="Chat with Support">🚴🛍️</a>
-
-  <!-- Elder Popup -->
-  <div id="elder-popup" class="elder-popup">
-    <div class="popup-content">
-      <h3>👵 For Elder Support</h3>
-      <p>Need help placing an order?</p>
-      <p>Tap the green WhatsApp button below to chat with us.</p>
-      <button onclick="closeElderPopup()">✔️ Got it!</button>
-    </div>
-  </div>
-
   <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
   <script>
-    const hamburger = document.getElementById("hamburger");
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("open");
-      document.getElementById("sidebar").style.width = hamburger.classList.contains("open") ? "250px" : "0";
+    document.getElementById("hamburger").addEventListener("click", () => {
+      document.getElementById("sidebar").style.width = "250px";
     });
-
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("sidebar").style.width = "0";
-      hamburger.classList.remove("open");
     });
-
     function scrollToTop(e) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  </script>
 
+  <!-- WhatsApp Elder Support Button -->
+  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!"
+     class="whatsapp-float" target="_blank" aria-label="Chat with Support">
+    🚴🛍️
+  </a>
+
+  <!-- WhatsApp Support Popup -->
+  <div id="elder-popup" class="elder-popup">
+    <div class="popup-content">
+      <h3>👵 Para sa mga Lolo kag Lola</h3>
+      <p>Kinahanglan mo bulig sa pag-order?</p>
+      <p>I-click lang ang green button sa idalom para makachaty ka sa aton support sa WhatsApp.</p>
+      <button onclick="closeElderPopup()">✔️ Gets ko na!</button>
+    </div>
+  </div>
+
+  <script>
     function closeElderPopup() {
       document.getElementById("elder-popup").style.display = "none";
       localStorage.setItem("elderPopupSeen", "true");
