@@ -21,18 +21,32 @@
         max-height: 160px;
       }
     }
-    .navbar .cart-auth {
+    .navbar {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em;
+      background-color: #fff6c9;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+    .navbar .center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.6em;
+      font-weight: bold;
+    }
+    .cart-auth {
+      display: flex;
+      align-items: center;
       gap: 0.75rem;
     }
-    .navbar .cart-auth #loginBtn::before {
+    .cart-auth #loginBtn::before {
       content: "👤 ";
     }
     #user-info {
       display: none;
-    }
-    .navbar {
-      justify-content: space-between;
     }
   </style>
 </head>
@@ -50,7 +64,7 @@
   <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
+    <a href="#" class="center" onclick="scrollToTop(event)">Dala🚲na</a>
     <div class="cart-auth">
       <button id="loginBtn">Login</button>
       <span id="logoutBtn" style="display:none; cursor:pointer; color:#007bff">Logout</span>
