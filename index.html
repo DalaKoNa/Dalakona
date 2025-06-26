@@ -23,15 +23,23 @@
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
-    <div class="cart">🛒 dala‑Cart</div>
+    <div class="cart-auth">
+      <div class="cart">🛒 dala‑Cart</div>
+      <div id="auth-container">
+        <button id="loginBtn">🔐 Login</button>
+        <span id="user-info" style="display:none;"></span>
+      </div>
+    </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero" style="text-align: center; padding: 2rem 1rem; background-color: #fff;">
-    <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" style="max-width: 100%; border-radius: 12px; margin-bottom: 1rem;" />
-    <h1 style="font-size: 2.2rem; color: #0066cc; margin: 0.5rem 0;">DalaKoNa.</h1>
-    <p style="font-size: 1rem; color: #555;">Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
-    <a href="#partners" class="cta">🛒 Order Now</a>
+  <section class="hero">
+    <div class="hero-image">
+      <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" />
+      <a href="#partners" class="cta-overlay">🛒 Order Now</a>
+    </div>
+    <h1>DalaKoNa.</h1>
+    <p>Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
   </section>
 
   <!-- Pickup & Delivery Options -->
@@ -102,6 +110,33 @@
     }
   </script>
 
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "dalahub-f8268.firebaseapp.com",
+      projectId: "dalahub-f8268",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const loginBtn = document.getElementById("loginBtn");
+    const userInfo = document.getElementById("user-info");
+    loginBtn.addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider);
+    });
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        loginBtn.style.display = "none";
+        userInfo.style.display = "inline";
+        userInfo.textContent = `👋 ${user.displayName || user.email}`;
+      }
+    });
+  </script>
+
   <!-- WhatsApp Elder Support Button -->
   <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!"
      class="whatsapp-float" target="_blank" aria-label="Chat with Support">
@@ -123,7 +158,6 @@
       document.getElementById("elder-popup").style.display = "none";
       localStorage.setItem("elderPopupSeen", "true");
     }
-
     document.addEventListener("DOMContentLoaded", () => {
       const seen = localStorage.getItem("elderPopupSeen");
       if (!seen) {
