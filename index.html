@@ -193,6 +193,13 @@
     </div>
   </div>
 </header>
+<nav id="sidebar" class="sidebar">
+  <a href="#" class="close-btn" id="closeBtn">×</a>
+  <a href="https://airtable.com/..." target="_blank">🚴 Join as Rider</a>
+  <a href="https://airtable.com/..." target="_blank">🛒 Join as Merchant</a>
+  <a href="https://forms.gle/..." target="_blank">📎 Merchant Google Form</a>
+  <a href="#partners">🤝 Partner Merchants</a>
+</nav>
 
   <section class="hero">
     <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" />
@@ -315,6 +322,41 @@
    class="whatsapp-float" target="_blank" aria-label="Chat with Support">
   🚴🛍️
 </a>
+<script>
+  // Sidebar toggle
+  document.getElementById("hamburger").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.add("open");
+  });
+
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.remove("open");
+  });
+
+  // Dropdown toggle
+  const userMenu = document.getElementById("userMenu");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  document.getElementById("userIcon").addEventListener("click", () => {
+    dropdownMenu.classList.toggle("show");
+  });
+
+  // Close dropdown if clicking outside
+  window.addEventListener("click", function (e) {
+    if (!userMenu.contains(e.target)) {
+      dropdownMenu.classList.remove("show");
+    }
+  });
+
+  // Display logged-in name
+  document.getElementById("userName").textContent =
+    localStorage.getItem("dalaUserName") || "Guest";
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("dalaUserName");
+    document.getElementById("userName").textContent = "Guest";
+    alert("You have been logged out.");
+  });
+</script>
 
 </body>
 </html>
