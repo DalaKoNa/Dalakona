@@ -6,105 +6,53 @@
   <title>Dala🚲na – Subong Dayon!</title>
   <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city." />
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <style>
-    .hero-image img {
-      height: auto;
-      max-height: 260px;
-      object-fit: cover;
-    }
-    @media (max-width: 768px) {
-      .hero-image img {
-        max-height: 160px;
-      }
-    }
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1em;
-      background-color: #fff6c9;
-      color: #333;
-      border-bottom: 1px solid #eee;
-    }
-    .navbar .center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.6em;
-      font-weight: bold;
-    }
-    .cart-auth {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .cart-auth #loginBtn::before {
-      content: "👤 ";
-    }
-    #user-info {
-      display: none;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 </head>
 <body>
 
   <!-- Sidebar Nav -->
   <nav id="sidebar" class="sidebar">
     <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider (Airtable)</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant (Airtable)</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Join as Merchant (Google Form)</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant</a>
     <a href="#partners">🤝 Our Partner Merchants</a>
   </nav>
 
   <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
-    <a href="#" class="center" onclick="scrollToTop(event)">Dala🚲na</a>
+    <div class="center">Dala🚲na</div>
     <div class="cart-auth">
-      <button id="loginBtn">Login</button>
-      <span id="logoutBtn" style="display:none; cursor:pointer; color:#007bff">Logout</span>
+      <div id="userDropdown">
+        <button id="loginBtn">Login</button>
+        <div id="userDropdownContent">
+          <a href="#">Profile</a>
+          <a href="#" id="logoutBtn">Logout</a>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-image">
-      <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon">
-      <a href="#partners" class="cta-overlay">🛒 Order Now</a>
+      <img src="pastel-hero.jpg" alt="Dala🚲na Hero Image" />
     </div>
-    <h1>DalaKoNa.</h1>
-    <p>Subong dayon. Bulig sa adlaw-adlaw nga kinahanglanon.</p>
-  </section>
-
-  <!-- Pickup & Delivery Options Section -->
-  <section class="pickup-options">
-    <a href="pickup-send.html" class="pickup-card" data-aos="fade-up">
-      <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item">
-      <h3>📤 To Send</h3>
-      <p>Send an item to someone — we’ll pick it up and deliver it for you.<br><em>Magpadala sang item — kuhaon namon kag ihatod.</em></p>
-    </a>
-
-    <a href="pickup-receive.html" class="pickup-card" data-aos="fade-up" data-aos-delay="100">
-      <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item">
-      <h3>📥 To Receive</h3>
-      <p>Someone has your item? We’ll retrieve and deliver it to you.<br><em>May item ka? Amo na ang kuhaon kag dal-on namon.</em></p>
-    </a>
+    <a href="#partners" class="cta-overlay">🛒 Order Now</a>
   </section>
 
   <!-- Merchant List -->
   <section class="partners" id="partners">
-    <h2 data-aos="fade-in">Our Merchants / Mga Ka-partner nga Tindahan</h2>
+    <h2>Our Merchants / Mga Ka-partner nga Tindahan</h2>
     <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card" data-aos="fade-right">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card" data-aos="fade-right" data-aos-delay="100">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card" data-aos="fade-right" data-aos-delay="200">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card" data-aos="fade-right" data-aos-delay="300">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card" data-aos="fade-right" data-aos-delay="400">Ellen’s Cake</a>
+      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
+      <a href="bakery.html" class="merchant-card">Bakery</a>
+      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
+      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
+      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
     </div>
   </section>
 
@@ -129,13 +77,12 @@
     </div>
   </footer>
 
-  <!-- WhatsApp Elder Support Button -->
-  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
-     class="whatsapp-float" target="_blank" aria-label="Chat with Support">
+  <!-- WhatsApp Support Button -->
+  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" class="whatsapp-float" target="_blank" aria-label="Chat with Support">
     🚴🛍️
   </a>
 
-  <!-- WhatsApp Support Popup -->
+  <!-- Elder Support Popup -->
   <div id="elder-popup" class="elder-popup">
     <div class="popup-content">
       <h3>👵 Para sa mga Lolo kag Lola</h3>
@@ -155,11 +102,6 @@
       document.getElementById("sidebar").style.width = "0";
     });
 
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
     function closeElderPopup() {
       document.getElementById("elder-popup").style.display = "none";
       localStorage.setItem("elderPopupSeen", "true");
@@ -172,39 +114,37 @@
           document.getElementById("elder-popup").style.display = "flex";
         }, 2500);
       }
-
-      AOS.init();
     });
 
-    // Firebase Login Logic
+    // Firebase Login
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
-    const userInfo = document.getElementById("user-info");
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        loginBtn.textContent = user.displayName || user.email;
+        document.getElementById("userDropdownContent").style.display = "none";
+      } else {
+        loginBtn.textContent = "👤 Login";
+      }
+    });
 
     loginBtn.addEventListener("click", () => {
-      const name = "Juan Dala";
-      localStorage.setItem("dalaUser", name);
-      updateLoginState(name);
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider);
     });
 
     logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("dalaUser");
-      updateLoginState(null);
+      firebase.auth().signOut();
     });
-
-    function updateLoginState(name) {
-      if (name) {
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline";
-      } else {
-        loginBtn.style.display = "inline";
-        logoutBtn.style.display = "none";
-      }
-    }
-
-    const storedUser = localStorage.getItem("dalaUser");
-    if (storedUser) updateLoginState(storedUser);
   </script>
-
 </body>
 </html>
