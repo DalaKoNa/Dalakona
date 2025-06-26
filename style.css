@@ -2,15 +2,15 @@
 body {
   margin: 0;
   font-family: 'Cinzel', serif;
-  background-color: #f9f9f9;
-  color: #222;
+  background-color: #fff;
+  color: #333;
   line-height: 1.6;
 }
 
 html, body {
+  overflow-x: hidden;
   touch-action: manipulation;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
 }
 
 a {
@@ -23,30 +23,52 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
+  padding: 1rem;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #eaeaea;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+}
+
 .hamburger {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   background: none;
   border: none;
   cursor: pointer;
-  color: #333;
 }
 
-.title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #111;
+.cart-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.cart {
-  font-size: 1.2rem;
+#loginBtn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+#user-info {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+#logoutBtn {
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
 }
 
 /* === Sidebar === */
@@ -56,9 +78,9 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   overflow-x: hidden;
-  transition: width 0.3s ease;
+  transition: 0.3s;
   padding-top: 60px;
   z-index: 1001;
 }
@@ -67,12 +89,12 @@ a {
   display: block;
   padding: 12px 20px;
   font-size: 1rem;
-  color: #333;
-  border-bottom: 1px solid #ddd;
+  color: #000;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .sidebar a:hover {
-  background-color: #eaeaea;
+  background-color: #f2f2f2;
 }
 
 .close-btn {
@@ -80,57 +102,79 @@ a {
   top: 10px;
   right: 25px;
   font-size: 2rem;
-  color: #333;
   cursor: pointer;
 }
 
-/* === CTA === */
-.cta {
-  background-color: #0066cc;
-  color: #fff;
-  padding: 0.6rem 1.4rem;
-  font-weight: bold;
-  border-radius: 8px;
-  display: inline-block;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.cta:hover {
-  background-color: #004c99;
-}
-
-/* === Section Headings === */
-section h2 {
+/* === Hero Section === */
+.hero {
   text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #222;
+  background-color: #fff;
+  padding: 2rem 1rem;
 }
 
-/* === Pickup Cards === */
+.hero-image {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.cta-overlay {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffc107;
+  color: #000;
+  padding: 10px 18px;
+  font-weight: bold;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.cta-overlay:hover {
+  background-color: #ffb300;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin: 1rem 0 0.3rem;
+  color: #333;
+}
+
+.hero p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* === Pickup Section === */
 .pickup-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
   justify-content: center;
-  background-color: #ffffff;
+  gap: 2rem;
   padding: 2rem 1rem;
 }
 
 .pickup-card {
-  background: #fff;
-  border: 1px solid #ddd;
+  width: 300px;
+  background-color: #f9f9f9;
   border-radius: 12px;
   padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
   text-align: center;
-  width: 280px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .pickup-card:hover {
-  transform: translateY(-4px);
+  transform: scale(1.03);
 }
 
 .pickup-card img {
@@ -138,43 +182,53 @@ section h2 {
   margin-bottom: 1rem;
 }
 
-/* === Merchant Section === */
+/* === Merchants Section === */
+.partners {
+  padding: 2rem 1rem;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.partners h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .merchant-scroll {
   display: flex;
   overflow-x: auto;
   gap: 1rem;
   padding: 1rem;
   scroll-snap-type: x mandatory;
-  background-color: #ffffff;
 }
 
 .merchant-card {
   flex: 0 0 auto;
-  scroll-snap-align: start;
-  background: #fafafa;
-  border-radius: 12px;
+  background-color: #ffffff;
+  border-radius: 14px;
   padding: 1rem 1.2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+  color: #000;
   font-weight: bold;
   font-size: 1rem;
-  transition: transform 0.3s ease;
-  text-align: center;
-  width: 180px;
+  scroll-snap-align: start;
+  transition: transform 0.3s;
 }
 
 .merchant-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 /* === Footer === */
 footer {
-  background-color: #f3f3f3;
+  background-color: #f7f7f7;
   padding: 2rem 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  border-top: 1px solid #eaeaea;
 }
 
 .footer-left, .footer-right {
@@ -183,19 +237,15 @@ footer {
   margin-bottom: 1rem;
 }
 
-.footer-left p {
-  margin: 0.4rem 0;
-}
-
 .socials a {
   margin-right: 10px;
-  color: #333;
+  color: #007bff;
   font-weight: bold;
 }
 
 .footer-right a {
   display: block;
-  color: #333;
+  color: #000;
   margin-bottom: 5px;
 }
 
@@ -203,7 +253,7 @@ footer {
   text-decoration: underline;
 }
 
-/* === WhatsApp Float === */
+/* === WhatsApp Float Button === */
 .whatsapp-float {
   position: fixed;
   bottom: 20px;
@@ -213,11 +263,9 @@ footer {
   font-size: 28px;
   padding: 12px 16px;
   border-radius: 50%;
-  text-align: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 1000;
-  text-decoration: none;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s;
 }
 
 .whatsapp-float:hover {
@@ -239,7 +287,7 @@ footer {
 .popup-content {
   background: #fff;
   color: #333;
-  padding: 1.2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   max-width: 340px;
   text-align: center;
@@ -254,8 +302,8 @@ footer {
 
 .popup-content button {
   margin-top: 1rem;
-  background: #0066cc;
-  color: #fff;
+  background: #ffc107;
+  color: #000;
   padding: 8px 14px;
   border: none;
   border-radius: 8px;
@@ -265,13 +313,21 @@ footer {
 
 /* === Responsive === */
 @media (max-width: 768px) {
-  .merchant-card {
-    width: 140px;
-    font-size: 0.9rem;
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .pickup-card {
+    width: 100%;
   }
 
   footer {
