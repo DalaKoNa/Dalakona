@@ -10,6 +10,53 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Cinzel', serif; background: #fffaf4; color: #333; }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em;
+      background-color: #fff7df;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #eee;
+    }
+    .hamburger {
+      font-size: 1.5em;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .user-menu {
+      position: relative;
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      border-radius: 6px;
+      min-width: 120px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .dropdown.show { display: block; }
+    .dropdown p {
+      margin: 0 0 0.5rem;
+      font-weight: bold;
+    }
+    .dropdown a {
+      display: block;
+      color: #333;
+      text-decoration: none;
+    }
     .hero img {
       width: 100%;
       height: auto;
@@ -45,25 +92,43 @@
     }
     .awning {
       height: 40px;
-      background: repeating-linear-gradient(
-        45deg,
-        #333 0 10px,
-        #fff 10px 20px
-      );
+      background: repeating-linear-gradient(45deg, #333 0 10px, #fff 10px 20px);
+    }
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #fcefb2;
+      overflow-x: hidden;
+      transition: width 0.3s ease;
+      padding-top: 60px;
+      z-index: 1500;
+    }
+    .sidebar.open { width: 250px; padding: 60px 20px; }
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      font-size: 1rem;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 1.8rem;
     }
     @media (max-width: 768px) {
-      .hero img {
-        max-height: 240px;
-      }
+      .hero img { max-height: 240px; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
+    <a href="#" class="title">Dala🚲na</a>
     <div class="user-menu" id="userMenu">
       <span id="userIcon">👤</span>
       <div class="dropdown" id="dropdownMenu">
@@ -73,16 +138,14 @@
     </div>
   </header>
 
-  <!-- Sidebar -->
   <nav id="sidebar" class="sidebar">
-    <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider (Airtable)</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant (Airtable)</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Join as Merchant (Google Form)</a>
-    <a href="#partners">🤝 Our Partner Merchants</a>
+    <a href="#" class="close-btn" id="closeBtn">×</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form">🚴 Join as Rider</a>
+    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form">🛒 Join as Merchant</a>
+    <a href="https://forms.gle/hfjPifhU8HsSqkbp7">📎 Merchant Google Form</a>
+    <a href="#partners">🤝 Partner Merchants</a>
   </nav>
 
-  <!-- Hero Section -->
   <section class="hero">
     <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon" />
     <h1>DalaKoNa.</h1>
@@ -90,14 +153,13 @@
     <a href="#partners" class="cta">🛒 Order Now</a>
   </section>
 
-  <!-- Storefront Cards -->
   <section class="storefront-section">
-    <h2>🛵 DalaKoNa Pickup Options</h2>
+    <h2 style="text-align: center;">🛵 Pickup Options</h2>
     <div class="storefront-wrapper">
       <a href="pickup-send.html" class="storefront-card" data-aos="fade-up">
         <div class="awning"></div>
         <div class="storefront-content">
-          <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Icon" />
+          <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" />
           <h3>📤 To Send</h3>
           <p>Magpadala sang item — kuhaon namon kag ihatod.</p>
         </div>
@@ -105,7 +167,7 @@
       <a href="pickup-receive.html" class="storefront-card" data-aos="fade-up">
         <div class="awning"></div>
         <div class="storefront-content">
-          <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Icon" />
+          <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" />
           <h3>📥 To Receive</h3>
           <p>May item ka? Amo na ang kuhaon kag dal-on namon.</p>
         </div>
@@ -113,56 +175,44 @@
     </div>
   </section>
 
-  <!-- Merchant List -->
-  <section class="partners" id="partners">
-    <h2>Our Merchants / Mga Ka-partner nga Tindahan</h2>
-    <div class="merchant-scroll">
-      <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
-      <a href="bakery.html" class="merchant-card">Bakery</a>
-      <a href="pharmacy.html" class="merchant-card">Pharmacy</a>
-      <a href="chicken-inasal.html" class="merchant-card">Chicken Inasal</a>
-      <a href="ellens-cake.html" class="merchant-card">Ellen’s Cake</a>
+  <section class="storefront-section" id="partners">
+    <h2 style="text-align: center;">Partner Merchants</h2>
+    <div class="storefront-wrapper">
+      <a href="handumanan-hypermarket.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" />
+          <h3>Handumanan Hypermarket</h3>
+        </div>
+      </a>
+      <a href="bakery.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
+          <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" />
+          <h3>Bakery</h3>
+        </div>
+      </a>
+      <a href="pharmacy.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
+          <img src="https://cdn-icons-png.flaticon.com/512/1046/1046782.png" />
+          <h3>Pharmacy</h3>
+        </div>
+      </a>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-left">
-      <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
-      </div>
-      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
-    </div>
-    <div class="footer-right">
-      <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
-      <a href="offers.html">Offers / Mga Promos</a>
-      <a href="careers.html">Careers / Trabaho</a>
-      <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
     document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "250px";
+      document.getElementById("sidebar").classList.add("open");
     });
     document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "0";
+      document.getElementById("sidebar").classList.remove("open");
     });
-    function scrollToTop(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
     const userMenu = document.getElementById("userMenu");
     const dropdownMenu = document.getElementById("dropdownMenu");
-    const userName = document.getElementById("userName");
     document.getElementById("userIcon").addEventListener("click", () => {
       dropdownMenu.classList.toggle("show");
     });
@@ -171,11 +221,10 @@
         dropdownMenu.classList.remove("show");
       }
     });
-    const storedName = localStorage.getItem("dalaUserName") || "Guest";
-    userName.textContent = storedName;
+    document.getElementById("userName").textContent = localStorage.getItem("dalaUserName") || "Guest";
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("dalaUserName");
-      userName.textContent = "Guest";
+      document.getElementById("userName").textContent = "Guest";
       alert("You have been logged out.");
     });
   </script>
