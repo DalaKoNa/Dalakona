@@ -8,6 +8,69 @@
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .storefront-section {
+      background-color: #fff9e6;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    .storefront-section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: #008060;
+    }
+    .storefront-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .storefront-card {
+      width: 300px;
+      background-image: url('/mnt/data/zhen-yao-kHkYP2ERSnk-unsplash.jpg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      text-decoration: none;
+      color: #fff;
+    }
+    .storefront-card:hover {
+      transform: scale(1.03);
+    }
+    .awning {
+      background: repeating-linear-gradient(
+        45deg,
+        #333 0px,
+        #333 20px,
+        #fff 20px,
+        #fff 40px
+      );
+      height: 40px;
+    }
+    .storefront-content {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2rem 1rem;
+      backdrop-filter: brightness(0.9);
+    }
+    .storefront-content img {
+      width: 64px;
+      margin-bottom: 1rem;
+    }
+    .storefront-content h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      margin: 0.2rem 0;
+    }
+    .storefront-content p {
+      font-size: 0.9rem;
+      max-width: 230px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
 
@@ -35,24 +98,21 @@
     <a href="#partners" class="cta">🛒 Order Now</a>
   </section>
 
-  <!-- Pickup Options Store-Themed Cards -->
-  <section class="pickup-options">
+  <!-- Storefront Style To Send / Receive Cards -->
+  <section class="storefront-section">
     <h2>🛵 DalaKoNa Pickup Options</h2>
-    <p>Choose what you want to do — <strong>send</strong> or <strong>receive</strong> an item across town.</p>
-
-    <div class="pickup-cards">
-      <!-- TO SEND -->
-      <a href="pickup-send.html" class="pickup-card">
-        <div class="pickup-bg" style="background-image: url('https://as2.ftcdn.net/v2/jpg/01/63/87/84/1000_F_163878443_moOUUJspZDoPaDzvIqkw5tddwkbzShQO.jpg');">
+    <div class="storefront-wrapper">
+      <a href="pickup-send.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
           <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Icon" />
           <h3>📤 To Send</h3>
           <p>Magpadala sang item — kuhaon namon kag ihatod.</p>
         </div>
       </a>
-
-      <!-- TO RECEIVE -->
-      <a href="pickup-receive.html" class="pickup-card">
-        <div class="pickup-bg" style="background-image: url('https://as2.ftcdn.net/v2/jpg/01/63/87/84/1000_F_163878443_moOUUJspZDoPaDzvIqkw5tddwkbzShQO.jpg');">
+      <a href="pickup-receive.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
           <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Icon" />
           <h3>📥 To Receive</h3>
           <p>May item ka? Amo na ang kuhaon kag dal-on namon.</p>
@@ -61,7 +121,7 @@
     </div>
   </section>
 
-  <!-- Merchants Section -->
+  <!-- Merchant List -->
   <section class="partners" id="partners">
     <h2>Our Merchants / Mga Ka-partner nga Tindahan</h2>
     <div class="merchant-scroll">
@@ -110,68 +170,5 @@
     }
   </script>
 
-  <style>
-    .pickup-options {
-      padding: 3rem 1rem;
-      background: #fff9e6;
-      text-align: center;
-    }
-    .pickup-options h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      color: #008060;
-      margin-bottom: 1rem;
-    }
-    .pickup-options p {
-      color: #555;
-      max-width: 700px;
-      margin: auto auto 2rem;
-    }
-
-    .pickup-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-    }
-
-    .pickup-card {
-      width: 300px;
-      text-decoration: none;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-    .pickup-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .pickup-bg {
-      background-size: cover;
-      background-position: center;
-      padding: 2rem 1.2rem;
-      backdrop-filter: brightness(0.95);
-      color: #fff;
-      text-shadow: 1px 1px 2px #000;
-      min-height: 250px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .pickup-bg img {
-      width: 64px;
-      margin-bottom: 1rem;
-    }
-    .pickup-bg h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
-    }
-    .pickup-bg p {
-      font-size: 0.9rem;
-      max-width: 220px;
-    }
-  </style>
 </body>
 </html>
