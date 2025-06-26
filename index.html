@@ -6,28 +6,189 @@
   <title>Dala🚲na – Subong Dayon!</title>
   <meta name="description" content="Dala Ko na. Subong dayon! Daily delivery of essentials with speed and love in your local city." />
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #008060;
+      --accent: #fff9e6;
+      --bg: #ffffff;
+      --text: #333;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cinzel', serif;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #eee;
+      background-color: var(--bg);
+    }
+
+    .hamburger {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .cart {
+      font-size: 1rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .hero img {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-top: 1.2rem;
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #555;
+      margin: 0.5rem auto 1.5rem;
+    }
+
+    .cta {
+      background-color: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 2rem;
+      border-radius: 999px;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+
+    .cta:hover {
+      background-color: #00684a;
+    }
+
+    /* Section */
+    .section {
+      background-color: var(--accent);
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .section p {
+      max-width: 700px;
+      margin: auto;
+      color: #555;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      width: 280px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 64px;
+      margin-bottom: 1rem;
+    }
+
+    .merchant-scroll {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .merchant-card {
+      background-color: white;
+      border: 1px solid var(--primary);
+      border-radius: 999px;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .merchant-card:hover {
+      background-color: #fceca8;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #fdfdfd;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      border-top: 1px solid #eee;
+    }
+
+    footer a {
+      color: var(--primary);
+      margin: 0 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Sidebar Nav -->
-  <nav id="sidebar" class="sidebar">
-    <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider (Airtable)</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant (Airtable)</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Join as Merchant (Google Form)</a>
-    <a href="#partners">🤝 Our Partner Merchants</a>
-  </nav>
-
-  <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
     <div class="cart">🛒 dala‑Cart</div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero">
     <img src="pastel-hero.jpg" alt="Dala🚲na – Subong Dayon"/>
     <h1>DalaKoNa.</h1>
@@ -35,67 +196,36 @@
     <a href="#partners" class="cta">🛒 Order Now</a>
   </section>
 
-  <!-- Pickup & Delivery Options Section -->
-<section style="padding: 3rem 1rem; background-color: #fff9e6; text-align: center;">
-  <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #008060; margin-bottom: 1rem;">
-    🛵 DalaKoNa Pickup Options
-  </h2>
-  <p style="font-size: 1rem; color: #555; max-width: 700px; margin: auto auto 2.5rem;">
-    Choose what you want to do — <strong>send</strong> or <strong>receive</strong> an item across town. 
-    <br />
-    <em>Pili kung magpadala ukon magbaton sang item — subong dayon!</em>
-  </p>
+  <!-- Pickup Options -->
+  <section class="section">
+    <h2>🛵 DalaKoNa Pickup Options</h2>
+    <p>
+      Choose what you want to do — <strong>send</strong> or <strong>receive</strong> an item across town. 
+      <br /><em>Pili kung magpadala ukon magbaton sang item — subong dayon!</em>
+    </p>
+    <div class="card-grid">
+      <!-- TO SEND -->
+      <a href="pickup-send.html" style="text-decoration: none;">
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" />
+          <h3>📤 To Send</h3>
+          <p>Send an item to someone — we’ll pick it up and deliver it for you.<br /><em>Magpadala sang item — kuhaon namon kag ihatod.</em></p>
+        </div>
+      </a>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+      <!-- TO RECEIVE -->
+      <a href="pickup-receive.html" style="text-decoration: none;">
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" />
+          <h3>📥 To Receive</h3>
+          <p>Someone has your item? We’ll retrieve and deliver it to you.<br /><em>May item ka? Amo na ang kuhaon kag dal-on namon.</em></p>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    <!-- TO SEND CARD -->
-    <a href="pickup-send.html" style="text-decoration: none;">
-      <div style="
-        width: 300px;
-        background: #ffffff;
-        border: 1.5px solid #008060;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        transition: transform 0.2s ease;
-        font-family: 'Inter', sans-serif;
-      " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-        <img src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png" alt="Send Item" style="width: 64px; margin-bottom: 1rem;" />
-        <h3 style="color: #008060; font-family: 'Cinzel', serif;">📤 To Send</h3>
-        <p style="font-size: 0.9rem; color: #444;">
-          Send an item to someone — we’ll pick it up and deliver it for you.<br />
-          <em>Magpadala sang item — kuhaon namon kag ihatod.</em>
-        </p>
-      </div>
-    </a>
-
-    <!-- TO RECEIVE CARD -->
-    <a href="pickup-receive.html" style="text-decoration: none;">
-      <div style="
-        width: 300px;
-        background: #ffffff;
-        border: 1.5px solid #008060;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        transition: transform 0.2s ease;
-        font-family: 'Inter', sans-serif;
-      " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-        <img src="https://cdn-icons-png.flaticon.com/512/9120/9120665.png" alt="Receive Item" style="width: 64px; margin-bottom: 1rem;" />
-        <h3 style="color: #008060; font-family: 'Cinzel', serif;">📥 To Receive</h3>
-        <p style="font-size: 0.9rem; color: #444;">
-          Someone has your item? We’ll retrieve and deliver it to you.<br />
-          <em>May item ka? Amo na ang kuhaon kag dal-on namon.</em>
-        </p>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-
-  <!-- Merchant List -->
-  <section class="partners" id="partners">
+  <!-- Merchants -->
+  <section class="section" id="partners">
     <h2>Our Merchants / Mga Ka-partner nga Tindahan</h2>
     <div class="merchant-scroll">
       <a href="handumanan-hypermarket.html" class="merchant-card">Handumanan Hypermarket</a>
@@ -108,72 +238,32 @@
 
   <!-- Footer -->
   <footer>
-    <div class="footer-left">
-      <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
-      </div>
-      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    <p>@dalakona.subongdayon</p>
+    <div>
+      <a href="https://facebook.com" target="_blank">FB</a>
+      <a href="https://instagram.com" target="_blank">IG</a>
+      <a href="https://x.com" target="_blank">X</a>
     </div>
-    <div class="footer-right">
-      <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
-      <a href="offers.html">Offers / Mga Promos</a>
-      <a href="careers.html">Careers / Trabaho</a>
-      <p>© 2025 Dala🚲na. All rights reserved.</p>
-    </div>
+    <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    <p>
+      <a href="about.html">About</a> |
+      <a href="terms.html">Terms & Conditions</a> |
+      <a href="privacy.html">Privacy Policy</a> |
+      <a href="offers.html">Offers</a> |
+      <a href="careers.html">Careers</a>
+    </p>
+    <p>© 2025 Dala🚲na. All rights reserved.</p>
   </footer>
 
-  <!-- Scripts -->
   <script>
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "250px";
-    });
-
-    document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").style.width = "0";
-    });
-
     function scrollToTop(e) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  </script>
 
-  <!-- WhatsApp Elder Support Button -->
-  <a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
-     class="whatsapp-float" target="_blank" aria-label="Chat with Support">
-    🚴🛍️
-  </a>
-
-  <!-- WhatsApp Support Popup -->
-  <div id="elder-popup" class="elder-popup">
-    <div class="popup-content">
-      <h3>👵 Para sa mga Lolo kag Lola</h3>
-      <p>Kinahanglan mo bulig sa pag-order?</p>
-      <p>I-click lang ang green button sa idalom para makachaty ka sa aton support sa WhatsApp.</p>
-      <button onclick="closeElderPopup()">✔️ Gets ko na!</button>
-    </div>
-  </div>
-
-  <script>
-    function closeElderPopup() {
-      document.getElementById("elder-popup").style.display = "none";
-      localStorage.setItem("elderPopupSeen", "true");
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const seen = localStorage.getItem("elderPopupSeen");
-      if (!seen) {
-        setTimeout(() => {
-          document.getElementById("elder-popup").style.display = "flex";
-        }, 2500);
-      }
+    document.getElementById("hamburger").addEventListener("click", () => {
+      alert("Sidebar menu functionality can be re-added here.");
     });
   </script>
-
 </body>
 </html>
