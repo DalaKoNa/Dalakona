@@ -8,24 +8,157 @@
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .section-box {
+      background-color: #fff9e6;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .section-box h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: #008060;
+      margin-bottom: 1rem;
+    }
+
+    .section-box p {
+      font-size: 1rem;
+      color: #555;
+      max-width: 700px;
+      margin: auto auto 2.5rem;
+    }
+
+    .merchant-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .merchant-card {
+      background-color: #fff8d6;
+      border: 1.5px solid #008060;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      color: #008060;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .merchant-card:hover {
+      background-color: #fceca8;
+    }
+
+    .hero {
+      background-color: #ffffff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .hero img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: #008060;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .hero p {
+      color: #444;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta {
+      background-color: #008060;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .cta:hover {
+      background-color: #005a43;
+    }
+
+    footer {
+      background-color: #fdf6dd;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .footer-left, .footer-right {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 1rem;
+    }
+
+    .socials a {
+      margin-right: 0.5rem;
+      color: #008060;
+      text-decoration: none;
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 24px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .elder-popup {
+      display: none;
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+      background-color: #fff8d6;
+      padding: 1rem;
+      border: 1.5px solid #008060;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 101;
+    }
+
+    .elder-popup .popup-content {
+      max-width: 240px;
+    }
+
+    .elder-popup button {
+      margin-top: 0.5rem;
+      background-color: #008060;
+      color: white;
+      padding: 0.4rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Sidebar Nav -->
-  <nav id="sidebar" class="sidebar">
-    <a href="#" class="close-btn" id="closeBtn">&times;</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank">🚴 Join as Rider (Airtable)</a>
-    <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank">🛒 Join as Merchant (Airtable)</a>
-    <a href="https://forms.gle/hfjPifhU8HsSqkbp7" target="_blank">📎 Join as Merchant (Google Form)</a>
-    <a href="#partners">🤝 Our Partner Merchants</a>
-  </nav>
-
-  <!-- Top Navbar -->
-  <header class="navbar">
-    <button class="hamburger" id="hamburger">☰</button>
-    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
-    <div class="cart">🛒 dala‑Cart</div>
-  </header>
 
   <!-- Hero Section -->
   <section class="hero">
