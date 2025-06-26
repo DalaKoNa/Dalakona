@@ -24,10 +24,11 @@
     <button class="hamburger" id="hamburger">☰</button>
     <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
     <div class="cart-auth">
-      <div class="cart">🛒 dala‑Cart</div>
+      <div class="cart">🛒 <span id="cart-count">0</span> dala‑Cart</div>
       <div id="auth-container">
         <button id="loginBtn">🔐 Login</button>
-        <span id="user-info" style="display:none;"></span>
+        <span id="user-info" style="display:none; cursor: pointer;">👋</span>
+        <button id="logoutBtn" style="display:none; margin-left: 8px; background-color: #e74c3c; color: #fff; border: none; border-radius: 4px; padding: 5px 10px;">🚪 Logout</button>
       </div>
     </div>
   </header>
@@ -122,18 +123,39 @@
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+
     const loginBtn = document.getElementById("loginBtn");
     const userInfo = document.getElementById("user-info");
+    const logoutBtn = document.getElementById("logoutBtn");
+
     loginBtn.addEventListener("click", () => {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
+      auth.signInWithPopup(provider)
+        .then(result => {
+          const user = result.user;
+          localStorage.setItem("dalaUserName", user.displayName || user.email);
+        });
     });
+
     auth.onAuthStateChanged(user => {
-      if (user) {
+      const saved = localStorage.getItem("dalaUserName");
+      if (user || saved) {
         loginBtn.style.display = "none";
         userInfo.style.display = "inline";
-        userInfo.textContent = `👋 ${user.displayName || user.email}`;
+        userInfo.textContent = `👋 ${saved || user.displayName || user.email}`;
+        logoutBtn.style.display = "none";
       }
+    });
+
+    userInfo.addEventListener("click", () => {
+      logoutBtn.style.display = logoutBtn.style.display === "none" ? "inline-block" : "none";
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        localStorage.removeItem("dalaUserName");
+        window.location.reload();
+      });
     });
   </script>
 
