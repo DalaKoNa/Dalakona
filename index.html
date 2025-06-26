@@ -10,6 +10,31 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <style>
+    .hero-image img {
+      height: auto;
+      max-height: 260px;
+      object-fit: cover;
+    }
+    @media (max-width: 768px) {
+      .hero-image img {
+        max-height: 160px;
+      }
+    }
+    .navbar .cart-auth {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .navbar .cart-auth #loginBtn::before {
+      content: "👤 ";
+    }
+    #user-info {
+      display: none;
+    }
+    .navbar {
+      justify-content: space-between;
+    }
+  </style>
 </head>
 <body>
 
@@ -25,13 +50,10 @@
   <!-- Top Navbar -->
   <header class="navbar">
     <button class="hamburger" id="hamburger">☰</button>
-    <div class="title">
-      <a href="#" onclick="scrollToTop(event)">Dala🚲na</a>
-      <div class="cart-auth">
-        <span id="user-info"></span>
-        <button id="loginBtn">Login</button>
-        <span id="logoutBtn" style="display:none; cursor:pointer; color:#007bff">Logout</span>
-      </div>
+    <a href="#" class="title" onclick="scrollToTop(event)">Dala🚲na</a>
+    <div class="cart-auth">
+      <button id="loginBtn">Login</button>
+      <span id="logoutBtn" style="display:none; cursor:pointer; color:#007bff">Logout</span>
     </div>
   </header>
 
@@ -145,7 +167,6 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const userInfo = document.getElementById("user-info");
 
-    // Dummy Firebase emulator
     loginBtn.addEventListener("click", () => {
       const name = "Juan Dala";
       localStorage.setItem("dalaUser", name);
@@ -161,11 +182,9 @@
       if (name) {
         loginBtn.style.display = "none";
         logoutBtn.style.display = "inline";
-        userInfo.textContent = `👋 ${name}`;
       } else {
         loginBtn.style.display = "inline";
         logoutBtn.style.display = "none";
-        userInfo.textContent = "";
       }
     }
 
