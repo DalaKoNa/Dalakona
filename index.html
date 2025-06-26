@@ -120,8 +120,38 @@
       right: 20px;
       font-size: 1.8rem;
     }
+    footer {
+      background-color: #fff4ca;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.95rem;
+    }
+    .footer-left, .footer-right {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 1rem;
+    }
+    .footer-left p {
+      margin: 0.4rem 0;
+    }
+    .socials a {
+      margin-right: 10px;
+      color: #cc8b00;
+      font-weight: bold;
+    }
+    .footer-right a {
+      display: block;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
     @media (max-width: 768px) {
       .hero img { max-height: 240px; }
+      footer { flex-direction: column; }
     }
   </style>
 </head>
@@ -199,8 +229,42 @@
           <h3>Pharmacy</h3>
         </div>
       </a>
+      <a href="chicken-inasal.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
+          <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" />
+          <h3>Chicken Inasal</h3>
+        </div>
+      </a>
+      <a href="ellens-cake.html" class="storefront-card">
+        <div class="awning"></div>
+        <div class="storefront-content">
+          <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
+          <h3>Ellen's Cake</h3>
+        </div>
+      </a>
     </div>
   </section>
+
+  <footer>
+    <div class="footer-left">
+      <p>@dalakona.subongdayon</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank">FB</a>
+        <a href="https://instagram.com" target="_blank">IG</a>
+        <a href="https://x.com" target="_blank">X</a>
+      </div>
+      <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
+    </div>
+    <div class="footer-right">
+      <a href="about.html">About / Ang Istorya Naton</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="offers.html">Offers / Mga Promos</a>
+      <a href="careers.html">Careers / Trabaho</a>
+      <p>© 2025 Dala🚲na. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
