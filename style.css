@@ -420,4 +420,17 @@ footer {
     padding: 0 0.5rem 1rem;
     color: #333;
   }
-</style>
+.storefront-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  padding: 1rem;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+}
+.storefront-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.storefront-scroll-wrapper .storefront-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
