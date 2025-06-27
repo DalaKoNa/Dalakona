@@ -273,3 +273,24 @@ footer {
     width: 200px !important;
   }
 }
+.storefront-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center; /* Center on wide screens */
+  max-width: 960px;        /* Optional: limit width */
+  margin: 0 auto;          /* Center wrapper itself */
+}
+
+.storefront-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.storefront-scroll-wrapper .storefront-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 240px;
+}
