@@ -273,12 +273,3 @@ footer {
     width: 200px !important;
   }
 }
-.storefront-scroll-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  padding: 1rem 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
-}
