@@ -3,77 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Privacy Policy – Dala Ko Na Delivery Service" />
-  <title>Privacy Policy / Pribado nga Palisi – Dala🚲na</title>
+  <title>Privacy Policy – Dala🚲na</title>
+  <link rel="icon" href="favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="icon" href="/favicon.ico" />
   <style>
     body {
+      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
-      background-color: #fdf6f0;
       margin: 0;
       padding: 0;
       color: #333;
     }
 
+    .awning-top {
+      height: 36px;
+      background: repeating-linear-gradient(
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
+      );
+      clip-path: polygon(
+        0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+        30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+        60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+        90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+      );
+    }
+
     .hero {
-      background: url('pastel-hero.jpg') no-repeat center center;
-      background-size: cover;
+      background-color: #a0527b;
+      color: white;
       height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      position: relative;
       text-align: center;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
-    }
-
     .hero h1 {
-      position: relative;
-      z-index: 1;
       font-size: 2rem;
+      margin: 0;
     }
 
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: auto;
       padding: 2rem 1.5rem;
     }
 
     h2 {
+      font-size: 1.3rem;
       color: #a0527b;
-      font-size: 1.2rem;
-      margin-top: 1.5rem;
+      margin-top: 2rem;
     }
 
     p {
-      line-height: 1.7;
       font-size: 1rem;
-      margin-bottom: 1rem;
+      line-height: 1.6;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 2rem;
+      margin: 2rem auto 0;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1rem;
+      text-align: center;
     }
 
     footer {
       font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
-      padding: 2em;
+      padding: 2rem 1rem;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -83,6 +89,7 @@
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
+      margin-bottom: 1rem;
     }
 
     .footer-left .socials a {
@@ -103,63 +110,51 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.5rem;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-right {
-        margin-top: 1.5rem;
-      }
+      .hero h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.1rem; }
+      p { font-size: 0.95rem; }
+      .awning-top { height: 28px; background-size: 28px 28px; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
+  <div class="awning-top"></div>
+
   <section class="hero">
-    <h1>Privacy Policy / Pribado nga Palisi</h1>
+    <h1>Privacy Policy<br>Pribado nga Palisi</h1>
   </section>
 
-  <!-- Main Content -->
   <div class="container">
-    <h2>🔐 Personal Information</h2>
-    <p>We collect your name, contact details, delivery address, and order history to process your orders and improve our service.</p>
-    <p><em>Gina-tipon namon ang imo ngalan, contact number, address, kag order history para sa mas maayo nga serbisyo kag order processing.</em></p>
+    <h2>🛡️ Privacy Commitment / Pagprotekta sa Imo Datos</h2>
+    <p>Dala🚲na values your privacy. We only collect necessary personal information to fulfill orders, improve service, and communicate updates.</p>
+    <p>Ginarespeto namon ang imo privacy. Gakolekta lang kami sang importante nga impormasyon para makahatag serbisyo, mag-improve, kag magpadala sang update.</p>
 
-    <h2>📦 Order & Delivery Data</h2>
-    <p>We may store data related to your delivery times, preferences, and feedback to personalize your experience.</p>
-    <p><em>Gina-record man namon ang delivery time, gusto mo nga settings, kag feedback para ma-personalize ang imo experience.</em></p>
+    <h2>📋 Data Collected / Mga Ginatipon nga Impormasyon</h2>
+    <p>We collect your name, contact info, delivery address, and order details when you place an order.</p>
+    <p>Ginakuha namon ang imo ngalan, numero, address, kag order details kada may order ka.</p>
 
-    <h2>🤝 Third-Party Services</h2>
-    <p>We do not sell your data. We only share info with partner merchants and riders to complete your order.</p>
-    <p><em>Wala namon ginabaligya ang imo data. Ginashare lang ini sa among partner nga tindahan kag rider para matapos ang imo order.</em></p>
+    <h2>🔐 Data Protection / Pagsiguro sang Seguridad</h2>
+    <p>All data is stored securely and not shared with third parties, except with delivery riders and partner stores for order fulfillment.</p>
+    <p>Ginasecure namon ang imo impormasyon. Indi namon ni ginashare sa iban, kundi lang sa riders kag tindahan nga naga-deliver.</p>
 
-    <h2>🔒 Security Measures</h2>
-    <p>Your data is protected with modern security practices. Access is limited only to essential staff and partners.</p>
-    <p><em>Ginaprotektahan ang imo impormasyon gamit ang mga modernong seguridad. Access lang ini sa mga kinahanglanon nga staff kag partners.</em></p>
-
-    <h2>📱 WhatsApp & Communication</h2>
-    <p>We may use WhatsApp or SMS to confirm orders and communicate with you.</p>
-    <p><em>Nagagamit kami sang WhatsApp o SMS para sa order confirmation kag komunikasyon sa imo.</em></p>
+    <h2>🔄 Updates / Pagbag-o sang Policy</h2>
+    <p>We may update this policy as needed. We encourage users to review it regularly.</p>
+    <p>Pwede ini magbag-o. Ginasugyot namon nga usisaon niyo permi para updated kamo.</p>
 
     <div style="text-align:center;">
-      <a href="index.html" class="btn">← Back to Dala🚲na</a>
+      <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">X</a>
       </div>
       <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
