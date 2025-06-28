@@ -10,11 +10,30 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #fdf6f0;
+      background-color: #fffaf4;
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
       color: #333;
+    }
+
+    .navbar.storefront-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fffaf4;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      color: #222;
+      text-align: center;
+      flex: 1;
     }
 
     .hero {
@@ -42,19 +61,29 @@
       z-index: 1;
     }
 
-    .container {
-      max-width: 850px;
-      margin: auto;
-      padding: 2rem 1.5rem;
+    .storefront-wrapper-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
-    h2 {
+    .story-card {
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .story-card h2 {
       color: #a0527b;
       font-size: 1.3rem;
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
 
-    p {
+    .story-card p {
       line-height: 1.6;
       font-size: 1rem;
     }
@@ -107,11 +136,16 @@
         font-size: 1.5rem;
       }
 
-      h2 {
+      .storefront-wrapper-grid {
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .story-card h2 {
         font-size: 1.1rem;
       }
 
-      p {
+      .story-card p {
         font-size: 0.95rem;
       }
 
@@ -127,34 +161,42 @@
   </style>
 </head>
 <body>
+  <div class="navbar storefront-header">
+    <div class="title">About Dala🚲na</div>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero">
     <h1>About Dala🚲na</h1>
   </section>
 
-  <!-- Main Content -->
-  <div class="container">
-    <h2>💡 Our Mission / Ang Amon Misyón</h2>
-    <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make daily essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
-    <p>Ang Dala🚲na isa ka delivery service nga naga-serbisyo sa mga kinahanglanon sang komunidad. Ginadala namon ang mga kinahanglanon — halin sa panaderia tubtob sa botika — padulong sa imo balay, subong dayon.</p>
-
-    <h2>📍 Community-Centered / Para sa Komunidad</h2>
-    <p>We prioritize local shops and community riders, helping small businesses grow while making life easier for customers.</p>
-    <p>Ginauna namon ang mga lokal nga tindahan kag mga rider sang komunidad. Gintinguhaan namon nga mabuligan ang mga gamay nga negosyo kag mapasayon ang kabuhi sang mga customers.</p>
-
-    <h2>🚴 Subong Dayon!</h2>
-    <p>We don’t just deliver quickly—we deliver with intention, love, and a personal touch. Every order supports a chain of local heroes.</p>
-    <p>Indi lang ni basta delivery. Gindal-an ka sang gugma, intensyon, kag suporta sa mga lokal nga bayani.</p>
-
-    <h2>🌱 Our Roots / Ang Amon Kabangdanan</h2>
-    <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
-    <p>Gintukod ang Dala🚲na agud mabuligan ang aton kasilingan, sari-sari stores, kag mga rider. Ginahingyo namon ang kabuhi nga may tinutuyo.</p>
-
-    <!-- Back Button -->
-    <div class="back-home" style="text-align:center;">
-      <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
+  <!-- Main Story Cards Grid -->
+  <div class="storefront-wrapper-grid">
+    <div class="story-card">
+      <h2>💡 Our Mission / Ang Amon Misyón</h2>
+      <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make daily essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
+      <p>Ang Dala🚲na isa ka delivery service nga naga-serbisyo sa mga kinahanglanon sang komunidad. Ginadala namon ang mga kinahanglanon — halin sa panaderia tubtob sa botika — padulong sa imo balay, subong dayon.</p>
     </div>
+    <div class="story-card">
+      <h2>📍 Community-Centered / Para sa Komunidad</h2>
+      <p>We prioritize local shops and community riders, helping small businesses grow while making life easier for customers.</p>
+      <p>Ginauna namon ang mga lokal nga tindahan kag mga rider sang komunidad. Gintinguhaan namon nga mabuligan ang mga gamay nga negosyo kag mapasayon ang kabuhi sang mga customers.</p>
+    </div>
+    <div class="story-card">
+      <h2>🚴 Subong Dayon!</h2>
+      <p>We don’t just deliver quickly—we deliver with intention, love, and a personal touch. Every order supports a chain of local heroes.</p>
+      <p>Indi lang ni basta delivery. Gindal-an ka sang gugma, intensyon, kag suporta sa mga lokal nga bayani.</p>
+    </div>
+    <div class="story-card">
+      <h2>🌱 Our Roots / Ang Amon Kabangdanan</h2>
+      <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
+      <p>Gintukod ang Dala🚲na agud mabuligan ang aton kasilingan, sari-sari stores, kag mga rider. Ginahingyo namon ang kabuhi nga may tinutuyo.</p>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <div style="text-align:center; margin-bottom: 2rem;">
+    <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
 
   <!-- Footer -->
@@ -177,6 +219,5 @@
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
-
 </body>
 </html>
