@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Join the Dala Ko Na Team – Careers and job openings.">
   <title>Careers – Dala🚲na</title>
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
   <style>
     body {
       background-color: #fff9f3;
@@ -20,7 +18,11 @@
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -31,70 +33,51 @@
     }
 
     .hero {
-      background: url('pastel-hero.jpg') no-repeat center center;
-      background-size: cover;
+      background-color: #a0527b;
       height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
       color: #fff;
-      position: relative;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
     }
 
     .hero h1 {
-      position: relative;
       font-size: 2rem;
-      z-index: 1;
+      margin: 0;
     }
 
-    .about-grid {
+    .job-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       padding: 2rem 1.5rem;
       max-width: 1100px;
       margin: auto;
     }
 
-    .card {
+    .job-card {
       background-color: #fffefb;
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-      text-align: center;
-      transition: transform 0.3s ease;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card img {
-      width: 60px;
-      margin-bottom: 1rem;
-    }
-
-    .card h2 {
+    .job-card h2 {
       font-size: 1.3rem;
       color: #a0527b;
       margin-bottom: 0.5rem;
     }
 
-    .card p {
+    .job-card p {
       font-size: 1rem;
       line-height: 1.5;
+      margin-bottom: 0.8rem;
     }
 
     .btn {
       display: inline-block;
-      margin: 2rem auto 0;
+      margin: 2rem auto;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
@@ -107,16 +90,17 @@
     footer {
       font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
-      padding: 2em;
+      padding: 2rem 1rem;
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
+      justify-content: space-between;
       border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
+      margin-bottom: 1rem;
     }
 
     .footer-left .socials a {
@@ -137,84 +121,59 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.5rem;
-      }
-
-      .card h2 {
-        font-size: 1.1rem;
-      }
-
-      .card p {
-        font-size: 0.95rem;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-right {
-        margin-top: 1.5rem;
-      }
-
-      .awning-top {
-        height: 28px;
-        background-size: 28px 28px;
-      }
+      .hero h1 { font-size: 1.5rem; }
+      .job-card h2 { font-size: 1.1rem; }
+      .job-card p { font-size: 0.95rem; }
+      .awning-top { height: 28px; background-size: 28px 28px; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Awning -->
   <div class="awning-top"></div>
 
-  <!-- Hero -->
   <section class="hero">
-    <h1>Join the Team 🚲</h1>
+    <h1>Careers at Dala🚲na<br>Mag-Upod sa Amon</h1>
   </section>
 
-  <!-- Career Cards -->
-  <section class="about-grid">
-    <div class="card" data-aos="fade-up">
-      <img src="https://cdn-icons-png.flaticon.com/512/2933/2933933.png" alt="Rider" />
+  <section class="job-grid">
+    <div class="job-card">
       <h2>🚴 Delivery Rider</h2>
-      <p>Be the heartbeat of Dala🚲na. Flexible hours, daily income, local routes. Bring joy to customers near you.</p>
+      <p>Deliver items to homes quickly and safely.</p>
+      <p>Magdala sang items sa mga balay nga safe kag dasig.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="100">
-      <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="Dispatcher" />
-      <h2>📍 Dispatcher</h2>
-      <p>Coordinate riders, manage orders, and help our system run smoothly. Ideal for organized multitaskers.</p>
+    <div class="job-card">
+      <h2>📦 Dispatcher</h2>
+      <p>Coordinate deliveries and support riders.</p>
+      <p>Mag-coordinate sang deliveries kag magbulig sa mga riders.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="200">
-      <img src="https://cdn-icons-png.flaticon.com/512/9068/9068759.png" alt="Partner Support" />
-      <h2>🛍️ Partner Support</h2>
-      <p>Support our local store partners, onboard new merchants, and help with order and payment tracking.</p>
+    <div class="job-card">
+      <h2>📱 Customer Support</h2>
+      <p>Assist customers with orders and questions.</p>
+      <p>Magbulig sa mga customers sa ila orders kag pamangkot.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="300">
-      <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Internship" />
-      <h2>💼 Internship</h2>
-      <p>College student or fresh grad? Join us to learn operations, logistics, or marketing with real impact.</p>
+    <div class="job-card">
+      <h2>📊 Store Partner Manager</h2>
+      <p>Help onboard local shops and manage relationships.</p>
+      <p>Magbulig sa mga local stores kag magdumala sang partnership.</p>
     </div>
   </section>
 
-  <!-- Apply Button -->
   <div style="text-align:center;">
-    <a href="mailto:apply@dalakona.com" class="btn">📧 Apply Now</a>
+    <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">X</a>
       </div>
       <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
@@ -228,8 +187,5 @@
     </div>
   </footer>
 
-  <!-- AOS Script -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init({ once: true, duration: 800 });</script>
 </body>
 </html>
