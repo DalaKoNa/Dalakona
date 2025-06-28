@@ -71,9 +71,32 @@
       background: #005f45;
     }
 
+    #order-summary {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-top: 2rem;
+      text-align: left;
+    }
+
+    #order-summary h3 {
+      color: #008060;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    #order-summary p {
+      margin: 0.25rem 0;
+      font-size: 0.95rem;
+    }
+
     @media (max-width: 480px) {
       .ref { font-size: 1.1rem; }
       button { width: 100%; }
+      #order-summary { padding: 1rem; }
     }
   </style>
 </head>
@@ -90,14 +113,34 @@
     <button onclick="location.href='index.html'">🏠 Balik sa Main Page</button>
   </div>
 
+  <div id="order-summary" class="hidden">
+    <h3>📋 Order Summary</h3>
+    <p><strong>Items:</strong> <span id="summary-items">-</span></p>
+    <p><strong>Delivery:</strong> <span id="summary-delivery">-</span></p>
+    <p><strong>Payment:</strong> <span id="summary-payment">-</span></p>
+    <p><strong>Total:</strong> <span id="summary-total">-</span></p>
+  </div>
+
   <script>
     function getRef() {
       const p = new URLSearchParams(location.search);
       return p.get('ref') || 'UNKNOWN';
     }
     document.getElementById('ref-number').innerText = getRef();
+
     function trackOrder() {
       location.href = 'track-order.html?ref=' + encodeURIComponent(getRef());
+    }
+
+    // Display order summary if available
+    const summary = JSON.parse(localStorage.getItem("dalaOrderSummary"));
+    if (summary) {
+      document.getElementById('order-summary').classList.remove('hidden');
+      document.getElementById('summary-items').innerText = summary.items;
+      document.getElementById('summary-delivery').innerText = `${summary.date} at ${summary.time}`;
+      document.getElementById('summary-payment').innerText = summary.payment;
+      document.getElementById('summary-total').innerText = summary.total;
+      localStorage.removeItem("dalaOrderSummary");
     }
   </script>
 </body>
