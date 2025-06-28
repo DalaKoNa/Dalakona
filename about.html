@@ -6,26 +6,21 @@
   <meta name="description" content="About Dala Ko Na – Learn more about our mission and story.">
   <title>About Us – Dala🚲na</title>
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="style.css" />
+
   <style>
     body {
       background-color: #fff9f3;
-      font-family: 'Cinzel', serif;
+      font-family: serif;
       margin: 0;
       padding: 0;
       color: #333;
     }
 
-    /* Awning Top */
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg,
-        #333 0px,
-        #333 18px,
-        #fffaf4 18px,
-        #fffaf4 36px
+        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -42,7 +37,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
       color: #fff;
       position: relative;
     }
@@ -75,11 +69,20 @@
       padding: 1.5rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
       text-align: center;
-      transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+    .card:nth-child(4) { animation-delay: 0.3s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .card img {
@@ -111,13 +114,13 @@
     }
 
     footer {
-      font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
       padding: 2em;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       border-top: 1px solid #ddd;
+      font-family: serif;
     }
 
     .footer-left, .footer-right {
@@ -173,42 +176,42 @@
 </head>
 <body>
 
-  <!-- Awning Banner -->
+  <!-- Awning -->
   <div class="awning-top"></div>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero">
     <h1>About Dala🚲na</h1>
   </section>
 
-  <!-- Info Cards Section -->
+  <!-- Info Cards -->
   <section class="about-grid">
-    <div class="card" data-aos="fade-up">
-      <img src="https://cdn-icons-png.flaticon.com/512/864/864685.png" alt="Mission Icon" />
+    <div class="card">
+      <img src="assets/icons/mission.png" alt="Mission" />
       <h2>💡 Our Mission</h2>
       <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="100">
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Community Icon" />
+    <div class="card">
+      <img src="assets/icons/community.png" alt="Community" />
       <h2>📍 Community-Centered</h2>
       <p>We prioritize local shops and community riders, helping small businesses grow while making life easier for customers.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="200">
-      <img src="https://cdn-icons-png.flaticon.com/512/3241/3241147.png" alt="Fast Delivery Icon" />
+    <div class="card">
+      <img src="assets/icons/delivery.png" alt="Fast Delivery" />
       <h2>🚴 Subong Dayon!</h2>
       <p>We don’t just deliver quickly—we deliver with intention, love, and a personal touch. Every order supports a chain of local heroes.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="300">
-      <img src="https://cdn-icons-png.flaticon.com/512/599/599995.png" alt="Roots Icon" />
+    <div class="card">
+      <img src="assets/icons/roots.png" alt="Our Roots" />
       <h2>🌱 Our Roots</h2>
       <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
     </div>
   </section>
 
-  <!-- Back to Homepage -->
+  <!-- Back Button -->
   <div style="text-align:center;">
     <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
@@ -218,26 +221,21 @@
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">X</a>
       </div>
       <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
     <div class="footer-right">
       <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
-      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
       <a href="offers.html">Offers / Mga Promos</a>
-      <a href="careers.html">Careers / Trabaho</a>
+      <a href="careers.html">Careers</a>
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Animate On Scroll -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({ once: true, duration: 800 });
-  </script>
 </body>
 </html>
