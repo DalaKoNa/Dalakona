@@ -3,127 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Careers at Dala Ko Na – Join our mission to serve local communities with fast and caring delivery." />
-  <title>Careers / Trabaho – Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="description" content="Join the Dala Ko Na Team – Careers and job openings.">
+  <title>Careers – Dala🚲na</title>
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
   <style>
     body {
+      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
-      background-color: #fdf6f0;
       margin: 0;
       padding: 0;
       color: #333;
-      overflow-x: hidden;
+    }
+
+    .awning-top {
+      height: 36px;
+      background: repeating-linear-gradient(
+        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
+      );
+      clip-path: polygon(
+        0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+        30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+        60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+        90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+      );
     }
 
     .hero {
       background: url('pastel-hero.jpg') no-repeat center center;
       background-size: cover;
-      height: 200px;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fff;
       position: relative;
-      text-align: center;
     }
 
     .hero::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.5);
     }
 
     .hero h1 {
       position: relative;
-      z-index: 1;
       font-size: 2rem;
+      z-index: 1;
     }
 
-    .container {
-      max-width: 850px;
-      margin: auto;
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
       padding: 2rem 1.5rem;
+      max-width: 1100px;
+      margin: auto;
     }
 
     .card {
-      background-color: #fff;
-      border: 1px solid #ddd;
+      background-color: #fffefb;
       border-radius: 12px;
       padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s ease forwards;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.3s ease;
     }
 
-    .card:nth-child(1) { animation-delay: 0.1s; }
-    .card:nth-child(2) { animation-delay: 0.2s; }
-    .card:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .card:hover {
+      transform: translateY(-5px);
     }
 
-    h2 {
-      color: #a0527b;
-      font-size: 1.2rem;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-    }
-
-    h2 i {
-      margin-right: 10px;
-      font-size: 1.3rem;
-    }
-
-    .status {
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-top: 0.2rem;
-      margin-bottom: 0.8rem;
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 6px;
-    }
-
-    .open { background: #e0f7e9; color: #2e7d32; }
-    .closed { background: #ffe0e0; color: #c62828; }
-
-    p {
-      line-height: 1.7;
-      font-size: 1rem;
+    .card img {
+      width: 60px;
       margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      color: #a0527b;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 1rem;
+      margin: 2rem auto 0;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1rem;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #8b3e68;
-    }
-
-    .center {
       text-align: center;
     }
 
@@ -164,6 +141,14 @@
         font-size: 1.5rem;
       }
 
+      .card h2 {
+        font-size: 1.1rem;
+      }
+
+      .card p {
+        font-size: 0.95rem;
+      }
+
       footer {
         flex-direction: column;
         align-items: flex-start;
@@ -172,54 +157,54 @@
       .footer-right {
         margin-top: 1.5rem;
       }
+
+      .awning-top {
+        height: 28px;
+        background-size: 28px 28px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Awning -->
+  <div class="awning-top"></div>
+
   <!-- Hero -->
   <section class="hero">
-    <h1>Careers / Trabaho</h1>
+    <h1>Join the Team 🚲</h1>
   </section>
 
-  <!-- Content -->
-  <div class="container">
-
-    <!-- Rider Card -->
-    <div class="card">
-      <h2><i class="fas fa-motorcycle"></i> Join as a Rider</h2>
-      <div class="status open">✅ Now Hiring</div>
-      <p>We are looking for passionate, reliable, and friendly riders to deliver essentials within your barangay.</p>
-      <p><em>Nagapangita kami sang masaligan kag matinlo nga riders nga mag-deliver sang mga kinahanglanon sa sulod sang inyo barangay.</em></p>
-      <p><strong>Benefits:</strong> Flexible schedule, weekly payout, and priority access to orders in your area.</p>
-      <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagAPO8f6i7wAMjMw/form" target="_blank" class="btn">Apply as Rider</a>
+  <!-- Career Cards -->
+  <section class="about-grid">
+    <div class="card" data-aos="fade-up">
+      <img src="https://cdn-icons-png.flaticon.com/512/2933/2933933.png" alt="Rider" />
+      <h2>🚴 Delivery Rider</h2>
+      <p>Be the heartbeat of Dala🚲na. Flexible hours, daily income, local routes. Bring joy to customers near you.</p>
     </div>
 
-    <!-- Merchant Card -->
-    <div class="card">
-      <h2><i class="fas fa-store"></i> Join as a Merchant Partner</h2>
-      <div class="status open">✅ Now Accepting</div>
-      <p>If you own a sari-sari store, bakery, or local shop, Dala🚲na can help you reach more customers through fast delivery.</p>
-      <p><em>Kung may ara ka tindahan o bakery, mabuligan ka sang Dala🚲na makalab-ot sa mas madamo nga customers.</em></p>
-      <p><strong>Benefits:</strong> Zero setup fee, delivery support, and digital visibility on our platform.</p>
-      <a href="https://airtable.com/appISjv70ZQ4pxBxv/pagI0B2GjHT1q5SvO/form" target="_blank" class="btn">Apply as Merchant</a>
+    <div class="card" data-aos="fade-up" data-aos-delay="100">
+      <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="Dispatcher" />
+      <h2>📍 Dispatcher</h2>
+      <p>Coordinate riders, manage orders, and help our system run smoothly. Ideal for organized multitaskers.</p>
     </div>
 
-    <!-- Assistant / Auditor Card -->
-    <div class="card">
-      <h2><i class="fas fa-user-check"></i> Join as Assistant / Auditor</h2>
-      <div class="status open">✅ Now Accepting</div>
-      <p>We're also hiring part-time or full-time assistants and community auditors to help manage daily operations, verify orders, and support logistics.</p>
-      <p><em>Nagapangita kami sang assistants kag auditors nga magabulig sa pagdumala sang adlaw-adlaw nga buluhaton kag pagsiguro sang serbisyo sa komunidad.</em></p>
-      <p><strong>How to Apply:</strong> Click below to email us your resume and a short introduction.</p>
-      <button class="btn" onclick="window.location.href='mailto:dalakona.service@gmail.com?cc=lynntebban@yahoo.com&subject=Application%20-%20Assistant%20or%20Auditor'">
-        📧 Send Resume
-      </button>
+    <div class="card" data-aos="fade-up" data-aos-delay="200">
+      <img src="https://cdn-icons-png.flaticon.com/512/9068/9068759.png" alt="Partner Support" />
+      <h2>🛍️ Partner Support</h2>
+      <p>Support our local store partners, onboard new merchants, and help with order and payment tracking.</p>
     </div>
 
-    <div class="center">
-      <a href="index.html" class="btn">← Back to Dala🚲na</a>
+    <div class="card" data-aos="fade-up" data-aos-delay="300">
+      <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Internship" />
+      <h2>💼 Internship</h2>
+      <p>College student or fresh grad? Join us to learn operations, logistics, or marketing with real impact.</p>
     </div>
+  </section>
+
+  <!-- Apply Button -->
+  <div style="text-align:center;">
+    <a href="mailto:apply@dalakona.com" class="btn">📧 Apply Now</a>
   </div>
 
   <!-- Footer -->
@@ -243,5 +228,8 @@
     </div>
   </footer>
 
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ once: true, duration: 800 });</script>
 </body>
 </html>
