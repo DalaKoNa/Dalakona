@@ -46,6 +46,25 @@
       color: #000;
     }
 
+    .hil {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.2rem;
+    }
+
+    .ref-input {
+      margin-top: 1rem;
+    }
+
+    .ref-input input {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
     .whatsapp-btn {
       display: block;
       width: 100%;
@@ -81,12 +100,6 @@
     .back-link:hover {
       background-color: #00664d;
     }
-
-    .hil {
-      font-size: 0.75rem;
-      color: #888;
-      margin-top: 0.2rem;
-    }
   </style>
 </head>
 <body>
@@ -95,25 +108,32 @@
     <div class="method" id="method-label">Payment Method:</div>
 
     <div class="details" id="payment-details">
-      <!-- Populated by JavaScript -->
+      <!-- Filled dynamically -->
     </div>
 
-    <a id="wa-link" class="whatsapp-btn" target="_blank">Checkout via WhatsApp</a>
+    <div class="ref-input" id="reference-box" style="display: none;">
+      <label for="ref-number">Enter Reference Number:</label>
+      <input type="text" id="ref-number" placeholder="Ex: 1234567890" />
+    </div>
+
+    <a id="wa-link" class="whatsapp-btn">Checkout via WhatsApp</a>
     <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
   </div>
 
   <script>
     const query = new URLSearchParams(window.location.search);
     const method = query.get("method");
-    const total = query.get("total");
+    const total = query.get("total") || "0.00";
     const name = query.get("name") || "Customer";
     const phone = query.get("phone") || "N/A";
-    const items = decodeURIComponent(query.get("items") || "");
+    const items = decodeURIComponent(query.get("items") || "No items listed");
 
     document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
     const detailsDiv = document.getElementById("payment-details");
-    let message = `🧾 New Order via Dala🚲Na\n\nName: ${name}\nPhone: ${phone}\n\nItems:\n${items}\n\nTotal: ₱${total}\nPayment: ${method}`;
+    const referenceBox = document.getElementById("reference-box");
+
+    let waMessage = `🧾 New Order via Dala🚲Na\n\nName: ${name}\nPhone: ${phone}\n\nItems:\n${items}\n\nTotal: ₱${total}\nPayment: ${method}`;
 
     if (method === "GCash") {
       detailsDiv.innerHTML = `
@@ -121,12 +141,14 @@
         <strong>GCash Number:</strong> 09171234567
         <strong>Total Amount to Pay:</strong> ₱${total}
       `;
+      referenceBox.style.display = "block";
     } else if (method === "PayMaya") {
       detailsDiv.innerHTML = `
         <strong>PayMaya Name:</strong> Ellen G. Mendoza
         <strong>PayMaya Number:</strong> 09181234567
         <strong>Total Amount to Pay:</strong> ₱${total}
       `;
+      referenceBox.style.display = "block";
     } else if (method === "Bank" || method === "Bank Transfer") {
       detailsDiv.innerHTML = `
         <strong>Bank:</strong> BPI
@@ -134,24 +156,46 @@
         <strong>Account Number:</strong> 1234-5678-9012
         <strong>Total Amount to Pay:</strong> ₱${total}
       `;
+      referenceBox.style.display = "block";
     } else if (method === "Cash" || method === "COD") {
       detailsDiv.innerHTML = `
         <strong>Cash on Delivery</strong>
         <strong>Total Due Upon Delivery:</strong> ₱${total}
-        <div class="hil">Please prepare the exact amount for smoother delivery.</div>
+        <div class="hil">Please prepare the exact amount. Full payment required upon delivery.</div>
       `;
     } else {
-      detailsDiv.innerHTML = `<em>Please return to cart and choose a valid payment method.</em>`;
-      message = '';
+      detailsDiv.innerHTML = `<em>Please go back and select a valid payment method.</em>`;
     }
 
     const waLink = document.getElementById('wa-link');
     const merchantNumber = "63XXXXXXXXXX";
-    waLink.href = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(message)}`;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     setTimeout(() => {
       waLink.classList.add("enabled");
     }, 30000); // 30 seconds
+
+    waLink.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const ref = document.getElementById("ref-number")?.value.trim();
+      if (referenceBox.style.display === "block" && !ref) {
+        alert("Please enter your payment reference number.");
+        return;
+      }
+
+      let finalMessage = waMessage;
+      if (ref) {
+        finalMessage += `\nReference #: ${ref}`;
+      }
+      finalMessage += `\nConfirmation #: ${confirmation}`;
+
+      const waURL = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(finalMessage)}`;
+      window.open(waURL, "_blank");
+
+      // Redirect to Thank You page
+      window.location.href = `thankyou.html?ref=${confirmation}`;
+    });
   </script>
 </body>
 </html>
