@@ -102,28 +102,41 @@
   ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
 </div>
 
-      <h3>Payment</h3>
-      <select id="payment-method">
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Bank">Bank Transfer</option>
-        <option value="Cash">Cash on Delivery</option>
-      </select>
+<h3>Payment</h3>
+<select id="payment-method">
+  <option value="GCash">GCash (may incur transfer fee)</option>
+  <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+  <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+  <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+</select>
 
-      <div style="margin-top: 0.5rem;">
-        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
-          View payment instructions
-        </a>
-      </div>
+<div style="margin-top: 0.5rem;">
+  <a
+    id="payment-link"
+    href="payment-instructions.html?method=GCash"
+    target="_blank"
+    style="color: #008060; text-decoration: underline;"
+  >
+    View payment instructions
+  </a>
+</div>
 
-      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>. Orders are final.
-      </div>
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+  ✅ I agree to the
+  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+    Terms & Conditions
+  </a>.
+  Orders are final and subject to store policies.
+</div>
 
-      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
-        Checkout via WhatsApp
-      </button>
-    </div>
+<button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
   </div>
 
   <script>
@@ -352,13 +365,14 @@ Payment: ${method}`;
     const checkoutBtn = document.getElementById('checkout-btn');
 
     if (allFilled && cartHasItems) {
-      checkoutBtn.disabled = false;
-      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-    } else {
-      checkoutBtn.disabled = true;
-      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-    }
+  checkoutBtn.disabled = false;
+  checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+} else {
+  checkoutBtn.disabled = true;
+  checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+}
+
   }
 </script>
