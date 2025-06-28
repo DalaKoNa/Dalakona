@@ -34,12 +34,12 @@
 
     .hero {
       background-color: #a0527b;
-      height: 220px;
+      color: white;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: #fff;
     }
 
     .hero h1 {
@@ -47,37 +47,64 @@
       margin: 0;
     }
 
-    .job-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem 1.5rem;
-      max-width: 1100px;
+    .container {
+      max-width: 900px;
       margin: auto;
+      padding: 2rem 1.5rem;
     }
 
-    .job-card {
-      background-color: #fffefb;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    }
-
-    .job-card h2 {
+    h2 {
       font-size: 1.3rem;
       color: #a0527b;
-      margin-bottom: 0.5rem;
+      margin-top: 2rem;
     }
 
-    .job-card p {
+    p {
       font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+
+    form {
+      margin-top: 1.5rem;
+      background: #fffefb;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background: #a0527b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #893f65;
     }
 
     .btn {
       display: inline-block;
-      margin: 2rem auto;
+      margin: 2rem auto 0;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
@@ -92,15 +119,14 @@
       background-color: #f9f9f9;
       padding: 2rem 1rem;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
+      flex-wrap: wrap;
       border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
-      margin-bottom: 1rem;
     }
 
     .footer-left .socials a {
@@ -122,8 +148,8 @@
 
     @media (max-width: 600px) {
       .hero h1 { font-size: 1.5rem; }
-      .job-card h2 { font-size: 1.1rem; }
-      .job-card p { font-size: 0.95rem; }
+      h2 { font-size: 1.1rem; }
+      p, label { font-size: 0.95rem; }
       .awning-top { height: 28px; background-size: 28px 28px; }
       footer { flex-direction: column; align-items: flex-start; }
     }
@@ -134,37 +160,36 @@
   <div class="awning-top"></div>
 
   <section class="hero">
-    <h1>Careers at Dala🚲na<br>Mag-Upod sa Amon</h1>
+    <h1>Careers / Trabaho</h1>
   </section>
 
-  <section class="job-grid">
-    <div class="job-card">
-      <h2>🚴 Delivery Rider</h2>
-      <p>Deliver items to homes quickly and safely.</p>
-      <p>Magdala sang items sa mga balay nga safe kag dasig.</p>
-    </div>
+  <div class="container">
+    <h2>🚴‍♂️ Be a Dala🚲na Rider</h2>
+    <p>Want to earn while helping your community? Join our rider team! Fill out the form below to apply.</p>
+    <p>Gusto mo magpangita sang obra samtang naga serbisyo sa komunidad? Mag-apply bilang rider!</p>
 
-    <div class="job-card">
-      <h2>📦 Dispatcher</h2>
-      <p>Coordinate deliveries and support riders.</p>
-      <p>Mag-coordinate sang deliveries kag magbulig sa mga riders.</p>
-    </div>
+    <p>📧 You can also email us directly at <strong>dalakona.jobs@gmail.com</strong></p>
 
-    <div class="job-card">
-      <h2>📱 Customer Support</h2>
-      <p>Assist customers with orders and questions.</p>
-      <p>Magbulig sa mga customers sa ila orders kag pamangkot.</p>
-    </div>
+    <!-- Rider Application Form -->
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <label for="name">Full Name / Ngalan</label>
+      <input type="text" id="name" name="name" required />
 
-    <div class="job-card">
-      <h2>📊 Store Partner Manager</h2>
-      <p>Help onboard local shops and manage relationships.</p>
-      <p>Magbulig sa mga local stores kag magdumala sang partnership.</p>
-    </div>
-  </section>
+      <label for="phone">Phone Number / Numero</label>
+      <input type="tel" id="phone" name="phone" required />
 
-  <div style="text-align:center;">
-    <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
+      <label for="email">Email (optional)</label>
+      <input type="email" id="email" name="email" />
+
+      <label for="message">Why do you want to be a rider? / Ngaa gusto mo mag-rider?</label>
+      <textarea id="message" name="message" rows="4" required></textarea>
+
+      <button type="submit">Submit Application / Ipadala</button>
+    </form>
+
+    <div style="text-align:center;">
+      <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
+    </div>
   </div>
 
   <footer>
