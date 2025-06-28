@@ -35,21 +35,6 @@
       margin-bottom: 1rem;
     }
 
-    .note {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 1.5rem;
-      background: #fff4ec;
-      padding: 1rem;
-      border-left: 4px solid #fbc490;
-    }
-
-    .hil {
-      font-size: 0.75rem;
-      color: #888;
-      margin-top: 0.2rem;
-    }
-
     .details {
       font-size: 1rem;
       margin-bottom: 1.5rem;
@@ -61,6 +46,27 @@
       color: #000;
     }
 
+    .whatsapp-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: #25D366;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-top: 1rem;
+      pointer-events: none;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .whatsapp-btn.enabled {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
     .back-link {
       display: inline-block;
       padding: 0.6rem 1.2rem;
@@ -68,81 +74,84 @@
       color: white;
       text-decoration: none;
       border-radius: 6px;
+      margin-top: 1rem;
       text-align: center;
     }
 
     .back-link:hover {
       background-color: #00664d;
     }
+
+    .hil {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.2rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Payment Instructions</h1>
-    <div class="method" id="method-label">Payment Method: </div>
-
-    <div class="note">
-      Kindly pay only the <strong>total price of your selected items</strong>.
-      <div class="hil">Palihog bayri lang ang kabug-osan nga presyo sang mga ginpili mo nga items.</div>
-      <br>Do not pay the ₱29.99 service fee — this is settled separately upon delivery.
-      <div class="hil">Indi anay bayaran ang ₱29.99 nga service fee — ini bayaran lang pag-abot sang delivery.</div>
-    </div>
+    <div class="method" id="method-label">Payment Method:</div>
 
     <div class="details" id="payment-details">
-      <!-- Filled by JavaScript -->
+      <!-- Populated by JavaScript -->
     </div>
 
+    <a id="wa-link" class="whatsapp-btn" target="_blank">Checkout via WhatsApp</a>
     <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
   </div>
 
   <script>
     const query = new URLSearchParams(window.location.search);
     const method = query.get("method");
+    const total = query.get("total");
+    const name = query.get("name") || "Customer";
+    const phone = query.get("phone") || "N/A";
+    const items = decodeURIComponent(query.get("items") || "");
+
     document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
     const detailsDiv = document.getElementById("payment-details");
+    let message = `🧾 New Order via Dala🚲Na\n\nName: ${name}\nPhone: ${phone}\n\nItems:\n${items}\n\nTotal: ₱${total}\nPayment: ${method}`;
 
     if (method === "GCash") {
       detailsDiv.innerHTML = `
         <strong>GCash Name:</strong> Ellen G. Mendoza
-        <div class="hil">Ngalan sa GCash: Ellen G. Mendoza</div>
         <strong>GCash Number:</strong> 09171234567
-        <div class="hil">Numero sa GCash: 09171234567</div>
-        <strong>Reference:</strong> Use your full name for proper verification.
-        <div class="hil">Gamita ang imo bug-os nga ngalan para sa hustong pagpang-ila.</div>
+        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
     } else if (method === "PayMaya") {
       detailsDiv.innerHTML = `
         <strong>PayMaya Name:</strong> Ellen G. Mendoza
-        <div class="hil">Ngalan sa PayMaya: Ellen G. Mendoza</div>
         <strong>PayMaya Number:</strong> 09181234567
-        <div class="hil">Numero sa PayMaya: 09181234567</div>
-        <strong>Reference:</strong> Use your full name for proper verification.
-        <div class="hil">Gamita ang imo bug-os nga ngalan para sa hustong pagpang-ila.</div>
+        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
     } else if (method === "Bank" || method === "Bank Transfer") {
       detailsDiv.innerHTML = `
         <strong>Bank:</strong> BPI
-        <div class="hil">Bangko: BPI</div>
         <strong>Account Name:</strong> Ellen G. Mendoza
-        <div class="hil">Ngalan sang Account: Ellen G. Mendoza</div>
         <strong>Account Number:</strong> 1234-5678-9012
-        <div class="hil">Numero sang Account: 1234-5678-9012</div>
-        <strong>Reference:</strong> Use your full name.
-        <div class="hil">Gamita ang imo bug-os nga ngalan.</div>
+        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
     } else if (method === "Cash" || method === "COD") {
       detailsDiv.innerHTML = `
-        <strong>Important:</strong> You must pay the <strong>full amount</strong> including ₱29.99 service fee and 12% VAT.
-        <div class="hil">Importante: Kinahanglan bayran mo ang bug-os nga balor upod ang ₱29.99 nga service fee kag 12% VAT.</div>
-        <strong>Payment Method:</strong> Cash on Delivery
-        <div class="hil">Paagi sa Bayad: Kwarta sa pag-deliver</div>
-        <strong>Reminder:</strong> Please prepare the exact amount for faster processing.
-        <div class="hil">Pahanumdom: Manginhanda sang eksakto nga balor para mapadasig ang proseso.</div>
+        <strong>Cash on Delivery</strong>
+        <strong>Total Due Upon Delivery:</strong> ₱${total}
+        <div class="hil">Please prepare the exact amount for smoother delivery.</div>
       `;
     } else {
-      detailsDiv.innerHTML = `<em>Please go back and select a valid payment method from the cart.</em><br><small class="hil">Palihog baliki ang cart kag pili sang husto nga paagi sang bayad.</small>`;
+      detailsDiv.innerHTML = `<em>Please return to cart and choose a valid payment method.</em>`;
+      message = '';
     }
+
+    const waLink = document.getElementById('wa-link');
+    const merchantNumber = "63XXXXXXXXXX";
+    waLink.href = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(message)}`;
+
+    setTimeout(() => {
+      waLink.classList.add("enabled");
+    }, 30000); // 30 seconds
   </script>
 </body>
 </html>
