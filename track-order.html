@@ -1,104 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Salamat! - Dala🚲Na</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #f8f8f8;
+      background-color: #fefdfb;
       color: #333;
-      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      justify-content: center;
     }
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    .brand {
-      font-size: 1.4rem;
-      font-weight: 700;
+
+    h1 {
+      font-size: 2rem;
       color: #008060;
-      margin-bottom: 0.2rem;
-    }
-    h2 {
-      color: #008060;
-      margin-bottom: 0.5rem;
-    }
-    .section {
-      margin-top: 1.5rem;
-    }
-    .section-title {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: #555;
-    }
-    .item {
-      margin-bottom: 0.3rem;
-    }
-    .footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #777;
+      margin-bottom: 0.75rem;
       text-align: center;
     }
+
+    .check-icon {
+      font-size: 3rem;
+      color: #28a745;
+      margin-bottom: 1rem;
+    }
+
+    .ref {
+      background: #e6ffee;
+      border: 1px solid #b2f2d2;
+      padding: 1rem 2rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+
     .hil {
-      font-style: italic;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #666;
+      text-align: center;
+    }
+
+    .btn-group {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    button {
+      background-color: #008060;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005f45;
+    }
+
+    #order-summary {
+      background-color: #ffffff;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    #order-summary h3 {
+      color: #008060;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 0.5rem;
+    }
+
+    #order-summary p {
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 480px) {
+      .ref { font-size: 1.1rem; }
+      button { width: 100%; }
+      #order-summary { padding: 1rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="brand">Dala🚲Na – Subong Dayon!</div>
-      <h2>🧾 Order Receipt</h2>
-      <p><strong>Merchant:</strong> Ellen’s Cakes</p>
-    </div>
+  <div id="pdf-content">
+    <div class="check-icon">✅</div>
+    <h1>Salamat guid sa imo order!</h1>
+    <p>Ang imo reference number amo ini:</p>
+    <div class="ref" id="ref-number">DALA-XXXXXX</div>
+    <p class="hil">🙏 Salamat guid sa imo pagsalig kag suporta sa Dala🚲Na.</p>
+    <p class="hil">📸 Screenshot ukon download ang ini nga page bilang imo resibo.</p>
 
-    <div><strong>Reference No.:</strong> DALA-123456</div>
-    <div class="hil">Numero sang order mo</div>
-
-    <div class="section">
-      <div class="section-title">📋 Items Ordered</div>
-      <div class="hil">Mga gin-order nga items</div>
-      <div class="item">2x Paracetamol</div>
-      <div class="item">1x Vitamin C 500mg</div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">📍 Delivery Details</div>
-      <div class="hil">Detalye sang delivery</div>
-      <p><strong>Address:</strong> #123 Lopez Jaena St., Brgy. 3</p>
-      <p><strong>Date:</strong> 2025-06-25</p>
-      <p><strong>Time:</strong> 10:00 AM</p>
-    </div>
-
-    <div class="section">
-      <div class="section-title">💳 Payment Method</div>
-      <div class="hil">Paagi sang bayad</div>
-      <p>GCash</p>
-    </div>
-
-    <div class="section">
-      <div class="section-title">💰 Total</div>
-      <div class="hil">Kabug-usan nga bayad</div>
-      <p>₱259.99</p>
-    </div>
-
-    <div class="footer">
-      🙏 Thank you for ordering with Dala🚲Na!<br />
-      <span class="hil">Salamat guid sa pag-order sa Dala🚲Na!</span><br /><br />
-      ❗ If you didn’t place this order, please contact support.<br />
-      <span class="hil">Kon indi ikaw ang nag-order, palihog kontaka ang support.</span>
+    <div id="order-summary" class="hidden">
+      <h3>📋 Order Summary</h3>
+      <p><strong>🛒 Items:</strong> <span id="summary-items">-</span></p>
+      <p><strong>📆 Delivery:</strong> <span id="summary-delivery">-</span></p>
+      <p><strong>💳 Payment:</strong> <span id="summary-payment">-</span></p>
+      <p><strong>💰 Total:</strong> <span id="summary-total">-</span></p>
     </div>
   </div>
+
+  <div class="btn-group">
+    <button onclick="trackOrder()">📦 Usisaon ang Akon Order</button>
+    <button onclick="location.href='index.html'">🏠 Balik sa Main Page</button>
+    <button onclick="downloadPDF()">📄 Download as PDF</button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref") || "UNKNOWN";
+    document.getElementById("ref-number").innerText = ref;
+
+    function trackOrder() {
+      location.href = "track-order.html?ref=" + encodeURIComponent(ref);
+    }
+
+    function downloadPDF() {
+      const content = document.getElementById("pdf-content");
+      html2pdf().from(content).save(`DalaNa-Receipt-${ref}.pdf`);
+    }
+
+    // Populate summary if available
+    const summary = JSON.parse(localStorage.getItem("dalaOrderSummary"));
+    if (summary) {
+      document.getElementById("order-summary").classList.remove("hidden");
+      document.getElementById("summary-items").innerText = summary.items || "-";
+      document.getElementById("summary-delivery").innerText = `${summary.date || "-"} at ${summary.time || "-"}`;
+      document.getElementById("summary-payment").innerText = summary.payment || "-";
+      document.getElementById("summary-total").innerText = summary.total || "-";
+      localStorage.removeItem("dalaOrderSummary");
+    }
+
+    // Auto-redirect after 10 seconds
+    setTimeout(() => {
+      location.href = "https://wa.me/63XXXXXXXXXX?text=Salamat%20guid!%20Order%20ref:%20" + encodeURIComponent(ref);
+    }, 10000);
+  </script>
 </body>
 </html>
