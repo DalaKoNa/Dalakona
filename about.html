@@ -7,33 +7,32 @@
   <title>About Us – Dala🚲na</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
   <style>
     body {
-      background-color: #fffaf4;
+      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
       color: #333;
     }
 
-    .navbar.storefront-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #fffaf4;
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      border-bottom: 1px solid #eaeaea;
-    }
-
-    .title {
-      font-size: 1.5rem;
-      color: #222;
-      text-align: center;
-      flex: 1;
+    /* Awning Top */
+    .awning-top {
+      height: 36px;
+      background: repeating-linear-gradient(
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
+      );
+      clip-path: polygon(
+        0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+        30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+        60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+        90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+      );
     }
 
     .hero {
@@ -61,42 +60,54 @@
       z-index: 1;
     }
 
-    .storefront-wrapper-grid {
+    .about-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
-      padding: 2rem 1rem;
+      padding: 2rem 1.5rem;
       max-width: 1100px;
-      margin: 0 auto;
+      margin: auto;
     }
 
-    .story-card {
-      background-color: #fff;
-      padding: 1.5rem;
+    .card {
+      background-color: #fffefb;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.3s ease;
     }
 
-    .story-card h2 {
-      color: #a0527b;
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
       font-size: 1.3rem;
-      margin-top: 0;
+      color: #a0527b;
+      margin-bottom: 0.5rem;
     }
 
-    .story-card p {
-      line-height: 1.6;
+    .card p {
       font-size: 1rem;
+      line-height: 1.5;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 2rem;
+      margin: 2rem auto 0;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1rem;
+      text-align: center;
     }
 
     footer {
@@ -136,16 +147,11 @@
         font-size: 1.5rem;
       }
 
-      .storefront-wrapper-grid {
-        padding: 1rem;
-        gap: 1rem;
-      }
-
-      .story-card h2 {
+      .card h2 {
         font-size: 1.1rem;
       }
 
-      .story-card p {
+      .card p {
         font-size: 0.95rem;
       }
 
@@ -157,45 +163,53 @@
       .footer-right {
         margin-top: 1.5rem;
       }
+
+      .awning-top {
+        height: 28px;
+        background-size: 28px 28px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="navbar storefront-header">
-    <div class="title">About Dala🚲na</div>
-  </div>
+
+  <!-- Awning Banner -->
+  <div class="awning-top"></div>
 
   <!-- Hero Section -->
   <section class="hero">
     <h1>About Dala🚲na</h1>
   </section>
 
-  <!-- Main Story Cards Grid -->
-  <div class="storefront-wrapper-grid">
-    <div class="story-card">
-      <h2>💡 Our Mission / Ang Amon Misyón</h2>
-      <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make daily essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
-      <p>Ang Dala🚲na isa ka delivery service nga naga-serbisyo sa mga kinahanglanon sang komunidad. Ginadala namon ang mga kinahanglanon — halin sa panaderia tubtob sa botika — padulong sa imo balay, subong dayon.</p>
+  <!-- Info Cards Section -->
+  <section class="about-grid">
+    <div class="card" data-aos="fade-up">
+      <img src="https://cdn-icons-png.flaticon.com/512/864/864685.png" alt="Mission Icon" />
+      <h2>💡 Our Mission</h2>
+      <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We aim to make essentials—from panaderia goods to pharmacy items—accessible and delivered with care within minutes.</p>
     </div>
-    <div class="story-card">
-      <h2>📍 Community-Centered / Para sa Komunidad</h2>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100">
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Community Icon" />
+      <h2>📍 Community-Centered</h2>
       <p>We prioritize local shops and community riders, helping small businesses grow while making life easier for customers.</p>
-      <p>Ginauna namon ang mga lokal nga tindahan kag mga rider sang komunidad. Gintinguhaan namon nga mabuligan ang mga gamay nga negosyo kag mapasayon ang kabuhi sang mga customers.</p>
     </div>
-    <div class="story-card">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200">
+      <img src="https://cdn-icons-png.flaticon.com/512/3241/3241147.png" alt="Fast Delivery Icon" />
       <h2>🚴 Subong Dayon!</h2>
       <p>We don’t just deliver quickly—we deliver with intention, love, and a personal touch. Every order supports a chain of local heroes.</p>
-      <p>Indi lang ni basta delivery. Gindal-an ka sang gugma, intensyon, kag suporta sa mga lokal nga bayani.</p>
     </div>
-    <div class="story-card">
-      <h2>🌱 Our Roots / Ang Amon Kabangdanan</h2>
-      <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
-      <p>Gintukod ang Dala🚲na agud mabuligan ang aton kasilingan, sari-sari stores, kag mga rider. Ginahingyo namon ang kabuhi nga may tinutuyo.</p>
-    </div>
-  </div>
 
-  <!-- Back Button -->
-  <div style="text-align:center; margin-bottom: 2rem;">
+    <div class="card" data-aos="fade-up" data-aos-delay="300">
+      <img src="https://cdn-icons-png.flaticon.com/512/599/599995.png" alt="Roots Icon" />
+      <h2>🌱 Our Roots</h2>
+      <p>Dala🚲na was built to support neighbors, sari-sari stores, and local riders—bringing convenience while uplifting the community.</p>
+    </div>
+  </section>
+
+  <!-- Back to Homepage -->
+  <div style="text-align:center;">
     <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
 
@@ -219,5 +233,11 @@
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Animate On Scroll -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 800 });
+  </script>
 </body>
 </html>
