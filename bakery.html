@@ -6,6 +6,7 @@
   <title>Dala🚲Na Bakery</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="thankyou.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
@@ -64,6 +65,14 @@
       width: 100%;
       cursor: pointer;
     }
+    .timer-box {
+      background: #fff8e1;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -75,12 +84,13 @@
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
-
   <div class="search-bar">
     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
   </div>
-
   <div class="grid" id="product-list"></div>
+
+  
+  <script src="cart.js"></script>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
@@ -97,9 +107,11 @@
 
       <h3>Delivery Details</h3>
       <input type="date" id="delivery-date">
-      <input type="time" id="delivery-time">
+      <div id="delivery-time-wrapper">
+        <input type="time" id="delivery-time">
+      </div>
       <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
-        ✅ Today's delivery time is auto-set to 1 hour and 10 minutes from now and cannot be edited.
+        ✅ Today's delivery time is auto-set to 45 minutes from now and cannot be edited.
       </div>
 
       <h3>Payment</h3>
@@ -126,11 +138,8 @@
     </div>
   </div>
 
-  <script>
-    // Next step: JavaScript logic for bakery products, cart, delivery form, etc.
-  </script>
-</body>
-</html>
+<script>
+// Script continues after this block and will be pasted next...
 <script>
   const products = [
     { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
@@ -225,7 +234,6 @@
       alert("Geolocation is not supported by your browser.");
       return;
     }
-
     navigator.geolocation.getCurrentPosition(
       position => {
         const lat = position.coords.latitude;
@@ -287,14 +295,16 @@ ${items}
 ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}`;
+
     const encodedMsg = encodeURIComponent(message);
 
-    const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
-    window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
-    window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
-    window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
-
-    window.location.href = `thankyou.html?ref=${confirmation}`;
+    setTimeout(() => {
+      const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+      window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
+      window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+      window.location.href = `thankyou.html?ref=${confirmation}`;
+    }, 60000); // 60 seconds wait for payment instructions
   }
 
   window.onload = () => {
@@ -312,12 +322,14 @@ Payment: ${method}`;
       const currentDate = new Date();
 
       if (selectedDate.toDateString() === currentDate.toDateString()) {
-        const autoTime = new Date(currentDate.getTime() + 70 * 60000);
+        const autoTime = new Date(currentDate.getTime() + 45 * 60000); // 45 mins
         deliveryTime.value = autoTime.toTimeString().slice(0, 5);
         deliveryTime.disabled = true;
+        deliveryTime.style.display = "none"; // hidden
         deliveryNote.style.display = "block";
       } else {
         deliveryTime.disabled = false;
+        deliveryTime.style.display = "block";
         deliveryNote.style.display = "none";
       }
 
@@ -341,7 +353,6 @@ Payment: ${method}`;
     'customer-email',
     'delivery-address',
     'delivery-date',
-    'delivery-time',
     'payment-method'
   ];
 
@@ -369,3 +380,7 @@ Payment: ${method}`;
     }
   }
 </script>
+
+</script>
+</body>
+</html>
