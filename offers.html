@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Dala Ko Na Promos and Offers – Save more on your next delivery!">
   <title>Offers – Dala🚲na</title>
-  <link rel="icon" href="/favicon.ico" />
-  <link href="style.css" rel="stylesheet" /> <!-- Your local CSS if any -->
-
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
     body {
       background-color: #fff9f3;
@@ -20,7 +18,11 @@
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -31,80 +33,50 @@
     }
 
     .hero {
-      background: url('pastel-hero.jpg') no-repeat center center;
-      background-size: cover;
-      height: 220px;
+      background-color: #a0527b;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      position: relative;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+      text-align: center;
     }
 
     .hero h1 {
-      position: relative;
       font-size: 2rem;
-      z-index: 1;
+      margin: 0;
     }
 
-    .about-grid {
+    .offers-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       padding: 2rem 1.5rem;
       max-width: 1100px;
       margin: auto;
     }
 
-    .card {
+    .offer-card {
       background-color: #fffefb;
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-      text-align: center;
-      transition: transform 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards;
     }
 
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    .card:nth-child(3) { animation-delay: 0.2s; }
-    .card:nth-child(4) { animation-delay: 0.3s; }
-
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card img {
-      width: 60px;
-      margin-bottom: 1rem;
-    }
-
-    .card h2 {
+    .offer-card h2 {
       font-size: 1.3rem;
       color: #a0527b;
       margin-bottom: 0.5rem;
     }
 
-    .card p {
+    .offer-card p {
       font-size: 1rem;
       line-height: 1.5;
     }
 
     .btn {
       display: inline-block;
-      margin: 2rem auto 0;
+      margin: 2rem auto;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
@@ -117,16 +89,17 @@
     footer {
       font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
-      padding: 2em;
+      padding: 2rem 1rem;
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
+      justify-content: space-between;
       border-top: 1px solid #ddd;
     }
 
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
+      margin-bottom: 1rem;
     }
 
     .footer-left .socials a {
@@ -147,77 +120,46 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.5rem;
-      }
-
-      .card h2 {
-        font-size: 1.1rem;
-      }
-
-      .card p {
-        font-size: 0.95rem;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-right {
-        margin-top: 1.5rem;
-      }
-
-      .awning-top {
-        height: 28px;
-        background-size: 28px 28px;
-      }
+      .hero h1 { font-size: 1.5rem; }
+      .offer-card h2 { font-size: 1.1rem; }
+      .offer-card p { font-size: 0.95rem; }
+      .awning-top { height: 28px; background-size: 28px 28px; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Awning -->
   <div class="awning-top"></div>
 
-  <!-- Hero -->
   <section class="hero">
-    <h1>🎉 Offers & Promos</h1>
+    <h1>Offers & Promos<br>Mga Promos kag Libre</h1>
   </section>
 
-  <!-- Offer Cards -->
-  <section class="about-grid">
-    <div class="card">
-      <img src="assets/icons/new-user.png" alt="New User Promo" />
-      <h2>🆕 New User Deal</h2>
-      <p>Get ₱30 OFF your first order. Just sign up and checkout. No code needed!</p>
+  <section class="offers-grid">
+    <div class="offer-card">
+      <h2>📦 Free Delivery</h2>
+      <p>Get free delivery on your first 3 orders. Valid for all stores.</p>
+      <p>Libreng delivery sa imo unang tatlo ka orders. Pwede sa tanan nga tindahan.</p>
     </div>
 
-    <div class="card">
-      <img src="assets/icons/referral.png" alt="Referral Icon" />
-      <h2>👯 Refer a Friend</h2>
-      <p>Invite your friends and both of you get ₱20 credit after their first order.</p>
+    <div class="offer-card">
+      <h2>🎂 Birthday Promo</h2>
+      <p>Celebrating your birthday? Get ₱50 off your order!</p>
+      <p>Birthday mo? May ₱50 discount ikaw sa imo order!</p>
     </div>
 
-    <div class="card">
-      <img src="assets/icons/free-delivery.png" alt="Free Delivery Icon" />
-      <h2>🚚 Free Delivery</h2>
-      <p>Enjoy free delivery on all pharmacy or bakery orders above ₱499.</p>
-    </div>
-
-    <div class="card">
-      <img src="assets/icons/loyalty.png" alt="Loyalty" />
-      <h2>🎁 Loyalty Rewards</h2>
-      <p>Complete 5 orders and get a ₱50 voucher for your next purchase.</p>
+    <div class="offer-card">
+      <h2>💼 Partner Store Rewards</h2>
+      <p>Buy from partner stores and earn DalaPoints for freebies!</p>
+      <p>Palit sa partner stores kag magdaug sang DalaPoints para sa libre nga produkto!</p>
     </div>
   </section>
 
-  <!-- Back -->
   <div style="text-align:center;">
     <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
@@ -230,10 +172,10 @@
     </div>
     <div class="footer-right">
       <a href="about.html">About / Ang Istorya Naton</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions / Kasugtanan</a>
+      <a href="privacy.html">Privacy Policy / Pribado nga Palisi</a>
       <a href="offers.html">Offers / Mga Promos</a>
-      <a href="careers.html">Careers</a>
+      <a href="careers.html">Careers / Trabaho</a>
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
