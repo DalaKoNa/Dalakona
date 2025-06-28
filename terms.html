@@ -3,85 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Dala🚲na – Offers and Promos for You!">
-  <title>Offers / Mga Promos – Dala🚲na</title>
-  <link rel="icon" href="/favicon.ico" />
+  <title>Terms & Conditions – Dala🚲na</title>
+  <link rel="icon" href="favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
     body {
+      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
-      background-color: #fdf6f0;
       margin: 0;
       padding: 0;
       color: #333;
     }
 
+    .awning-top {
+      height: 36px;
+      background: repeating-linear-gradient(
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
+      );
+      clip-path: polygon(
+        0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+        30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+        60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+        90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+      );
+    }
+
     .hero {
-      background: url('pastel-hero.jpg') no-repeat center center;
-      background-size: cover;
+      background-color: #a0527b;
+      color: white;
       height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      position: relative;
       text-align: center;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5);
-    }
-
     .hero h1 {
-      position: relative;
-      z-index: 1;
       font-size: 2rem;
+      margin: 0;
     }
 
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: auto;
       padding: 2rem 1.5rem;
     }
 
-    .offer {
-      background: #fff7ec;
-      padding: 1rem 1.5rem;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-      border-left: 6px solid #ffc107;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-    }
-
-    .offer h2 {
+    h2 {
+      font-size: 1.3rem;
       color: #a0527b;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+      margin-top: 2rem;
     }
 
-    .offer p {
+    p {
       font-size: 1rem;
-      margin: 0;
+      line-height: 1.6;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 2rem;
+      margin: 2rem auto 0;
       background: #a0527b;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1rem;
+      text-align: center;
     }
 
     footer {
       font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
-      padding: 2em;
+      padding: 2rem 1rem;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -91,6 +89,7 @@
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
+      margin-bottom: 1rem;
     }
 
     .footer-left .socials a {
@@ -111,61 +110,59 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.5rem;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-right {
-        margin-top: 1.5rem;
-      }
+      .hero h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.1rem; }
+      p { font-size: 0.95rem; }
+      .awning-top { height: 28px; background-size: 28px 28px; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
+  <div class="awning-top"></div>
+
   <section class="hero">
-    <h1>Offers / Mga Promos</h1>
+    <h1>Terms & Conditions<br>Kasugtanan</h1>
   </section>
 
-  <!-- Main Offers -->
   <div class="container">
-    <div class="offer">
-      <h2>🎁 FREE Dala🚲na Merchandise</h2>
-      <p>Order a minimum of ₱500 from any of our partner stores and get a free limited-edition Dala🚲na merchandise item! Available while supplies last.</p>
-      <p><em>Mag-order sang ₱500 kag labaw pa sa bisan ano nga tindahan kag makaangkon ka sang libre nga Dala🚲na item! Para sa mga una lang.</em></p>
-    </div>
+    <h2>1. Order Process / Pag-order</h2>
+    <p>All orders must be placed via our platform. Details must be accurate for successful delivery.</p>
+    <p>Ang tanan nga order dapat ipasa sa among platform. Kinahanglan husto ang detalye para sa maayos nga delivery.</p>
 
-    <div class="offer">
-      <h2>📦 Free Delivery Fee sa First Order</h2>
-      <p>Waived delivery fee for first-time customers. Your first checkout is on us!</p>
-      <p><em>Libreng delivery fee para sa mga bag-o nga customer. Ang una mo nga order, amon na bahala!</em></p>
-    </div>
+    <h2>2. Delivery Time / Oras sang Paghatod</h2>
+    <p>Estimated delivery times vary based on distance, traffic, and store availability.</p>
+    <p>Ang oras sang delivery nagadepende sa layo, trapik, kag availability sang tindahan.</p>
 
-    <div class="offer">
-      <h2>🎉 Refer a Friend, Earn ₱50 Credit</h2>
-      <p>Share Dala🚲na with your friends and earn ₱50 store credit each time someone you refer places an order.</p>
-      <p><em>I-share ang Dala🚲na sa imo abyan, kag maka-earn ka ₱50 kada may mag-order nga gin-refer mo!</em></p>
-    </div>
+    <h2>3. Cancellations / Pag-kansela</h2>
+    <p>Orders cannot be canceled once dispatched. Contact support for concerns.</p>
+    <p>Indi na pwede ikansela ang order kung napa-dispatch na. Kontaka lang ang support kung may problema.</p>
+
+    <h2>4. Payment / Bayad</h2>
+    <p>We accept cash on delivery, GCash, or PayMaya. Orders are only valid once payment is confirmed.</p>
+    <p>Ginabaton namon ang bayad paagi sa COD, GCash, ukon PayMaya. Valid lang ang order kung confirmed na ang bayad.</p>
+
+    <h2>5. Returns & Complaints / Pagbalik ukon Reklamo</h2>
+    <p>Contact us within 1 hour of delivery for any issues. Include photo proof if applicable.</p>
+    <p>Kontaka kami sulod sang isa ka oras pagkatapos sang delivery kung may problema. Ipadala ang ebidensya kung kinahanglan.</p>
+
+    <h2>6. Policy Changes / Pagbag-o sang Kasugtanan</h2>
+    <p>We may update terms without prior notice. Continued use means agreement to changes.</p>
+    <p>Pwede kami magbag-o sang terms bisan wala notice. Kung padayon ka gamit, nagapasugot ka sang kabag-ohan.</p>
 
     <div style="text-align:center;">
-      <a href="index.html" class="btn">← Back to Dala🚲na</a>
+      <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
       <div class="socials">
-        <a href="https://facebook.com" target="_blank">FB</a>
-        <a href="https://instagram.com" target="_blank">IG</a>
-        <a href="https://x.com" target="_blank">X</a>
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">X</a>
       </div>
       <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
