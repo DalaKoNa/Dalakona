@@ -53,30 +53,46 @@
       padding: 2rem 1.5rem;
     }
 
+    .card {
+      background-color: #fffefb;
+      padding: 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
     h2 {
       font-size: 1.3rem;
       color: #a0527b;
-      margin-top: 2rem;
+      margin-top: 0;
     }
 
     p {
-      font-size: 1rem;
+      font-size: 1.05rem;
       line-height: 1.6;
     }
 
+    .btn, button {
+      background: #a0527b;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
     form {
-      margin-top: 1.5rem;
-      background: #fffefb;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+      display: none;
+      margin-top: 1rem;
     }
 
     label {
       display: block;
       margin-top: 1rem;
-      margin-bottom: 0.3rem;
-      font-weight: 600;
     }
 
     input, textarea {
@@ -87,37 +103,10 @@
       font-family: inherit;
     }
 
-    button {
-      margin-top: 1.5rem;
-      background: #a0527b;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #893f65;
-    }
-
-    .btn {
-      display: inline-block;
-      margin: 2rem auto 0;
-      background: #a0527b;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      text-align: center;
-    }
-
     footer {
       font-family: 'Cinzel', serif;
       background-color: #f9f9f9;
-      padding: 2rem 1rem;
+      padding: 2em 1.5em;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -164,32 +153,47 @@
   </section>
 
   <div class="container">
-    <h2>🚴‍♂️ Be a Dala🚲na Rider</h2>
-    <p>Want to earn while helping your community? Join our rider team! Fill out the form below to apply.</p>
-    <p>Gusto mo magpangita sang obra samtang naga serbisyo sa komunidad? Mag-apply bilang rider!</p>
 
-    <p>📧 You can also email us directly at <strong>dalakona.jobs@gmail.com</strong></p>
+    <div class="card">
+      <h2>📣 We're Hiring!</h2>
+      <p><strong>1. Rider / Delivery Partner</strong><br>
+      Help us deliver groceries, food, and essentials. Flexible schedule. Must have a valid ID and smartphone.<br>
+      <em>Mag-deliver sang pagkaon kag kinahanglanon. Kinahanglan may ID kag smartphone.</em></p>
 
-    <!-- Rider Application Form -->
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-      <label for="name">Full Name / Ngalan</label>
-      <input type="text" id="name" name="name" required />
+      <p><strong>2. Operations Assistant</strong><br>
+      Help us manage orders, chat support, and dispatch. Basic computer skills required.<br>
+      <em>Magbulig sa order management kag customer support. Kinahanglan may basic computer skills.</em></p>
 
-      <label for="phone">Phone Number / Numero</label>
-      <input type="tel" id="phone" name="phone" required />
+      <p><strong>3. Store Partner Onboarder (Freelance)</strong><br>
+      Invite local stores to join Dala🚲na. Commission-based.<br>
+      <em>Imbitahon ang mga lokal nga tindahan nga mag-upod sa Dala🚲na. May komisyon.</em></p>
+    </div>
 
-      <label for="email">Email (optional)</label>
-      <input type="email" id="email" name="email" />
+    <div class="card">
+      <h2>🚴 Apply as Rider</h2>
+      <p>Mangin kabahin sang Dala🚲na delivery team. Full-time or part-time. Submit your info below or email <strong>dalakona.jobs@gmail.com</strong></p>
+      <button onclick="document.getElementById('riderForm').style.display='block'">Apply Now</button>
+      <form id="riderForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <label for="name">Full Name / Ngalan</label>
+        <input type="text" id="name" name="name" required />
 
-      <label for="message">Why do you want to be a rider? / Ngaa gusto mo mag-rider?</label>
-      <textarea id="message" name="message" rows="4" required></textarea>
+        <label for="phone">Phone Number / Numero</label>
+        <input type="tel" id="phone" name="phone" required />
 
-      <button type="submit">Submit Application / Ipadala</button>
-    </form>
+        <label for="email">Email (optional)</label>
+        <input type="email" id="email" name="email" />
 
-    <div style="text-align:center;">
+        <label for="message">Why do you want to be a rider? / Ngaa gusto mo mag-rider?</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">Submit Application / Ipadala</button>
+      </form>
+    </div>
+
+    <div class="card" style="text-align: center;">
       <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
     </div>
+
   </div>
 
   <footer>
