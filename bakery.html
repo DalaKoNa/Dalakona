@@ -6,7 +6,6 @@
   <title>Dala🚲Na Bakery</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="thankyou.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
@@ -65,14 +64,6 @@
       width: 100%;
       cursor: pointer;
     }
-    .timer-box {
-      background: #fff8e1;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -84,13 +75,12 @@
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
+
   <div class="search-bar">
     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
   </div>
-  <div class="grid" id="product-list"></div>
 
-  
-  <script src="cart.js"></script>
+  <div class="grid" id="product-list"></div>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
@@ -105,14 +95,12 @@
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
 
-      <h3>Delivery Details</h3>
-      <input type="date" id="delivery-date">
-      <div id="delivery-time-wrapper">
-        <input type="time" id="delivery-time">
-      </div>
-      <div id="delivery-note" style="display: none; font-size: 0.85rem; color: #444;">
-        ✅ Today's delivery time is auto-set to 45 minutes from now and cannot be edited.
-      </div>
+<h3>Delivery Details</h3>
+<input type="date" id="delivery-date" disabled>
+<input type="time" id="delivery-time" disabled>
+<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+</div>
 
       <h3>Payment</h3>
       <select id="payment-method">
@@ -138,8 +126,11 @@
     </div>
   </div>
 
-<script>
-// Script continues after this block and will be pasted next...
+  <script>
+    // Next step: JavaScript logic for bakery products, cart, delivery form, etc.
+  </script>
+</body>
+</html>
 <script>
   const products = [
     { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
@@ -234,6 +225,7 @@
       alert("Geolocation is not supported by your browser.");
       return;
     }
+
     navigator.geolocation.getCurrentPosition(
       position => {
         const lat = position.coords.latitude;
@@ -295,50 +287,39 @@ ${items}
 ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}`;
-
     const encodedMsg = encodeURIComponent(message);
 
-    setTimeout(() => {
-      const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
-      window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
-      window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
-      window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
-      window.location.href = `thankyou.html?ref=${confirmation}`;
-    }, 60000); // 60 seconds wait for payment instructions
+    const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+    window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
+    window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+
+    window.location.href = `thankyou.html?ref=${confirmation}`;
   }
 
   window.onload = () => {
-    renderProducts();
-    const today = new Date();
-    const localDate = today.toISOString().split('T')[0];
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+  renderProducts();
+  
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
 
-    deliveryDate.value = localDate;
+  // Set and disable
+  deliveryDate.value = now.toISOString().split('T')[0];
+  deliveryDate.disabled = true;
 
-    const updateTimeField = () => {
-      const selectedDate = new Date(deliveryDate.value);
-      const currentDate = new Date();
+  deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+  deliveryTime.disabled = true;
 
-      if (selectedDate.toDateString() === currentDate.toDateString()) {
-        const autoTime = new Date(currentDate.getTime() + 45 * 60000); // 45 mins
-        deliveryTime.value = autoTime.toTimeString().slice(0, 5);
-        deliveryTime.disabled = true;
-        deliveryTime.style.display = "none"; // hidden
-        deliveryNote.style.display = "block";
-      } else {
-        deliveryTime.disabled = false;
-        deliveryTime.style.display = "block";
-        deliveryNote.style.display = "none";
-      }
+  // Show note
+  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+  deliveryNote.style.display = "block";
 
-      validateForm();
-    };
-
-    updateTimeField();
-    deliveryDate.addEventListener('change', updateTimeField);
-  };
+  validateForm(); // ensure form logic is still valid
+};
 
   document.getElementById('payment-method').addEventListener('change', function () {
     const method = this.value;
@@ -353,6 +334,7 @@ Payment: ${method}`;
     'customer-email',
     'delivery-address',
     'delivery-date',
+    'delivery-time',
     'payment-method'
   ];
 
@@ -380,7 +362,3 @@ Payment: ${method}`;
     }
   }
 </script>
-
-</script>
-</body>
-</html>
