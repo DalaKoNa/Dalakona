@@ -217,21 +217,34 @@
   }
 
   function updateCartSummary() {
-    let html = '<h3>Receipt Summary - Dala🚲Na Bakery</h3><ul>';
-    let total = 0;
-    Object.values(cart).forEach(item => {
-      html += `<li>${item.qty} x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
-      total += item.qty * item.price;
-    });
-    const fee = 29.99;
-    const grand = total + fee;
-    html += `</ul>
-      <p>Subtotal: ₱${total.toFixed(2)}</p>
-      <p>Service Fee: ₱${fee.toFixed(2)}</p>
-      <div class="line-break"></div>
-      <h4>Total: ₱${grand.toFixed(2)}</h4>`;
-    document.getElementById('cart-summary').innerHTML = html;
-  }
+  let html = `
+    <h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2>
+    <p style="text-align: center; font-weight: bold; color: #555;">Dala🚲Na Bakery</p>
+    <ul style="list-style: none; padding: 0; margin: 1rem 0;">`;
+
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `
+      <li style="margin-bottom: 0.4rem;">
+        <strong>${item.qty}x</strong> ${item.name}
+        <span style="float: right;">₱${(item.qty * item.price).toFixed(2)}</span>
+      </li>`;
+    total += item.qty * item.price;
+  });
+
+  const fee = 29.99;
+  const grand = total + fee;
+
+  html += `</ul>
+    <hr style="margin: 1rem 0; border: 1px dashed #ccc;" />
+    <p><strong>Subtotal:</strong> <span style="float: right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float: right;">₱${fee.toFixed(2)}</span></p>
+    <hr style="margin: 1rem 0;" />
+    <h3 style="text-align: center; color: #008060;">Total: ₱${grand.toFixed(2)}</h3>
+    `;
+
+  document.getElementById('cart-summary').innerHTML = html;
+}
 
   function getLocation() {
     if (!navigator.geolocation) {
