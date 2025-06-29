@@ -169,9 +169,7 @@
 
       window.location.href = url.toString();
     }
-  <script>
-    // Next step: JavaScript logic for bakery products, cart, delivery form, etc.
-  </script>
+</script>
 </body>
 </html>
 <script>
@@ -247,34 +245,34 @@
   }
 
   function updateCartSummary() {
-  let html = `
-    <h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2>
-    <p style="text-align: center; font-weight: bold; color: #555;">Dala🚲Na Bakery</p>
-    <ul style="list-style: none; padding: 0; margin: 1rem 0;">`;
+    let html = `
+      <h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2>
+      <p style="text-align: center; font-weight: bold; color: #555;">Dala🚲Na Bakery</p>
+      <ul style="list-style: none; padding: 0; margin: 1rem 0;">`;
 
-  let total = 0;
-  Object.values(cart).forEach(item => {
-    html += `
-      <li style="margin-bottom: 0.4rem;">
-        <strong>${item.qty}x</strong> ${item.name}
-        <span style="float: right;">₱${(item.qty * item.price).toFixed(2)}</span>
-      </li>`;
-    total += item.qty * item.price;
-  });
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      html += `
+        <li style="margin-bottom: 0.4rem;">
+          <strong>${item.qty}x</strong> ${item.name}
+          <span style="float: right;">₱${(item.qty * item.price).toFixed(2)}</span>
+        </li>`;
+      total += item.qty * item.price;
+    });
 
-  const fee = 29.99;
-  const grand = total + fee;
+    const fee = 29.99;
+    const grand = total + fee;
 
-  html += `</ul>
-    <hr style="margin: 1rem 0; border: 1px dashed #ccc;" />
-    <p><strong>Subtotal:</strong> <span style="float: right;">₱${total.toFixed(2)}</span></p>
-    <p><strong>Service Fee:</strong> <span style="float: right;">₱${fee.toFixed(2)}</span></p>
-    <hr style="margin: 1rem 0;" />
-    <h3 style="text-align: center; color: #008060;">Total: ₱${grand.toFixed(2)}</h3>
+    html += `</ul>
+      <hr style="margin: 1rem 0; border: 1px dashed #ccc;" />
+      <p><strong>Subtotal:</strong> <span style="float: right;">₱${total.toFixed(2)}</span></p>
+      <p><strong>Service Fee:</strong> <span style="float: right;">₱${fee.toFixed(2)}</span></p>
+      <hr style="margin: 1rem 0;" />
+      <h3 style="text-align: center; color: #008060;">Total: ₱${grand.toFixed(2)}</h3>
     `;
 
-  document.getElementById('cart-summary').innerHTML = html;
-}
+    document.getElementById('cart-summary').innerHTML = html;
+  }
 
   function getLocation() {
     if (!navigator.geolocation) {
@@ -296,6 +294,70 @@
     );
   }
 
+  function validateForm() {
+    const requiredFields = [
+      'customer-name',
+      'customer-phone',
+      'customer-email',
+      'delivery-address',
+      'delivery-date',
+      'delivery-time',
+      'payment-method'
+    ];
+
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    if (allFilled && cartHasItems) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    }
+  }
+
+  window.onload = () => {
+    renderProducts();
+
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+
+    const deliveryDate = document.getElementById('delivery-date');
+    const deliveryTime = document.getElementById('delivery-time');
+    const deliveryNote = document.getElementById('delivery-note');
+
+    deliveryDate.value = now.toISOString().split('T')[0];
+    deliveryDate.disabled = true;
+
+    deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+    deliveryTime.disabled = true;
+
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+
+    validateForm();
+
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
+    });
+
+    ['customer-name','customer-phone','customer-email','delivery-address','delivery-date','delivery-time','payment-method'].forEach(id => {
+      document.getElementById(id).addEventListener('input', validateForm);
+    });
+  };
+</script>
+<script>
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
     const phone = document.getElementById('customer-phone').value.trim();
@@ -312,6 +374,7 @@
     const total = subtotal + fee;
     const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
+    // 1. Prefill Fillout form silently
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
     filloutUrl.searchParams.append("customerName", name);
     filloutUrl.searchParams.append("customerPhone", phone);
@@ -329,6 +392,7 @@
     iframe.src = filloutUrl.toString();
     document.body.appendChild(iframe);
 
+    // 2. WhatsApp message
     const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
     const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
 Name: ${name}
@@ -343,84 +407,20 @@ ${items}
 ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}
-📌 Please pay the full total (₱${total.toFixed(2)}) via ${method} before delivery. Include your name in the reference.
-`;
+📌 Please pay ₱${total.toFixed(2)} via ${method} before delivery.`;
 
-    const encodedMsg = encodeURIComponent(message);
+    const encoded = encodeURIComponent(message);
 
-    const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
-    window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
-    window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
-    window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+    const merchant = '63XXXXXXXXXX';
+    const admin = '63YYYYYYYYYY';
+    const driver = '63ZZZZZZZZZZ';
 
+    window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+
+    // 3. Redirect to thank you page
     window.location.href = `thankyou.html?ref=${confirmation}`;
-  }
-
-  window.onload = () => {
-  renderProducts();
-  
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60000);
-  
-  const deliveryDate = document.getElementById('delivery-date');
-  const deliveryTime = document.getElementById('delivery-time');
-  const deliveryNote = document.getElementById('delivery-note');
-
-  // Set and disable
-  deliveryDate.value = now.toISOString().split('T')[0];
-  deliveryDate.disabled = true;
-
-  deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-  deliveryTime.disabled = true;
-
-  // Show note
-  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-  deliveryNote.style.display = "block";
-
-  validateForm(); // ensure form logic is still valid
-};
-
-  document.getElementById('payment-method').addEventListener('change', function () {
-    const method = this.value;
-    const link = document.getElementById('payment-link');
-    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-    link.textContent = `View ${method} instructions`;
-  });
-
-  const requiredFields = [
-    'customer-name',
-    'customer-phone',
-    'customer-email',
-    'delivery-address',
-    'delivery-date',
-    'delivery-time',
-    'payment-method'
-  ];
-
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
-
-function validateForm() {
-  const allFilled = requiredFields.every(id => {
-    const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
-  });
-
-  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-  const checkoutBtn = document.getElementById('checkout-btn');
-
-  if (allFilled && cartHasItems) {
-    checkoutBtn.disabled = false;
-    checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-    checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-  } else {
-    checkoutBtn.disabled = true;
-    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-  }
-}
-
   }
 </script>
 </body>
