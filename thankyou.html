@@ -85,6 +85,7 @@
     #order-summary p {
       margin: 0.25rem 0;
       font-size: 0.95rem;
+      white-space: pre-line;
     }
 
     @media (max-width: 480px) {
@@ -109,49 +110,61 @@
 
   <div id="order-summary" class="hidden">
     <h3>📋 Order Summary</h3>
-    <p><strong>Items:</strong> <span id="summary-items">-</span></p>
+    <p><strong>Name:</strong> <span id="summary-name">-</span></p>
+    <p><strong>Phone:</strong> <span id="summary-phone">-</span></p>
+    <p><strong>Email:</strong> <span id="summary-email">-</span></p>
+    <p><strong>Address:</strong> <span id="summary-address">-</span></p>
+    <p><strong>Notes:</strong> <span id="summary-notes">N/A</span></p>
+    <p><strong>Items:</strong><br><span id="summary-items">-</span></p>
     <p><strong>Delivery:</strong> <span id="summary-delivery">-</span></p>
     <p><strong>Payment:</strong> <span id="summary-payment">-</span></p>
-    <p><strong>Total:</strong> <span id="summary-total">-</span></p>
+    <p><strong>Charges:</strong><br><span id="summary-total">-</span></p>
   </div>
 
   <script>
-    function getRef() {
-      const p = new URLSearchParams(location.search);
-      return p.get('ref') || 'UNKNOWN';
-    }
+    const ref = new URLSearchParams(location.search).get('ref') || 'UNKNOWN';
+    document.getElementById('ref-number').innerText = ref;
 
-    document.getElementById('ref-number').innerText = getRef();
-
-    // Load summary data from localStorage
-    const summary = JSON.parse(localStorage.getItem("dalaOrderSummary"));
-    if (summary) {
+    const data = JSON.parse(localStorage.getItem("dalaOrderSummary"));
+    if (data) {
       document.getElementById('order-summary').classList.remove('hidden');
-      document.getElementById('summary-items').innerText = summary.items;
-      document.getElementById('summary-delivery').innerText = `${summary.date} at ${summary.time}`;
-      document.getElementById('summary-payment').innerText = summary.payment;
-      document.getElementById('summary-total').innerText = summary.total;
+      document.getElementById('summary-name').innerText = data.name;
+      document.getElementById('summary-phone').innerText = data.phone;
+      document.getElementById('summary-email').innerText = data.email;
+      document.getElementById('summary-address').innerText = data.address;
+      document.getElementById('summary-notes').innerText = data.notes || "N/A";
+      document.getElementById('summary-items').innerText = data.items;
+      document.getElementById('summary-delivery').innerText = `${data.date} at ${data.time}`;
+      document.getElementById('summary-payment').innerText = data.payment;
+      document.getElementById('summary-total').innerText = data.summary;
+      localStorage.removeItem("dalaOrderSummary");
     }
 
     function downloadPDF() {
-      const printWindow = window.open('', '_blank');
+      const w = window.open('', '_blank');
       const html = `
         <html><head><title>Receipt</title></head><body style="font-family:Inter,sans-serif; padding:2rem;">
         <h2>Dala🚲Na - Order Receipt</h2>
-        <p><strong>Confirmation #:</strong> ${getRef()}</p>
+        <p><strong>Confirmation #:</strong> ${ref}</p>
         <hr/>
-        <p><strong>Items:</strong><br>${summary.items.replace(/\n/g, '<br>')}</p>
-        <p><strong>Delivery:</strong> ${summary.date} at ${summary.time}</p>
-        <p><strong>Payment:</strong> ${summary.payment}</p>
-        <p><strong>Total:</strong> ${summary.total}</p>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Phone:</strong> ${data.phone}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Address:</strong> ${data.address}</p>
+        <p><strong>Notes:</strong> ${data.notes || "N/A"}</p>
+        <hr/>
+        <p><strong>Items:</strong><br>${data.items.replace(/\n/g, '<br>')}</p>
+        <p><strong>Delivery:</strong> ${data.date} at ${data.time}</p>
+        <p><strong>Payment:</strong> ${data.payment}</p>
+        <p><strong>Charges:</strong><br>${data.summary.replace(/\n/g, '<br>')}</p>
         <hr/>
         <p>Salamat guid sa imo order!</p>
         </body></html>
       `;
-      printWindow.document.write(html);
-      printWindow.document.close();
-      printWindow.focus();
-      printWindow.print();
+      w.document.write(html);
+      w.document.close();
+      w.focus();
+      w.print();
     }
   </script>
 </body>
