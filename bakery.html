@@ -313,6 +313,21 @@ ${items}
 ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}`;
+
+localStorage.setItem("dalaOrderSummary", JSON.stringify({
+  confirmation,
+  name,
+  phone,
+  email,
+  address,
+  notes,
+  items,
+  summary,
+  date,
+  time,
+  payment: method
+}));
+
     const encodedMsg = encodeURIComponent(message);
 
     const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
