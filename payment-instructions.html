@@ -46,20 +46,13 @@
       color: #000;
     }
 
-    .hil {
-      font-size: 0.85rem;
-      color: #888;
-      margin-top: 0.5rem;
-    }
-
-    .instruction-box {
-      background: #fef6f6;
-      border-left: 4px solid #d47c9f;
+    .reminder {
+      font-size: 0.9rem;
+      background: #f0f0f0;
       padding: 1rem;
+      border-left: 4px solid #008060;
       margin-bottom: 1.5rem;
       border-radius: 6px;
-      font-size: 0.95rem;
-      color: #555;
     }
 
     .back-link {
@@ -69,6 +62,7 @@
       color: white;
       text-decoration: none;
       border-radius: 6px;
+      margin-top: 1rem;
       text-align: center;
     }
 
@@ -86,9 +80,9 @@
       <!-- Filled dynamically -->
     </div>
 
-    <div class="instruction-box" id="custom-instruction" style="display:none;">
-      💡 After sending payment, go back to the cart and paste your <strong>reference number</strong> into the
-      “📄 Payment reference” field before tapping "Checkout via WhatsApp".
+    <div class="reminder">
+      ✅ After paying, enter the reference number in the cart form.<br/>
+      It will appear in your receipt summary for confirmation.
     </div>
 
     <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
@@ -97,39 +91,30 @@
   <script>
     const query = new URLSearchParams(window.location.search);
     const method = query.get("method");
-    const total = query.get("total") || "0.00";
     document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
     const detailsDiv = document.getElementById("payment-details");
-    const instructionBox = document.getElementById("custom-instruction");
 
     if (method === "GCash") {
       detailsDiv.innerHTML = `
         <strong>GCash Name:</strong> Ellen G. Mendoza
         <strong>GCash Number:</strong> 09171234567
-        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
-      instructionBox.style.display = "block";
     } else if (method === "PayMaya") {
       detailsDiv.innerHTML = `
         <strong>PayMaya Name:</strong> Ellen G. Mendoza
         <strong>PayMaya Number:</strong> 09181234567
-        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
-      instructionBox.style.display = "block";
     } else if (method === "Bank" || method === "Bank Transfer") {
       detailsDiv.innerHTML = `
         <strong>Bank:</strong> BPI
         <strong>Account Name:</strong> Ellen G. Mendoza
         <strong>Account Number:</strong> 1234-5678-9012
-        <strong>Total Amount to Pay:</strong> ₱${total}
       `;
-      instructionBox.style.display = "block";
     } else if (method === "Cash" || method === "COD") {
       detailsDiv.innerHTML = `
         <strong>Cash on Delivery</strong>
-        <strong>Total Due Upon Delivery:</strong> ₱${total}
-        <div class="hil">Please prepare the exact amount. Full payment required upon delivery.</div>
+        <div>Please prepare the exact amount during delivery.</div>
       `;
     } else {
       detailsDiv.innerHTML = `<em>Please go back and select a valid payment method.</em>`;
