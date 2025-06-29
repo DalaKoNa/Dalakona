@@ -338,6 +338,7 @@
     document.body.appendChild(iframe);
 
     const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
+    const reference = document.getElementById('payment-reference')?.value.trim() || '';
     const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
@@ -350,7 +351,8 @@ ${items}
 
 ${summary}
 Delivery: ${date} ${time}
-Payment: ${method}`;
+Payment: ${method}${reference ? ` (Ref: ${reference})` : ''}
+
     const encodedMsg = encodeURIComponent(message);
 
     const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
