@@ -2,185 +2,187 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Salamat! - Dala🚲Na</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Instructions – Dala🚲Na</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: #fdfdfc;
+      font-family: 'Arial', sans-serif;
+      background-color: #fffaf7;
       color: #333;
-      text-align: center;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      justify-content: center;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
 
     h1 {
-      font-size: 2rem;
-      color: #008060;
-      margin-bottom: 0.5rem;
+      color: #d47c9f;
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
 
-    .check-icon {
-      font-size: 3rem;
-      color: green;
+    .method {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #444;
       margin-bottom: 1rem;
     }
 
-    .ref {
-      background: #e6ffee;
-      padding: 1rem 2rem;
-      font-size: 1.3rem;
-      font-weight: bold;
-      border-radius: 12px;
-      margin: 1rem 0;
-      border: 1px solid #a0e7c7;
+    .details {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .details strong {
+      display: block;
+      margin-top: 0.5rem;
+      color: #000;
     }
 
     .hil {
-      font-size: 0.95rem;
-      color: #666;
-      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.2rem;
     }
 
-    .btn-group {
-      margin-top: 2rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
+    .ref-input {
+      margin-top: 1rem;
     }
 
-    button {
-      padding: 0.75rem 1.5rem;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #005f45;
-    }
-
-    #order-summary {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      max-width: 500px;
+    .ref-input input {
       width: 100%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      margin-top: 2rem;
-      text-align: left;
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
 
-    #order-summary h3 {
-      color: #008060;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
+    .whatsapp-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: #25D366;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-top: 1rem;
+      pointer-events: none;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
     }
 
-    #order-summary p {
-      margin: 0.25rem 0;
-      font-size: 0.95rem;
+    .whatsapp-btn.enabled {
+      pointer-events: auto;
+      opacity: 1;
     }
 
-    @media (max-width: 480px) {
-      .ref { font-size: 1.1rem; }
-      button { width: 100%; }
-      #order-summary { padding: 1rem; }
+    .back-link {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background-color: #008060;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .back-link:hover {
+      background-color: #00664d;
     }
   </style>
 </head>
 <body>
-  <div class="check-icon">✅</div>
-  <h1>Salamat guid sa imo order!</h1>
-  <p>Ang imo confirmation number amo ini:</p>
-  <div class="ref" id="ref-number">DALA-XXXXXX</div>
-  <p class="hil">🙏 Salamat guid sa imo pagsalig kag suporta sa Dala🚲Na!</p>
-  <p class="hil">📸 Pwede mo man kuhaan sang screenshot ini nga page bilang imo kopya.</p>
+  <div class="container">
+    <h1>Payment Instructions</h1>
+    <div class="method" id="method-label">Payment Method:</div>
 
-  <div id="order-summary" class="hidden">
-    <h3>📋 Order Summary</h3>
-    <p><strong>Items:</strong> <span id="summary-items">-</span></p>
-    <p><strong>Delivery:</strong> <span id="summary-delivery">-</span></p>
-    <p><strong>Payment:</strong> <span id="summary-payment">-</span></p>
-    <p><strong>Total:</strong> <span id="summary-total">-</span></p>
-  </div>
+    <div class="details" id="payment-details">
+      <!-- Filled dynamically -->
+    </div>
 
-  <div class="btn-group" style="margin-top: 1.5rem;">
-    <button onclick="printReceipt()">🖨️ Print Receipt</button>
-    <button onclick="downloadPDF()">⬇️ Download as PDF</button>
-  </div>
+    <div class="ref-input" id="reference-box" style="display: none;">
+      <label for="ref-number">Enter Reference Number:</label>
+      <input type="text" id="ref-number" placeholder="Ex: 1234567890" />
+    </div>
 
-  <div class="btn-group">
-    <button onclick="trackOrder()">📦 Usisaon ang Akon Order</button>
-    <button onclick="location.href='index.html'">🏠 Balik sa Main Page</button>
+    <a id="wa-link" class="whatsapp-btn">Checkout via WhatsApp</a>
+    <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
   </div>
 
   <script>
-    function getRef() {
-      const p = new URLSearchParams(location.search);
-      return p.get('ref') || 'UNKNOWN';
+    const query = new URLSearchParams(window.location.search);
+    const method = query.get("method");
+    const total = query.get("total") || "0.00";
+
+    document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
+
+    const detailsDiv = document.getElementById("payment-details");
+    const referenceBox = document.getElementById("reference-box");
+
+    if (method === "GCash") {
+      detailsDiv.innerHTML = `
+        <strong>GCash Name:</strong> Ellen G. Mendoza
+        <strong>GCash Number:</strong> 09171234567
+        <strong>Total Amount to Pay:</strong> ₱${total}
+      `;
+      referenceBox.style.display = "block";
+    } else if (method === "PayMaya") {
+      detailsDiv.innerHTML = `
+        <strong>PayMaya Name:</strong> Ellen G. Mendoza
+        <strong>PayMaya Number:</strong> 09181234567
+        <strong>Total Amount to Pay:</strong> ₱${total}
+      `;
+      referenceBox.style.display = "block";
+    } else if (method === "Bank" || method === "Bank Transfer") {
+      detailsDiv.innerHTML = `
+        <strong>Bank:</strong> BPI  
+        <strong>Account Name:</strong> Ellen G. Mendoza  
+        <strong>Account Number:</strong> 1234-5678-9012  
+        <strong>Total Amount to Pay:</strong> ₱${total}
+      `;
+      referenceBox.style.display = "block";
+    } else if (method === "Cash" || method === "COD") {
+      detailsDiv.innerHTML = `
+        <strong>Cash on Delivery</strong>
+        <strong>Total Due Upon Delivery:</strong> ₱${total}
+        <div class="hil">Please prepare the exact amount. Full payment required upon delivery.</div>
+      `;
+    } else {
+      detailsDiv.innerHTML = `<em>Please go back and select a valid payment method.</em>`;
     }
 
-    document.getElementById('ref-number').innerText = getRef();
+    const waLink = document.getElementById('wa-link');
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-    function trackOrder() {
-      location.href = 'track-order.html?ref=' + encodeURIComponent(getRef());
-    }
+    // WhatsApp logic handled in merchant page — just close here after 30s
+    setTimeout(() => {
+      waLink.classList.add("enabled");
+    }, 30000);
 
-    // Load order summary from localStorage
-    const summary = JSON.parse(localStorage.getItem("dalaOrderSummary"));
-    if (summary) {
-      document.getElementById('order-summary').classList.remove('hidden');
-      document.getElementById('summary-items').innerText = summary.items;
-      document.getElementById('summary-delivery').innerText = `${summary.date} at ${summary.time}`;
-      document.getElementById('summary-payment').innerText = summary.payment;
-      document.getElementById('summary-total').innerText = summary.total;
-      localStorage.removeItem("dalaOrderSummary");
-    }
+    waLink.addEventListener("click", function (e) {
+      e.preventDefault();
 
-    function printReceipt() {
-      window.print();
-    }
+      const ref = document.getElementById("ref-number")?.value.trim();
+      if (referenceBox.style.display === "block" && !ref) {
+        alert("Please enter your payment reference number.");
+        return;
+      }
 
-    function downloadPDF() {
-      const summary = document.getElementById("order-summary");
-      const ref = document.getElementById("ref-number").innerText;
-
-      const win = window.open('', '', 'width=800,height=600');
-      win.document.write(`
-        <html>
-        <head>
-          <title>Receipt - ${ref}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h2 { color: #008060; }
-            h3 { margin-top: 1.5rem; }
-            .ref { font-weight: bold; font-size: 1.2rem; margin: 1rem 0; }
-            p { margin: 5px 0; }
-          </style>
-        </head>
-        <body>
-          <h2>Dala🚲Na Order Receipt</h2>
-          <div class="ref">Confirmation #: ${ref}</div>
-          ${summary.innerHTML}
-          <p style="margin-top:2rem;">Thank you for ordering with Dala🚲Na!</p>
-        </body>
-        </html>
-      `);
-      win.document.close();
-      win.print(); // Save as PDF option available in print dialog
-    }
+      // Close tab or redirect — merchant handles WhatsApp message
+      alert("Thank you! Please go back to complete your order via WhatsApp.");
+      window.close();
+    });
   </script>
 </body>
 </html>
