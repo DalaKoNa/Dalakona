@@ -109,7 +109,12 @@
   <option value="Bank">Bank Transfer (may incur transfer fee)</option>
   <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
 </select>
-<input type="text" id="payment-ref" placeholder="🧾 Reference Code (if paid)" class="hidden">
+<div id="payment-ref-group" class="hidden">
+  <input type="text" id="payment-ref" placeholder="📄 Reference Code / Transaction ID">
+  <small style="color: #666; font-size: 0.8rem;">
+    📌 Found on your receipt after sending via GCash, PayMaya, or Bank Transfer.
+  </small>
+</div>
 
 <div style="margin-top: 0.5rem;">
   <a
@@ -375,42 +380,45 @@ Payment: ${method}`;
   deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
   deliveryNote.style.display = "block";
 
-  validateForm(); // ensure form logic is still valid
+  validateForm(); // ✅ <- this part ensures form is validated at page load
 };
 
- document.getElementById('payment-method').addEventListener('change', function () {
+document.getElementById('payment-method').addEventListener('change', function () {
   const method = this.value;
   const link = document.getElementById('payment-link');
   link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
   link.textContent = `View ${method} instructions`;
 
-  // Show/hide ref code input
+  // Show reference input only if GCash, PayMaya, or Bank is selected
+  const refGroup = document.getElementById('payment-ref-group');
   const refInput = document.getElementById('payment-ref');
+
   if (["GCash", "PayMaya", "Bank"].includes(method)) {
-    refInput.classList.remove('hidden');
+    refGroup.classList.remove('hidden');
     refInput.required = true;
   } else {
-    refInput.classList.add('hidden');
+    refGroup.classList.add('hidden');
     refInput.required = false;
-    refInput.value = ''; // clear
+    refInput.value = ''; // clear it
   }
 
-  validateForm(); // re-check form
+  validateForm(); // re-check the form
 });
 
-  const requiredFields = [
-    'customer-name',
-    'customer-phone',
-    'customer-email',
-    'delivery-address',
-    'delivery-date',
-    'delivery-time',
-    'payment-method'
-  ];
+const requiredFields = [
+  'customer-name',
+  'customer-phone',
+  'customer-email',
+  'delivery-address',
+  'delivery-date',
+  'delivery-time',
+  'payment-method'
+];
 
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
+// Add reference field conditionally
+if (["GCash", "PayMaya", "Bank"].includes(document.getElementById('payment-method').value)) {
+  requiredFields.push('payment-ref');
+}
 
   function validateForm() {
   const allFilled = requiredFields.every(id => {
