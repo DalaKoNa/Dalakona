@@ -141,37 +141,90 @@
 </button>
   </div>
 <script src="dalacart.js"></script>
-  <script>
-    // Extend submitOrder to pass all info to thankyou.html
-    function submitOrder() {
-      const name = document.getElementById('customer-name').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const address = document.getElementById('delivery-address').value.trim();
-      const notes = document.getElementById('delivery-notes').value.trim();
-      const date = document.getElementById('delivery-date').value;
-      const time = document.getElementById('delivery-time').value;
-      const method = document.getElementById('payment-method').value;
-      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-      const total = (Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0) + 29.99).toFixed(2);
-      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+ <script>
+async function submitOrder() {
+  const name = document.getElementById('customer-name').value.trim();
+  const phone = document.getElementById('customer-phone').value.trim();
+  const email = document.getElementById('customer-email').value.trim();
+  const address = document.getElementById('delivery-address').value.trim();
+  const notes = document.getElementById('delivery-notes').value.trim();
+  const date = document.getElementById('delivery-date').value;
+  const time = document.getElementById('delivery-time').value;
+  const method = document.getElementById('payment-method').value;
+  const paymentRef = document.getElementById('payment-ref')?.value?.trim() || '';
 
-      const url = new URL('thankyou.html', window.location.href);
-      url.searchParams.append('name', name);
-      url.searchParams.append('phone', phone);
-      url.searchParams.append('email', email);
-      url.searchParams.append('address', address);
-      url.searchParams.append('notes', notes);
-      url.searchParams.append('date', date);
-      url.searchParams.append('time', time);
-      url.searchParams.append('method', method);
-      url.searchParams.append('items', items);
-      url.searchParams.append('total', total);
-      url.searchParams.append('ref', confirmation);
+  const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+  const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+  const fee = 29.99;
+  const total = subtotal + fee;
+  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-      window.location.href = url.toString();
-    }
+  // 1. Send to Fillout silently
+  const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+  filloutUrl.searchParams.append("customerName", name);
+  filloutUrl.searchParams.append("customerPhone", phone);
+  filloutUrl.searchParams.append("customerEmail", email);
+  filloutUrl.searchParams.append("deliveryAddress", address);
+  filloutUrl.searchParams.append("addressNotes", notes);
+  filloutUrl.searchParams.append("deliveryDate", date);
+  filloutUrl.searchParams.append("deliveryTime", time);
+  filloutUrl.searchParams.append("paymentMethod", method);
+  filloutUrl.searchParams.append("paymentReference", paymentRef);
+  filloutUrl.searchParams.append("cartSummary", items);
+  filloutUrl.searchParams.append("confirmationNumber", confirmation);
+
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = filloutUrl.toString();
+  document.body.appendChild(iframe);
+
+  // 2. Send to WhatsApp
+  const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
+  const message = `🧾 New Order - Dala🚲Na Bakery\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
+
+Items:
+${items}
+
+${summary}
+Delivery: ${date} ${time}
+Payment: ${method}
+Ref #: ${paymentRef || 'N/A'}
+
+📌 Please pay ₱${total.toFixed(2)} via ${method} if required.`;
+
+  const encoded = encodeURIComponent(message);
+  const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+
+  window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+  window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+  window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+
+  // 3. Redirect to thankyou.html with all details
+  const url = new URL('thankyou.html', window.location.href);
+  url.searchParams.append("customerName", name);
+  url.searchParams.append("customerPhone", phone);
+  url.searchParams.append("customerEmail", email);
+  url.searchParams.append("deliveryAddress", address);
+  url.searchParams.append("addressNotes", notes);
+  url.searchParams.append("deliveryDate", date);
+  url.searchParams.append("deliveryTime", time);
+  url.searchParams.append("paymentMethod", method);
+  url.searchParams.append("paymentReference", paymentRef);
+  url.searchParams.append("cartSummary", items);
+  url.searchParams.append("confirmationNumber", confirmation);
+  url.searchParams.append("total", total.toFixed(2));
+
+  setTimeout(() => {
+    window.location.href = url.toString();
+  }, 2000); // Slight delay for Fillout submission to go through
+}
 </script>
+
 </body>
 </html>
 <script>
@@ -339,72 +392,6 @@
   document.getElementById('payment-ref')?.addEventListener('input', validateForm);
 </script>
   };
-</script>
-<script>
-  async function submitOrder() {
-    const name = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
-    const email = document.getElementById('customer-email').value.trim();
-    const address = document.getElementById('delivery-address').value.trim();
-    const notes = document.getElementById('delivery-notes').value.trim();
-    const date = document.getElementById('delivery-date').value;
-    const time = document.getElementById('delivery-time').value;
-    const method = document.getElementById('payment-method').value;
-
-    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-    const fee = 29.99;
-    const total = subtotal + fee;
-    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
-
-    // 1. Prefill Fillout form silently
-    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-    filloutUrl.searchParams.append("customerName", name);
-    filloutUrl.searchParams.append("customerPhone", phone);
-    filloutUrl.searchParams.append("customerEmail", email);
-    filloutUrl.searchParams.append("deliveryAddress", address);
-    filloutUrl.searchParams.append("addressNotes", notes);
-    filloutUrl.searchParams.append("deliveryDate", date);
-    filloutUrl.searchParams.append("deliveryTime", time);
-    filloutUrl.searchParams.append("paymentMethod", method);
-    filloutUrl.searchParams.append("cartSummary", items);
-    filloutUrl.searchParams.append("confirmationNumber", confirmation);
-
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = filloutUrl.toString();
-    document.body.appendChild(iframe);
-
-    // 2. WhatsApp message
-    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
-    const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
-Name: ${name}
-Phone: ${phone}
-Email: ${email}
-📍 Address: ${address}
-📌 Notes: ${notes || 'N/A'}
-
-Items:
-${items}
-
-${summary}
-Delivery: ${date} ${time}
-Payment: ${method}
-📌 Please pay ₱${total.toFixed(2)} via ${method} before delivery.`;
-
-    const encoded = encodeURIComponent(message);
-
-    const merchant = '63XXXXXXXXXX';
-    const admin = '63YYYYYYYYYY';
-    const driver = '63ZZZZZZZZZZ';
-
-    window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
-    window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
-    window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
-
-    // 3. Redirect to thank you page
-    window.location.href = `thankyou.html?ref=${confirmation}`;
-  }
 </script>
 </body>
 </html>
