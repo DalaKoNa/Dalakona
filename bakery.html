@@ -313,78 +313,6 @@ ${items}
 ${summary}
 Delivery: ${date} ${time}
 Payment: ${method}`;
-  const cart = {}; // Assuming cart is globally defined
-
-  function checkout() {
-    const name = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
-    const email = document.getElementById('customer-email').value.trim();
-    const address = document.getElementById('delivery-address').value.trim();
-    const notes = document.getElementById('special-notes').value.trim();
-    const date = document.getElementById('delivery-date').value;
-    const time = document.getElementById('delivery-time').value;
-    const method = document.getElementById('payment-method').value;
-
-    const items = Object.values(cart)
-      .filter(i => i.qty > 0)
-      .map(i => `${i.qty}x ${i.name}`)
-      .join(', ');
-      
-    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-    const fee = 29.99;
-    const total = subtotal + fee;
-
-    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
-
-    // Save order summary for thankyou.html
-    localStorage.setItem("dalaOrderSummary", JSON.stringify({
-      confirmation,
-      name,
-      phone,
-      email,
-      address,
-      notes,
-      items,
-      summary: `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`,
-      date,
-      time,
-      payment: method
-    }));
-
-    // Fillout form
-    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-    filloutUrl.searchParams.append("customerName", name);
-    filloutUrl.searchParams.append("customerPhone", phone);
-    filloutUrl.searchParams.append("customerEmail", email);
-    filloutUrl.searchParams.append("deliveryAddress", address);
-    filloutUrl.searchParams.append("addressNotes", notes);
-    filloutUrl.searchParams.append("deliveryDate", date);
-    filloutUrl.searchParams.append("deliveryTime", time);
-    filloutUrl.searchParams.append("paymentMethod", method);
-    filloutUrl.searchParams.append("cartSummary", items);
-    filloutUrl.searchParams.append("confirmationNumber", confirmation);
-
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = filloutUrl.toString();
-    document.body.appendChild(iframe);
-
-    // WhatsApp message
-    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
-    const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
-Name: ${name}
-Phone: ${phone}
-Email: ${email}
-📍 Address: ${address}
-📌 Notes: ${notes || 'N/A'}
-
-Items:
-${items}
-
-${summary}
-Delivery: ${date} ${time}
-Payment: ${method}`;
-
     const encodedMsg = encodeURIComponent(message);
 
     const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
@@ -395,30 +323,30 @@ Payment: ${method}`;
     window.location.href = `thankyou.html?ref=${confirmation}`;
   }
 
-  // Auto-fill delivery time (1 hour later)
   window.onload = () => {
-    renderProducts();
+  renderProducts();
+  
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
 
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  // Set and disable
+  deliveryDate.value = now.toISOString().split('T')[0];
+  deliveryDate.disabled = true;
 
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+  deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+  deliveryTime.disabled = true;
 
-    deliveryDate.value = now.toISOString().split('T')[0];
-    deliveryDate.disabled = true;
+  // Show note
+  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+  deliveryNote.style.display = "block";
 
-    deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-    deliveryTime.disabled = true;
+  validateForm(); // ensure form logic is still valid
+};
 
-    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-    deliveryNote.style.display = "block";
-
-    validateForm(); // initial check
-  };
-
-  // Payment instructions link
   document.getElementById('payment-method').addEventListener('change', function () {
     const method = this.value;
     const link = document.getElementById('payment-link');
@@ -426,7 +354,6 @@ Payment: ${method}`;
     link.textContent = `View ${method} instructions`;
   });
 
-  // Enable/disable checkout button based on required fields
   const requiredFields = [
     'customer-name',
     'customer-phone',
@@ -451,14 +378,15 @@ Payment: ${method}`;
     const checkoutBtn = document.getElementById('checkout-btn');
 
     if (allFilled && cartHasItems) {
-      checkoutBtn.disabled = false;
-      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-    } else {
-      checkoutBtn.disabled = true;
-      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-    }
+  checkoutBtn.disabled = false;
+  checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+} else {
+  checkoutBtn.disabled = true;
+  checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+}
+
   }
 </script>
 </body>
