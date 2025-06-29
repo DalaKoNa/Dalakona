@@ -130,68 +130,14 @@
 </div>
 
 <button
-    class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-    id="checkout-btn"
-    onclick="submitOrder()"
-    disabled
-  >
-    🛒 Checkout via WhatsApp
-  </button>
-
-  <script>
-    const requiredFields = [
-      'customer-name',
-      'customer-phone',
-      'customer-email',
-      'delivery-address',
-      'delivery-date',
-      'delivery-time',
-      'payment-method'
-    ];
-
-    requiredFields.forEach(id => {
-      document.getElementById(id).addEventListener('input', validateForm);
-    });
-
-    function validateForm() {
-      const allFilled = requiredFields.every(id => {
-        const el = document.getElementById(id);
-        return el && el.value.trim() !== '';
-      });
-
-      const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-      const btn = document.getElementById('checkout-btn');
-
-      if (allFilled && cartHasItems) {
-        btn.disabled = false;
-        btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-      } else {
-        btn.disabled = true;
-        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.remove('bg-green-600', 'hover:scale-105');
-      }
-    }
-
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-      validateForm();
-    }
-
-    window.onload = () => {
-      renderProducts();
-      const now = new Date();
-      const oneHourLater = new Date(now.getTime() + 60 * 60000);
-      document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-      document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-      validateForm();
-    };
-  </script>
-    </div>
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
+  </div>
 <script src="dalacart.js"></script>
   <script>
     // Extend submitOrder to pass all info to thankyou.html
