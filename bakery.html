@@ -95,13 +95,6 @@
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
 
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date" disabled>
-<input type="time" id="delivery-time" disabled>
-<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-</div>
-
 <h3>Payment</h3>
 <select id="payment-method">
   <option value="GCash">GCash (may incur transfer fee)</option>
@@ -109,7 +102,9 @@
   <option value="Bank">Bank Transfer (may incur transfer fee)</option>
   <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
 </select>
-<div id="payment-ref-group" class="hidden">
+
+<!-- Reference code input that shows only when needed -->
+<div id="payment-ref-group" class="hidden" style="margin-top: 0.5rem;">
   <input type="text" id="payment-ref" placeholder="📄 Reference Code / Transaction ID">
   <small style="color: #666; font-size: 0.8rem;">
     📌 Found on your receipt after sending via GCash, PayMaya, or Bank Transfer.
@@ -359,29 +354,24 @@ Payment: ${method}`;
     window.location.href = `thankyou.html?ref=${confirmation}`;
   }
 
-  window.onload = () => {
-  renderProducts();
-  
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60000);
-  
-  const deliveryDate = document.getElementById('delivery-date');
-  const deliveryTime = document.getElementById('delivery-time');
-  const deliveryNote = document.getElementById('delivery-note');
+  document.getElementById('payment-method').addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+  link.textContent = `View ${method} instructions`;
 
-  // Set and disable
-  deliveryDate.value = now.toISOString().split('T')[0];
-  deliveryDate.disabled = true;
+  const refInput = document.getElementById('payment-ref');
+  if (["GCash", "PayMaya", "Bank"].includes(method)) {
+    refInput.classList.remove('hidden');
+    refInput.required = true;
+  } else {
+    refInput.classList.add('hidden');
+    refInput.required = false;
+    refInput.value = '';
+  }
 
-  deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-  deliveryTime.disabled = true;
-
-  // Show note
-  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-  deliveryNote.style.display = "block";
-
-  validateForm(); // ✅ <- this part ensures form is validated at page load
-};
+  validateForm();
+})
 
 document.getElementById('payment-method').addEventListener('change', function () {
   const method = this.value;
@@ -389,7 +379,6 @@ document.getElementById('payment-method').addEventListener('change', function ()
   link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
   link.textContent = `View ${method} instructions`;
 
-  // Show reference input only if GCash, PayMaya, or Bank is selected
   const refGroup = document.getElementById('payment-ref-group');
   const refInput = document.getElementById('payment-ref');
 
@@ -399,11 +388,12 @@ document.getElementById('payment-method').addEventListener('change', function ()
   } else {
     refGroup.classList.add('hidden');
     refInput.required = false;
-    refInput.value = ''; // clear it
+    refInput.value = '';
   }
 
-  validateForm(); // re-check the form
+  validateForm();
 });
+document.getElementById('payment-ref').addEventListener('input', validateForm);
 
 const requiredFields = [
   'customer-name',
@@ -426,15 +416,24 @@ if (["GCash", "PayMaya", "Bank"].includes(document.getElementById('payment-metho
     return el && el.value.trim() !== '';
   });
 
-  const method = document.getElementById('payment-method').value;
-  const refCode = document.getElementById('payment-ref').value.trim();
-  const refRequired = ["GCash", "PayMaya", "Bank"].includes(method);
-  const hasRefCode = !refRequired || refCode !== '';
+  const paymentMethod = document.getElementById('payment-method').value;
+  const refInput = document.getElementById('payment-ref');
+  const refNeeded = ["GCash", "PayMaya", "Bank"].includes(paymentMethod);
+  const hasRef = !refNeeded || (refInput && refInput.value.trim() !== '');
 
   const cartHasItems = Object.values(cart).some(item => item.qty > 0);
   const checkoutBtn = document.getElementById('checkout-btn');
-
-  if (allFilled && hasRefCode && cartHasItems) {
+  const method = document.getElementById('payment-method').value;
+if (["GCash", "PayMaya", "Bank"].includes(method)) {
+  const refInput = document.getElementById('payment-ref');
+  if (!refInput.value.trim()) {
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    return;
+  }
+}
+  if (allFilled && hasRef && cartHasItems) {
     checkoutBtn.disabled = false;
     checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
     checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
