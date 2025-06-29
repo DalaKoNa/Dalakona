@@ -94,6 +94,8 @@
       <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
+      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
+
 
 <h3>Delivery Details</h3>
 <input type="date" id="delivery-date" disabled>
@@ -173,6 +175,19 @@
 </body>
 </html>
 <script>
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-address',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
+
+  const cart = {};
+
+  // Example bakery products
   const products = [
     { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
     { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
@@ -185,8 +200,6 @@
     { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
     { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
   ];
-
-  const cart = {};
 
   function renderProducts() {
     const list = document.getElementById('product-list');
@@ -203,15 +216,6 @@
             <button onclick="increaseQty(${index})">+</button>
           </div>
         </div>`;
-    });
-  }
-
-  function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      const name = card.getAttribute('data-name');
-      card.style.display = name.includes(input) ? 'block' : 'none';
     });
   }
 
@@ -240,80 +244,42 @@
     validateForm();
   }
 
+  function updateCartSummary() {
+    let html = `
+      <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+      <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+      total += item.qty * item.price;
+    });
+    const fee = 29.99;
+    const grand = total + fee;
+    html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+      <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+      <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+    document.getElementById('cart-summary').innerHTML = html;
+  }
+
   function toggleCart() {
     document.getElementById('cart-modal').classList.toggle('hidden');
   }
 
-  function updateCartSummary() {
-    let html = `
-      <h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2>
-      <p style="text-align: center; font-weight: bold; color: #555;">Dala🚲Na Bakery</p>
-      <ul style="list-style: none; padding: 0; margin: 1rem 0;">`;
-
-    let total = 0;
-    Object.values(cart).forEach(item => {
-      html += `
-        <li style="margin-bottom: 0.4rem;">
-          <strong>${item.qty}x</strong> ${item.name}
-          <span style="float: right;">₱${(item.qty * item.price).toFixed(2)}</span>
-        </li>`;
-      total += item.qty * item.price;
-    });
-
-    const fee = 29.99;
-    const grand = total + fee;
-
-    html += `</ul>
-      <hr style="margin: 1rem 0; border: 1px dashed #ccc;" />
-      <p><strong>Subtotal:</strong> <span style="float: right;">₱${total.toFixed(2)}</span></p>
-      <p><strong>Service Fee:</strong> <span style="float: right;">₱${fee.toFixed(2)}</span></p>
-      <hr style="margin: 1rem 0;" />
-      <h3 style="text-align: center; color: #008060;">Total: ₱${grand.toFixed(2)}</h3>
-    `;
-
-    document.getElementById('cart-summary').innerHTML = html;
-  }
-
-  function getLocation() {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-        document.getElementById('delivery-address').value = mapsLink;
-        validateForm();
-      },
-      error => {
-        alert("Unable to retrieve your location.");
-      }
-    );
-  }
-
   function validateForm() {
-    const requiredFields = [
-      'customer-name',
-      'customer-phone',
-      'customer-email',
-      'delivery-address',
-      'delivery-date',
-      'delivery-time',
-      'payment-method'
-    ];
-
     const allFilled = requiredFields.every(id => {
       const el = document.getElementById(id);
       return el && el.value.trim() !== '';
     });
 
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
     const cartHasItems = Object.values(cart).some(item => item.qty > 0);
     const checkoutBtn = document.getElementById('checkout-btn');
+    const requiresRef = method !== 'Cash';
 
-    if (allFilled && cartHasItems) {
+    const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+    if (allowCheckout) {
       checkoutBtn.disabled = false;
       checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
       checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
@@ -329,32 +295,49 @@
 
     const now = new Date();
     const oneHourLater = new Date(now.getTime() + 60 * 60000);
+    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+    document.getElementById('delivery-date').disabled = true;
+    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+    document.getElementById('delivery-time').disabled = true;
 
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
     const deliveryNote = document.getElementById('delivery-note');
-
-    deliveryDate.value = now.toISOString().split('T')[0];
-    deliveryDate.disabled = true;
-
-    deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-    deliveryTime.disabled = true;
-
     deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
     deliveryNote.style.display = "block";
 
+    // Auto-hide or show reference field on page load
+    const method = document.getElementById('payment-method').value;
+    const refInput = document.getElementById('payment-ref');
+    if (refInput) {
+      refInput.style.display = method === 'Cash' ? 'none' : 'block';
+    }
+
     validateForm();
+  };
 
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const link = document.getElementById('payment-link');
-      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-      link.textContent = `View ${method} instructions`;
-    });
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    const refInput = document.getElementById('payment-ref');
 
-    ['customer-name','customer-phone','customer-email','delivery-address','delivery-date','delivery-time','payment-method'].forEach(id => {
-      document.getElementById(id).addEventListener('input', validateForm);
-    });
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+
+    if (method === 'Cash') {
+      refInput.style.display = 'none';
+      refInput.value = '';
+    } else {
+      refInput.style.display = 'block';
+    }
+
+    validateForm();
+  });
+
+  // Listen to all fields
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+  document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+</script>
   };
 </script>
 <script>
