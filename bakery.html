@@ -109,6 +109,7 @@
   <option value="Bank">Bank Transfer (may incur transfer fee)</option>
   <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
 </select>
+<input type="text" id="payment-ref" placeholder="🧾 Reference Code (if paid)" class="hidden">
 
 <div style="margin-top: 0.5rem;">
   <a
@@ -377,12 +378,25 @@ Payment: ${method}`;
   validateForm(); // ensure form logic is still valid
 };
 
-  document.getElementById('payment-method').addEventListener('change', function () {
-    const method = this.value;
-    const link = document.getElementById('payment-link');
-    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-    link.textContent = `View ${method} instructions`;
-  });
+ document.getElementById('payment-method').addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+  link.textContent = `View ${method} instructions`;
+
+  // Show/hide ref code input
+  const refInput = document.getElementById('payment-ref');
+  if (["GCash", "PayMaya", "Bank"].includes(method)) {
+    refInput.classList.remove('hidden');
+    refInput.required = true;
+  } else {
+    refInput.classList.add('hidden');
+    refInput.required = false;
+    refInput.value = ''; // clear
+  }
+
+  validateForm(); // re-check form
+});
 
   const requiredFields = [
     'customer-name',
@@ -399,25 +413,30 @@ Payment: ${method}`;
   });
 
   function validateForm() {
-    const allFilled = requiredFields.every(id => {
-      const el = document.getElementById(id);
-      return el && el.value.trim() !== '';
-    });
+  const allFilled = requiredFields.every(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  });
 
-    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-    const checkoutBtn = document.getElementById('checkout-btn');
+  const method = document.getElementById('payment-method').value;
+  const refCode = document.getElementById('payment-ref').value.trim();
+  const refRequired = ["GCash", "PayMaya", "Bank"].includes(method);
+  const hasRefCode = !refRequired || refCode !== '';
 
-    if (allFilled && cartHasItems) {
-  checkoutBtn.disabled = false;
-  checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-  checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-} else {
-  checkoutBtn.disabled = true;
-  checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-  checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  if (allFilled && hasRefCode && cartHasItems) {
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+  } else {
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+  }
 }
 
-  }
 </script>
 </body>
 </html>
