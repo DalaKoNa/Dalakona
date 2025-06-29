@@ -3,161 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thank You - Dala🚲Na</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <title>Thank You – Dala🚲Na</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #fffaf7;
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fffaf0; padding: 2rem; text-align: center; }
+    h1 { font-size: 2rem; color: #008060; margin-bottom: 1rem; }
+    .box {
+      max-width: 600px; margin: auto; background: #fff; padding: 1.5rem;
+      border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: left;
     }
-    h1 {
-      text-align: center;
-      color: #008060;
-    }
-    .summary {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-top: 1.5rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    .summary p {
-      margin: 0.5rem 0;
-    }
-    .highlight {
-      font-weight: bold;
-      color: #333;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-    .button {
-      display: block;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 0.8rem;
-      font-weight: bold;
-      width: 100%;
-      margin-top: 1rem;
-      cursor: pointer;
+    .box h2 { color: #444; margin-bottom: 1rem; }
+    .box p { margin: 0.5rem 0; }
+    .box strong { color: #000; }
+    .summary { margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 1rem; }
+    .back-btn {
+      margin-top: 2rem; display: inline-block; padding: 0.75rem 1.5rem;
+      background: #008060; color: white; text-decoration: none; border-radius: 8px;
     }
   </style>
 </head>
 <body>
+
   <h1>🎉 Thank You for Your Order!</h1>
-  <div class="summary" id="order-summary"></div>
 
-  <button class="button" onclick="downloadPDF()">📄 Download Receipt (PDF)</button>
-  <button class="button" onclick="sendToWhatsApp()">📱 Send to WhatsApp</button>
-  <button class="button" onclick="sendToSMS()">📩 Send via SMS</button>
-  <button class="button" onclick="window.location.href='bakery.html'">🔁 Order Again from Dala🚲Na Bakery</button>
+  <div class="box">
+    <h2>🧾 Order Summary</h2>
+    <p><strong>Name:</strong> <span id="customerName"></span></p>
+    <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
+    <p><strong>Email:</strong> <span id="customerEmail"></span></p>
+    <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
+    <p><strong>Notes:</strong> <span id="addressNotes"></span></p>
+    <p><strong>Delivery Date:</strong> <span id="deliveryDate"></span></p>
+    <p><strong>Delivery Time:</strong> <span id="deliveryTime"></span></p>
+    <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
+    <p><strong>Payment Ref:</strong> <span id="paymentReference"></span></p>
 
-  <div class="footer">
-    We'll notify you via WhatsApp once your order is confirmed by the store.
+    <div class="summary">
+      <p><strong>Items:</strong> <br><span id="cartSummary"></span></p>
+      <p><strong>Confirmation #:</strong> <span id="confirmationNumber"></span></p>
+    </div>
+
+    <a href="bakery.html" class="back-btn">← Back to Store</a>
   </div>
 
   <script>
-    emailjs.init('YOUR_PUBLIC_KEY');
-
     const params = new URLSearchParams(window.location.search);
+    const fields = [
+      "customerName", "customerPhone", "customerEmail", "deliveryAddress", "addressNotes",
+      "deliveryDate", "deliveryTime", "paymentMethod", "paymentReference", "cartSummary", "confirmationNumber"
+    ];
 
-    const name = params.get('name') || '';
-    const email = params.get('email') || '';
-    const phone = params.get('phone') || '';
-    const address = params.get('address') || '';
-    const notes = params.get('notes') || '';
-    const date = params.get('date') || '';
-    const time = params.get('time') || '';
-    const method = params.get('method') || '';
-    const items = params.get('items') || '';
-    const total = params.get('total') || '0.00';
-    const confirmation = params.get('ref') || 'N/A';
-
-    document.getElementById('order-summary').innerHTML = `
-      <p><span class="highlight">Confirmation #:</span> ${confirmation}</p>
-      <p><span class="highlight">Customer:</span> ${name}</p>
-      <p><span class="highlight">Phone:</span> ${phone}</p>
-      <p><span class="highlight">Email:</span> ${email}</p>
-      <p><span class="highlight">Items:</span><br>${items.split(', ').join('<br>')}</p>
-      <p><span class="highlight">Total:</span> ₱${total}</p>
-      <p><span class="highlight">Delivery:</span> ${date} at ${time}</p>
-      <p><span class="highlight">Payment:</span> ${method}</p>
-      <p><span class="highlight">Address:</span> ${address}</p>
-      ${notes ? `<p><span class="highlight">Notes:</span> ${notes}</p>` : ''}
-    `;
-
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-      customer_name: name,
-      customer_email: email,
-      customer_phone: phone,
-      order_items: items,
-      total: `₱${total}`,
-      confirmation_number: confirmation,
-      delivery_date: date,
-      delivery_time: time,
-      payment_method: method,
-      delivery_address: address,
-      notes: notes || 'N/A'
-    }).then(() => console.log("Email sent"));
-
-    fetch('https://hook.us1.make.com/your-webhook-url', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name, email, phone, address, notes,
-        delivery_date: date,
-        delivery_time: time,
-        payment_method: method,
-        confirmation_number: confirmation,
-        cart_summary: items,
-        total
-      })
-    }).then(() => console.log("Saved to Airtable"));
-
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      const lines = [
-        `📋 Dala🚲Na Bakery - Receipt`,
-        `Confirmation #: ${confirmation}`,
-        `Customer: ${name}`,
-        `Phone: ${phone}`,
-        `Email: ${email}`,
-        `Address: ${address}`,
-        `Notes: ${notes || 'N/A'}`,
-        `Payment: ${method}`,
-        `Delivery: ${date} ${time}`,
-        `--------------------------------`,
-        `Items:`,
-        ...items.split(', ').map(i => '• ' + i),
-        `--------------------------------`,
-        `Total: ₱${total}`
-      ];
-
-      lines.forEach((line, i) => doc.text(line, 10, 20 + i * 10));
-      doc.save(`DalaBakery_Receipt_${confirmation}.pdf`);
-    }
-
-    function sendToWhatsApp() {
-      const msg = `\n📋 Dala🛫 Order Confirmation\nRef: ${confirmation}\nName: ${name}\nItems: ${items}\nTotal: ₱${total}\nDelivery: ${date} at ${time}\nPayment: ${method}\n📍 ${address}\nNotes: ${notes || 'N/A'}`;
-      window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    function sendToSMS() {
-      const msg = `Dala🛫 Order Ref: ${confirmation}\n${items}\nTotal: ₱${total}\nDelivery: ${date} ${time}\n📍 ${address}`;
-      window.location.href = `sms:+63XXXXXXXXXX?body=${encodeURIComponent(msg)}`;
-    }
+    fields.forEach(field => {
+      const el = document.getElementById(field);
+      if (el) el.textContent = decodeURIComponent(params.get(field) || '—');
+    });
   </script>
+
 </body>
 </html>
