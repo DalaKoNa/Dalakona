@@ -383,7 +383,7 @@ Payment: ${method}`;
     link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
     link.textContent = `View ${method} instructions`;
   });
-<script>
+
   const requiredFields = [
     'customer-name',
     'customer-phone',
@@ -394,12 +394,10 @@ Payment: ${method}`;
     'payment-method'
   ];
 
-  // Attach input listeners to form fields
   requiredFields.forEach(id => {
     document.getElementById(id).addEventListener('input', validateForm);
   });
 
-  // Validate form + cart state to enable/disable checkout button
   function validateForm() {
     const allFilled = requiredFields.every(id => {
       const el = document.getElementById(id);
@@ -407,40 +405,19 @@ Payment: ${method}`;
     });
 
     const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-    const btn = document.getElementById('checkout-btn');
+    const checkoutBtn = document.getElementById('checkout-btn');
 
     if (allFilled && cartHasItems) {
-      btn.disabled = false;
-      btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-      btn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-    } else {
-      btn.disabled = true;
-      btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      btn.classList.remove('bg-green-600', 'hover:scale-105');
-    }
+  checkoutBtn.disabled = false;
+  checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+} else {
+  checkoutBtn.disabled = true;
+  checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+}
+
   }
-
-  // Override updateQty to trigger validation every time cart changes
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-    validateForm();
-  }
-
-  // On page load: render products and prefill delivery info
-  window.onload = () => {
-    renderProducts();
-
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60000);
-    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-
-    validateForm(); // run once at startup
-  };
 </script>
 </body>
 </html>
