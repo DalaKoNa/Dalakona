@@ -95,157 +95,329 @@
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
 
-      <h3>Payment</h3>
-      <select id="payment-method">
-        <option value="GCash">GCash (may incur transfer fee)</option>
-        <option value="PayMaya">PayMaya (may incur transfer fee)</option>
-        <option value="Bank">Bank Transfer (may incur transfer fee)</option>
-        <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-      </select>
+<h3>Delivery Details</h3>
+<input type="date" id="delivery-date" disabled>
+<input type="time" id="delivery-time" disabled>
+<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+</div>
 
-      <div id="payment-ref-group" class="hidden" style="margin-top: 0.5rem;">
-        <input type="text" id="payment-ref" placeholder="📄 Reference Code / Transaction ID">
-        <small style="color: #666; font-size: 0.8rem;">
-          📌 Found on your receipt after sending via GCash, PayMaya, or Bank Transfer.
-        </small>
-      </div>
+<h3>Payment</h3>
+<select id="payment-method">
+  <option value="GCash">GCash (may incur transfer fee)</option>
+  <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+  <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+  <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+</select>
 
-      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-        ✅ I agree to the
-        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-          Terms & Conditions
-        </a>.
-        Orders are final and subject to store policies.
-      </div>
+<div style="margin-top: 0.5rem;">
+  <a
+    id="payment-link"
+    href="payment-instructions.html?method=GCash"
+    target="_blank"
+    style="color: #008060; text-decoration: underline;"
+  >
+    View payment instructions
+  </a>
+</div>
 
-      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
-        🛒 Checkout via WhatsApp
-      </button>
-    </div>
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+  ✅ I agree to the
+  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+    Terms & Conditions
+  </a>.
+  Orders are final and subject to store policies.
+</div>
+
+<button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
   </div>
-
+<script src="dalacart.js"></script>
   <script>
-    const products = [
-      { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
-      { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
-      { name: "Spanish Bread", price: 12, image: "https://via.placeholder.com/100" },
-      { name: "Ensaymada", price: 15, image: "https://via.placeholder.com/100" },
-      { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
-      { name: "Egg Pie (slice)", price: 35, image: "https://via.placeholder.com/100" }
-    ];
+    // Extend submitOrder to pass all info to thankyou.html
+    function submitOrder() {
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const address = document.getElementById('delivery-address').value.trim();
+      const notes = document.getElementById('delivery-notes').value.trim();
+      const date = document.getElementById('delivery-date').value;
+      const time = document.getElementById('delivery-time').value;
+      const method = document.getElementById('payment-method').value;
+      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+      const total = (Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0) + 29.99).toFixed(2);
+      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-    const cart = {};
+      const url = new URL('thankyou.html', window.location.href);
+      url.searchParams.append('name', name);
+      url.searchParams.append('phone', phone);
+      url.searchParams.append('email', email);
+      url.searchParams.append('address', address);
+      url.searchParams.append('notes', notes);
+      url.searchParams.append('date', date);
+      url.searchParams.append('time', time);
+      url.searchParams.append('method', method);
+      url.searchParams.append('items', items);
+      url.searchParams.append('total', total);
+      url.searchParams.append('ref', confirmation);
 
-    function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <img src="${item.image}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>₱${item.price.toFixed(2)}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
-            </div>
-          </div>`;
-      });
+      window.location.href = url.toString();
+    }
+  <script>
+    // Next step: JavaScript logic for bakery products, cart, delivery form, etc.
+  </script>
+</body>
+</html>
+<script>
+  const products = [
+    { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
+    { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
+    { name: "Spanish Bread", price: 12, image: "https://via.placeholder.com/100" },
+    { name: "Ensaymada", price: 15, image: "https://via.placeholder.com/100" },
+    { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
+    { name: "Egg Pie (slice)", price: 35, image: "https://via.placeholder.com/100" },
+    { name: "Buko Pie", price: 50, image: "https://via.placeholder.com/100" },
+    { name: "Banana Bread", price: 60, image: "https://via.placeholder.com/100" },
+    { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
+    { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
+  ];
+
+  const cart = {};
+
+  function renderProducts() {
+    const list = document.getElementById('product-list');
+    list.innerHTML = '';
+    products.forEach((item, index) => {
+      list.innerHTML += `
+        <div class="card" data-name="${item.name.toLowerCase()}">
+          <img src="${item.image}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>₱${item.price.toFixed(2)}</p>
+          <div class="qty-controls">
+            <button onclick="decreaseQty(${index})">-</button>
+            <span id="qty-${index}">0</span>
+            <button onclick="increaseQty(${index})">+</button>
+          </div>
+        </div>`;
+    });
+  }
+
+  function filterProducts() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      const name = card.getAttribute('data-name');
+      card.style.display = name.includes(input) ? 'block' : 'none';
+    });
+  }
+
+  function increaseQty(i) {
+    const item = products[i];
+    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+    cart[item.name].qty++;
+    updateQty(i);
+  }
+
+  function decreaseQty(i) {
+    const item = products[i];
+    if (cart[item.name]) {
+      cart[item.name].qty--;
+      if (cart[item.name].qty <= 0) delete cart[item.name];
+    }
+    updateQty(i);
+  }
+
+  function updateQty(i) {
+    const item = products[i];
+    const qty = cart[item.name]?.qty || 0;
+    document.getElementById(`qty-${i}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    updateCartSummary();
+    validateForm();
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  function updateCartSummary() {
+  let html = `
+    <h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2>
+    <p style="text-align: center; font-weight: bold; color: #555;">Dala🚲Na Bakery</p>
+    <ul style="list-style: none; padding: 0; margin: 1rem 0;">`;
+
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `
+      <li style="margin-bottom: 0.4rem;">
+        <strong>${item.qty}x</strong> ${item.name}
+        <span style="float: right;">₱${(item.qty * item.price).toFixed(2)}</span>
+      </li>`;
+    total += item.qty * item.price;
+  });
+
+  const fee = 29.99;
+  const grand = total + fee;
+
+  html += `</ul>
+    <hr style="margin: 1rem 0; border: 1px dashed #ccc;" />
+    <p><strong>Subtotal:</strong> <span style="float: right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float: right;">₱${fee.toFixed(2)}</span></p>
+    <hr style="margin: 1rem 0;" />
+    <h3 style="text-align: center; color: #008060;">Total: ₱${grand.toFixed(2)}</h3>
+    `;
+
+  document.getElementById('cart-summary').innerHTML = html;
+}
+
+  function getLocation() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
     }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
-    }
-
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
-    }
-
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-      validateForm();
-    }
-
-    function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('hidden');
-    }
-
-    function updateCartSummary() {
-      let html = `<h2 style="text-align: center; margin-bottom: 0.5rem;">🧾 Receipt Summary</h2><ul style="list-style: none; padding: 0;">`;
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        html += `<li><strong>${item.qty}x</strong> ${item.name}<span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-        total += item.qty * item.price;
-      });
-      html += `</ul><hr><p><strong>Subtotal:</strong> ₱${total.toFixed(2)}</p><p><strong>Service Fee:</strong> ₱29.99</p><h3>Total: ₱${(total + 29.99).toFixed(2)}</h3>`;
-      document.getElementById('cart-summary').innerHTML = html;
-    }
-
-    function getLocation() {
-      if (!navigator.geolocation) return alert("Geolocation not supported");
-      navigator.geolocation.getCurrentPosition(pos => {
-        const mapsLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
         document.getElementById('delivery-address').value = mapsLink;
         validateForm();
-      });
-    }
-
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refGroup = document.getElementById('payment-ref-group');
-      const refInput = document.getElementById('payment-ref');
-      if (["GCash", "PayMaya", "Bank"].includes(method)) {
-        refGroup.classList.remove('hidden');
-        refInput.required = true;
-      } else {
-        refGroup.classList.add('hidden');
-        refInput.required = false;
-        refInput.value = '';
+      },
+      error => {
+        alert("Unable to retrieve your location.");
       }
-      validateForm();
+    );
+  }
+
+  async function submitOrder() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const address = document.getElementById('delivery-address').value.trim();
+    const notes = document.getElementById('delivery-notes').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
+
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const fee = 29.99;
+    const total = subtotal + fee;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+
+    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+    filloutUrl.searchParams.append("customerName", name);
+    filloutUrl.searchParams.append("customerPhone", phone);
+    filloutUrl.searchParams.append("customerEmail", email);
+    filloutUrl.searchParams.append("deliveryAddress", address);
+    filloutUrl.searchParams.append("addressNotes", notes);
+    filloutUrl.searchParams.append("deliveryDate", date);
+    filloutUrl.searchParams.append("deliveryTime", time);
+    filloutUrl.searchParams.append("paymentMethod", method);
+    filloutUrl.searchParams.append("cartSummary", items);
+    filloutUrl.searchParams.append("confirmationNumber", confirmation);
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = filloutUrl.toString();
+    document.body.appendChild(iframe);
+
+    const summary = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee}\nTotal: ₱${total.toFixed(2)}`;
+    const message = `🧾 New Order - Dala Bakery\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
+
+Items:
+${items}
+
+${summary}
+Delivery: ${date} ${time}
+Payment: ${method}`;
+    const encodedMsg = encodeURIComponent(message);
+
+    const merchant = '63XXXXXXXXXX', admin = '63YYYYYYYYYY', driver = '63ZZZZZZZZZZ';
+    window.open(`https://wa.me/${merchant}?text=${encodedMsg}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encodedMsg}`, '_blank');
+    window.open(`https://wa.me/${driver}?text=${encodedMsg}`, '_blank');
+
+    window.location.href = `thankyou.html?ref=${confirmation}`;
+  }
+
+  window.onload = () => {
+  renderProducts();
+  
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
+
+  // Set and disable
+  deliveryDate.value = now.toISOString().split('T')[0];
+  deliveryDate.disabled = true;
+
+  deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+  deliveryTime.disabled = true;
+
+  // Show note
+  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+  deliveryNote.style.display = "block";
+
+  validateForm(); // ensure form logic is still valid
+};
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+  });
+
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-address',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
+
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+
+  function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
     });
 
-    document.getElementById('payment-ref').addEventListener('input', validateForm);
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
 
-    const requiredFields = [
-      'customer-name', 'customer-phone', 'customer-email',
-      'delivery-address', 'payment-method'
-    ];
+    if (allFilled && cartHasItems) {
+  checkoutBtn.disabled = false;
+  checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+} else {
+  checkoutBtn.disabled = true;
+  checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+  checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+}
 
-    function validateForm() {
-      const allFilled = requiredFields.every(id => document.getElementById(id).value.trim() !== '');
-      const method = document.getElementById('payment-method').value;
-      const ref = document.getElementById('payment-ref').value.trim();
-      const refNeeded = ["GCash", "PayMaya", "Bank"].includes(method);
-      const refValid = !refNeeded || ref.length > 0;
-      const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-      const btn = document.getElementById('checkout-btn');
-
-      if (allFilled && refValid && cartHasItems) {
-        btn.disabled = false;
-        btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.add('bg-green-600');
-      } else {
-        btn.disabled = true;
-        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.remove('bg-green-600');
-      }
-    }
-
-    window.onload = renderProducts;
-  </script>
+  }
+</script>
 </body>
 </html>
