@@ -116,7 +116,7 @@
       <input type="text" id="ref-number" placeholder="Ex: 1234567890" />
     </div>
 
-    <a id="wa-link" class="whatsapp-btn">Checkout via WhatsApp</a>
+    <a id="wa-link" class="whatsapp-btn">Continue</a>
     <a class="back-link" href="#" onclick="window.close(); return false;">← Back to Cart</a>
   </div>
 
@@ -124,16 +124,10 @@
     const query = new URLSearchParams(window.location.search);
     const method = query.get("method");
     const total = query.get("total") || "0.00";
-    const name = query.get("name") || "Customer";
-    const phone = query.get("phone") || "N/A";
-    const items = decodeURIComponent(query.get("items") || "No items listed");
-
     document.getElementById("method-label").textContent = `Payment Method: ${method || "N/A"}`;
 
     const detailsDiv = document.getElementById("payment-details");
     const referenceBox = document.getElementById("reference-box");
-
-    let waMessage = `🧾 New Order via Dala🚲Na\n\nName: ${name}\nPhone: ${phone}\n\nItems:\n${items}\n\nTotal: ₱${total}\nPayment: ${method}`;
 
     if (method === "GCash") {
       detailsDiv.innerHTML = `
@@ -168,12 +162,10 @@
     }
 
     const waLink = document.getElementById('wa-link');
-    const merchantNumber = "63XXXXXXXXXX";
-    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     setTimeout(() => {
       waLink.classList.add("enabled");
-    }, 30000); // 30 seconds
+    }, 30000); // 30 seconds delay
 
     waLink.addEventListener("click", function (e) {
       e.preventDefault();
@@ -184,16 +176,8 @@
         return;
       }
 
-      let finalMessage = waMessage;
-      if (ref) {
-        finalMessage += `\nReference #: ${ref}`;
-      }
-      finalMessage += `\nConfirmation #: ${confirmation}`;
-
-      const waURL = `https://wa.me/${merchantNumber}?text=${encodeURIComponent(finalMessage)}`;
-      window.open(waURL, "_blank");
-
-      // Redirect to Thank You page
+      // Skip WhatsApp here – already handled in merchant page
+      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
       window.location.href = `thankyou.html?ref=${confirmation}`;
     });
   </script>
