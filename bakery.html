@@ -109,6 +109,12 @@
   <option value="Bank">Bank Transfer (may incur transfer fee)</option>
   <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
 </select>
+<input
+  type="text"
+  id="payment-reference"
+  placeholder="Payment Reference Number"
+  class="hidden"
+/>
 
 <div style="margin-top: 0.5rem;">
   <a
@@ -135,8 +141,6 @@
   onclick="submitOrder()"
   disabled
 >
-  🛒 Checkout via WhatsApp
-</button>
   🛒 Checkout via WhatsApp
 </button>
   </div>
@@ -307,6 +311,7 @@
     const date = document.getElementById('delivery-date').value;
     const time = document.getElementById('delivery-time').value;
     const method = document.getElementById('payment-method').value;
+    const reference = document.getElementById('payment-reference').value.trim();
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
     const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
@@ -323,6 +328,7 @@
     filloutUrl.searchParams.append("deliveryDate", date);
     filloutUrl.searchParams.append("deliveryTime", time);
     filloutUrl.searchParams.append("paymentMethod", method);
+    filloutUrl.searchParams.append("paymentReference", reference);
     filloutUrl.searchParams.append("cartSummary", items);
     filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
@@ -477,6 +483,45 @@ Payment: ${method}`;
 
     validateForm(); // ensure button is in correct state on load
   };
+</script>
+<script>
+  const paymentField = document.getElementById('payment-method');
+  const referenceInput = document.getElementById('payment-reference');
+
+  paymentField.addEventListener('change', () => {
+    const selected = paymentField.value;
+    if (selected === 'Cash') {
+      referenceInput.classList.add('hidden');
+      referenceInput.value = '';
+    } else {
+      referenceInput.classList.remove('hidden');
+    }
+    validateForm(); // to re-evaluate form validity
+  });
+
+  // Update validateForm to check payment-reference if needed
+  function validateForm() {
+    const filled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const requiresRef = paymentField.value !== 'Cash';
+    const hasRef = !requiresRef || (referenceInput && referenceInput.value.trim() !== '');
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const btn = document.getElementById('checkout-btn');
+
+    if (btn) {
+      const enable = filled && cartHasItems && hasRef;
+      btn.disabled = !enable;
+      btn.classList.toggle('bg-green-600', enable);
+      btn.classList.toggle('bg-gray-400', !enable);
+      btn.classList.toggle('cursor-not-allowed', !enable);
+    }
+  }
+
+  // Also validate on typing in the payment-reference field
+  referenceInput.addEventListener('input', validateForm);
 </script>
 
 </body>
