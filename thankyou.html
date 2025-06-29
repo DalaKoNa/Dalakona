@@ -14,7 +14,7 @@
       border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: left;
     }
     .box h2 { color: #444; margin-bottom: 1rem; }
-    .box p { margin: 0.5rem 0; }
+    .box p { margin: 0.5rem 0; line-height: 1.5; }
     .box strong { color: #000; }
     .summary { margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 1rem; }
     .back-btn {
@@ -29,19 +29,21 @@
 
   <div class="box">
     <h2>🧾 Order Summary</h2>
-    <p><strong>Name:</strong> <span id="customerName"></span></p>
-    <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
-    <p><strong>Email:</strong> <span id="customerEmail"></span></p>
-    <p><strong>Delivery Address:</strong> <span id="deliveryAddress"></span></p>
-    <p><strong>Notes:</strong> <span id="addressNotes"></span></p>
-    <p><strong>Delivery Date:</strong> <span id="deliveryDate"></span></p>
-    <p><strong>Delivery Time:</strong> <span id="deliveryTime"></span></p>
-    <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
-    <p><strong>Payment Ref:</strong> <span id="paymentReference"></span></p>
+
+    <p><strong>Name:</strong> <span id="customerName">—</span></p>
+    <p><strong>Phone:</strong> <span id="customerPhone">—</span></p>
+    <p><strong>Email:</strong> <span id="customerEmail">—</span></p>
+    <p><strong>Delivery Address:</strong> <span id="deliveryAddress">—</span></p>
+    <p><strong>Notes:</strong> <span id="addressNotes">—</span></p>
+    <p><strong>Delivery Date:</strong> <span id="deliveryDate">—</span></p>
+    <p><strong>Delivery Time:</strong> <span id="deliveryTime">—</span></p>
+    <p><strong>Payment Method:</strong> <span id="paymentMethod">—</span></p>
+    <p><strong>Payment Ref:</strong> <span id="paymentReference">—</span></p>
 
     <div class="summary">
-      <p><strong>Items:</strong> <br><span id="cartSummary"></span></p>
-      <p><strong>Confirmation #:</strong> <span id="confirmationNumber"></span></p>
+      <p><strong>Items Ordered:</strong><br><span id="cartSummary">—</span></p>
+      <p><strong>Total Amount:</strong> ₱<span id="total">—</span></p>
+      <p><strong>Confirmation #:</strong> <span id="confirmationNumber">—</span></p>
     </div>
 
     <a href="bakery.html" class="back-btn">← Back to Store</a>
@@ -51,7 +53,8 @@
     const params = new URLSearchParams(window.location.search);
     const fields = [
       "customerName", "customerPhone", "customerEmail", "deliveryAddress", "addressNotes",
-      "deliveryDate", "deliveryTime", "paymentMethod", "paymentReference", "cartSummary", "confirmationNumber"
+      "deliveryDate", "deliveryTime", "paymentMethod", "paymentReference",
+      "cartSummary", "confirmationNumber", "total"
     ];
 
     fields.forEach(field => {
