@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
-    /* Same styling structure as bakery page */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -18,8 +17,8 @@
       border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
-    .search-bar { margin-bottom: 1rem; text-align: center; }
+    h1 { text-align: center; font-weight: bold; font-size: 1.2rem; }
+    .search-bar { margin: 1rem 0; text-align: center; }
     .search-bar input {
       padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
     }
@@ -31,7 +30,7 @@
     }
     .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
     .qty-controls {
-      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
+      display: flex; justify-content: center; align-items: center; margin-top: 0.5rem;
     }
     .qty-controls button {
       background: #333; color: white; border: none;
@@ -68,121 +67,265 @@
   </style>
 </head>
 <body>
-   <header>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na Chicken Inasal</h1>
-    <div class="cart-btn" onclick="toggleCart()">
-      <i class="fas fa-receipt"></i>
-      <span class="cart-count" id="cart-count">0</span>
-    </div>
-  </header>
-
-  <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search Inasal...">
+<header>
+  <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+  <h1>Dala🚲Na Chicken Inasal</h1>
+  <div class="cart-btn" onclick="toggleCart()">
+    <i class="fas fa-receipt"></i>
+    <span class="cart-count" id="cart-count">0</span>
   </div>
+</header>
 
-  
+<div class="search-bar">
+  <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search Inasal...">
+</div>
+
 <div class="grid" id="product-list"></div>
-
 <div class="cart-modal hidden" id="cart-modal">
-<div class="close-btn" onclick="toggleCart()">&times;</div>
-<div class="cart-summary" id="cart-summary"></div>
+  <div class="close-btn" onclick="toggleCart()">&times;</div>
+  <div class="cart-summary" id="cart-summary"></div>
 
-<div class="form-section">
-<h3>Customer Info</h3>
-<input type="text" id="customer-name" placeholder="Full Name" required>
-<input type="tel" id="customer-phone" placeholder="Phone Number" required>
-<input type="email" id="customer-email" placeholder="Email Address" required>
-<input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
-<button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-<input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
-<input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
+  <div class="form-section">
+    <h3>Customer Info</h3>
+    <input type="text" id="customer-name" placeholder="Full Name" required>
+    <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+    <input type="email" id="customer-email" placeholder="Email Address" required>
+    <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
+    <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+    <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
+    <input type="text" id="payment-ref" placeholder="📄 Payment reference (GCash/Bank)" style="margin-top: 0.5rem; display:none;" />
 
+    <h3>Delivery Details</h3>
+    <input type="date" id="delivery-date" disabled>
+    <input type="time" id="delivery-time" disabled>
+    <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+      ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+    </div>
 
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date" disabled>
-<input type="time" id="delivery-time" disabled>
-<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+    <h3>Payment</h3>
+    <select id="payment-method">
+      <option value="GCash">GCash (may incur fee)</option>
+      <option value="PayMaya">PayMaya</option>
+      <option value="Bank">Bank Transfer</option>
+      <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+    </select>
+
+    <div style="margin-top: 0.5rem;">
+      <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+        View payment instructions
+      </a>
+    </div>
+
+    <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+      ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
+      Orders are final and subject to store policies.
+    </div>
+
+    <button
+      class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+      id="checkout-btn"
+      onclick="submitOrder()"
+      disabled>
+      🛒 Checkout via WhatsApp
+    </button>
+  </div>
 </div>
+<script>
+const cart = {};
+const requiredFields = [
+  'customer-name',
+  'customer-phone',
+  'customer-email',
+  'delivery-address',
+  'delivery-date',
+  'delivery-time',
+  'payment-method'
+];
 
-<h3>Payment</h3>
-<select id="payment-method">
-<option value="GCash">GCash (may incur transfer fee)</option>
-<option value="PayMaya">PayMaya (may incur transfer fee)</option>
-<option value="Bank">Bank Transfer (may incur transfer fee)</option>
-<option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-</select>
+const products = [
+  { name: "Half Lechon Manok (Original)", price: 160, image: "https://via.placeholder.com/100" },
+  { name: "Half Lechon Manok (Spicy)", price: 170, image: "https://via.placeholder.com/100" },
+  { name: "Whole Lechon Manok (Original)", price: 310, image: "https://via.placeholder.com/100" },
+  { name: "Whole Lechon Manok (Spicy)", price: 330, image: "https://via.placeholder.com/100" },
+  { name: "Chicken Inasal Pecho (Breast)", price: 145, image: "https://via.placeholder.com/100" },
+  { name: "Chicken Inasal Paa (Leg)", price: 135, image: "https://via.placeholder.com/100" },
+  { name: "Chicken BBQ (Stick)", price: 55, image: "https://via.placeholder.com/100" },
+  { name: "Pork BBQ (Stick)", price: 45, image: "https://via.placeholder.com/100" },
+  { name: "Garlic Rice", price: 25, image: "https://via.placeholder.com/100" },
+  { name: "Plain Rice", price: 20, image: "https://via.placeholder.com/100" },
+  { name: "Bottled Softdrinks", price: 35, image: "https://via.placeholder.com/100" },
+  { name: "Iced Tea (Cup)", price: 25, image: "https://via.placeholder.com/100" }
+];
 
-<div style="margin-top: 0.5rem;">
-<a
-id="payment-link"
-href="payment-instructions.html?method=GCash"
-target="_blank"
-style="color: #008060; text-decoration: underline;"
->
-View payment instructions
-</a>
-</div>
+function renderProducts() {
+  const list = document.getElementById('product-list');
+  list.innerHTML = '';
+  products.forEach((item, i) => {
+    list.innerHTML += `
+      <div class="card" data-name="${item.name.toLowerCase()}">
+        <img src="${item.image}" alt="${item.name}">
+        <h4>${item.name}</h4>
+        <p>₱${item.price.toFixed(2)}</p>
+        <div class="qty-controls">
+          <button onclick="decreaseQty(${i})">-</button>
+          <span id="qty-${i}">0</span>
+          <button onclick="increaseQty(${i})">+</button>
+        </div>
+      </div>`;
+  });
+}
 
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the
-<a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-Terms & Conditions
-</a>.
-Orders are final and subject to store policies.
-</div>
+function filterProducts() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.dataset.name.includes(query) ? 'block' : 'none';
+  });
+}
 
-<!-- ✅ Checkout Button -->
-<button
-class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-id="checkout-btn"
-onclick="submitOrder()"
-disabled
->
-🛒 Checkout via WhatsApp
-</button>
+function increaseQty(i) {
+  const item = products[i];
+  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+  cart[item.name].qty++;
+  updateQty(i);
+}
 
-<!-- ✅ Scripts -->
-<script src="dalacart.js"></script>
+function decreaseQty(i) {
+  const item = products[i];
+  if (cart[item.name]) {
+    cart[item.name].qty--;
+    if (cart[item.name].qty <= 0) delete cart[item.name];
+  }
+  updateQty(i);
+}
+
+function updateQty(i) {
+  const item = products[i];
+  const qty = cart[item.name]?.qty || 0;
+  document.getElementById(`qty-${i}`).innerText = qty;
+  document.getElementById('cart-count').innerText =
+    Object.values(cart).reduce((sum, i) => sum + i.qty, 0);
+  updateCartSummary();
+  validateForm();
+}
+
+function updateCartSummary() {
+  let html = `<h3 style="text-align:center;">🧾 Receipt Summary</h3>
+    <p style="text-align:center;">Dala🚲Na Chicken Inasal</p><ul style="list-style:none; padding:0;">`;
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `<li><strong>${item.qty}x</strong> ${item.name}
+      <span style="float:right;">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    total += item.qty * item.price;
+  });
+  const fee = 29.99;
+  const grand = total + fee;
+  html += `</ul><hr>
+    <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+  document.getElementById('cart-summary').innerHTML = html;
+}
+
+function toggleCart() {
+  document.getElementById('cart-modal').classList.toggle('hidden');
+}
+
+function validateForm() {
+  const allFilled = requiredFields.every(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  });
+  const method = document.getElementById('payment-method').value;
+  const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const requiresRef = method !== 'Cash';
+  const valid = allFilled && cartHasItems && (!requiresRef || ref !== '');
+  checkoutBtn.disabled = !valid;
+  checkoutBtn.classList.toggle('bg-green-600', valid);
+  checkoutBtn.classList.toggle('bg-gray-400', !valid);
+  checkoutBtn.classList.toggle('cursor-not-allowed', !valid);
+}
+
+document.getElementById('payment-method').addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  const refInput = document.getElementById('payment-ref');
+  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+  link.textContent = `View ${method} instructions`;
+  refInput.style.display = method === 'Cash' ? 'none' : 'block';
+  if (method === 'Cash') refInput.value = '';
+  validateForm();
+});
+
+requiredFields.forEach(id => {
+  document.getElementById(id).addEventListener('input', validateForm);
+});
+document.getElementById('payment-ref').addEventListener('input', validateForm);
+
+function getLocation() {
+  if (!navigator.geolocation) return alert("Geolocation not supported.");
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+    document.getElementById("delivery-address").value = mapsLink;
+    validateForm();
+  }, () => {
+    alert("Unable to retrieve location.");
+  });
+}
+
+window.onload = () => {
+  renderProducts();
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+  validateForm();
+};
+
+// Optional: auto-hide ref input on load
+document.getElementById('payment-method').dispatchEvent(new Event('change'));
+</script>
 <script>
 async function submitOrder() {
-const name = document.getElementById('customer-name').value.trim();
-const phone = document.getElementById('customer-phone').value.trim();
-const email = document.getElementById('customer-email').value.trim();
-const address = document.getElementById('delivery-address').value.trim();
-const notes = document.getElementById('delivery-notes').value.trim();
-const date = document.getElementById('delivery-date').value;
-const time = document.getElementById('delivery-time').value;
-const method = document.getElementById('payment-method').value;
-const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  const name = document.getElementById('customer-name').value.trim();
+  const phone = document.getElementById('customer-phone').value.trim();
+  const email = document.getElementById('customer-email').value.trim();
+  const address = document.getElementById('delivery-address').value.trim();
+  const notes = document.getElementById('delivery-notes').value.trim();
+  const date = document.getElementById('delivery-date').value;
+  const time = document.getElementById('delivery-time').value;
+  const method = document.getElementById('payment-method').value;
+  const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-const fee = 29.99;
-const total = subtotal + fee;
-const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+  const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+  const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+  const fee = 29.99;
+  const total = subtotal + fee;
 
-// 1. Submit silently to Fillout
-const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-filloutUrl.searchParams.append("customerName", name);
-filloutUrl.searchParams.append("customerPhone", phone);
-filloutUrl.searchParams.append("customerEmail", email);
-filloutUrl.searchParams.append("deliveryAddress", address);
-filloutUrl.searchParams.append("addressNotes", notes);
-filloutUrl.searchParams.append("deliveryDate", date);
-filloutUrl.searchParams.append("deliveryTime", time);
-filloutUrl.searchParams.append("paymentMethod", method);
-filloutUrl.searchParams.append("paymentReference", ref);
-filloutUrl.searchParams.append("cartSummary", items);
-filloutUrl.searchParams.append("confirmationNumber", confirmation);
+  // 1. Fillout silent submit
+  const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+  filloutUrl.searchParams.append("customerName", name);
+  filloutUrl.searchParams.append("customerPhone", phone);
+  filloutUrl.searchParams.append("customerEmail", email);
+  filloutUrl.searchParams.append("deliveryAddress", address);
+  filloutUrl.searchParams.append("addressNotes", notes);
+  filloutUrl.searchParams.append("deliveryDate", date);
+  filloutUrl.searchParams.append("deliveryTime", time);
+  filloutUrl.searchParams.append("paymentMethod", method);
+  filloutUrl.searchParams.append("paymentReference", ref);
+  filloutUrl.searchParams.append("cartSummary", items);
+  filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
-const iframe = document.createElement("iframe");
-iframe.style.display = "none";
-iframe.src = filloutUrl.toString();
-document.body.appendChild(iframe);
-// 2. Send WhatsApp messages
-const message = `🧾 New Order - Dala🚲Na Chicken Inasal\n\nConfirmation #: ${confirmation}
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = filloutUrl.toString();
+  document.body.appendChild(iframe);
+
+  // 2. Send WhatsApp messages
+  const message = `🧾 New Order - Dala🚲Na Chicken Inasal\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -198,202 +341,32 @@ Delivery: ${date} ${time}
 Payment: ${method}
 Ref #: ${ref || 'N/A'}`;
 
-const encoded = encodeURIComponent(message);
-const merchant = "63XXXXXXXXXX";
-const admin = "63YYYYYYYYYY";
-const driver = "63ZZZZZZZZZZ";
+  const encoded = encodeURIComponent(message);
+  const merchant = "63XXXXXXXXXX"; // Replace
+  const admin = "63YYYYYYYYYY";    // Replace
+  const driver = "63ZZZZZZZZZZ";   // Replace
 
-window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
-window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
-window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+  window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+  window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+  window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
 
-// 3. Redirect to thank you page
-const thankyouUrl = new URL("thankyou.html", window.location.href);
-thankyouUrl.searchParams.append("customerName", name);
-thankyouUrl.searchParams.append("customerPhone", phone);
-thankyouUrl.searchParams.append("customerEmail", email);
-thankyouUrl.searchParams.append("deliveryAddress", address);
-thankyouUrl.searchParams.append("addressNotes", notes);
-thankyouUrl.searchParams.append("deliveryDate", date);
-thankyouUrl.searchParams.append("deliveryTime", time);
-thankyouUrl.searchParams.append("paymentMethod", method);
-thankyouUrl.searchParams.append("paymentReference", ref);
-thankyouUrl.searchParams.append("cartSummary", items);
-thankyouUrl.searchParams.append("confirmationNumber", confirmation);
-thankyouUrl.searchParams.append("total", total.toFixed(2));
+  // 3. Redirect to thank you
+  const thankyouUrl = new URL("thankyou.html", window.location.href);
+  thankyouUrl.searchParams.append("customerName", name);
+  thankyouUrl.searchParams.append("customerPhone", phone);
+  thankyouUrl.searchParams.append("customerEmail", email);
+  thankyouUrl.searchParams.append("deliveryAddress", address);
+  thankyouUrl.searchParams.append("addressNotes", notes);
+  thankyouUrl.searchParams.append("deliveryDate", date);
+  thankyouUrl.searchParams.append("deliveryTime", time);
+  thankyouUrl.searchParams.append("paymentMethod", method);
+  thankyouUrl.searchParams.append("paymentReference", ref);
+  thankyouUrl.searchParams.append("cartSummary", items);
+  thankyouUrl.searchParams.append("confirmationNumber", confirmation);
+  thankyouUrl.searchParams.append("total", total.toFixed(2));
 
-setTimeout(() => {
-window.location.href = thankyouUrl.toString();
-}, 2000);
+  setTimeout(() => {
+    window.location.href = thankyouUrl.toString();
+  }, 2000);
 }
 </script>
-
-</body>
-</html>
-<script>
-const requiredFields = [
-'customer-name',
-'customer-phone',
-'customer-email',
-'delivery-address',
-'delivery-date',
-'delivery-time',
-'payment-method'
-];
-
-const cart = {};
-const products = [
-      { name: "Half Lechon Manok (Original)", price: 160, image: "https://via.placeholder.com/100" },
-      { name: "Half Lechon Manok (Spicy)", price: 170, image: "https://via.placeholder.com/100" },
-      { name: "Whole Lechon Manok (Original)", price: 310, image: "https://via.placeholder.com/100" },
-      { name: "Whole Lechon Manok (Spicy)", price: 330, image: "https://via.placeholder.com/100" },
-      { name: "Chicken Inasal Pecho (Breast)", price: 145, image: "https://via.placeholder.com/100" },
-      { name: "Chicken Inasal Paa (Leg)", price: 135, image: "https://via.placeholder.com/100" },
-      { name: "Chicken BBQ (Stick)", price: 55, image: "https://via.placeholder.com/100" },
-      { name: "Pork BBQ (Stick)", price: 45, image: "https://via.placeholder.com/100" },
-      { name: "Garlic Rice", price: 25, image: "https://via.placeholder.com/100" },
-      { name: "Plain Rice", price: 20, image: "https://via.placeholder.com/100" },
-      { name: "Bottled Softdrinks", price: 35, image: "https://via.placeholder.com/100" },
-      { name: "Iced Tea (Cup)", price: 25, image: "https://via.placeholder.com/100" }
-    ];
-  function renderProducts() {
-const list = document.getElementById('product-list');
-list.innerHTML = '';
-products.forEach((item, index) => {
-list.innerHTML += `
-<div class="card" data-name="${item.name.toLowerCase()}">
-<img src="${item.image}" alt="${item.name}">
-<h4>${item.name}</h4>
-<p>₱${item.price.toFixed(2)}</p>
-<div class="qty-controls">
-<button onclick="decreaseQty(${index})">-</button>
-<span id="qty-${index}">0</span>
-<button onclick="increaseQty(${index})">+</button>
-</div>
-</div>`;
-});
-}
-
-function increaseQty(i) {
-const item = products[i];
-if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-cart[item.name].qty++;
-updateQty(i);
-}
-
-function decreaseQty(i) {
-const item = products[i];
-if (cart[item.name]) {
-cart[item.name].qty--;
-if (cart[item.name].qty <= 0) delete cart[item.name];
-}
-updateQty(i);
-}
-
-function updateQty(i) {
-const item = products[i];
-const qty = cart[item.name]?.qty || 0;
-document.getElementById(`qty-${i}`).innerText = qty;
-document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-updateCartSummary();
-validateForm();
-}
-
-function updateCartSummary() {
-let html = `
-<h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Chicken Inasal</p><ul style="list-style: none; padding: 0;">`;
-let total = 0;
-Object.values(cart).forEach(item => {
-html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-total += item.qty * item.price;
-});
-const fee = 29.99;
-const grand = total + fee;
-html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-document.getElementById('cart-summary').innerHTML = html;
-}
-
-function toggleCart() {
-document.getElementById('cart-modal').classList.toggle('hidden');
-}
-
-function validateForm() {
-const allFilled = requiredFields.every(id => {
-const el = document.getElementById(id);
-return el && el.value.trim() !== '';
-});
-
-const method = document.getElementById('payment-method').value;
-const ref = document.getElementById('payment-ref')?.value.trim() || '';
-const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-const checkoutBtn = document.getElementById('checkout-btn');
-const requiresRef = method !== 'Cash';
-
-const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
-
-if (allowCheckout) {
-checkoutBtn.disabled = false;
-checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-} else {
-checkoutBtn.disabled = true;
-checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-}
-}
-
-window.onload = () => {
-renderProducts();
-
-const now = new Date();
-const oneHourLater = new Date(now.getTime() + 60 * 60000);
-document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-document.getElementById('delivery-date').disabled = true;
-document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-document.getElementById('delivery-time').disabled = true;
-
-const deliveryNote = document.getElementById('delivery-note');
-deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-deliveryNote.style.display = "block";
-
-// Auto-hide or show reference field on page load
-const method = document.getElementById('payment-method').value;
-const refInput = document.getElementById('payment-ref');
-if (refInput) {
-refInput.style.display = method === 'Cash' ? 'none' : 'block';
-}
-
-validateForm();
-};
-
-document.getElementById('payment-method').addEventListener('change', function () {
-const method = this.value;
-const link = document.getElementById('payment-link');
-const refInput = document.getElementById('payment-ref');
-
-link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-link.textContent = `View ${method} instructions`;
-
-if (method === 'Cash') {
-refInput.style.display = 'none';
-refInput.value = '';
-} else {
-refInput.style.display = 'block';
-}
-
-validateForm();
-});
-
-// Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-</script>
-
-</script>
-</body>
-</html>
