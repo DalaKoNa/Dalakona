@@ -319,7 +319,10 @@ document.getElementById('cart-summary').innerHTML = html;
 }
 
 function toggleCart() {
-document.getElementById('cart-modal').classList.toggle('hidden');
+  const cartModal = document.getElementById('cart-modal');
+  if (cartModal) {
+    cartModal.classList.toggle('hidden');
+  }
 }
 
 function validateForm() {
