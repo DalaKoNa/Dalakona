@@ -315,8 +315,7 @@ const grand = total + fee;
 html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
 <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
 <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-document.getElementById('cart-summary').innerHTML = html;
-}
+document.getElementById('payment-ref')?.addEventListener('input', validateForm);
 
 function toggleCart() {
   const cartModal = document.getElementById('cart-modal');
