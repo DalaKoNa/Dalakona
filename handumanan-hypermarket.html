@@ -257,25 +257,24 @@ const products = [
       { name: "Sinandomeng Rice 5kg", price: 329.99, image: "https://via.placeholder.com/100" },
       { name: "Sinandomeng Rice 10kg", price: 639.99, image: "https://via.placeholder.com/100" },
     ];
-      
-function renderProducts() {
-const list = document.getElementById('product-list');
-list.innerHTML = '';
-products.forEach((item, index) => {
-list.innerHTML += `
-<div class="card" data-name="${item.name.toLowerCase()}">
-<img src="${item.image}" alt="${item.name}">
-<h4>${item.name}</h4>
-<p>₱${item.price.toFixed(2)}</p>
-<div class="qty-controls">
-<button onclick="decreaseQty(${index})">-</button>
-<span id="qty-${index}">0</span>
-<button onclick="increaseQty(${index})">+</button>
-</div>
-</div>`;
-});
-}
 
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+        <div class="card">
+          <img src="${item.image}" alt="${item.name}" />
+          <h4>${item.name}</h4>
+          <p>₱${item.price.toFixed(2)}</p>
+          <div class="qty-controls">
+            <button onclick="decreaseQty(${index})">-</button>
+            <span id="qty-${index}">0</span>
+            <button onclick="increaseQty(${index})">+</button>
+          </div>
+        </div>`;
+      });
+    }
 function increaseQty(i) {
 const item = products[i];
 if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
