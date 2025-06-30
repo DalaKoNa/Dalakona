@@ -286,22 +286,41 @@ document.getElementById('cart-count').innerText = Object.values(cart).reduce((a,
 updateCartSummary();
 validateForm();
 }
-
 function updateCartSummary() {
-let html = `
-<h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Chicken Inasal</p><ul style="list-style: none; padding: 0;">`;
-let total = 0;
-Object.values(cart).forEach(item => {
-html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-total += item.qty * item.price;
-});
-const fee = 29.99;
-const grand = total + fee;
-html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-document.getElementById('cart-summary').innerHTML = html;
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Chicken Inasal</p>
+    <ul style="list-style: none; padding: 0;">`;
+
+  let total = 0;
+
+  Object.values(cart).forEach(item => {
+    const itemTotal = item.qty * item.price;
+    html += `
+      <li style="display: flex; justify-content: space-between; margin: 4px 0;">
+        <div style="flex: 1;">${item.qty}x ${item.name}</div>
+        <div style="text-align: right; min-width: 70px;">₱${itemTotal.toFixed(2)}</div>
+      </li>`;
+    total += itemTotal;
+  });
+
+  const fee = 29.99;
+  const grand = total + fee;
+
+  html += `</ul>
+    <hr>
+    <p style="display: flex; justify-content: space-between;">
+      <strong>Subtotal:</strong>
+      <span>₱${total.toFixed(2)}</span>
+    </p>
+    <p style="display: flex; justify-content: space-between;">
+      <strong>Service Fee:</strong>
+      <span>₱${fee.toFixed(2)}</span>
+    </p>
+    <hr>
+    <h3 style="text-align: center;">Total: ₱${grand.toFixed(2)}</h3>`;
+
+  document.getElementById('cart-summary').innerHTML = html;
 }
 
 function toggleCart() {
