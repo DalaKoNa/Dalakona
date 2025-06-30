@@ -387,15 +387,13 @@ Ref #: ${ref || 'N/A'}`;
     validateForm();
   });
 
-  <script>
   // Listen to all fields
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
-  document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-
-  // Search filter function
-  function filterProducts() {
+requiredFields.forEach(id => {
+document.getElementById(id).addEventListener('input', validateForm);
+});
+document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+  
+function filterProducts() {
     const input = document.getElementById('searchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.card');
 
@@ -408,6 +406,8 @@ Ref #: ${ref || 'N/A'}`;
       }
     });
   }
+</script>
+
 </script>
 </body>
 </html>
