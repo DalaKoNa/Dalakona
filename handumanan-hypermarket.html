@@ -46,7 +46,7 @@
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
-  </header>
+  
 <div class="search-bar">
 <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
 </div>
@@ -197,6 +197,7 @@ window.location.href = thankyouUrl.toString();
 }, 2000);
 }
 </script>
+
 </body>
 </html>
 <script>
@@ -256,6 +257,7 @@ const products = [
       { name: "Sinandomeng Rice 5kg", price: 329.99, image: "https://via.placeholder.com/100" },
       { name: "Sinandomeng Rice 10kg", price: 639.99, image: "https://via.placeholder.com/100" },
     ];
+      
 function renderProducts() {
 const list = document.getElementById('product-list');
 list.innerHTML = '';
@@ -302,7 +304,7 @@ validateForm();
 function updateCartSummary() {
 let html = `
 <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Handumanan Hypermarket</p><ul style="list-style: none; padding: 0;">`;
+<p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
 let total = 0;
 Object.values(cart).forEach(item => {
 html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
