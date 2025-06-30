@@ -423,5 +423,20 @@ document.getElementById('payment-ref')?.addEventListener('input', validateForm);
 <script>
 
 </script>
+<script>
+function filterProducts() {
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    const name = card.querySelector('h4').textContent.toLowerCase();
+    if (name.includes(input)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
 </body>
 </html>
