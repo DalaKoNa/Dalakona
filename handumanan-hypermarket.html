@@ -46,14 +46,14 @@
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
-  
-<div class="search-bar">
-<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
-</div>
+  </header>
 
-<div class="grid" id="product-list"></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search groceries...">
+  </div>
 
-<div class="cart-modal hidden" id="cart-modal">
+  <div class="grid" id="product-list"></div>
+  <div class="cart-modal hidden" id="cart-modal">
 <div class="close-btn" onclick="toggleCart()">&times;</div>
 <div class="cart-summary" id="cart-summary"></div>
 
@@ -212,7 +212,7 @@ const requiredFields = [
 ];
 
 const cart = {};
-const products = [
+    const products = [
       { name: "Gardenia Classic White Bread 400g", price: 96.99, image: "https://via.placeholder.com/100" },
       { name: "Gardenia Pandesal 300g", price: 66.99, image: "https://via.placeholder.com/100" },
       { name: "Angelina Tasty Loaf 400g", price: 94.99, image: "https://via.placeholder.com/100" },
@@ -275,7 +275,7 @@ const products = [
         </div>`;
       });
     }
-function increaseQty(i) {
+    function increaseQty(i) {
 const item = products[i];
 if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
 cart[item.name].qty++;
@@ -303,7 +303,7 @@ validateForm();
 function updateCartSummary() {
 let html = `
 <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
+<p style="text-align: center;">Dala🚲Na Handumanan Hypermarket</p><ul style="list-style: none; padding: 0;">`;
 let total = 0;
 Object.values(cart).forEach(item => {
 html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
