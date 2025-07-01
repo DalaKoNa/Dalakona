@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
     body {
-      background-color: #fffdee;
+      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
       margin: 0;
       padding: 0;
@@ -16,125 +16,128 @@
     }
 
     .awning-top {
-      height: 90px;
+      height: 36px;
       background: repeating-linear-gradient(
-        90deg,
-        #b71c1c 0 25px,
-        #fff8ec 25px 50px
+        45deg,
+        #333 0px,
+        #333 18px,
+        #fffaf4 18px,
+        #fffaf4 36px
       );
-      position: relative;
       clip-path: polygon(
-        0 0, 100% 0, 100% 85%, 95% 100%, 90% 85%,
-        85% 100%, 80% 85%, 75% 100%, 70% 85%, 65% 100%,
-        60% 85%, 55% 100%, 50% 85%, 45% 100%, 40% 85%,
-        35% 100%, 30% 85%, 25% 100%, 20% 85%, 15% 100%,
-        10% 85%, 5% 100%, 0 85%
+        0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+        30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+        60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+        90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
       );
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-      z-index: 10;
     }
 
     .hero {
-      background-image: linear-gradient(to right, #b71c1c, #a0527b);
-      height: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      color: #fff;
-      padding: 0 1rem;
+      padding: 1.2rem 0 1rem;
+      background-color: transparent;
+      color: #b71c1c;
     }
 
     .hero h1 {
-      font-size: 2.5rem;
-      margin: 0;
-      line-height: 1.3;
+      font-size: 1.5rem;
+      margin: 0.5rem 0 0.3rem;
+      line-height: 1.4;
+    }
+
+    .decorative-underline {
+      width: 80px;
+      height: 4px;
+      margin: 0 auto;
+      background: linear-gradient(to right, #b71c1c, #ffcc80, #b71c1c);
+      border-radius: 2px;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+      50% { box-shadow: 0 0 6px rgba(183, 28, 28, 0.4); }
     }
 
     .about-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
-      padding: 2.5rem 1.5rem;
+      padding: 2rem 1.5rem;
       max-width: 1100px;
       margin: auto;
     }
 
     .card {
       background-color: #fffefb;
-      border: 2px solid #b71c1c20;
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
       text-align: center;
-      transition: transform 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-6px);
     }
 
     .card h2 {
-      font-size: 1.4rem;
-      color: #b71c1c;
+      font-size: 1.3rem;
+      color: #a0527b;
       margin-bottom: 0.5rem;
     }
 
     .card p {
       font-size: 1rem;
-      line-height: 1.6;
+      line-height: 1.5;
       margin-bottom: 0.8rem;
     }
 
     .btn {
       display: inline-block;
       margin: 2rem auto;
-      background: #b71c1c;
+      background: #a0527b;
       color: white;
-      padding: 12px 24px;
+      padding: 10px 20px;
       text-decoration: none;
-      border-radius: 30px;
+      border-radius: 6px;
       font-size: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: background 0.3s ease;
-    }
-    .btn:hover {
-      background: #a62828;
+      text-align: center;
     }
 
     footer {
-      background-color: #fff4ca;
-      padding: 2rem 1.5rem;
+      font-family: 'Cinzel', serif;
+      background-color: #f9f9f9;
+      padding: 2rem 1rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      font-size: 0.95rem;
+      border-top: 1px solid #ddd;
     }
+
     .footer-left, .footer-right {
       flex: 1;
-      min-width: 220px;
-      margin-bottom: 1.5rem;
+      min-width: 200px;
+      margin-bottom: 1rem;
     }
+
     .footer-left .socials a {
       margin-right: 10px;
       text-decoration: none;
-      color: #cc8b00;
-      font-weight: bold;
+      color: #0077cc;
     }
+
     .footer-right a {
       display: block;
       margin-bottom: 6px;
       color: #333;
       text-decoration: none;
     }
+
     .footer-right a:hover {
       text-decoration: underline;
     }
 
     @media (max-width: 600px) {
-      .hero h1 { font-size: 1.8rem; }
+      .hero h1 { font-size: 1.3rem; }
       .card h2 { font-size: 1.1rem; }
       .card p { font-size: 0.95rem; }
-      .btn { font-size: 0.95rem; padding: 10px 20px; }
+      .awning-top { height: 28px; background-size: 28px 28px; }
       footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
@@ -145,6 +148,7 @@
 
   <section class="hero">
     <h1>About Dala🚲na<br>Ang Amon Istorya</h1>
+    <div class="decorative-underline"></div>
   </section>
 
   <section class="about-grid">
