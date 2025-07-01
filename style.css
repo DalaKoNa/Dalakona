@@ -109,19 +109,17 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 /* === Awning Title === */
 .awning-title {
-  font-family: 'Yeseva One', cursive;
-  font-size: 2.5rem;
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
   color: #222;
   margin: 0;
+  padding: 0;
+  background: transparent;
   letter-spacing: 1px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 0.3em 1em;
-  border-radius: 8px;
 }
 
 /* === Storefront Cards (Grid Layout) === */
