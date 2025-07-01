@@ -210,17 +210,8 @@
   </div>
 <section class="storefront-section" id="partners">
   <h2 style="text-align: center;">Mga Tindahan</h2>
-
-  <input
-  type="text"
-  id="merchantSearch"
-  placeholder="🔍 Search Merchant..."
-  oninput="filterMerchants()"
-  style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
-/>
-
-<!-- Merchant Cards Grid -->
-<div class="storefront-wrapper-grid">
+<input type="text" id="merchantSearch" placeholder="🔍 Search Merchant..." />
+  <div class="storefront-wrapper-grid">
     
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
@@ -441,15 +432,16 @@
 </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
- <script>
+ <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
   AOS.init();
 
   function normalizeText(text) {
     return text
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[🌀-🫖]/gu, "")
       .replace(/[^\w\s]/g, "")
       .replace(/\s+/g, " ")
       .trim();
@@ -461,12 +453,15 @@
 
     cards.forEach(card => {
       const h3 = card.querySelector('h3');
-      const name = h3 ? normalizeText(h3.textContent) : "";
-      const match = name.includes(input);
-      card.style.display = match ? "block" : "none";
+      const name = h3 ? normalizeText(h3.textContent) : '';
+      const isMatch = name.includes(input);
+      card.style.display = isMatch ? 'block' : 'none';
     });
   }
-</script>
 
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("merchantSearch").addEventListener("input", filterMerchants);
+  });
+</script>
 </body>
 </html>
