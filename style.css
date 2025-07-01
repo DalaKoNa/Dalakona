@@ -63,15 +63,17 @@ a {
   display: block;
 }
 
-/* === Clean Awning Top with Slide-Down Animation === */
-/* === Storefront Awning Top (Paris Style) === */
+/* === Storefront Awning Top (Paris-style with fabric texture & mobile support) === */
 .awning-top {
   height: 90px;
-  background: repeating-linear-gradient(
-    90deg,
-    #b71c1c 0 25px,
-    #ffffff 25px 50px
-  );
+  background: 
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.04)),
+    repeating-linear-gradient(
+      90deg,
+      #b71c1c 0 25px,
+      #ffffff 25px 50px
+    );
+  background-blend-mode: overlay;
   position: relative;
   z-index: 10;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -103,6 +105,34 @@ a {
   animation: slideDownFade 0.8s ease-out forwards;
   transform: translateY(-40px);
   opacity: 0;
+}
+
+/* === Slide-down animation === */
+@keyframes slideDownFade {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* === Responsive Mobile Adjustments === */
+@media (max-width: 768px) {
+  .awning-top {
+    height: 70px;
+    clip-path: polygon(
+      0 0, 100% 0, 100% 82%, 97% 100%, 93% 82%,
+      89% 100%, 85% 82%, 81% 100%, 77% 82%,
+      73% 100%, 69% 82%, 65% 100%, 61% 82%,
+      57% 100%, 53% 82%, 49% 100%, 45% 82%,
+      41% 100%, 37% 82%, 33% 100%, 29% 82%,
+      25% 100%, 21% 82%, 17% 100%, 13% 82%,
+      9% 100%, 5% 82%, 0 100%
+    );
+  }
 }
 /* === Hero Section === */
 .hero {
