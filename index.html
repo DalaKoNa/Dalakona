@@ -458,83 +458,80 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init();
+<script>
+let isShowingAll = false;
 
-  let isShowingAll = false;
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")
+    .replace(/[^\w\s]/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  function normalizeText(text) {
-    return text
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")       // remove accents
-      .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
-      .replace(/[^\w\s]/gi, '')              // remove punctuation
-      .replace(/\s+/g, ' ')                  // collapse spaces
-      .trim();
+function applyShowMoreLimit(limit = 4) {
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  cards.forEach((card, index) => {
+    card.style.display = index < limit ? "block" : "none";
+  });
+
+  const btn = document.getElementById("showMoreBtn");
+  if (cards.length <= limit) {
+    btn.classList.add("hidden");
+  } else {
+    btn.classList.remove("hidden");
+    btn.textContent = "Show More";
+    isShowingAll = false;
   }
+}
 
-  function applyShowMoreLimit(limit = 4) {
-    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-    cards.forEach((card, index) => {
-      card.style.display = index < limit ? 'block' : 'none';
-    });
+function toggleShowMore() {
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  const btn = document.getElementById("showMoreBtn");
 
-    const btn = document.getElementById("showMoreBtn");
-    if (cards.length <= limit) {
-      btn.style.display = "none";
-    } else {
-      btn.style.display = "inline-block";
-      btn.textContent = "Show More";
-      isShowingAll = false;
-    }
+  if (isShowingAll) {
+    applyShowMoreLimit(); // go back to showing limited
+  } else {
+    cards.forEach(card => card.style.display = "block"); // show all
+    btn.textContent = "Show Less";
+    isShowingAll = true;
   }
+}
 
-  function toggleShowMore() {
-    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-    const btn = document.getElementById("showMoreBtn");
+function filterMerchants() {
+  const input = normalizeText(document.getElementById("merchantSearch").value);
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  const btn = document.getElementById("showMoreBtn");
 
+  let matchCount = 0;
+
+  cards.forEach(card => {
+    const name = normalizeText(card.querySelector("h3")?.textContent || "");
+    const match = name.includes(input);
+    card.style.display = match ? "block" : "none";
+    if (match) matchCount++;
+  });
+
+  if (input.length > 0) {
+    btn.classList.add("hidden");
+  } else {
     if (isShowingAll) {
-      applyShowMoreLimit();
-    } else {
-      cards.forEach(card => card.style.display = "block");
+      btn.classList.remove("hidden");
       btn.textContent = "Show Less";
-    }
-
-    isShowingAll = !isShowingAll;
-  }
-
-  function filterMerchants() {
-    const input = normalizeText(document.getElementById('merchantSearch').value);
-    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-    const showMoreBtn = document.getElementById("showMoreBtn");
-    let anyVisible = false;
-
-    cards.forEach(card => {
-      const rawText = card.querySelector('h3')?.textContent || '';
-      const name = normalizeText(rawText);
-      const match = name.includes(input);
-      card.style.display = match ? 'block' : 'none';
-      if (match) anyVisible = true;
-    });
-
-    if (input.length > 0) {
-      showMoreBtn?.classList.add("hidden");
     } else {
-      if (isShowingAll) {
-        cards.forEach(card => card.style.display = "block");
-        showMoreBtn?.classList.remove("hidden");
-        showMoreBtn.textContent = "Show Less";
-      } else {
-        applyShowMoreLimit();
-        showMoreBtn?.classList.remove("hidden");
-        showMoreBtn.textContent = "Show More";
-      }
+      applyShowMoreLimit();
     }
   }
+}
 
-  window.onload = () => {
-    applyShowMoreLimit();
-  };
+window.onload = () => {
+  applyShowMoreLimit();
+};
 </script>
+
 
 </body>
 </html>
