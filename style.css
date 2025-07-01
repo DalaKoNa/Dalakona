@@ -289,3 +289,28 @@ footer {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   margin: 0;
 }
+.awning-top {
+  background: repeating-linear-gradient(
+    45deg,
+    #d32f2f 0 20px,
+    #fff 20px 40px
+  );
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.awning-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 2.5rem;
+  color: #fffefb;
+  text-shadow: 2px 2px #d32f2f;
+  margin: 0;
+  letter-spacing: 1px;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 0.3em 1em;
+  border-radius: 12px;
+}
