@@ -456,22 +456,22 @@
   function normalizeText(text) {
     return text
       .toLowerCase()
-      .normalize("NFD")                        // handle accents
-      .replace(/[\u0300-\u036f]/g, "")         // remove accents
-      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")  // remove emojis
-      .replace(/[^\w\s]/g, "")                 // remove punctuation
-      .replace(/\s+/g, " ")                    // collapse extra spaces
+      .normalize("NFD")                          // Decompose accents
+      .replace(/[\u0300-\u036f]/g, "")           // Remove accents
+      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")    // Remove emojis
+      .replace(/[’'‘"“”.,!?]/g, "")              // Remove apostrophes & punctuation
+      .replace(/\s+/g, " ")                      // Collapse extra spaces
       .trim();
   }
 
   function filterMerchants() {
-    const input = normalizeText(document.getElementById('merchantSearch').value);
-    const cards = document.querySelectorAll('.storefront-card');
+    const input = normalizeText(document.getElementById("merchantSearch").value);
+    const cards = document.querySelectorAll(".storefront-card");
 
     cards.forEach(card => {
-      const name = normalizeText(card.querySelector('h3')?.textContent || '');
-      const match = name.includes(input);
-      card.style.display = match ? "block" : "none";
+      const merchantName = normalizeText(card.querySelector("h3")?.textContent || "");
+      const isMatch = merchantName.includes(input);
+      card.style.display = isMatch ? "block" : "none";
     });
   }
 </script>
