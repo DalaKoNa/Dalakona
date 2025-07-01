@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Terms and Conditions for Dala🚲na users.">
+  <meta name="description" content="Terms and Conditions – Dala🚲na">
   <title>Terms & Conditions – Dala🚲na</title>
   <link rel="icon" href="/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Cinzel', serif;
@@ -19,7 +19,7 @@
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
+        45deg, #9e1c1c 0px, #9e1c1c 18px, #fffaf4 18px, #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -37,21 +37,43 @@
 
     h1 {
       text-align: center;
-      font-size: 2rem;
-      color: #a0527b;
-      margin-top: 1rem;
+      font-size: 1.8rem;
+      color: #9e1c1c;
     }
 
-    h2 {
-      font-size: 1.2rem;
-      color: #444;
-      margin-top: 2rem;
+    .decorative-underline {
+      width: 80px;
+      height: 4px;
+      margin: 0.5rem auto 2rem;
+      background: linear-gradient(to right, #9e1c1c, #ffd699, #9e1c1c);
+      border-radius: 2px;
+    }
+
+    details {
+      background: #fffefb;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    summary {
+      font-weight: bold;
+      color: #a0527b;
+      font-size: 1.1rem;
+      cursor: pointer;
+      outline: none;
     }
 
     p {
       font-size: 1rem;
-      line-height: 1.6;
-      margin: 0.8rem 0;
+      margin: 0.5rem 0;
+    }
+
+    .hil {
+      color: #555;
+      font-style: italic;
     }
 
     footer {
@@ -81,44 +103,60 @@
     }
 
     @media (max-width: 600px) {
-      h1 { font-size: 1.6rem; }
-      h2 { font-size: 1rem; }
+      h1 { font-size: 1.5rem; }
+      summary { font-size: 1rem; }
       p { font-size: 0.95rem; }
       footer { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-
   <div class="awning-top"></div>
-
   <div class="container">
     <h1>📜 Terms & Conditions</h1>
+    <div class="decorative-underline"></div>
 
-    <h2>1. Introduction</h2>
-    <p>Welcome to Dala🚲na! These terms govern your use of our delivery services. By using our platform, you agree to comply with these terms.</p>
+    <details open>
+      <summary>1. General Use / Pangkalahatan nga Gamit</summary>
+      <p>By using Dala🚲na, you agree to follow our policies and respect other users.</p>
+      <p class="hil">Sa paggamit sang Dala🚲na, nagapasugot ikaw sa amon palisiya kag pagrespeto sa iban nga users.</p>
+    </details>
 
-    <h2>2. Use of Service</h2>
-    <p>Dala🚲na provides delivery services for local products. You agree to use our service responsibly and not for any unlawful activities.</p>
+    <details>
+      <summary>2. Order & Purchase / Pag-order kag Pagbakal</summary>
+      <p>All orders placed are considered final once submitted and confirmed.</p>
+      <p class="hil">Ang tanan nga order nga ginpadala kag gin-confirm, ginakabig nga final na.</p>
+    </details>
 
-    <h2>3. Orders & Deliveries</h2>
-    <p>Orders are confirmed once payment and details are submitted via our online form. Delivery is made within the time window specified during checkout.</p>
+    <details>
+      <summary>3. Payment Terms / Paagi sang Bayad</summary>
+      <p>Customers must pay via GCash, PayMaya, or Cash on Delivery. Instructions are given at checkout.</p>
+      <p class="hil">Pwede magbayad paagi sa GCash, PayMaya, ukon Cash on Delivery. Hatagan ikaw sang instructions pag-checkout.</p>
+    </details>
 
-    <h2>4. Cancellations & Refunds</h2>
-    <p>You may cancel your order within 5 minutes after submission. After this window, orders are final. Refunds will only be processed if the merchant is unable to fulfill the item or service.</p>
+    <details>
+      <summary>4. Cancellation / Pagkanselar</summary>
+      <p>Cancellations must be made within 5 minutes after ordering. Beyond that, orders cannot be refunded.</p>
+      <p class="hil">Pwede ka lang magkansela sulod sang 5 minutos pagkatapos mag-order. Wala na refund pagkatapos sini.</p>
+    </details>
 
-    <h2>5. Responsibilities</h2>
-    <p>You are responsible for providing accurate delivery details and being available during the delivery window. Unreachable customers may not be eligible for redelivery.</p>
+    <details>
+      <summary>5. No Show Policy / Kon Indi Magpakita</summary>
+      <p>If the customer is not available upon delivery, the order is considered forfeited and no refund will be given.</p>
+      <p class="hil">Kon indi magpakita ang customer pag-deliver, ginakabig nga wala na sang refund kag para sa rider na ang order.</p>
+    </details>
 
-    <h2>6. Privacy</h2>
-    <p>Your personal information is securely handled and used only to fulfill your order and communicate delivery status. We do not share your data with third parties.</p>
+    <details>
+      <summary>6. Changes to Terms / Pagbag-o sang Palisiya</summary>
+      <p>Dala🚲na may update these terms anytime. We will notify users of major changes.</p>
+      <p class="hil">Pwede magbag-o ang Dala🚲na sang sini nga palisiya bisan san-o. Ipaalam namon kon may dako nga kausaban.</p>
+    </details>
 
-    <h2>7. Changes to Terms</h2>
-    <p>We reserve the right to update these terms. We encourage you to review this page periodically for any changes.</p>
-
-    <h2>8. Contact Us</h2>
-    <p>If you have questions, reach out to us at <strong>dalakona.service@gmail.com</strong>.</p>
-
+    <details>
+      <summary>7. Contact Us / Kontaka Kami</summary>
+      <p>For questions, reach us at <strong>dalakona.service@gmail.com</strong></p>
+      <p class="hil">Para sa pamangkot, kontaka kami sa <strong>dalakona.service@gmail.com</strong></p>
+    </details>
   </div>
 
   <footer>
@@ -135,6 +173,5 @@
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
-
 </body>
 </html>
