@@ -482,7 +482,21 @@
     // All cards shown by default — nothing to do
   };
 </script>
+<script>
+function normalizeText(text) {
+  return text.toLowerCase().replace(/[\u{1F300}-\u{1FAD6}]/gu, '').trim();
+}
 
+function filterMerchants() {
+  const input = normalizeText(document.getElementById('merchantSearch').value);
+  const cards = document.querySelectorAll('.storefront-card');
+
+  cards.forEach(card => {
+    const name = normalizeText(card.querySelector('h3')?.textContent || '');
+    card.style.display = name.includes(input) ? 'block' : 'none';
+  });
+}
+</script>
 
 
 </body>
