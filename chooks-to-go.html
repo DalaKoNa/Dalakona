@@ -69,7 +69,7 @@ cursor: pointer;
 <body>
 <header>
 <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-<h1>Dala🚲Na Chooks to go</h1>
+<h1>Dala🚲Na Chooks To Go</h1>
 <div class="cart-btn" onclick="toggleCart()">
 <i class="fas fa-receipt"></i>
 <span class="cart-count" id="cart-count">0</span>
@@ -181,7 +181,7 @@ iframe.src = filloutUrl.toString();
 document.body.appendChild(iframe);
 
 // 2. Send WhatsApp messages
-const message = `🧾 New Order - Dala🚲Na Chooks to go\n\nConfirmation #: ${confirmation}
+const message = `🧾 New Order - Dala🚲Na Chooks To Go\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -294,7 +294,7 @@ validateForm();
 function updateCartSummary() {
 let html = `
 <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Chooks to go</p><ul style="list-style: none; padding: 0;">`;
+<p style="text-align: center;">Dala🚲Na Chooks To Go</p><ul style="list-style: none; padding: 0;">`;
 let total = 0;
 Object.values(cart).forEach(item => {
 html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
