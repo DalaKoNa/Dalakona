@@ -64,31 +64,46 @@ a {
 }
 
 /* === Clean Awning Top with Slide-Down Animation === */
+/* === Storefront Awning Top (Paris Style) === */
 .awning-top {
+  height: 90px;
   background: repeating-linear-gradient(
     90deg,
     #b71c1c 0 25px,
     #ffffff 25px 50px
   );
-  height: 80px;
   position: relative;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid #a31717;
-  z-index: 5;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  clip-path: polygon(
+    0 0, 
+    100% 0, 
+    100% 80%, 
+    95% 100%, 
+    90% 80%, 
+    85% 100%, 
+    80% 80%,
+    75% 100%,
+    70% 80%,
+    65% 100%,
+    60% 80%,
+    55% 100%,
+    50% 80%,
+    45% 100%,
+    40% 80%,
+    35% 100%,
+    30% 80%,
+    25% 100%,
+    20% 80%,
+    15% 100%,
+    10% 80%,
+    5% 100%,
+    0 80%
+  );
+  animation: slideDownFade 0.8s ease-out forwards;
+  transform: translateY(-40px);
+  opacity: 0;
 }
-
-/* === Slide-Down Keyframes === */
-@keyframes slideDown {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 /* === Hero Section === */
 .hero {
   text-align: center;
