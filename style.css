@@ -29,11 +29,11 @@ a {
   border-bottom: 1px solid #eaeaea;
 }
 .title {
-  font-family: 'Cinzel', serif;
   font-size: 1.5rem;
-  color: #222;
+  font-family: 'Cinzel', serif;
   text-align: center;
   flex: 1;
+  color: #222;
 }
 .hamburger {
   background: none;
@@ -63,6 +63,24 @@ a {
 }
 .dropdown.show {
   display: block;
+}
+
+/* === Awning Banner Top === */
+.awning-top {
+  height: 36px;
+  background: repeating-linear-gradient(
+    45deg,
+    #d62828 0px,
+    #d62828 18px,
+    #ffffff 18px,
+    #ffffff 36px
+  );
+  clip-path: polygon(
+    0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+    30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+    60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+    90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+  );
 }
 
 /* === Hero Section === */
@@ -98,66 +116,63 @@ a {
   background-color: #ffb300;
 }
 
-/* === Merchant Grid Responsive Layout === */
+/* === Storefront Grid (Main Merchants) === */
 .storefront-wrapper-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   padding: 2rem 1rem;
   justify-items: center;
 }
 
-@media (max-width: 992px) {
-  .storefront-wrapper-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 576px) {
-  .storefront-wrapper-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* === Merchant Card Style (Red & Pastel) === */
+/* === Storefront Cards === */
 .storefront-card {
   width: 100%;
-  max-width: 260px;
-  background: linear-gradient(to bottom, #fff, #ffe5e5);
-  border: 2px solid #f44336;
+  max-width: 280px;
+  background: #fff;
   border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   text-align: center;
   transition: transform 0.3s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: inherit;
+  border: 2px solid #e3c5a0;
 }
 .storefront-card:hover {
   transform: scale(1.03);
 }
-.storefront-content {
-  padding: 1rem;
+.storefront-card .awning {
+  height: 30px;
+  background: repeating-linear-gradient(
+    45deg,
+    #d62828,
+    #d62828 10px,
+    #ffffff 10px,
+    #ffffff 20px
+  );
 }
 .storefront-card img {
   width: 64px;
-  margin-bottom: 1rem;
+  margin: 1rem auto 0;
 }
 .storefront-card h3 {
   font-size: 1.2rem;
-  margin: 0.3rem 0;
+  margin: 0.5rem 0 0.2rem;
 }
 .storefront-card p {
   font-size: 0.95rem;
-  color: #333;
   padding: 0 0.5rem 1rem;
+  color: #333;
 }
 
-/* === Horizontal Scroll Section (Retail style) === */
+/* === Scrollable Retail/Service Cards === */
 .storefront-scroll-wrapper {
   display: flex;
-  gap: 1rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  gap: 1rem;
   padding: 1rem;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   justify-content: center;
   max-width: 960px;
@@ -170,65 +185,6 @@ a {
   flex: 0 0 auto;
   scroll-snap-align: start;
   width: 240px;
-}
-
-/* === Awning Decoration === */
-.awning {
-  height: 30px;
-  background: repeating-linear-gradient(
-    45deg,
-    #f44336,
-    #f44336 10px,
-    #fff 10px,
-    #fff 20px
-  );
-}
-.awning-top {
-  height: 36px;
-  background: repeating-linear-gradient(
-    45deg,
-    #333 0px,
-    #333 18px,
-    #fffaf4 18px,
-    #fffaf4 36px
-  );
-  clip-path: polygon(
-    0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
-    30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
-    60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
-    90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
-  );
-}
-
-/* === Footer === */
-footer {
-  background-color: #fff4ca;
-  padding: 2rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  font-size: 0.95rem;
-}
-.footer-left, .footer-right {
-  flex: 1;
-  min-width: 200px;
-  margin-bottom: 1rem;
-}
-.footer-left p {
-  margin: 0.4rem 0;
-}
-.socials a {
-  margin-right: 10px;
-  color: #cc8b00;
-  font-weight: bold;
-}
-.footer-right a {
-  display: block;
-  color: #333;
-  margin-bottom: 5px;
-}
-.footer-right a:hover {
-  text-decoration: underline;
 }
 
 /* === WhatsApp Floating Button === */
@@ -285,4 +241,52 @@ footer {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+}
+
+/* === Footer === */
+footer {
+  background-color: #fff4ca;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+.footer-left, .footer-right {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 1rem;
+}
+.footer-left p {
+  margin: 0.4rem 0;
+}
+.socials a {
+  margin-right: 10px;
+  color: #cc8b00;
+  font-weight: bold;
+}
+.footer-right a {
+  display: block;
+  color: #333;
+  margin-bottom: 5px;
+}
+.footer-right a:hover {
+  text-decoration: underline;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.2rem;
+  }
+  .storefront-wrapper-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .storefront-card {
+    max-width: 200px;
+  }
+  .awning-top {
+    height: 28px;
+    background-size: 28px 28px;
+  }
 }
