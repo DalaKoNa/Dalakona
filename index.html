@@ -216,6 +216,7 @@
   id="merchantSearch"
   placeholder="🔍 Search Merchant..."
   oninput="filterMerchants()"
+  style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
 />
 
 <!-- Merchant Cards Grid -->
@@ -440,31 +441,31 @@
 </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+ <script>
   AOS.init();
 
-  <script>
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")       // remove accents
-    .replace(/[\u{1F300}-\u{1FAD6}]/gu, "") // remove emojis
-    .replace(/[^\w\s]/g, "")               // remove punctuation
-    .replace(/\s+/g, " ")                  // collapse extra spaces
-    .trim();
-}
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")
+      .replace(/[^\w\s]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-function filterMerchants() {
-  const input = normalizeText(document.getElementById('merchantSearch').value);
-  const cards = document.querySelectorAll('.storefront-card');
+  function filterMerchants() {
+    const input = normalizeText(document.getElementById('merchantSearch').value);
+    const cards = document.querySelectorAll('.storefront-card');
 
-  cards.forEach(card => {
-    const h3 = card.querySelector('h3');
-    const name = h3 ? normalizeText(h3.textContent) : "";
-    const match = name.includes(input);
-    card.style.display = match ? "block" : "none";
-  });
-}
+    cards.forEach(card => {
+      const h3 = card.querySelector('h3');
+      const name = h3 ? normalizeText(h3.textContent) : "";
+      const match = name.includes(input);
+      card.style.display = match ? "block" : "none";
+    });
+  }
 </script>
 
 </body>
