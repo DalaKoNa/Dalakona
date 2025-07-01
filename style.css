@@ -263,3 +263,29 @@ footer {
 .whatsapp-float:hover {
   transform: scale(1.1);
 }
+.awning-top {
+  background: repeating-linear-gradient(
+    45deg,
+    #d4a373 0px,
+    #d4a373 20px,
+    #fff7df 20px,
+    #fff7df 40px
+  );
+  height: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.awning-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: #3c2a1e;
+  text-shadow: 1px 1px 2px #ffffff;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0;
+}
