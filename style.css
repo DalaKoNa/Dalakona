@@ -263,3 +263,4 @@ footer {
 .whatsapp-float:hover {
   transform: scale(1.1);
 }
+.hidden { display: none !important; }
