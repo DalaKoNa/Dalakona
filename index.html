@@ -216,20 +216,25 @@
 <section class="storefront-section" id="partners">
   <h2 style="text-align: center;">Mga Tindahan</h2>
 
-<div style="text-align: center; margin-bottom: 1rem;">
-  <input
-    type="text"
-    id="merchantSearch"
-    placeholder="🔍 Search Merchant..."
-    style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
-    oninput="filterMerchants()"
-  />
-</div>
-<div style="text-align: center; margin-top: 1rem;">
-  <button id="showMoreBtn" onclick="toggleShowMore()">Show More</button>
-</div>
+  <!-- Search Bar -->
+  <div style="text-align: center; margin-bottom: 1rem;">
+    <input
+      type="text"
+      id="merchantSearch"
+      placeholder="🔍 Search Merchant..."
+      oninput="filterMerchants()"
+      style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
+    />
+  </div>
 
+  <!-- Show More / Show Less Button -->
+  <div style="text-align: center; margin-top: 1rem;">
+    <button id="showMoreBtn" onclick="toggleShowMore()">Show More</button>
+  </div>
+
+  <!-- Merchants Grid -->
   <div class="storefront-wrapper-grid">
+    <!-- merchant cards here -->
     
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
@@ -457,8 +462,7 @@
 </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  AOS.init();
-<script>
+  AOS.init();<script>
 let isShowingAll = false;
 
 function normalizeText(text) {
@@ -475,53 +479,59 @@ function normalizeText(text) {
 function applyShowMoreLimit(limit = 4) {
   const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
   cards.forEach((card, index) => {
-    card.style.display = index < limit ? "block" : "none";
+    card.style.display = index < limit ? 'block' : 'none';
   });
 
-  const btn = document.getElementById("showMoreBtn");
+  const showMoreBtn = document.getElementById('showMoreBtn');
+  showMoreBtn.textContent = 'Show More';
+  isShowingAll = false;
+
   if (cards.length <= limit) {
-    btn.classList.add("hidden");
+    showMoreBtn.classList.add("hidden");
   } else {
-    btn.classList.remove("hidden");
-    btn.textContent = "Show More";
-    isShowingAll = false;
+    showMoreBtn.classList.remove("hidden");
   }
 }
 
 function toggleShowMore() {
   const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const btn = document.getElementById("showMoreBtn");
+  const btn = document.getElementById('showMoreBtn');
 
   if (isShowingAll) {
-    applyShowMoreLimit(); // go back to showing limited
+    applyShowMoreLimit();
   } else {
-    cards.forEach(card => card.style.display = "block"); // show all
-    btn.textContent = "Show Less";
+    cards.forEach(card => card.style.display = 'block');
+    btn.textContent = 'Show Less';
     isShowingAll = true;
   }
 }
 
 function filterMerchants() {
-  const input = normalizeText(document.getElementById("merchantSearch").value);
+  const input = normalizeText(document.getElementById('merchantSearch').value);
   const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const btn = document.getElementById("showMoreBtn");
+  const showMoreBtn = document.getElementById("showMoreBtn");
 
-  let matchCount = 0;
+  let visibleCount = 0;
 
   cards.forEach(card => {
-    const name = normalizeText(card.querySelector("h3")?.textContent || "");
+    const name = normalizeText(card.querySelector('h3')?.textContent || '');
     const match = name.includes(input);
-    card.style.display = match ? "block" : "none";
-    if (match) matchCount++;
+    card.style.display = match ? 'block' : 'none';
+    if (match) visibleCount++;
   });
 
+  // If user is typing, hide Show More button
   if (input.length > 0) {
-    btn.classList.add("hidden");
+    showMoreBtn.classList.add("hidden");
   } else {
-    if (isShowingAll) {
-      btn.classList.remove("hidden");
-      btn.textContent = "Show Less";
-    } else {
+    // Restore toggle button if more than limit exists
+    const totalCards = cards.length;
+    if (totalCards > 4) {
+      showMoreBtn.classList.remove("hidden");
+      showMoreBtn.textContent = isShowingAll ? "Show Less" : "Show More";
+    }
+    // Re-apply Show More limit if not in "show all" mode
+    if (!isShowingAll) {
       applyShowMoreLimit();
     }
   }
