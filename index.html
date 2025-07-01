@@ -451,7 +451,12 @@
 </script>
 <script>
 function normalizeText(text) {
-  return text.toLowerCase().replace(/[\u{1F300}-\u{1FAD6}]/gu, '').trim(); // Remove emojis
+  return text
+    .toLowerCase()
+    .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
+    .replace(/[^\w\s]/gi, '')               // remove punctuation
+    .replace(/\s+/g, ' ')                   // collapse multiple spaces
+    .trim();
 }
 
 function filterMerchants() {
