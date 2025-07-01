@@ -98,7 +98,7 @@ a {
   background-color: #ffb300;
 }
 
-/* === Grid View for Partner Merchants === */
+/* === Merchant Grid Responsive Layout === */
 .storefront-wrapper-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -106,18 +106,25 @@ a {
   padding: 2rem 1rem;
   justify-items: center;
 }
-@media (max-width: 768px) {
+
+@media (max-width: 992px) {
   .storefront-wrapper-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* === Merchant Card Styling === */
+@media (max-width: 576px) {
+  .storefront-wrapper-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Merchant Card Style (Red & Pastel) === */
 .storefront-card {
   width: 100%;
   max-width: 260px;
-  background: linear-gradient(to bottom, #f7f3e9, #fff);
-  border: 2px solid #d4a373;
+  background: linear-gradient(to bottom, #fff, #ffe5e5);
+  border: 2px solid #f44336;
   border-radius: 16px;
   overflow: hidden;
   text-align: center;
@@ -144,7 +151,7 @@ a {
   padding: 0 0.5rem 1rem;
 }
 
-/* === Scrollable Horizontal Retail Sections === */
+/* === Horizontal Scroll Section (Retail style) === */
 .storefront-scroll-wrapper {
   display: flex;
   gap: 1rem;
@@ -278,19 +285,4 @@ footer {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-}
-
-/* === Responsive === */
-@media (max-width: 768px) {
-  .title {
-    font-size: 1.2rem;
-  }
-  .awning-top {
-    height: 28px;
-    background-size: 28px 28px;
-  }
-  .storefront-card {
-    width: 100%;
-    max-width: 240px;
-  }
 }
