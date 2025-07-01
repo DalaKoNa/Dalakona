@@ -219,6 +219,10 @@
     oninput="filterMerchants()"
   />
 </div>
+<div style="text-align: center; margin-top: 1rem;">
+  <button id="showMoreBtn" onclick="toggleShowMore()">Show More</button>
+</div>
+
   <div class="storefront-wrapper-grid">
     
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
@@ -450,13 +454,48 @@
   AOS.init();
 </script>
 <script>
+let isShowingAll = false;
+
 function normalizeText(text) {
   return text
     .toLowerCase()
+    .normalize("NFD")                      // handle accents
+    .replace(/[\u0300-\u036f]/g, "")       // remove accents
     .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
-    .replace(/[^\w\s]/gi, '')               // remove punctuation
-    .replace(/\s+/g, ' ')                   // collapse multiple spaces
+    .replace(/[^\w\s]/gi, '')              // remove punctuation
+    .replace(/\s+/g, ' ')                  // collapse multiple spaces
     .trim();
+}
+
+function applyShowMoreLimit(limit = 4) {
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  cards.forEach((card, index) => {
+    card.style.display = index < limit ? 'block' : 'none';
+  });
+
+  const btn = document.getElementById("showMoreBtn");
+  if (cards.length <= limit) {
+    btn.style.display = "none";
+  } else {
+    btn.style.display = "inline-block";
+    btn.textContent = "Show More";
+    isShowingAll = false;
+  }
+}
+
+function toggleShowMore() {
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  const btn = document.getElementById("showMoreBtn");
+
+  if (isShowingAll) {
+    applyShowMoreLimit();
+    btn.textContent = "Show More";
+  } else {
+    cards.forEach(card => card.style.display = "block");
+    btn.textContent = "Show Less";
+  }
+
+  isShowingAll = !isShowingAll;
 }
 
 function filterMerchants() {
@@ -467,29 +506,29 @@ function filterMerchants() {
   let anyVisible = false;
 
   cards.forEach(card => {
-    const name = normalizeText(card.querySelector('h3').textContent);
+    const rawText = card.querySelector('h3')?.textContent || '';
+    const name = normalizeText(rawText);
     const match = name.includes(input);
     card.style.display = match ? 'block' : 'none';
     if (match) anyVisible = true;
   });
 
   if (input.length > 0) {
-    // Searching: hide Show More button
     showMoreBtn?.classList.add("hidden");
   } else {
-    // No input: restore Show More state (limit to 4 or all)
+    // Restore cards based on show more toggle
     if (isShowingAll) {
-      cards.forEach(card => card.style.display = 'block');
+      cards.forEach(card => card.style.display = "block");
+      showMoreBtn?.classList.remove("hidden");
       showMoreBtn.textContent = "Show Less";
     } else {
-      applyShowMoreLimit(); 
+      applyShowMoreLimit();
+      showMoreBtn?.classList.remove("hidden");
       showMoreBtn.textContent = "Show More";
     }
-    showMoreBtn?.classList.remove("hidden");
   }
 }
-</script>
-<script>
+
 window.onload = () => {
   applyShowMoreLimit();
 };
