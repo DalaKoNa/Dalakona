@@ -3,26 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About Us – Dala🚲na</title>
-  <link rel="icon" href="favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="description" content="About Dala🚲na – Ang Amon Istorya">
+  <title>About – Dala🚲na</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
   <style>
     body {
-      background-color: #fff9f3;
       font-family: 'Cinzel', serif;
+      background-color: #fff9f2;
+      color: #333;
       margin: 0;
       padding: 0;
-      color: #333;
     }
 
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg,
-        #333 0px,
-        #333 18px,
-        #fffaf4 18px,
-        #fffaf4 36px
+        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -32,100 +29,86 @@
       );
     }
 
-    .hero {
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem 1.5rem;
+    }
+
+    h1 {
       text-align: center;
-      padding: 1.2rem 0 1rem;
-      background-color: transparent;
-      color: #b71c1c;
+      font-size: 1.8rem;
+      color: #a0527b;
+      margin-top: 1rem;
+      position: relative;
     }
 
-    .hero h1 {
-      font-size: 1.5rem;
-      margin: 0.5rem 0 0.3rem;
-      line-height: 1.4;
-    }
-
-    .decorative-underline {
+    h1::after {
+      content: '';
+      display: block;
       width: 80px;
       height: 4px;
-      margin: 0 auto;
-      background: linear-gradient(to right, #b71c1c, #ffcc80, #b71c1c);
+      background-color: #a0527b;
+      margin: 0.5rem auto 0;
       border-radius: 2px;
-      animation: glowPulse 2s ease-in-out infinite;
     }
 
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
-      50% { box-shadow: 0 0 6px rgba(183, 28, 28, 0.4); }
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem 1.5rem;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .card {
-      background-color: #fffefb;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-
-    .card h2 {
-      font-size: 1.3rem;
-      color: #a0527b;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 0.8rem;
-    }
-
-    .btn {
-      display: inline-block;
-      margin: 2rem auto;
-      background: #a0527b;
-      color: white;
+    .toggle-btn {
+      display: block;
+      margin: 1.5rem auto;
       padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 6px;
+      background-color: #a0527b;
+      color: white;
       font-size: 1rem;
-      text-align: center;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    details {
+      margin-top: 1.5rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1rem;
+    }
+
+    summary {
+      font-size: 1.2rem;
+      color: #444;
+      cursor: pointer;
+      outline: none;
+    }
+
+    details[open] summary {
+      font-weight: bold;
+      color: #a0527b;
+    }
+
+    details p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0.8rem 0 0;
     }
 
     footer {
-      font-family: 'Cinzel', serif;
-      background-color: #f9f9f9;
+      background-color: #f4f4f4;
       padding: 2rem 1rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #ccc;
+      font-size: 0.95rem;
+      font-family: 'Cinzel', serif;
     }
 
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
-      margin-bottom: 1rem;
-    }
-
-    .footer-left .socials a {
-      margin-right: 10px;
-      text-decoration: none;
-      color: #0077cc;
     }
 
     .footer-right a {
       display: block;
-      margin-bottom: 6px;
       color: #333;
+      margin-bottom: 6px;
       text-decoration: none;
     }
 
@@ -134,11 +117,10 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 { font-size: 1.3rem; }
-      .card h2 { font-size: 1.1rem; }
-      .card p { font-size: 0.95rem; }
-      .awning-top { height: 28px; background-size: 28px 28px; }
-      footer { flex-direction: column; align-items: flex-start; }
+      h1 { font-size: 1.5rem; }
+      summary { font-size: 1.05rem; }
+      details p { font-size: 0.95rem; }
+      footer { flex-direction: column; }
     }
   </style>
 </head>
@@ -146,49 +128,44 @@
 
   <div class="awning-top"></div>
 
-  <section class="hero">
-    <h1>About Dala🚲na<br>Ang Amon Istorya</h1>
-    <div class="decorative-underline"></div>
-  </section>
+  <div class="container">
+    <h1>About Dala🚲na</h1>
+    <button class="toggle-btn" onclick="toggleAll()">Expand All</button>
 
-  <section class="about-grid">
-    <div class="card">
-      <h2>💡 Our Mission</h2>
-      <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city.</p>
-      <p>Isa ka hyperlocal nga delivery service nga natawo sa tunga sang banwa.</p>
-    </div>
+    <details>
+      <summary>Ang Amon Istorya</summary>
+      <p>Dala🚲na is a hyperlocal delivery service born in the heart of the city. We connect sari-sari stores, riders, and customers in one smooth, friendly system.</p>
+      <p>Isa ka hyperlocal delivery service nga natawo sa tunga sang banwa. Ginadugtong namon ang sari-sari stores, mga riders, kag mga customers sa isa ka malumo kag maayo nga sistema.</p>
+    </details>
 
-    <div class="card">
-      <h2>📍 Community-Centered</h2>
-      <p>We prioritize local shops and community riders.</p>
-      <p>Ginauna namon ang lokal nga tindahan kag mga community rider.</p>
-    </div>
+    <details>
+      <summary>💡 Our Mission</summary>
+      <p>To bring essentials right to your door—quickly, safely, and with heart.</p>
+      <p>Dal-on ang kinahanglanon sa inyo balay—dasig, segurado, kag may paghigugma.</p>
+    </details>
 
-    <div class="card">
-      <h2>🚴 Subong Dayon!</h2>
-      <p>We deliver quickly—with intention, love, and a personal touch.</p>
-      <p>Dal-on namon subong dayon—may intensyon, paghigugma, kag personal nga serbisyo.</p>
-    </div>
+    <details>
+      <summary>📍 Community First</summary>
+      <p>We prioritize neighborhood stores, local riders, and personal service.</p>
+      <p>Ginauna namon ang mga kasilingan nga tindahan, lokal nga riders, kag personal nga serbisyo.</p>
+    </details>
 
-    <div class="card">
-      <h2>🌱 Our Roots</h2>
-      <p>Supporting neighbors, sari-sari stores, and local riders.</p>
-      <p>Nagasuporta sa kasilingan, sari-sari stores, kag mga local riders.</p>
-    </div>
-  </section>
+    <details>
+      <summary>🚴 Subong Dayon</summary>
+      <p>Your delivery, right now. We move fast because we care.</p>
+      <p>Imo delivery, subong dayon. Nagadalagan kami kay ginapabugal namon kamo.</p>
+    </details>
 
-  <div style="text-align:center;">
-    <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
+    <details>
+      <summary>🌱 Our Roots</summary>
+      <p>We’re built on trust, reliability, and love for our city.</p>
+      <p>Nagtukod kami sa pagsalig, kasaligan, kag paghigugma sa amon syudad.</p>
+    </details>
   </div>
 
   <footer>
     <div class="footer-left">
       <p>@dalakona.subongdayon</p>
-      <div class="socials">
-        <a href="#">FB</a>
-        <a href="#">IG</a>
-        <a href="#">X</a>
-      </div>
       <p>dala🚲na hasta sa Facebook, Instagram, kag X</p>
     </div>
     <div class="footer-right">
@@ -200,6 +177,16 @@
       <p>© 2025 Dala🚲na. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    let allOpen = false;
+    function toggleAll() {
+      const details = document.querySelectorAll("details");
+      details.forEach(d => d.open = !allOpen);
+      document.querySelector(".toggle-btn").textContent = allOpen ? "Expand All" : "Collapse All";
+      allOpen = !allOpen;
+    }
+  </script>
 
 </body>
 </html>
