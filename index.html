@@ -211,6 +211,16 @@
   <h2 style="text-align: center;">Mga Tindahan</h2>
   <div class="storefront-wrapper-grid">
     
+<div style="text-align: center; margin-bottom: 1rem;">
+  <input
+    type="text"
+    id="merchantSearch"
+    placeholder="🔍 Search Merchant..."
+    style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
+    oninput="filterMerchants()"
+  />
+</div>
+
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
       <div class="storefront-content">
@@ -446,6 +456,17 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init();
+</script>
+<script>
+function filterMerchants() {
+  const input = document.getElementById('merchantSearch').value.toLowerCase();
+  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+
+  cards.forEach(card => {
+    const name = card.querySelector('h3').textContent.toLowerCase();
+    card.style.display = name.includes(input) ? '' : 'none';
+  });
+}
 </script>
 
 </body>
