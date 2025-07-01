@@ -114,11 +114,14 @@ a {
 
 /* === Awning Title === */
 .awning-title {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Yeseva One', cursive;
   font-size: 2.5rem;
-  color: #fffefb;
+  color: #222;
   margin: 0;
   letter-spacing: 1px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.3em 1em;
+  border-radius: 8px;
 }
 
 /* === Storefront Cards (Grid Layout) === */
