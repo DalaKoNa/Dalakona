@@ -16,12 +16,12 @@ a {
   color: inherit;
 }
 
-/* === French Storefront Header with Cinzel Font === */
+/* === Navbar Header === */
 .navbar.storefront-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #b71c1c; /* Classic deep red */
+  background-color: #b71c1c; /* Deep red */
   padding: 1rem 1.5rem;
   position: sticky;
   top: 0;
@@ -31,16 +31,13 @@ a {
   border-bottom: none;
   box-shadow: none;
 }
-
 .navbar.storefront-header .title {
   font-size: 2rem;
   color: #fffaf4;
   margin: 0;
   font-weight: 700;
   letter-spacing: 1px;
-  font-family: 'Cinzel', serif;
 }
-
 .navbar.storefront-header .hamburger,
 .navbar.storefront-header #userIcon {
   font-size: 1.5rem;
@@ -49,6 +46,8 @@ a {
   color: #fffaf4;
   cursor: pointer;
 }
+
+/* === User Dropdown === */
 .dropdown {
   display: none;
   position: absolute;
@@ -62,6 +61,40 @@ a {
 }
 .dropdown.show {
   display: block;
+}
+.dropdown a {
+  display: block;
+  margin: 0.4rem 0;
+  color: #222;
+  font-size: 0.95rem;
+}
+
+/* === Awning (Vertical Red/White Stripes + Scallops) === */
+.awning-wrapper {
+  width: 100%;
+  position: relative;
+  background-color: transparent;
+  z-index: 10;
+  margin-bottom: 1rem;
+}
+.awning-stripes {
+  height: 70px;
+  background: repeating-linear-gradient(
+    90deg,
+    #d32f2f 0 30px,
+    #ffffff 30px 60px
+  );
+}
+.awning-scallops {
+  height: 30px;
+  background: repeating-radial-gradient(
+    circle at center,
+    #ffffff 0 14px,
+    #d32f2f 14px 30px
+  );
+  background-size: 60px 30px;
+  background-repeat: repeat-x;
+  margin-top: -5px;
 }
 
 /* === Hero Section === */
@@ -102,38 +135,7 @@ a {
   background-color: #ffb300;
 }
 
-/* === Awning Wrapper with Vertical Stripes + Scallops === */
-.awning-wrapper {
-  width: 100%;
-  position: relative;
-  background-color: transparent;
-  z-index: 10;
-}
-
-/* Red and white vertical stripes */
-.awning-stripes {
-  height: 70px;
-  background: repeating-linear-gradient(
-    90deg,
-    #d32f2f 0 30px,
-    #ffffff 30px 60px
-  );
-}
-
-/* Scalloped bottom edge */
-.awning-scallops {
-  height: 30px;
-  background: repeating-radial-gradient(
-    circle at center,
-    #ffffff 0 14px,
-    #d32f2f 14px 30px
-  );
-  background-size: 60px 30px;
-  background-repeat: repeat-x;
-  margin-top: -5px;
-}
-
-/* === Storefront Cards (Grid Layout) === */
+/* === Storefront Card Layout === */
 .storefront-wrapper-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -141,8 +143,6 @@ a {
   padding: 2rem 1rem;
   justify-items: center;
 }
-
-/* === Storefront Card === */
 .storefront-card {
   width: 100%;
   max-width: 320px;
@@ -162,8 +162,6 @@ a {
   0% { transform: translateY(20px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-
-/* === Awning inside Card === */
 .storefront-card .awning {
   height: 30px;
   background: repeating-linear-gradient(
@@ -174,8 +172,6 @@ a {
     #fff 20px
   );
 }
-
-/* === Card Content === */
 .storefront-content {
   padding: 1rem;
 }
@@ -193,7 +189,7 @@ a {
   color: #444;
 }
 
-/* === Scroll Wrapper (Horizontal Scroll for Retail) === */
+/* === Horizontal Scroll Storefront (Optional) === */
 .storefront-scroll-wrapper {
   display: flex;
   overflow-x: auto;
@@ -212,22 +208,6 @@ a {
   flex: 0 0 auto;
   scroll-snap-align: start;
   width: 260px;
-}
-
-/* === Responsive Layouts === */
-@media (max-width: 768px) {
-  .storefront-wrapper-grid {
-    grid-template-columns: 1fr;
-  }
-  .storefront-card {
-    width: 90%;
-  }
-  .title {
-    font-size: 1.2rem;
-  }
-  .hero img {
-    max-height: 160px;
-  }
 }
 
 /* === Footer === */
@@ -260,6 +240,7 @@ footer {
 .footer-right a:hover {
   text-decoration: underline;
 }
+
 /* === WhatsApp Floating Button === */
 .whatsapp-float {
   position: fixed;
@@ -280,18 +261,15 @@ footer {
   transform: scale(1.1);
 }
 
-/* ✅ AWNING DECOR (Moved Outside!) */
-.awning-decor {
-  height: 48px;
-  background: repeating-linear-gradient(
-    45deg,
-    #ffffff 0 20px,
-    #d32f2f 20px 40px
-  );
-  clip-path: polygon(
-    0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
-    30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
-    60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
-    90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
-  );
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .storefront-wrapper-grid {
+    grid-template-columns: 1fr;
+  }
+  .storefront-card {
+    width: 90%;
+  }
+  .title {
+    font-size: 1.2rem;
+  }
 }
