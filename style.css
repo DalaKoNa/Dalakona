@@ -104,6 +104,7 @@ a {
 }
 
 /* === Storefront Awning Top === */
+/* === Awning Top (Red & White Stripe) === */
 .awning-top {
   background: repeating-linear-gradient(
     45deg,
@@ -117,14 +118,15 @@ a {
   position: relative;
 }
 
+/* === Awning Title (Clean Print Style, No Border) === */
 .awning-title {
   font-family: 'DM Serif Display', serif;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   color: #111;
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 0.3em 1em;
-  border-radius: 8px;
   margin: 0;
+  background: transparent;
+  padding: 0.2em 1em;
+  letter-spacing: 1px;
 }
 
 /* === Storefront Cards (Grid Layout) === */
