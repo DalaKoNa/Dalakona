@@ -450,15 +450,45 @@
   AOS.init();
 </script>
 <script>
+function normalizeText(text) {
+  return text.toLowerCase().replace(/[\u{1F300}-\u{1FAD6}]/gu, '').trim(); // Remove emojis
+}
+
 function filterMerchants() {
-  const input = document.getElementById('merchantSearch').value.toLowerCase();
+  const input = normalizeText(document.getElementById('merchantSearch').value);
   const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+  const showMoreBtn = document.getElementById("showMoreBtn");
+
+  let anyVisible = false;
 
   cards.forEach(card => {
-    const name = card.querySelector('h3').textContent.toLowerCase();
-    card.style.display = name.includes(input) ? '' : 'none';
+    const name = normalizeText(card.querySelector('h3').textContent);
+    const match = name.includes(input);
+    card.style.display = match ? 'block' : 'none';
+    if (match) anyVisible = true;
   });
+
+  if (input.length > 0) {
+    // Searching: hide Show More button
+    showMoreBtn?.classList.add("hidden");
+  } else {
+    // No input: restore Show More state (limit to 4 or all)
+    if (isShowingAll) {
+      cards.forEach(card => card.style.display = 'block');
+      showMoreBtn.textContent = "Show Less";
+    } else {
+      applyShowMoreLimit(); 
+      showMoreBtn.textContent = "Show More";
+    }
+    showMoreBtn?.classList.remove("hidden");
+  }
 }
 </script>
+<script>
+window.onload = () => {
+  applyShowMoreLimit();
+};
+</script>
+
 </body>
 </html>
