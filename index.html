@@ -211,16 +211,12 @@
 <section class="storefront-section" id="partners">
   <h2 style="text-align: center;">Mga Tindahan</h2>
 
-  <!-- Search Bar --><!-- Search Input -->
-<div style="text-align: center; margin-bottom: 1rem;">
   <input
-    type="text"
-    id="merchantSearch"
-    placeholder="🔍 Search Merchant..."
-    oninput="filterMerchants()"
-    style="padding: 0.5rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 80%; max-width: 400px;"
-  />
-</div>
+  type="text"
+  id="merchantSearch"
+  placeholder="🔍 Search Merchant..."
+  oninput="filterMerchants()"
+/>
 
 <!-- Merchant Cards Grid -->
 <div class="storefront-wrapper-grid">
@@ -446,27 +442,29 @@
 <script>
   AOS.init();
 
-  function normalizeText(text) {
-    return text
-      .toLowerCase()
-      .normalize("NFD")                          // Decompose accents
-      .replace(/[\u0300-\u036f]/g, "")           // Remove accents
-      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")    // Remove emojis
-      .replace(/[’'‘"“”.,!?]/g, "")              // Remove apostrophes & punctuation
-      .replace(/\s+/g, " ")                      // Collapse extra spaces
-      .trim();
-  }
+  <script>
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")       // remove accents
+    .replace(/[\u{1F300}-\u{1FAD6}]/gu, "") // remove emojis
+    .replace(/[^\w\s]/g, "")               // remove punctuation
+    .replace(/\s+/g, " ")                  // collapse extra spaces
+    .trim();
+}
 
-  function filterMerchants() {
-    const input = normalizeText(document.getElementById("merchantSearch").value);
-    const cards = document.querySelectorAll(".storefront-card");
+function filterMerchants() {
+  const input = normalizeText(document.getElementById('merchantSearch').value);
+  const cards = document.querySelectorAll('.storefront-card');
 
-    cards.forEach(card => {
-      const merchantName = normalizeText(card.querySelector("h3")?.textContent || "");
-      const isMatch = merchantName.includes(input);
-      card.style.display = isMatch ? "block" : "none";
-    });
-  }
+  cards.forEach(card => {
+    const h3 = card.querySelector('h3');
+    const name = h3 ? normalizeText(h3.textContent) : "";
+    const match = name.includes(input);
+    card.style.display = match ? "block" : "none";
+  });
+}
 </script>
 
 </body>
