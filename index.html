@@ -210,8 +210,19 @@
   </div>
 <section class="storefront-section" id="partners">
   <h2 style="text-align: center;">Mga Tindahan</h2>
-<input type="text" id="merchantSearch" placeholder="🔍 Search Merchant..." />
-  <div class="storefront-wrapper-grid">
+  <div style="text-align:center; margin-bottom: 1.5rem;">
+    <input
+      type="text"
+      id="merchantSearch"
+      placeholder="🔍 Search Merchant..."
+      style="padding: 0.6rem 1rem; border: 2px solid #d4a373; border-radius: 8px; font-size: 1rem; width: 60%; max-width: 300px;"
+    />
+    <button onclick="filterMerchants()" style="padding: 0.6rem 1.2rem; margin-left: 8px; font-size: 1rem; border: 2px solid #d4a373; background-color: #fffaf4; border-radius: 8px; cursor: pointer;">
+      Search
+    </button>
+  </div>  
+
+<div class="storefront-wrapper-grid">
     
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
@@ -254,38 +265,38 @@
     </a>
 
     <a href="burger-joint.html" class="storefront-card" data-aos="fade-up">
-  <div class="awning"></div>
-  <div class="storefront-content">
-    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046786.png" />
-    <h3>Juicy Bite Burgers</h3>
-  </div>
-</a>
+      <div class="awning"></div>
+      <div class="storefront-content">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046786.png" />
+        <h3>Juicy Bite Burgers</h3>
+      </div>
+    </a>
 
-<a href="chooks-to-go.html" class="storefront-card" data-aos="fade-up">
-  <div class="awning"></div>
-  <div class="storefront-content">
-    <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
-    <h3>Chooks To Go</h3>
-  </div>
-</a>
+    <a href="chooks-to-go.html" class="storefront-card" data-aos="fade-up">
+      <div class="awning"></div>
+      <div class="storefront-content">
+        <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
+        <h3>Chooks To Go</h3>
+      </div>
+    </a>
 
-<a href="goldilocks-cakes.html" class="storefront-card" data-aos="fade-up">
-  <div class="awning"></div>
-  <div class="storefront-content">
-    <img src="https://cdn-icons-png.flaticon.com/512/4359/4359787.png" />
-    <h3>Goldilocks</h3>
-  </div>
-</a>
+    <a href="goldilocks-cakes.html" class="storefront-card" data-aos="fade-up">
+      <div class="awning"></div>
+      <div class="storefront-content">
+        <img src="https://cdn-icons-png.flaticon.com/512/4359/4359787.png" />
+        <h3>Goldilocks</h3>
+      </div>
+    </a>
 
-<a href="milktea-express.html" class="storefront-card" data-aos="fade-up">
-  <div class="awning"></div>
-  <div class="storefront-content">
-    <img src="https://cdn-icons-png.flaticon.com/512/6461/6461573.png" />
-    <h3>MilkTea Express</h3>
-  </div>
-</a>
+    <a href="milktea-express.html" class="storefront-card" data-aos="fade-up">
+      <div class="awning"></div>
+      <div class="storefront-content">
+        <img src="https://cdn-icons-png.flaticon.com/512/6461/6461573.png" />
+        <h3>MilkTea Express</h3>
+      </div>
+    </a>
 
-<a href="fashion-retail.html" class="storefront-card" data-aos="fade-up">
+    <a href="fashion-retail.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
       <div class="storefront-content">
         <img src="https://cdn-icons-png.flaticon.com/512/3469/3469095.png" />
@@ -293,7 +304,7 @@
         <p>Mga bayo, bags, sapatos kag iban pa!</p>
       </div>
     </a>
-    <!-- Beauty -->
+
     <a href="beauty-retail.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
       <div class="storefront-content">
@@ -302,7 +313,7 @@
         <p>Makeup, skincare, kag personal care items.</p>
       </div>
     </a>
-    <!-- Household -->
+
     <a href="household-retail.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
       <div class="storefront-content">
@@ -311,7 +322,7 @@
         <p>Panglimpyo, panimalay, kag balay needs.</p>
       </div>
     </a>
-    <!-- Gadgets -->
+
     <a href="gadget-retail.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
       <div class="storefront-content">
@@ -320,7 +331,6 @@
         <p>Phone accessories, small tech, and more.</p>
       </div>
     </a>
-  </div>
   </div>
 </section>
  <section class="storefront-section">
