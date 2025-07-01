@@ -118,7 +118,7 @@ a {
   );
 }
 
-/* === Storefront Cards === */
+/* === Merchant Cards Grid === */
 .storefront-wrapper-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -128,7 +128,7 @@ a {
 }
 @media (max-width: 768px) {
   .storefront-wrapper-grid {
-    grid-template-columns: 1fr; /* 1 column on mobile */
+    grid-template-columns: 1fr;
     padding: 1rem;
     gap: 1rem;
   }
@@ -147,21 +147,6 @@ a {
 .storefront-card:hover {
   transform: scale(1.02);
 }
-.storefront-content {
-  padding: 1rem;
-}
-.storefront-content img {
-  width: 64px;
-  margin-bottom: 1rem;
-}
-.storefront-content h3 {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #222;
-}
-
-/* === Merchant Card Awning === */
 .awning {
   height: 36px;
   background: repeating-linear-gradient(
@@ -177,6 +162,19 @@ a {
     60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
     90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
   );
+}
+.storefront-content {
+  padding: 1rem;
+}
+.storefront-content img {
+  width: 64px;
+  margin-bottom: 1rem;
+}
+.storefront-content h3 {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
 }
 
 /* === Footer === */
