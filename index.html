@@ -234,9 +234,6 @@
 
 <!-- Merchant Cards Grid -->
 <div class="storefront-wrapper-grid">
-  <!-- your .storefront-card cards go here -->
-</div>
-
     
     <a href="handumanan-hypermarket.html" class="storefront-card" data-aos="fade-up">
       <div class="awning"></div>
@@ -466,74 +463,80 @@
 <script>
   AOS.init();
 <script>
-let isShowingAll = false;
+  let isShowingAll = false;
 
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // remove accents
-    .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
-    .replace(/[^\w\s]/gi, '') // remove punctuation
-    .replace(/\s+/g, ' ') // collapse spaces
-    .trim();
-}
-
-function applyShowMoreLimit(limit = 4) {
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  cards.forEach((card, index) => {
-    card.style.display = index < limit ? 'block' : 'none';
-  });
-
-  const btn = document.getElementById("showMoreBtn");
-  btn.textContent = "Show More";
-  isShowingAll = false;
-}
-
-function toggleShowMore() {
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const btn = document.getElementById("showMoreBtn");
-
-  if (isShowingAll) {
-    applyShowMoreLimit();
-  } else {
-    cards.forEach(card => card.style.display = "block");
-    btn.textContent = "Show Less";
-    isShowingAll = true;
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // handle accents
+      .replace(/[\u0300-\u036f]/g, "") // strip accents
+      .replace(/[\u{1F300}-\u{1FAD6}]/gu, "") // remove emojis
+      .replace(/[^\w\s]/gi, "") // remove punctuation
+      .replace(/\s+/g, " ") // collapse spaces
+      .trim();
   }
-}
 
-function filterMerchants() {
-  const input = normalizeText(document.getElementById('merchantSearch').value);
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const showMoreBtn = document.getElementById("showMoreBtn");
+  function applyShowMoreLimit(limit = 4) {
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    cards.forEach((card, index) => {
+      card.style.display = index < limit ? 'block' : 'none';
+    });
 
-  let visibleCount = 0;
-
-  cards.forEach(card => {
-    const name = normalizeText(card.querySelector('h3')?.textContent || '');
-    const match = name.includes(input);
-    card.style.display = match ? 'block' : 'none';
-    if (match) visibleCount++;
-  });
-
-  // Hide Show More if searching
-  if (input.length > 0) {
-    showMoreBtn.classList.add('hidden');
-  } else {
-    showMoreBtn.classList.remove('hidden');
-    if (isShowingAll) {
-      showMoreBtn.textContent = "Show Less";
+    const btn = document.getElementById("showMoreBtn");
+    if (cards.length <= limit) {
+      btn.classList.add("hidden");
     } else {
-      applyShowMoreLimit(); // show limited items again
+      btn.classList.remove("hidden");
+      btn.textContent = "Show More";
+      isShowingAll = false;
     }
   }
-}
 
-window.onload = () => {
-  applyShowMoreLimit();
-};
+  function toggleShowMore() {
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    const btn = document.getElementById("showMoreBtn");
+
+    if (isShowingAll) {
+      applyShowMoreLimit();
+    } else {
+      cards.forEach(card => card.style.display = "block");
+      btn.textContent = "Show Less";
+      isShowingAll = true;
+    }
+  }
+
+  function filterMerchants() {
+    const input = normalizeText(document.getElementById('merchantSearch').value);
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    const showMoreBtn = document.getElementById("showMoreBtn");
+
+    let anyVisible = false;
+
+    cards.forEach(card => {
+      const name = normalizeText(card.querySelector('h3')?.textContent || '');
+      const match = name.includes(input);
+      card.style.display = match ? 'block' : 'none';
+      if (match) anyVisible = true;
+    });
+
+    if (input.length > 0) {
+      showMoreBtn.classList.add("hidden");
+    } else {
+      // Restore card limit depending on toggle state
+      if (isShowingAll) {
+        cards.forEach(card => card.style.display = "block");
+        showMoreBtn.textContent = "Show Less";
+      } else {
+        applyShowMoreLimit();
+      }
+    }
+  }
+
+  window.onload = () => {
+    applyShowMoreLimit();
+  };
 </script>
+
 
 
 </body>
