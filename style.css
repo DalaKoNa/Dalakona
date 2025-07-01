@@ -78,11 +78,6 @@ a {
   object-fit: cover;
   max-height: 260px;
 }
-@media (max-width: 768px) {
-  .hero img {
-    max-height: 160px;
-  }
-}
 .cta {
   display: inline-block;
   margin-top: 1rem;
@@ -93,33 +88,43 @@ a {
   border-radius: 30px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: background-color 0.3s ease;
+  white-space: nowrap;
 }
 .cta:hover {
   background-color: #ffb300;
 }
 
-/* === Storefront Cards === */
+/* === Storefront Cards (Grid + Scroll) === */
+.storefront-wrapper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  justify-items: center;
+}
 .storefront-scroll-wrapper {
   display: flex;
-  gap: 1rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  gap: 1rem;
   padding: 1rem;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
 }
 .storefront-scroll-wrapper::-webkit-scrollbar {
   display: none;
 }
-.storefront-scroll-wrapper .storefront-card {
+.storefront-card {
   flex: 0 0 auto;
   scroll-snap-align: start;
-  width: 260px;
+  width: 240px;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   text-align: center;
-  text-decoration: none;
   color: inherit;
 }
 .storefront-card .awning {
@@ -133,29 +138,43 @@ a {
   );
 }
 .storefront-card img {
-  width: 80px;
+  width: 70px;
   margin: 1rem auto 0;
 }
 .storefront-card h3 {
-  font-size: 1.2rem;
-  margin: 0.5rem 0 0.2rem;
+  font-size: 1.1rem;
+  margin: 0.4rem 0;
 }
 .storefront-card p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   padding: 0 0.5rem 1rem;
   color: #333;
 }
 
-/* === Grid Version for Desktop Stores === */
-.storefront-wrapper-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 1rem;
-  justify-items: center;
+/* === Mobile-Specific Grid Layout (tight spacing) === */
+@media (max-width: 768px) {
+  .storefront-wrapper-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding: 1rem 0.5rem;
+  }
+  .storefront-card {
+    width: 180px !important;
+    font-size: 0.85rem;
+  }
+  .hero img {
+    max-height: 160px;
+  }
+  .title {
+    font-size: 1.2rem;
+  }
+  .awning-top {
+    height: 28px;
+    background-size: 28px 28px;
+  }
 }
 
-/* === Awning Decoration === */
+/* === Decorative Awning === */
 .awning-top {
   height: 36px;
   background: repeating-linear-gradient(
@@ -258,53 +277,4 @@ footer {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-}
-
-/* === Responsive Adjustments === */
-@media (max-width: 768px) {
-  .title {
-    font-size: 1.2rem;
-  }
-  .awning-top {
-    height: 28px;
-    background-size: 28px 28px;
-  }
-  .storefront-card {
-    width: 200px !important;
-  }
-}
-.storefront-scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  justify-content: center; /* Center on wide screens */
-  max-width: 960px;        /* Optional: limit width */
-  margin: 0 auto;          /* Center wrapper itself */
-}
-
-.storefront-scroll-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-.storefront-scroll-wrapper .storefront-card {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  width: 240px;
-}
-.storefront-wrapper-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 1rem;
-  justify-items: center;
-}
-
-/* Explicit 2-column layout for mobile */
-@media (max-width: 768px) {
-  .storefront-wrapper-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
