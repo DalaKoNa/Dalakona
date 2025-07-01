@@ -19,7 +19,7 @@
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg, #333 0px, #333 18px, #fffaf4 18px, #fffaf4 36px
+        45deg, #9e1c1c 0px, #9e1c1c 18px, #fffaf4 18px, #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -37,9 +37,17 @@
 
     h1 {
       text-align: center;
-      font-size: 2rem;
-      color: #a0527b;
+      font-size: 1.8rem;
+      color: #9e1c1c;
       margin-top: 1rem;
+    }
+
+    .decorative-underline {
+      width: 80px;
+      height: 4px;
+      margin: 0.5rem auto 1.5rem;
+      background: linear-gradient(to right, #9e1c1c, #ffd699, #9e1c1c);
+      border-radius: 2px;
     }
 
     h2 {
@@ -81,7 +89,7 @@
     }
 
     @media (max-width: 600px) {
-      h1 { font-size: 1.6rem; }
+      h1 { font-size: 1.5rem; }
       h2 { font-size: 1rem; }
       p { font-size: 0.95rem; }
       footer { flex-direction: column; }
@@ -94,6 +102,7 @@
 
   <div class="container">
     <h1>🔐 Privacy Policy</h1>
+    <div class="decorative-underline"></div>
 
     <h2>1. Introduction</h2>
     <p>This Privacy Policy outlines how Dala🚲na collects, uses, and protects your information. By using our services, you agree to the terms below.</p>
