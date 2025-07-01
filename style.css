@@ -98,16 +98,15 @@ a {
   background-color: #ffb300;
 }
 
-/* === Classic Red and White Awning Top and Card === */
-.awning-top,
-.awning {
+/* === Storefront Awning Top === */
+.awning-top {
   height: 36px;
   background: repeating-linear-gradient(
     45deg,
-    #f44336 0px,
-    #f44336 18px,
-    #ffffff 18px,
-    #ffffff 36px
+    #d32f2f 0px,
+    #d32f2f 18px,
+    #fff 18px,
+    #fff 36px
   );
   clip-path: polygon(
     0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -117,77 +116,101 @@ a {
   );
 }
 
-/* === Storefront Grid === */
+/* === Storefront Cards (Grid Layout) === */
 .storefront-wrapper-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 2rem 1rem;
   justify-items: center;
 }
 
-/* === Merchant Card === */
+/* === Storefront Card === */
 .storefront-card {
   width: 100%;
   max-width: 320px;
   background: #fff;
-  border-radius: 10px;
+  border: 2px solid #d4a373;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: center;
-  text-decoration: none;
-  color: inherit;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   transition: transform 0.3s ease;
+  animation: slideUp 0.4s ease;
 }
 .storefront-card:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
+@keyframes slideUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* === Awning inside Card === */
+.storefront-card .awning {
+  height: 30px;
+  background: repeating-linear-gradient(
+    45deg,
+    #d32f2f 0px,
+    #d32f2f 10px,
+    #fff 10px,
+    #fff 20px
+  );
+}
+
+/* === Card Content === */
 .storefront-content {
   padding: 1rem;
 }
-.storefront-card img {
+.storefront-content img {
   width: 64px;
-  height: auto;
   margin-bottom: 1rem;
 }
-.storefront-card h3 {
-  font-size: 1.1rem;
-  margin: 0.3rem 0;
+.storefront-content h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #222;
 }
-.storefront-card p {
+.storefront-content p {
   font-size: 0.95rem;
-  padding: 0 0.5rem 1rem;
-  color: #333;
+  color: #444;
 }
 
-/* === Responsive Layout === */
+/* === Scroll Wrapper (Horizontal Scroll for Retail) === */
+.storefront-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.storefront-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.storefront-scroll-wrapper .storefront-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 260px;
+}
+
+/* === Responsive Layouts === */
 @media (max-width: 768px) {
   .storefront-wrapper-grid {
     grid-template-columns: 1fr;
-    padding: 1rem;
   }
-
   .storefront-card {
-    max-width: 100%;
+    width: 90%;
   }
-}
-
-/* === Show More Button === */
-#showMoreBtn {
-  display: block;
-  margin: 1rem auto 2rem;
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-#showMoreBtn:hover {
-  background-color: #b71c1c;
+  .title {
+    font-size: 1.2rem;
+  }
+  .hero img {
+    max-height: 160px;
+  }
 }
 
 /* === Footer === */
