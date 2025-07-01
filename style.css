@@ -294,3 +294,17 @@ footer {
   scroll-snap-align: start;
   width: 240px;
 }
+.storefront-wrapper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  justify-items: center;
+}
+
+/* Explicit 2-column layout for mobile */
+@media (max-width: 768px) {
+  .storefront-wrapper-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
