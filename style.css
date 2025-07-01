@@ -275,3 +275,24 @@ footer {
 .whatsapp-float:hover {
   transform: scale(1.1);
 }
+.hero h1 {
+  font-size: 2.8rem;
+  margin: 1rem 0 0.2rem;
+  font-family: 'Cinzel', serif;
+  color: #b71c1c;
+}
+
+.hero h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #b71c1c;
+  margin: 0.2rem 0 1rem;
+  font-family: 'Cinzel', serif;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  margin: 0.2rem 0 1.4rem;
+  font-weight: 500;
+  color: #333;
+}
