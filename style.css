@@ -102,30 +102,28 @@ a {
   background-color: #ffb300;
 }
 
-/* === Storefront Awning Top === */
-/* === Awning Top (Red & White Stripe) === */
 .awning-top {
   background: repeating-linear-gradient(
     45deg,
     #d32f2f 0 20px,
     #fff 20px 40px
   );
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  height: 60px;
 }
 
-/* === Awning Title (Clean Print Style, No Border) === */
-.awning-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.8rem;
-  color: #111;
-  margin: 0;
-  background: transparent;
-  padding: 0.2em 1em;
-  letter-spacing: 1px;
+.awning-decor {
+  height: 48px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ffffff 0 20px,
+    #d32f2f 20px 40px
+  );
+  clip-path: polygon(
+    0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
+    30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
+    60% 100%, 65% 85%, 70% 100%, 75% 85%, 80% 100%, 85% 85%,
+    90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
+  );
 }
 
 /* === Storefront Cards (Grid Layout) === */
