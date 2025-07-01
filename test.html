@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Merchant Filter Test</title>
+  <style>
+    .storefront-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 8px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Merchants</h2>
+
+<input
+  type="text"
+  id="merchantSearch"
+  placeholder="🔍 Search Merchant..."
+  oninput="filterMerchants()"
+/>
+
+<div class="storefront-wrapper-grid">
+  <a href="#" class="storefront-card">
+    <h3>Chicken Inasal</h3>
+  </a>
+  <a href="#" class="storefront-card">
+    <h3>Juicy Bite Burgers</h3>
+  </a>
+  <a href="#" class="storefront-card">
+    <h3>Goldilocks</h3>
+  </a>
+  <a href="#" class="storefront-card">
+    <h3>MilkTea Express</h3>
+  </a>
+</div>
+
+<script>
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u{1F300}-\u{1FAD6}]/gu, "")
+    .replace(/[^\w\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function filterMerchants() {
+  const input = normalizeText(document.getElementById('merchantSearch').value);
+  const cards = document.querySelectorAll('.storefront-card');
+
+  cards.forEach(card => {
+    const h3 = card.querySelector('h3');
+    const name = h3 ? normalizeText(h3.textContent) : "";
+    const match = name.includes(input);
+    card.style.display = match ? "block" : "none";
+  });
+}
+</script>
+
+</body>
+</html>
