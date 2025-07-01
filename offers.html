@@ -18,11 +18,7 @@
     .awning-top {
       height: 36px;
       background: repeating-linear-gradient(
-        45deg,
-        #333 0px,
-        #333 18px,
-        #fffaf4 18px,
-        #fffaf4 36px
+        45deg, #9e1c1c 0px, #9e1c1c 18px, #fffaf4 18px, #fffaf4 36px
       );
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
@@ -33,18 +29,22 @@
     }
 
     .hero {
-      background-color: #a0527b;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
       text-align: center;
+      padding: 2rem 1rem 1rem;
+      color: #9e1c1c;
     }
 
     .hero h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       margin: 0;
+    }
+
+    .decorative-underline {
+      width: 80px;
+      height: 4px;
+      margin: 1rem auto 0;
+      background: linear-gradient(to right, #9e1c1c, #ffd699, #9e1c1c);
+      border-radius: 2px;
     }
 
     .offers-grid {
@@ -61,11 +61,17 @@
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .offer-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
     .offer-card h2 {
       font-size: 1.3rem;
-      color: #a0527b;
+      color: #9e1c1c;
       margin-bottom: 0.5rem;
     }
 
@@ -77,7 +83,7 @@
     .btn {
       display: inline-block;
       margin: 2rem auto;
-      background: #a0527b;
+      background: #9e1c1c;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
@@ -88,12 +94,12 @@
 
     footer {
       font-family: 'Cinzel', serif;
-      background-color: #f9f9f9;
+      background-color: #fff3e0;
       padding: 2rem 1rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #e6dbc9;
     }
 
     .footer-left, .footer-right {
@@ -134,25 +140,26 @@
 
   <section class="hero">
     <h1>Offers & Promos<br>Mga Promos kag Libre</h1>
+    <div class="decorative-underline"></div>
   </section>
 
   <section class="offers-grid">
     <div class="offer-card">
-      <h2>📦 Free Delivery</h2>
-      <p>Get free delivery on your first 3 orders. Valid for all stores.</p>
-      <p>Libreng delivery sa imo unang tatlo ka orders. Pwede sa tanan nga tindahan.</p>
+      <h2>🎉 3rd Order – Free Delivery</h2>
+      <p>Enjoy your 3rd order with <strong>no delivery fee</strong>!</p>
+      <p>Sa imo ika-3 ka order, <strong>libre ang delivery</strong>!</p>
     </div>
 
     <div class="offer-card">
-      <h2>🎂 Birthday Promo</h2>
-      <p>Celebrating your birthday? Get ₱50 off your order!</p>
-      <p>Birthday mo? May ₱50 discount ikaw sa imo order!</p>
+      <h2>🎉 6th Order – Free Delivery</h2>
+      <p>Your 6th order also comes with <strong>free delivery</strong>.</p>
+      <p>Sa ika-6 mo nga order, <strong>libre naman ang delivery</strong>!</p>
     </div>
 
     <div class="offer-card">
-      <h2>💼 Partner Store Rewards</h2>
-      <p>Buy from partner stores and earn DalaPoints for freebies!</p>
-      <p>Palit sa partner stores kag magdaug sang DalaPoints para sa libre nga produkto!</p>
+      <h2>🎉 9th Order – Free Delivery</h2>
+      <p>You're a loyal customer! Claim your <strong>free delivery</strong> on your 9th.</p>
+      <p>Salamat sa padayon! Sa ika-9 mo nga order, <strong>libre gihapon</strong> ang delivery!</p>
     </div>
   </section>
 
