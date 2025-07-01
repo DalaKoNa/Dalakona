@@ -458,86 +458,82 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init();
-</script>
-<script>
-let isShowingAll = false;
 
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")                      // handle accents
-    .replace(/[\u0300-\u036f]/g, "")       // remove accents
-    .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
-    .replace(/[^\w\s]/gi, '')              // remove punctuation
-    .replace(/\s+/g, ' ')                  // collapse multiple spaces
-    .trim();
-}
+  let isShowingAll = false;
 
-function applyShowMoreLimit(limit = 4) {
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  cards.forEach((card, index) => {
-    card.style.display = index < limit ? 'block' : 'none';
-  });
-
-  const btn = document.getElementById("showMoreBtn");
-  if (cards.length <= limit) {
-    btn.style.display = "none";
-  } else {
-    btn.style.display = "inline-block";
-    btn.textContent = "Show More";
-    isShowingAll = false;
-  }
-}
-
-function toggleShowMore() {
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const btn = document.getElementById("showMoreBtn");
-
-  if (isShowingAll) {
-    applyShowMoreLimit();
-    btn.textContent = "Show More";
-  } else {
-    cards.forEach(card => card.style.display = "block");
-    btn.textContent = "Show Less";
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")       // remove accents
+      .replace(/[\u{1F300}-\u{1FAD6}]/gu, '') // remove emojis
+      .replace(/[^\w\s]/gi, '')              // remove punctuation
+      .replace(/\s+/g, ' ')                  // collapse spaces
+      .trim();
   }
 
-  isShowingAll = !isShowingAll;
-}
+  function applyShowMoreLimit(limit = 4) {
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    cards.forEach((card, index) => {
+      card.style.display = index < limit ? 'block' : 'none';
+    });
 
-function filterMerchants() {
-  const input = normalizeText(document.getElementById('merchantSearch').value);
-  const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
-  const showMoreBtn = document.getElementById("showMoreBtn");
-
-  let anyVisible = false;
-
-  cards.forEach(card => {
-    const rawText = card.querySelector('h3')?.textContent || '';
-    const name = normalizeText(rawText);
-    const match = name.includes(input);
-    card.style.display = match ? 'block' : 'none';
-    if (match) anyVisible = true;
-  });
-
-  if (input.length > 0) {
-    showMoreBtn?.classList.add("hidden");
-  } else {
-    // Restore cards based on show more toggle
-    if (isShowingAll) {
-      cards.forEach(card => card.style.display = "block");
-      showMoreBtn?.classList.remove("hidden");
-      showMoreBtn.textContent = "Show Less";
+    const btn = document.getElementById("showMoreBtn");
+    if (cards.length <= limit) {
+      btn.style.display = "none";
     } else {
-      applyShowMoreLimit();
-      showMoreBtn?.classList.remove("hidden");
-      showMoreBtn.textContent = "Show More";
+      btn.style.display = "inline-block";
+      btn.textContent = "Show More";
+      isShowingAll = false;
     }
   }
-}
 
-window.onload = () => {
-  applyShowMoreLimit();
-};
+  function toggleShowMore() {
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    const btn = document.getElementById("showMoreBtn");
+
+    if (isShowingAll) {
+      applyShowMoreLimit();
+    } else {
+      cards.forEach(card => card.style.display = "block");
+      btn.textContent = "Show Less";
+    }
+
+    isShowingAll = !isShowingAll;
+  }
+
+  function filterMerchants() {
+    const input = normalizeText(document.getElementById('merchantSearch').value);
+    const cards = document.querySelectorAll('.storefront-wrapper-grid .storefront-card');
+    const showMoreBtn = document.getElementById("showMoreBtn");
+    let anyVisible = false;
+
+    cards.forEach(card => {
+      const rawText = card.querySelector('h3')?.textContent || '';
+      const name = normalizeText(rawText);
+      const match = name.includes(input);
+      card.style.display = match ? 'block' : 'none';
+      if (match) anyVisible = true;
+    });
+
+    if (input.length > 0) {
+      showMoreBtn?.classList.add("hidden");
+    } else {
+      if (isShowingAll) {
+        cards.forEach(card => card.style.display = "block");
+        showMoreBtn?.classList.remove("hidden");
+        showMoreBtn.textContent = "Show Less";
+      } else {
+        applyShowMoreLimit();
+        showMoreBtn?.classList.remove("hidden");
+        showMoreBtn.textContent = "Show More";
+      }
+    }
+  }
+
+  window.onload = () => {
+    applyShowMoreLimit();
+  };
 </script>
 
 </body>
