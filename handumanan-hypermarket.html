@@ -79,7 +79,7 @@
   <div class="search-bar">
     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
   </div>
-
+  <div id="category-tabs" class="tab-container">
   <div class="grid" id="product-list"></div>
 
   <div class="cart-modal hidden" id="cart-modal">
@@ -239,212 +239,62 @@ Ref #: ${ref || 'N/A'}`;
     'delivery-time',
     'payment-method'
   ];
+<script>
 const cart = {};
-    const products = [
-  { name: "Gardenia Classic White Bread 400g", price: 96.99, image: "https://via.placeholder.com/100" },
-  { name: "Gardenia Pandesal 300g", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Angelina Tasty Loaf 400g", price: 94.99, image: "https://via.placeholder.com/100" },
+let products = [];
 
-  
-  { name: "Coca-Cola 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Pepsi 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Royal Tru Orange 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Sprite 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "C2 Green Tea Bottle", price: 26.99, image: "https://via.placeholder.com/100" },
-  { name: "Zest-O Juice Pack", price: 12.99, image: "https://via.placeholder.com/100" },
-  { name: "Minute Maid Orange", price: 29.99, image: "https://via.placeholder.com/100" },
+const categories = {
+  "Zonrox & Bleach": [
+    { name: "Zonrox Original Bleach 500ml", price: 34.99, image: "https://via.placeholder.com/100" },
+    { name: "Zonrox ColorSafe 500ml", price: 39.99, image: "https://via.placeholder.com/100" },
+    { name: "Zonrox Floral Scent 500ml", price: 38.99, image: "https://via.placeholder.com/100" },
+    { name: "Clorox Bleach Regular 1L", price: 74.99, image: "https://via.placeholder.com/100" },
+  ],
+  "All-Purpose Cleaners": [
+    { name: "Mr. Muscle Multi-Surface Cleaner 500ml", price: 69.99, image: "https://via.placeholder.com/100" },
+    { name: "Domex Ultra Thick Bleach 500ml", price: 64.99, image: "https://via.placeholder.com/100" },
+    { name: "Lysol Disinfectant Spray 170g", price: 159.99, image: "https://via.placeholder.com/100" },
+    { name: "Fabuloso All Purpose Cleaner Lavender 500ml", price: 59.99, image: "https://via.placeholder.com/100" },
+    { name: "Tuff Toilet Bowl Cleaner 500ml", price: 49.99, image: "https://via.placeholder.com/100" },
+  ],
+  "Baby Care": [
+    { name: "EQ Dry Diapers Small (10pcs)", price: 89.99, image: "https://via.placeholder.com/100" },
+    { name: "Pampers Baby Dry Medium (10pcs)", price: 124.99, image: "https://via.placeholder.com/100" },
+    { name: "Johnson’s Baby Powder 100g", price: 42.99, image: "https://via.placeholder.com/100" },
+    { name: "Johnson’s Baby Cologne 125ml", price: 54.99, image: "https://via.placeholder.com/100" },
+    { name: "Baby Wipes (Travel Pack, 20s)", price: 36.99, image: "https://via.placeholder.com/100" },
+  ],
+  "Chocolates": [
+    { name: "Snickers Bar 50g", price: 39.99, image: "https://via.placeholder.com/100" },
+    { name: "KitKat 2-Finger Bar 35g", price: 34.99, image: "https://via.placeholder.com/100" },
+    { name: "Toblerone Milk Chocolate 100g", price: 99.99, image: "https://via.placeholder.com/100" },
+    { name: "Cadbury Dairy Milk 65g", price: 64.99, image: "https://via.placeholder.com/100" },
+  ],
+  "Frozen Meats": [
+    { name: "Purefoods Chicken Nuggets 200g", price: 109.99, image: "https://via.placeholder.com/100" },
+    { name: "Emborg Chicken Franks (500g)", price: 139.99, image: "https://via.placeholder.com/100" },
+    { name: "Pampanga’s Best Tocino 250g", price: 99.99, image: "https://via.placeholder.com/100" },
+    { name: "Pampanga’s Best Longganisa 250g", price: 99.99, image: "https://via.placeholder.com/100" },
+  ]
+};
 
- 
-  { name: "Piattos Small", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Piattos Big", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Small", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Big", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Small", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Big", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Small", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Big", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Boy Bawang Cornick Garlic 100g", price: 26.99, image: "https://via.placeholder.com/100" },
+function renderCategoryTabs() {
+  const tabs = document.getElementById('category-tabs');
+  tabs.innerHTML = '';
+  Object.keys(categories).forEach(cat => {
+    const btn = document.createElement('button');
+    btn.textContent = cat;
+    btn.className = 'tab-btn';
+    btn.onclick = () => loadCategory(cat);
+    tabs.appendChild(btn);
+  });
+}
 
- 
-  { name: "555 Sardines Green", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "555 Sardines Red", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Green", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Red", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Green", price: 27.25, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Red", price: 27.25, image: "https://via.placeholder.com/100" },
+function loadCategory(categoryName) {
+  products = categories[categoryName];
+  renderProducts();
+}
 
-
-  { name: "Lucky Me Pancit Canton", price: 14.99, image: "https://via.placeholder.com/100" },
-  { name: "Lucky Me Pancit Canton (6 pack)", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Nissin Cup Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
-
-  { name: "Argentina Corned Beef 150g", price: 39.99, image: "https://via.placeholder.com/100" },
-  { name: "Century Tuna Flakes 180g", price: 38.99, image: "https://via.placeholder.com/100" },
-  { name: "Maling Luncheon Meat", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Delimondo Corned Beef", price: 99.99, image: "https://via.placeholder.com/100" },
-
-    { name: "Eggs (Tray of 6)", price: 56.99, image: "https://via.placeholder.com/100" },
-  { name: "Eggs (Tray of 12)", price: 109.99, image: "https://via.placeholder.com/100" },
-
-  { name: "Sinandomeng Rice 3kg", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 5kg", price: 329.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 10kg", price: 639.99, image: "https://via.placeholder.com/100" },
-
-  
-  { name: "Colgate Triple Action Toothpaste 100ml", price: 59.99, image: "https://via.placeholder.com/100" },
-  { name: "Sensodyne Extra Fresh 100g", price: 149.99, image: "https://via.placeholder.com/100" },
-  { name: "Close-Up Ever Fresh Gel 100ml", price: 69.99, image: "https://via.placeholder.com/100" },
-  { name: "Palmolive Naturals Toothpaste 100ml", price: 49.99, image: "https://via.placeholder.com/100" },
-
-
-  { name: "Safeguard Pure White Soap 135g", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Lifebuoy Total 10 Bath Soap 135g", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Dettol Original Bar 135g", price: 29.99, image: "https://via.placeholder.com/100" },
-  { name: "Johnson's Baby Soap 125g", price: 24.99, image: "https://via.placeholder.com/100" },
-  { name: "Dove Beauty Bar 100g", price: 34.99, image: "https://via.placeholder.com/100" },
-  { name: "Eskinol Whitening Bar 135g", price: 24.99, image: "https://via.placeholder.com/100" },
-
-  { name: "Nivea Natural Fairness Lotion 200ml", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Vaseline Aloe Fresh Lotion 200ml", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Aveeno Daily Moisturizing Lotion 225ml", price: 349.99, image: "https://via.placeholder.com/100" },
-  { name: "Bio-Oil Skincare Oil 60ml", price: 269.99, image: "https://via.placeholder.com/100" }
-  
-  { name: "Eden Cheese 165g", price: 64.99, image: "https://via.placeholder.com/100" },
-  { name: "Eden Cheese 450g Block", price: 164.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Original 220g", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Pimiento 220g", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Quickmelt Cheese 165g", price: 72.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Cheddar Cheese 165g", price: 74.99, image: "https://via.placeholder.com/100" },
-  { name: "Kraft Eden Melt Sarap 165g", price: 76.99, image: "https://via.placeholder.com/100" },
-  
-  { name: "Star Margarine Classic 250g", price: 42.99, image: "https://via.placeholder.com/100" },
-  { name: "Star Margarine Sweet Blend 250g", price: 44.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Gold Butter Unsalted 200g", price: 85.99, image: "https://via.placeholder.com/100" },
-  { name: "Anchor Salted Butter 227g", price: 149.99, image: "https://via.placeholder.com/100" },
-
-  { name: "Bear Brand Powdered Milk 320g", price: 112.99, image: "https://via.placeholder.com/100" },
-  { name: "Nido Fortified Powdered Milk 320g", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Alaska Powdered Milk Drink 300g", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Milo Chocolate Powder 220g", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Swiss Miss Chocolate Drink (3pcs)", price: 49.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Zonrox ColorSafe 500ml", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "Zonrox Floral Scent 500ml", price: 38.99, image: "https://via.placeholder.com/100" },
-{ name: "Clorox Bleach Regular 1L", price: 74.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Mr. Muscle Multi-Surface Cleaner 500ml", price: 69.99, image: "https://via.placeholder.com/100" },
-{ name: "Domex Ultra Thick Bleach 500ml", price: 64.99, image: "https://via.placeholder.com/100" },
-{ name: "Lysol Disinfectant Spray 170g", price: 159.99, image: "https://via.placeholder.com/100" },
-{ name: "Fabuloso All Purpose Cleaner Lavender 500ml", price: 59.99, image: "https://via.placeholder.com/100" },
-{ name: "Tuff Toilet Bowl Cleaner 500ml", price: 49.99, image: "https://via.placeholder.com/100" },
-
-{ name: "EQ Dry Diapers Small (10pcs)", price: 89.99, image: "https://via.placeholder.com/100" },
-{ name: "Pampers Baby Dry Medium (10pcs)", price: 124.99, image: "https://via.placeholder.com/100" },
-{ name: "Johnson’s Baby Powder 100g", price: 42.99, image: "https://via.placeholder.com/100" },
-{ name: "Johnson’s Baby Cologne 125ml", price: 54.99, image: "https://via.placeholder.com/100" },
-{ name: "Baby Wipes (Travel Pack, 20s)", price: 36.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Boy Bawang Garlic 100g", price: 21.99, image: "https://via.placeholder.com/100" },
-{ name: "Boy Bawang Spicy 100g", price: 21.99, image: "https://via.placeholder.com/100" },
-{ name: "Boy Bawang BBQ 100g", price: 21.99, image: "https://via.placeholder.com/100" },
-{ name: "Snickers Bar 50g", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "KitKat 2-Finger Bar 35g", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Toblerone Milk Chocolate 100g", price: 99.99, image: "https://via.placeholder.com/100" },
-{ name: "Toblerone Dark Chocolate 100g", price: 99.99, image: "https://via.placeholder.com/100" },
-{ name: "Cadbury Dairy Milk 65g", price: 64.99, image: "https://via.placeholder.com/100" },
-{ name: "Cadbury Fruit & Nut 65g", price: 64.99, image: "https://via.placeholder.com/100" },
-{ name: "M&M's Peanut 45g", price: 44.99, image: "https://via.placeholder.com/100" },
-{ name: "M&M's Plain 45g", price: 44.99, image: "https://via.placeholder.com/100" },
-{ name: "Cloud 9 Classic 24g", price: 12.99, image: "https://via.placeholder.com/100" },
-{ name: "Flat Tops Chocolate (small pack)", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "Goya Milk Chocolate Bar", price: 29.99, image: "https://via.placeholder.com/100" },
-{ name: "Hershey’s Kisses (small pack)", price: 79.99, image: "https://via.placeholder.com/100" },
-{ name: "Mentos Mint Roll", price: 19.99, image: "https://via.placeholder.com/100" },
-{ name: "Mentos Fruit Roll", price: 19.99, image: "https://via.placeholder.com/100" },
-{ name: "Halls Mentholyptus (Stick)", price: 12.99, image: "https://via.placeholder.com/100" },
-{ name: "Halls Strawberry (Stick)", price: 12.99, image: "https://via.placeholder.com/100" },
-{ name: "Chupa Chups Lollipop (each)", price: 9.99, image: "https://via.placeholder.com/100" },
-{ name: "VFresh Chewing Gum (2pcs)", price: 4.99, image: "https://via.placeholder.com/100" },
-{ name: "Doublemint Chewing Gum (Stick)", price: 6.99, image: "https://via.placeholder.com/100" },
-{ name: "Maxx Candy (small pack)", price: 6.99, image: "https://via.placeholder.com/100" },
-{ name: "Cloud 9 Choco Candy (small pack)", price: 12.99, image: "https://via.placeholder.com/100" },
-{ name: "Milo Powdered Drink 24g (Sachet)", price: 12.99, image: "https://via.placeholder.com/100" },
-{ name: "Milo Powder 300g", price: 89.99, image: "https://via.placeholder.com/100" },
-{ name: "Chuckie Chocolate Drink 250ml", price: 29.99, image: "https://via.placeholder.com/100" },
-{ name: "Swiss Miss Choco Mix Sachet", price: 19.99, image: "https://via.placeholder.com/100" },
-{ name: "Ovaltine Choco Malt Drink 25g", price: 11.99, image: "https://via.placeholder.com/100" },
-{ name: "Bear Brand Choco Powder 300g", price: 94.99, image: "https://via.placeholder.com/100" },
-{ name: "Dutch Mill Choco Drink (pack)", price: 36.99, image: "https://via.placeholder.com/100" },
-{ name: "Golden Fiesta Cooking Oil 1L", price: 124.99, image: "https://via.placeholder.com/100" },
-{ name: "Minola Cooking Oil 1L", price: 114.99, image: "https://via.placeholder.com/100" },
-{ name: "Datu Puti Soy Sauce 1L", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "Datu Puti Vinegar 1L", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Silver Swan Soy Sauce 500ml", price: 26.99, image: "https://via.placeholder.com/100" },
-{ name: "Silver Swan Vinegar 500ml", price: 24.99, image: "https://via.placeholder.com/100" },
-{ name: "Marca Piña Oyster Sauce 420ml", price: 42.99, image: "https://via.placeholder.com/100" },
-{ name: "Ajinomoto Magic Sarap (8g x 12)", price: 21.99, image: "https://via.placeholder.com/100" },
-{ name: "Knorr Chicken Cubes (6 pcs)", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "Knorr Beef Cubes (6 pcs)", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "Palmolive Naturals Shampoo Sachet (6 pcs)", price: 36.99, image: "https://via.placeholder.com/100" },
-{ name: "Sunsilk Pink Shampoo Sachet (6 pcs)", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Pantene Conditioner Sachet (6 pcs)", price: 44.99, image: "https://via.placeholder.com/100" },
-{ name: "Johnson’s Baby Powder 50g", price: 39.99, image: "https://via.placeholder.com/100" },
-{ name: "Colgate Toothpaste 100ml", price: 59.99, image: "https://via.placeholder.com/100" },
-{ name: "Closeup Red Toothpaste 100ml", price: 54.99, image: "https://via.placeholder.com/100" },
-{ name: "Dove White Beauty Bar Soap 100g", price: 59.99, image: "https://via.placeholder.com/100" },
-{ name: "Palmolive Naturals Bar Soap 90g", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Safeguard White Soap 90g", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Silka Papaya Soap 90g", price: 32.99, image: "https://via.placeholder.com/100" },
-{ name: "Rexona Roll-on Deodorant 25ml", price: 49.99, image: "https://via.placeholder.com/100" },
-{ name: "Nivea Extra Whitening Roll-on 25ml", price: 64.99, image: "https://via.placeholder.com/100" },
-{ name: "SkyFlakes Crackers (3 pcs)", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "SkyFlakes Crackers (Pack of 10)", price: 139.99, image: "https://via.placeholder.com/100" },
-{ name: "SkyFlakes in Can", price: 69.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Fita Biscuits (small pack)", price: 9.99, image: "https://via.placeholder.com/100" },
-{ name: "Fita Biscuits (Pack of 10)", price: 89.99, image: "https://via.placeholder.com/100" },
-{ name: "Fita Biscuits (big pack)", price: 26.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Oreo Chocolate (2 pcs)", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "Oreo Chocolate (Pack of 10)", price: 139.99, image: "https://via.placeholder.com/100" },
-{ name: "Oreo Vanilla (small pack)", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "Oreo Vanilla (Pack of 10)", price: 139.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Rebisco Crackers (small pack)", price: 9.99, image: "https://via.placeholder.com/100" },
-{ name: "Rebisco Crackers (Pack of 10)", price: 89.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Hansel Mocha Sandwich", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "Hansel Mocha Sandwich (Pack of 10)", price: 139.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Presto Peanut Butter Cookies", price: 16.99, image: "https://via.placeholder.com/100" },
-{ name: "Presto Peanut Butter Cookies (Pack of 10)", price: 149.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Choco Mucho Bar", price: 16.99, image: "https://via.placeholder.com/100" },
-{ name: "Choco Mucho (Pack of 10)", price: 149.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Magic Flakes Cheese", price: 14.99, image: "https://via.placeholder.com/100" },
-{ name: "Magic Flakes Cheese (Pack of 10)", price: 139.99, image: "https://via.placeholder.com/100" },
-{ name: "Modess All Night Pads (8s)", price: 69.99, image: "https://via.placeholder.com/100" },
-{ name: "Modess Regular Pads (8s)", price: 64.99, image: "https://via.placeholder.com/100" },
-{ name: "Whisper Cottony Soft Day (8s)", price: 67.99, image: "https://via.placeholder.com/100" },
-{ name: "Whisper Cottony Soft Night (8s)", price: 69.99, image: "https://via.placeholder.com/100" },
-{ name: "Charmee Feminine Wipes (15s)", price: 29.99, image: "https://via.placeholder.com/100" },
-{ name: "Carefree Pantyliners (20s)", price: 44.99, image: "https://via.placeholder.com/100" },
-{ name: "Sisters Sanitary Napkin Regular (8s)", price: 34.99, image: "https://via.placeholder.com/100" },
-{ name: "Kotex Ultra Thin Pads (8s)", price: 62.99, image: "https://via.placeholder.com/100" },
-
-{ name: "Purefoods Tender Juicy Hotdog (Regular) 1kg", price: 219.99, image: "https://via.placeholder.com/100" },
-{ name: "Purefoods Tender Juicy Hotdog (Cheese) 1kg", price: 229.99, image: "https://via.placeholder.com/100" },
-{ name: "CDO Jumbo Hotdog 1kg", price: 209.99, image: "https://via.placeholder.com/100" },
-{ name: "CDO Ulam Burger Patties (8 pcs)", price: 109.99, image: "https://via.placeholder.com/100" },
-{ name: "Bounty Fresh Chicken Drumsticks 1kg", price: 199.99, image: "https://via.placeholder.com/100" },
-{ name: "Bounty Fresh Chicken Thighs 1kg", price: 204.99, image: "https://via.placeholder.com/100" },
-{ name: "Magnolia Chicken Nuggets 200g", price: 104.99, image: "https://via.placeholder.com/100" },
-{ name: "Purefoods Chicken Nuggets 200g", price: 109.99, image: "https://via.placeholder.com/100" },
-{ name: "Emborg Chicken Franks (500g)", price: 139.99, image: "https://via.placeholder.com/100" },
-{ name: "Pampanga’s Best Tocino 250g", price: 99.99, image: "https://via.placeholder.com/100" },
-{ name: "Pampanga’s Best Longganisa 250g", price: 99.99, image: "https://via.placeholder.com/100" },
-];
 function renderProducts() {
   const list = document.getElementById("product-list");
   list.innerHTML = "";
@@ -465,143 +315,144 @@ function renderProducts() {
   });
 }
 
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
+function decreaseQty(i) {
+  const item = products[i];
+  if (cart[item.name]) {
+    cart[item.name].qty--;
+    if (cart[item.name].qty <= 0) delete cart[item.name];
   }
-
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
-    }
-    updateQty(i);
-  }
-
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-    validateForm();
-  }
-
-  function updateCartSummary() {
-    let html = `
-      <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Handumanan Hypermarket</p><ul style="list-style: none; padding: 0;">`;
-    let total = 0;
-    Object.values(cart).forEach(item => {
-      html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-      total += item.qty * item.price;
-    });
-    const fee = 29.99;
-    const grand = total + fee;
-    html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-      <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-      <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-    document.getElementById('cart-summary').innerHTML = html;
-  }
-
-  function toggleCart() {
-    document.getElementById('cart-modal').classList.toggle('hidden');
-  }
-
-  function validateForm() {
-    const allFilled = requiredFields.every(id => {
-      const el = document.getElementById(id);
-      return el && el.value.trim() !== '';
-    });
-
-    const method = document.getElementById('payment-method').value;
-    const ref = document.getElementById('payment-ref')?.value.trim() || '';
-    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const requiresRef = method !== 'Cash';
-
-    const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
-
-    if (allowCheckout) {
-      checkoutBtn.disabled = false;
-      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-    } else {
-      checkoutBtn.disabled = true;
-      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-    }
-  }
-
-  window.onload = () => {
-  // Define products first
-  let products = [ /* ALL 100+ items here */ ];
-  const cart = {};
-
-    renderProducts();
-
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60000);
-    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-    document.getElementById('delivery-date').disabled = true;
-    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-    document.getElementById('delivery-time').disabled = true;
-
-    const deliveryNote = document.getElementById('delivery-note');
-    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-    deliveryNote.style.display = "block";
-
-    // Auto-hide or show reference field on page load
-    const method = document.getElementById('payment-method').value;
-    const refInput = document.getElementById('payment-ref');
-    if (refInput) {
-      refInput.style.display = method === 'Cash' ? 'none' : 'block';
-    }
-
-    validateForm();
-  };
-
-  document.getElementById('payment-method').addEventListener('change', function () {
-    const method = this.value;
-    const link = document.getElementById('payment-link');
-    const refInput = document.getElementById('payment-ref');
-
-    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-    link.textContent = `View ${method} instructions`;
-
-    if (method === 'Cash') {
-      refInput.style.display = 'none';
-      refInput.value = '';
-    } else {
-      refInput.style.display = 'block';
-    }
-
-    validateForm();
-  });
-
-  // Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-  
-function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
+  updateQty(i);
 }
 
+function increaseQty(i) {
+  const item = products[i];
+  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+  cart[item.name].qty++;
+  updateQty(i);
+}
+
+function updateQty(i) {
+  const item = products[i];
+  const qty = cart[item.name]?.qty || 0;
+  document.getElementById(`qty-${i}`).innerText = qty;
+}
+
+window.onload = () => {
+  renderCategoryTabs();
+  const defaultCategory = Object.keys(categories)[0];
+  loadCategory(defaultCategory);
+};<script>
+function updateQty(i) {
+  const item = products[i];
+  const qty = cart[item.name]?.qty || 0;
+  document.getElementById(`qty-${i}`).innerText = qty;
+  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  updateCartSummary();
+  validateForm();
+}
+
+function updateCartSummary() {
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Handumanan Hypermarket</p><ul style="list-style: none; padding: 0;">`;
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    total += item.qty * item.price;
+  });
+  const fee = 29.99;
+  const grand = total + fee;
+  html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+  document.getElementById('cart-summary').innerHTML = html;
+}
+
+function toggleCart() {
+  document.getElementById('cart-modal').classList.toggle('hidden');
+}
+
+function validateForm() {
+  const allFilled = requiredFields.every(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  });
+
+  const method = document.getElementById('payment-method')?.value || 'Cash';
+  const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const requiresRef = method !== 'Cash';
+
+  const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+  if (checkoutBtn) {
+    checkoutBtn.disabled = !allowCheckout;
+    checkoutBtn.classList.toggle('bg-gray-400', !allowCheckout);
+    checkoutBtn.classList.toggle('cursor-not-allowed', !allowCheckout);
+    checkoutBtn.classList.toggle('bg-green-600', allowCheckout);
+    checkoutBtn.classList.toggle('hover:scale-105', allowCheckout);
+  }
+}
+
+// On DOM load: setup delivery + form fields
+window.addEventListener("DOMContentLoaded", () => {
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+  document.getElementById('delivery-date').disabled = true;
+  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+  document.getElementById('delivery-time').disabled = true;
+
+  const deliveryNote = document.getElementById('delivery-note');
+  if (deliveryNote) {
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+  }
+
+  const method = document.getElementById('payment-method')?.value || 'Cash';
+  const refInput = document.getElementById('payment-ref');
+  if (refInput) {
+    refInput.style.display = method === 'Cash' ? 'none' : 'block';
+  }
+
+  validateForm();
+});
+
+document.getElementById('payment-method')?.addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  const refInput = document.getElementById('payment-ref');
+
+  if (link) {
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+  }
+
+  if (refInput) {
+    refInput.style.display = method === 'Cash' ? 'none' : 'block';
+    if (method === 'Cash') refInput.value = '';
+  }
+
+  validateForm();
+});
+
+// Field listeners
+const requiredFields = ["customer-name", "customer-phone", "customer-email", "delivery-address", "payment-method"];
+requiredFields.forEach(id => {
+  document.getElementById(id)?.addEventListener('input', validateForm);
+});
+document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+
+// Search filtering
+function filterProducts() {
+  const input = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    const name = card.querySelector('h4')?.textContent.toLowerCase() || '';
+    card.style.display = name.includes(input) ? '' : 'none';
+  });
+}
 </script>
 </body>
 </html>
