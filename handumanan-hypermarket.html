@@ -140,6 +140,8 @@ disabled
 >
 🛒 Checkout via WhatsApp
 </button>
+</div>
+
 <!-- ✅ Scripts -->
 <script src="dalacart.js"></script>
 <script>
@@ -227,6 +229,7 @@ window.location.href = thankyouUrl.toString();
 </script>
 </body>
 </html>
+
 <script>
 const requiredFields = [
 'customer-name',
@@ -521,7 +524,29 @@ checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
 }
 
 window.onload = () => {
-renderProducts();
+  renderProducts();
+  // ... rest of your setup
+};
+
+function renderProducts() {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach((item, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <h4>${item.name}</h4>
+      <p>₱${item.price.toFixed(2)}</p>
+      <div class="qty-controls">
+        <button onclick="decreaseQty(${i})">−</button>
+        <span id="qty-${i}">0</span>
+        <button onclick="increaseQty(${i})">+</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
 
 const now = new Date();
 const oneHourLater = new Date(now.getTime() + 60 * 60000);
