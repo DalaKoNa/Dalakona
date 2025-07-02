@@ -281,7 +281,7 @@ function renderProducts(filteredProducts) {
       <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
       <p class="product-description">${product.description || ""}</p>
-      <p>₱${product.price.toFixed(2)}</p>
+      <p><strong>₱${product.price.toFixed(2)}</strong></p>
       <button onclick="addToCart(${index})">Add to Cart</button>
     `;
     list.appendChild(item);
