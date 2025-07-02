@@ -240,58 +240,59 @@ const requiredFields = [
 
 const cart = {};
     const products = [
-  // Breads
-  { name: "🍞 Gardenia Classic White Bread 400g", price: 96.99, image: "🍞" },
-  { name: "🥯 Gardenia Pandesal 300g", price: 66.99, image: "🥯" },
-  { name: "🍞 Angelina Tasty Loaf 400g", price: 94.99, image: "🍞" },
+  // 🍞 Breads
+  { icon: "🍞", name: "Gardenia Classic White Bread 400g", price: 96.99 },
+  { icon: "🥯", name: "Gardenia Pandesal 300g", price: 66.99 },
+  { icon: "🍞", name: "Angelina Tasty Loaf 400g", price: 94.99 },
 
-  // Beverages
-  { name: "🥤 Coca-Cola 1.5L", price: 66.99, image: "🥤" },
-  { name: "🥤 Pepsi 1.5L", price: 66.99, image: "🥤" },
-  { name: "🍊 Royal Tru Orange 1.5L", price: 66.99, image: "🍊" },
-  { name: "🥤 Sprite 1.5L", price: 66.99, image: "🥤" },
-  { name: "🍵 C2 Green Tea Bottle", price: 26.99, image: "🍵" },
-  { name: "🧃 Zest-O Juice Pack", price: 12.99, image: "🧃" },
-  { name: "🍊 Minute Maid Orange", price: 29.99, image: "🍊" },
+  // 🥤 Drinks
+  { icon: "🥤", name: "Coca-Cola 1.5L", price: 66.99 },
+  { icon: "🥤", name: "Pepsi 1.5L", price: 66.99 },
+  { icon: "🟠", name: "Royal Tru Orange 1.5L", price: 66.99 },
+  { icon: "🥤", name: "Sprite 1.5L", price: 66.99 },
+  { icon: "🍵", name: "C2 Green Tea Bottle", price: 26.99 },
+  { icon: "🧃", name: "Zest-O Juice Pack", price: 12.99 },
+  { icon: "🍊", name: "Minute Maid Orange", price: 29.99 },
 
-  // Snacks
-  { name: "🧂 Piattos Small", price: 19.99, image: "🧂" },
-  { name: "🧂 Piattos Big", price: 66.99, image: "🧂" },
-  { name: "🌽 Nova Small", price: 19.99, image: "🌽" },
-  { name: "🌽 Nova Big", price: 66.99, image: "🌽" },
-  { name: "🍞 Bread Pan Small", price: 19.99, image: "🍞" },
-  { name: "🍞 Bread Pan Big", price: 66.99, image: "🍞" },
-  { name: "🍫 Moby Small", price: 19.99, image: "🍫" },
-  { name: "🍫 Moby Big", price: 66.99, image: "🍫" },
+  // 🍟 Chips & Snacks
+  { icon: "🍟", name: "Piattos Small", price: 19.99 },
+  { icon: "🍟", name: "Piattos Big", price: 66.99 },
+  { icon: "🍘", name: "Nova Small", price: 19.99 },
+  { icon: "🍘", name: "Nova Big", price: 66.99 },
+  { icon: "🍞", name: "Bread Pan Small", price: 19.99 },
+  { icon: "🍞", name: "Bread Pan Big", price: 66.99 },
+  { icon: "🍫", name: "Moby Small", price: 19.99 },
+  { icon: "🍫", name: "Moby Big", price: 66.99 },
 
-  // Canned Goods
-  { name: "🐟 555 Sardines Green", price: 26.25, image: "🐟" },
-  { name: "🐟 555 Sardines Red", price: 26.25, image: "🐟" },
-  { name: "🐟 Ligo Sardines Green", price: 26.75, image: "🐟" },
-  { name: "🐟 Ligo Sardines Red", price: 26.75, image: "🐟" },
-  { name: "🐟 Mega Sardines Green", price: 27.25, image: "🐟" },
-  { name: "🐟 Mega Sardines Red", price: 27.25, image: "🐟" },
+  // 🐟 Canned Sardines
+  { icon: "🐟", name: "555 Sardines Green", price: 26.25 },
+  { icon: "🐟", name: "555 Sardines Red", price: 26.25 },
+  { icon: "🐟", name: "Ligo Sardines Green", price: 26.75 },
+  { icon: "🐟", name: "Ligo Sardines Red", price: 26.75 },
+  { icon: "🐟", name: "Mega Sardines Green", price: 27.25 },
+  { icon: "🐟", name: "Mega Sardines Red", price: 27.25 },
 
-  // Instant Noodles
-  { name: "🍜 Lucky Me Pancit Canton", price: 14.99, image: "🍜" },
-  { name: "🍜 Lucky Me Pancit Canton (6 pack)", price: 89.99, image: "🍜" },
-  { name: "🍜 Nissin Cup Noodles", price: 24.99, image: "🍜" },
+  // 🍜 Instant Noodles
+  { icon: "🍜", name: "Lucky Me Pancit Canton", price: 14.99 },
+  { icon: "🍜", name: "Lucky Me Pancit Canton (6 pack)", price: 89.99 },
+  { icon: "🥡", name: "Nissin Cup Noodles", price: 24.99 },
 
-  // Canned Meat
-  { name: "🥫 Argentina Corned Beef 150g", price: 39.99, image: "🥫" },
-  { name: "🥫 Century Tuna Flakes 180g", price: 38.99, image: "🥫" },
-  { name: "🥫 Maling Luncheon Meat", price: 92.99, image: "🥫" },
-  { name: "🥫 Delimondo Corned Beef", price: 99.99, image: "🥫" },
+  // 🥩 Canned Meat
+  { icon: "🥫", name: "Argentina Corned Beef 150g", price: 39.99 },
+  { icon: "🥫", name: "Century Tuna Flakes 180g", price: 38.99 },
+  { icon: "🥫", name: "Maling Luncheon Meat", price: 92.99 },
+  { icon: "🥫", name: "Delimondo Corned Beef", price: 99.99 },
 
-  // Eggs
-  { name: "🥚 Eggs (Tray of 6)", price: 56.99, image: "🥚" },
-  { name: "🥚 Eggs (Tray of 12)", price: 109.99, image: "🥚" },
+  // 🥚 Eggs
+  { icon: "🥚", name: "Eggs (Tray of 6)", price: 56.99 },
+  { icon: "🥚", name: "Eggs (Tray of 12)", price: 109.99 },
 
-  // Rice
-  { name: "🍚 Sinandomeng Rice 3kg", price: 199.99, image: "🍚" },
-  { name: "🍚 Sinandomeng Rice 5kg", price: 329.99, image: "🍚" },
-  { name: "🍚 Sinandomeng Rice 10kg", price: 639.99, image: "🍚" },
+  // 🍚 Rice
+  { icon: "🍚", name: "Sinandomeng Rice 3kg", price: 199.99 },
+  { icon: "🍚", name: "Sinandomeng Rice 5kg", price: 329.99 },
+  { icon: "🍚", name: "Sinandomeng Rice 10kg", price: 639.99 }
 ];
+
     function renderProducts() {
 const list = document.getElementById('product-list');
 list.innerHTML = '';
