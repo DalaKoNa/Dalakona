@@ -280,7 +280,7 @@ function renderProducts(filteredProducts) {
     item.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
-      <p class="product-description">${product.description || ""}</p>
+      <p class="description">${product.description || ""}</p>
       <p><strong>₱${product.price.toFixed(2)}</strong></p>
       <button onclick="addToCart(${index})">Add to Cart</button>
     `;
