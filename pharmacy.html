@@ -271,22 +271,21 @@ const products = [
   { name: "Simethicone Drops 30 mL", price: 88.49, image: "https://via.placeholder.com/100", description: "Relieves infant gas and colic" }
 ];
 
-function renderProducts() {
-const list = document.getElementById('product-list');
-list.innerHTML = '';
-products.forEach((item, index) => {
-list.innerHTML += `
-<div class="card" data-name="${item.name.toLowerCase()}">
-<img src="${item.image}" alt="${item.name}">
-<h4>${item.name}</h4>
-<p>₱${item.price.toFixed(2)}</p>
-<div class="qty-controls">
-<button onclick="decreaseQty(${index})">-</button>
-<span id="qty-${index}">0</span>
-<button onclick="increaseQty(${index})">+</button>
-</div>
-</div>`;
-});
+function renderProducts(filteredProducts) {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  filteredProducts.forEach((product, index) => {
+    const item = document.createElement("div");
+    item.className = "product-card";
+    item.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p class="product-description">${product.description || ""}</p>
+      <p>₱${product.price.toFixed(2)}</p>
+      <button onclick="addToCart(${index})">Add to Cart</button>
+    `;
+    list.appendChild(item);
+  });
 }
 
 function increaseQty(i) {
