@@ -36,6 +36,8 @@
       background: #333; color: white; border: none;
       padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
+    .tab-btn { margin: 0.25rem; padding: 0.5rem 1rem; border: none; background: #ddd; cursor: pointer; border-radius: 6px; }
+    .tab-btn:hover { background: #ccc; }
     .cart-modal {
       position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
       background: white; width: 90%; max-width: 600px; max-height: 90vh;
@@ -53,39 +55,29 @@
       font-weight: bold; cursor: pointer;
     }
     .hidden { display: none; }
-    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
     .location-btn {
-      background: #008060;
-      color: white;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 6px;
-      margin-top: 0.5rem;
-      width: 100%;
-      cursor: pointer;
+      background: #008060; color: white; padding: 0.5rem;
+      border: none; border-radius: 6px; margin-top: 0.5rem; width: 100%; cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
- <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Dala🚲Na Handumanan Hypermarket</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
-
   <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search items...">
   </div>
-  <div id="category-tabs" class="tab-container">
+  <div id="category-tabs" class="tab-container"></div>
   <div class="grid" id="product-list"></div>
-
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
-
     <div class="form-section">
       <h3>Customer Info</h3>
       <input type="text" id="customer-name" placeholder="Full Name" required>
@@ -95,55 +87,40 @@
       <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
       <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
-
-
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date" disabled>
-<input type="time" id="delivery-time" disabled>
-<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-</div>
-
-<h3>Payment</h3>
-<select id="payment-method">
-  <option value="GCash">GCash (may incur transfer fee)</option>
-  <option value="PayMaya">PayMaya (may incur transfer fee)</option>
-  <option value="Bank">Bank Transfer (may incur transfer fee)</option>
-  <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-</select>
-
-<div style="margin-top: 0.5rem;">
-  <a
-    id="payment-link"
-    href="payment-instructions.html?method=GCash"
-    target="_blank"
-    style="color: #008060; text-decoration: underline;"
-  >
-    View payment instructions
-  </a>
-</div>
-
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-  ✅ I agree to the
-  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-    Terms & Conditions
-  </a>.
-  Orders are final and subject to store policies.
-</div>
-
-<!-- ✅ Checkout Button -->
-<button
-  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-  id="checkout-btn"
-  onclick="submitOrder()"
-  disabled
->
-  🛒 Checkout via WhatsApp
-</button>
-
-<!-- ✅ Scripts -->
-<script src="dalacart.js"></script>
-<script>
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" disabled>
+      <input type="time" id="delivery-time" disabled>
+      <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+        ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+      </div>
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+      </select>
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+          View payment instructions
+        </a>
+      </div>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the
+        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+          Terms & Conditions
+        </a>.
+        Orders are final and subject to store policies.
+      </div>
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
+        🛒 Checkout via WhatsApp
+      </button>
+    </div>
+  </div>
+  <script src="dalacart.js"></script>
+</body>
+</html>
+  <script>
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
     const phone = document.getElementById('customer-phone').value.trim();
@@ -181,7 +158,7 @@
     document.body.appendChild(iframe);
 
     // 2. Send WhatsApp messages
-    const message = `🧾 New Order - Dala🚲Na Handumanan Hypermarket\n\nConfirmation #: ${confirmation}
+    const message = `🧾 New Order - Dala🚲Na Bakery\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -239,6 +216,7 @@ Ref #: ${ref || 'N/A'}`;
     'delivery-time',
     'payment-method'
   ];
+
 <script>
 const cart = {};
 let products = [];
@@ -341,7 +319,9 @@ window.onload = () => {
   renderCategoryTabs();
   const defaultCategory = Object.keys(categories)[0];
   loadCategory(defaultCategory);
-};<script>
+};
+
+<script>
 function updateQty(i) {
   const item = products[i];
   const qty = cart[item.name]?.qty || 0;
