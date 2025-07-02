@@ -446,22 +446,24 @@ const cart = {};
 { name: "Pampanga’s Best Longganisa 250g", price: 99.99, image: "https://via.placeholder.com/100" },
 ];
 function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = '';
-    products.forEach((item, index) => {
-      list.innerHTML += `
-        <div class="card" data-name="${item.name.toLowerCase()}">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price.toFixed(2)}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${index})">-</button>
-            <span id="qty-${index}">0</span>
-            <button onclick="increaseQty(${index})">+</button>
-          </div>
-        </div>`;
-    });
-  }
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach((item, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <h4>${item.name}</h4>
+      <p>₱${item.price.toFixed(2)}</p>
+      <div class="qty-controls">
+        <button onclick="decreaseQty(${i})">−</button>
+        <span id="qty-${i}">0</span>
+        <button onclick="increaseQty(${i})">+</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
 
   function increaseQty(i) {
     const item = products[i];
@@ -535,6 +537,10 @@ function renderProducts() {
   }
 
   window.onload = () => {
+  // Define products first
+  let products = [ /* ALL 100+ items here */ ];
+  const cart = {};
+
     renderProducts();
 
     const now = new Date();
