@@ -236,56 +236,59 @@ const requiredFields = [
 
 const cart = {};
 const products = [
-  // 👨‍⚕️ ADULT MEDICINES
-  { name: "Paracetamol 500 mg (per tab)", price: 7.14, image: "https://via.placeholder.com/100", description: "Fever and mild pain relief" },
-  { name: "Ibuprofen 200 mg (per tab)", price: 8.64, image: "https://via.placeholder.com/100", description: "Anti-inflammatory for pain and fever" },
-  { name: "Loperamide 2 mg (per tab)", price: 10.14, image: "https://via.placeholder.com/100", description: "For diarrhea control" },
-  { name: "Cetirizine 10 mg (per tab)", price: 14.14, image: "https://via.placeholder.com/100", description: "For allergies, sneezing, runny nose" },
-  { name: "Loratadine 10 mg (per tab)", price: 15.14, image: "https://via.placeholder.com/100", description: "Non-drowsy allergy relief" },
-  { name: "Antacid Chewable (per tab)", price: 9.64, image: "https://via.placeholder.com/100", description: "For acid reflux and hyperacidity" },
-  { name: "Mefenamic Acid 500 mg (per tab)", price: 7.99, image: "https://via.placeholder.com/100", description: "For body pain, headache, dysmenorrhea" },
-  { name: "Diphenhydramine 25 mg (per tab)", price: 6.99, image: "https://via.placeholder.com/100", description: "Drowsy antihistamine for cold/allergies" },
-  { name: "Domperidone 10 mg (per tab)", price: 10.49, image: "https://via.placeholder.com/100", description: "For nausea, vomiting, bloating" },
-  { name: "Omeprazole 20 mg (per cap)", price: 11.49, image: "https://via.placeholder.com/100", description: "For GERD, acid reflux, and ulcers" },
-  { name: "Calcium + Vitamin D3 (per tab)", price: 20.14, image: "https://via.placeholder.com/100", description: "Bone health and calcium absorption" },
-  { name: "Vitamin C 500 mg (per tab)", price: 17.14, image: "https://via.placeholder.com/100", description: "Boosts immune system" },
-  { name: "Zinc Lozenges (per piece)", price: 15.14, image: "https://via.placeholder.com/100", description: "For sore throat and immunity" },
-  { name: "Motion Sickness Chewable (per piece)", price: 15.14, image: "https://via.placeholder.com/100", description: "For travel-related nausea/dizziness" },
-  { name: "Multivitamins Adult (per cap)", price: 22.14, image: "https://via.placeholder.com/100", description: "Daily vitamin and mineral support" },
+  // 👨‍⚕️ ADULT TABLETS & CAPSULES
+  { name: "Paracetamol 500 mg (per tab) – Fever and mild pain relief", price: 7.14, image: "https://via.placeholder.com/100" },
+  { name: "Ibuprofen 200 mg (per tab) – Anti-inflammatory for pain and fever", price: 8.64, image: "https://via.placeholder.com/100" },
+  { name: "Mefenamic Acid 500 mg (per tab) – Pain relief, including dysmenorrhea", price: 9.94, image: "https://via.placeholder.com/100" },
+  { name: "Loperamide 2 mg (per tab) – For diarrhea control", price: 10.14, image: "https://via.placeholder.com/100" },
+  { name: "Domperidone 10 mg (per tab) – For nausea, vomiting, bloating", price: 11.89, image: "https://via.placeholder.com/100" },
+  { name: "Omeprazole 20 mg (per cap) – For acid reflux, GERD, ulcers", price: 12.89, image: "https://via.placeholder.com/100" },
+  { name: "Cetirizine 10 mg (per tab) – For allergies, sneezing, runny nose", price: 14.14, image: "https://via.placeholder.com/100" },
+  { name: "Loratadine 10 mg (per tab) – Non-drowsy allergy relief", price: 15.14, image: "https://via.placeholder.com/100" },
+  { name: "Antacid chewable (per tab) – For acid reflux and hyperacidity", price: 9.64, image: "https://via.placeholder.com/100" },
+  { name: "Vitamin C 500 mg (per tab) – Boosts immune system", price: 17.14, image: "https://via.placeholder.com/100" },
+  { name: "Calcium + Vitamin D3 (per tab) – Bone health and calcium absorption", price: 20.14, image: "https://via.placeholder.com/100" },
+  { name: "Multivitamins Adult (per cap) – Daily vitamin and mineral support", price: 22.14, image: "https://via.placeholder.com/100" },
+  { name: "Zinc Lozenges (per piece) – For sore throat and immunity", price: 15.14, image: "https://via.placeholder.com/100" },
+  { name: "Diphenhydramine 25 mg (per tab) – Drowsy antihistamine for allergies", price: 8.98, image: "https://via.placeholder.com/100" },
+  { name: "Motion Sickness Chewable (per piece) – For travel-related nausea", price: 15.14, image: "https://via.placeholder.com/100" },
 
   // 🧴 ADULT SYRUPS / TOPICALS
-  { name: "Cough Syrup Adult 100 mL", price: 123.49, image: "https://via.placeholder.com/100", description: "For dry or productive cough" },
-  { name: "Decongestant Nasal Spray 15 mL", price: 143.49, image: "https://via.placeholder.com/100", description: "For nasal congestion relief" },
-  { name: "Antihistamine Nasal Spray 15 mL", price: 183.49, image: "https://via.placeholder.com/100", description: "For allergic rhinitis or hay fever" },
-  { name: "Topical Antibiotic Ointment 15 g", price: 98.49, image: "https://via.placeholder.com/100", description: "For minor cuts and wounds" },
-  { name: "Antifungal Cream 20 g", price: 118.49, image: "https://via.placeholder.com/100", description: "For athlete's foot or fungal skin infections" },
-  { name: "Hydrocortisone Cream 15 g", price: 108.49, image: "https://via.placeholder.com/100", description: "Anti-itch, anti-allergy for skin" },
-  { name: "Wound Dressing (Bactigras) per sheet", price: 34.29, image: "https://via.placeholder.com/100", description: "Sterile dressing with antibacterial" },
-  { name: "Oral Rehydration Salts (per sachet)", price: 17.24, image: "https://via.placeholder.com/100", description: "For dehydration, especially after diarrhea" },
+  { name: "Cough Syrup Adult 100 mL – For dry or productive cough", price: 123.49, image: "https://via.placeholder.com/100" },
+  { name: "Decongestant Nasal Spray 15 mL – For nasal congestion relief", price: 143.49, image: "https://via.placeholder.com/100" },
+  { name: "Antihistamine Nasal Spray 15 mL – For allergic rhinitis or hay fever", price: 183.49, image: "https://via.placeholder.com/100" },
+  { name: "Topical Antibiotic Ointment 15 g – For minor cuts and wounds", price: 98.49, image: "https://via.placeholder.com/100" },
+  { name: "Antifungal Cream 20 g – For athlete's foot or fungal infections", price: 118.49, image: "https://via.placeholder.com/100" },
+  { name: "Hydrocortisone Cream 15 g – Anti-itch and allergy skin relief", price: 108.49, image: "https://via.placeholder.com/100" },
+  { name: "Wound Dressing (Bactigras) per sheet – Antibacterial wound cover", price: 34.29, image: "https://via.placeholder.com/100" },
+  { name: "Oral Rehydration Salts (per sachet) – Prevent dehydration", price: 17.24, image: "https://via.placeholder.com/100" },
 
-  // 🧒 KIDS & INFANT MEDICINES
-  { name: "Paracetamol Syrup 60 mL", price: 59.99, image: "https://via.placeholder.com/100", description: "Fever and pain relief for children" },
-  { name: "Ibuprofen Syrup 60 mL", price: 64.99, image: "https://via.placeholder.com/100", description: "Anti-inflammatory and pain reliever for kids" },
-  { name: "Pambatang Cough Syrup 60 mL", price: 89.99, image: "https://via.placeholder.com/100", description: "Non-drowsy cough formula for kids" },
-  { name: "Multivitamins Syrup 100 mL", price: 78.99, image: "https://via.placeholder.com/100", description: "Vitamins for growth and immunity" },
-  { name: "Simethicone Drops 30 mL", price: 88.49, image: "https://via.placeholder.com/100", description: "Relieves infant gas and colic" }
+  // 🧒 KIDS / INFANT MEDICINES
+  { name: "Paracetamol Syrup 60 mL – Fever and pain relief for children", price: 61.98, image: "https://via.placeholder.com/100" },
+  { name: "Ibuprofen Syrup 60 mL – Anti-inflammatory for kids", price: 66.98, image: "https://via.placeholder.com/100" },
+  { name: "Pambatang Cough Syrup 60 mL – Cough relief for children", price: 91.98, image: "https://via.placeholder.com/100" },
+  { name: "Multivitamins Syrup 100 mL – Growth and immune support", price: 80.98, image: "https://via.placeholder.com/100" },
+  { name: "Simethicone Drops 30 mL – Infant gas relief", price: 88.49, image: "https://via.placeholder.com/100" },
+  { name: "Vitamin C Syrup for Kids 60 mL – Immunity booster for kids", price: 59.99, image: "https://via.placeholder.com/100" },
+  { name: "Loratadine Syrup 60 mL – Non-drowsy allergy relief for kids", price: 74.99, image: "https://via.placeholder.com/100" }
 ];
 
-function renderProducts(filteredProducts) {
-  const list = document.getElementById("product-list");
-  list.innerHTML = "";
-  filteredProducts.forEach((product, index) => {
-    const item = document.createElement("div");
-    item.className = "product-card";
-    item.innerHTML = `
-      <img src="${product.image}" alt="${product.name}">
-      <h3>${product.name}</h3>
-      <p class="description">${product.description || ""}</p>
-      <p><strong>₱${product.price.toFixed(2)}</strong></p>
-      <button onclick="addToCart(${index})">Add to Cart</button>
-    `;
-    list.appendChild(item);
-  });
+function renderProducts() {
+const list = document.getElementById('product-list');
+list.innerHTML = '';
+products.forEach((item, index) => {
+list.innerHTML += `
+<div class="card" data-name="${item.name.toLowerCase()}">
+<img src="${item.image}" alt="${item.name}">
+<h4>${item.name}</h4>
+<p>₱${item.price.toFixed(2)}</p>
+<div class="qty-controls">
+<button onclick="decreaseQty(${index})">-</button>
+<span id="qty-${index}">0</span>
+<button onclick="increaseQty(${index})">+</button>
+</div>
+</div>`;
+});
 }
 
 function increaseQty(i) {
