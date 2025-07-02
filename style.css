@@ -327,3 +327,8 @@ footer {
 .whatsapp-float:hover {
   transform: scale(1.1);
 }
+.description {
+  font-size: 0.85rem;
+  color: #444;
+  margin: 4px 0;
+}
