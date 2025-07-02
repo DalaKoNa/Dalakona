@@ -236,26 +236,39 @@ const requiredFields = [
 
 const cart = {};
 const products = [
-  { name: "Paracetamol 500 mg (per tab)", price: 5.15, image: "https://via.placeholder.com/100" },
-  { name: "Ibuprofen 200 mg (per tab)", price: 6.65, image: "https://via.placeholder.com/100" },
-  { name: "Loperamide 2 mg (per tab)", price: 8.15, image: "https://via.placeholder.com/100" },
-  { name: "Cetirizine 10 mg (per tab)", price: 12.15, image: "https://via.placeholder.com/100" },
-  { name: "Loratadine 10 mg (per tab)", price: 13.15, image: "https://via.placeholder.com/100" },
-  { name: "Simethicone drops 30 mL", price: 86.50, image: "https://via.placeholder.com/100" },
-  { name: "Antacid chewable (per tab)", price: 7.65, image: "https://via.placeholder.com/100" },
-  { name: "Multivitamins Adult (per cap)", price: 20.15, image: "https://via.placeholder.com/100" },
-  { name: "Vitamin C 500 mg (per tab)", price: 15.15, image: "https://via.placeholder.com/100" },
-  { name: "Calcium + Vitamin D3 (per tab)", price: 18.15, image: "https://via.placeholder.com/100" },
-  { name: "Zinc Lozenges (per piece)", price: 13.15, image: "https://via.placeholder.com/100" },
-  { name: "Cough Syrup Adult 100 mL", price: 121.50, image: "https://via.placeholder.com/100" },
-  { name: "Decongestant Nasal Spray 15 mL", price: 141.50, image: "https://via.placeholder.com/100" },
-  { name: "Antihistamine Nasal Spray 15 mL", price: 181.50, image: "https://via.placeholder.com/100" },
-  { name: "Topical Antibiotic Ointment 15 g", price: 96.50, image: "https://via.placeholder.com/100" },
-  { name: "Antifungal Cream 20 g", price: 116.50, image: "https://via.placeholder.com/100" },
-  { name: "Hydrocortisone Cream 15 g", price: 106.50, image: "https://via.placeholder.com/100" },
-  { name: "Wound Dressing (Bactigras) per sheet", price: 32.30, image: "https://via.placeholder.com/100" },
-  { name: "Oral Rehydration Salts (per sachet)", price: 15.25, image: "https://via.placeholder.com/100" },
-  { name: "Motion Sickness Chewable (per piece)", price: 13.15, image: "https://via.placeholder.com/100" }
+  // 👨‍⚕️ ADULT MEDICINES
+  { name: "Paracetamol 500 mg (per tab)", price: 7.14, image: "https://via.placeholder.com/100", description: "Fever and mild pain relief" },
+  { name: "Ibuprofen 200 mg (per tab)", price: 8.64, image: "https://via.placeholder.com/100", description: "Anti-inflammatory for pain and fever" },
+  { name: "Loperamide 2 mg (per tab)", price: 10.14, image: "https://via.placeholder.com/100", description: "For diarrhea control" },
+  { name: "Cetirizine 10 mg (per tab)", price: 14.14, image: "https://via.placeholder.com/100", description: "For allergies, sneezing, runny nose" },
+  { name: "Loratadine 10 mg (per tab)", price: 15.14, image: "https://via.placeholder.com/100", description: "Non-drowsy allergy relief" },
+  { name: "Antacid Chewable (per tab)", price: 9.64, image: "https://via.placeholder.com/100", description: "For acid reflux and hyperacidity" },
+  { name: "Mefenamic Acid 500 mg (per tab)", price: 7.99, image: "https://via.placeholder.com/100", description: "For body pain, headache, dysmenorrhea" },
+  { name: "Diphenhydramine 25 mg (per tab)", price: 6.99, image: "https://via.placeholder.com/100", description: "Drowsy antihistamine for cold/allergies" },
+  { name: "Domperidone 10 mg (per tab)", price: 10.49, image: "https://via.placeholder.com/100", description: "For nausea, vomiting, bloating" },
+  { name: "Omeprazole 20 mg (per cap)", price: 11.49, image: "https://via.placeholder.com/100", description: "For GERD, acid reflux, and ulcers" },
+  { name: "Calcium + Vitamin D3 (per tab)", price: 20.14, image: "https://via.placeholder.com/100", description: "Bone health and calcium absorption" },
+  { name: "Vitamin C 500 mg (per tab)", price: 17.14, image: "https://via.placeholder.com/100", description: "Boosts immune system" },
+  { name: "Zinc Lozenges (per piece)", price: 15.14, image: "https://via.placeholder.com/100", description: "For sore throat and immunity" },
+  { name: "Motion Sickness Chewable (per piece)", price: 15.14, image: "https://via.placeholder.com/100", description: "For travel-related nausea/dizziness" },
+  { name: "Multivitamins Adult (per cap)", price: 22.14, image: "https://via.placeholder.com/100", description: "Daily vitamin and mineral support" },
+
+  // 🧴 ADULT SYRUPS / TOPICALS
+  { name: "Cough Syrup Adult 100 mL", price: 123.49, image: "https://via.placeholder.com/100", description: "For dry or productive cough" },
+  { name: "Decongestant Nasal Spray 15 mL", price: 143.49, image: "https://via.placeholder.com/100", description: "For nasal congestion relief" },
+  { name: "Antihistamine Nasal Spray 15 mL", price: 183.49, image: "https://via.placeholder.com/100", description: "For allergic rhinitis or hay fever" },
+  { name: "Topical Antibiotic Ointment 15 g", price: 98.49, image: "https://via.placeholder.com/100", description: "For minor cuts and wounds" },
+  { name: "Antifungal Cream 20 g", price: 118.49, image: "https://via.placeholder.com/100", description: "For athlete's foot or fungal skin infections" },
+  { name: "Hydrocortisone Cream 15 g", price: 108.49, image: "https://via.placeholder.com/100", description: "Anti-itch, anti-allergy for skin" },
+  { name: "Wound Dressing (Bactigras) per sheet", price: 34.29, image: "https://via.placeholder.com/100", description: "Sterile dressing with antibacterial" },
+  { name: "Oral Rehydration Salts (per sachet)", price: 17.24, image: "https://via.placeholder.com/100", description: "For dehydration, especially after diarrhea" },
+
+  // 🧒 KIDS & INFANT MEDICINES
+  { name: "Paracetamol Syrup 60 mL", price: 59.99, image: "https://via.placeholder.com/100", description: "Fever and pain relief for children" },
+  { name: "Ibuprofen Syrup 60 mL", price: 64.99, image: "https://via.placeholder.com/100", description: "Anti-inflammatory and pain reliever for kids" },
+  { name: "Pambatang Cough Syrup 60 mL", price: 89.99, image: "https://via.placeholder.com/100", description: "Non-drowsy cough formula for kids" },
+  { name: "Multivitamins Syrup 100 mL", price: 78.99, image: "https://via.placeholder.com/100", description: "Vitamins for growth and immunity" },
+  { name: "Simethicone Drops 30 mL", price: 88.49, image: "https://via.placeholder.com/100", description: "Relieves infant gas and colic" }
 ];
 
 function renderProducts() {
