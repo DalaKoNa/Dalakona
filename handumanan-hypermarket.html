@@ -459,6 +459,26 @@ const cart = {};
 { name: "Pampanga’s Best Tocino 250g", price: 99.99, image: "https://via.placeholder.com/100" },
 { name: "Pampanga’s Best Longganisa 250g", price: 99.99, image: "https://via.placeholder.com/100" },
 ];
+function renderProducts() {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach((item, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <h4>${item.name}</h4>
+      <p>₱${item.price.toFixed(2)}</p>
+    `;
+    list.appendChild(card);
+  });
+}
+
+window.onload = () => {
+  renderProducts();
+};
+</script>
+
 <script>
 
 function decreaseQty(i) {
@@ -523,31 +543,6 @@ checkoutBtn.disabled = true;
 checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
 checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
 }
-}
-
-window.onload = () => {
-  renderProducts();
-  // ... rest of your setup
-};
-
-function renderProducts() {
-  const list = document.getElementById("product-list");
-  list.innerHTML = "";
-  products.forEach((item, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${item.image}" alt="${item.name}" />
-      <h4>${item.name}</h4>
-      <p>₱${item.price.toFixed(2)}</p>
-      <div class="qty-controls">
-        <button onclick="decreaseQty(${i})">−</button>
-        <span id="qty-${i}">0</span>
-        <button onclick="increaseQty(${i})">+</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
 }
 
 const now = new Date();
