@@ -240,50 +240,149 @@ const requiredFields = [
 
 const cart = {};
     const products = [
-      { name: "Gardenia Classic White Bread 400g", price: 96.99, image: "https://via.placeholder.com/100" },
-      { name: "Gardenia Pandesal 300g", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Angelina Tasty Loaf 400g", price: 94.99, image: "https://via.placeholder.com/100" },
+  // 🍞 Breads
+  { name: "Gardenia Classic White Bread 400g", price: 96.99, image: "https://via.placeholder.com/100" },
+  { name: "Gardenia Pandesal 300g", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Angelina Tasty Loaf 400g", price: 94.99, image: "https://via.placeholder.com/100" },
 
-      { name: "Coca-Cola 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Pepsi 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Royal Tru Orange 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Sprite 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "C2 Green Tea Bottle", price: 26.99, image: "https://via.placeholder.com/100" },
-      { name: "Zest-O Juice Pack", price: 12.99, image: "https://via.placeholder.com/100" },
-      { name: "Minute Maid Orange", price: 29.99, image: "https://via.placeholder.com/100" },
+  // 🥤 Drinks
+  { name: "Coca-Cola 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Pepsi 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Royal Tru Orange 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Sprite 1.5L", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "C2 Green Tea Bottle", price: 26.99, image: "https://via.placeholder.com/100" },
+  { name: "Zest-O Juice Pack", price: 12.99, image: "https://via.placeholder.com/100" },
+  { name: "Minute Maid Orange", price: 29.99, image: "https://via.placeholder.com/100" },
 
-      { name: "Piattos Small", price: 19.99, image: "https://via.placeholder.com/100" },
-      { name: "Piattos Big", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Nova Small", price: 19.99, image: "https://via.placeholder.com/100" },
-      { name: "Nova Big", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Bread Pan Small", price: 19.99, image: "https://via.placeholder.com/100" },
-      { name: "Bread Pan Big", price: 66.99, image: "https://via.placeholder.com/100" },
-      { name: "Moby Small", price: 19.99, image: "https://via.placeholder.com/100" },
-      { name: "Moby Big", price: 66.99, image: "https://via.placeholder.com/100" },
+  // 🍟 Chips
+  { name: "Piattos Small", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Piattos Big", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Nova Small", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Nova Big", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Bread Pan Small", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Bread Pan Big", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Moby Small", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Moby Big", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Boy Bawang Cornick Garlic 100g", price: 26.99, image: "https://via.placeholder.com/100" },
 
-      { name: "555 Sardines Green", price: 26.25, image: "https://via.placeholder.com/100" },
-      { name: "555 Sardines Red", price: 26.25, image: "https://via.placeholder.com/100" },
-      { name: "Ligo Sardines Green", price: 26.75, image: "https://via.placeholder.com/100" },
-      { name: "Ligo Sardines Red", price: 26.75, image: "https://via.placeholder.com/100" },
-      { name: "Mega Sardines Green", price: 27.25, image: "https://via.placeholder.com/100" },
-      { name: "Mega Sardines Red", price: 27.25, image: "https://via.placeholder.com/100" },
+  // 🐟 Canned Goods
+  { name: "555 Sardines Green", price: 26.25, image: "https://via.placeholder.com/100" },
+  { name: "555 Sardines Red", price: 26.25, image: "https://via.placeholder.com/100" },
+  { name: "Ligo Sardines Green", price: 26.75, image: "https://via.placeholder.com/100" },
+  { name: "Ligo Sardines Red", price: 26.75, image: "https://via.placeholder.com/100" },
+  { name: "Mega Sardines Green", price: 27.25, image: "https://via.placeholder.com/100" },
+  { name: "Mega Sardines Red", price: 27.25, image: "https://via.placeholder.com/100" },
 
-      { name: "Lucky Me Pancit Canton", price: 14.99, image: "https://via.placeholder.com/100" },
-      { name: "Lucky Me Pancit Canton (6 pack)", price: 89.99, image: "https://via.placeholder.com/100" },
-      { name: "Nissin Cup Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
+  // 🍜 Noodles
+  { name: "Lucky Me Pancit Canton", price: 14.99, image: "https://via.placeholder.com/100" },
+  { name: "Lucky Me Pancit Canton (6 pack)", price: 89.99, image: "https://via.placeholder.com/100" },
+  { name: "Nissin Cup Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
 
-      { name: "Argentina Corned Beef 150g", price: 39.99, image: "https://via.placeholder.com/100" },
-      { name: "Century Tuna Flakes 180g", price: 38.99, image: "https://via.placeholder.com/100" },
-      { name: "Maling Luncheon Meat", price: 92.99, image: "https://via.placeholder.com/100" },
-      { name: "Delimondo Corned Beef", price: 99.99, image: "https://via.placeholder.com/100" },
+  // 🥫 Meat Products
+  { name: "Argentina Corned Beef 150g", price: 39.99, image: "https://via.placeholder.com/100" },
+  { name: "Century Tuna Flakes 180g", price: 38.99, image: "https://via.placeholder.com/100" },
+  { name: "Maling Luncheon Meat", price: 92.99, image: "https://via.placeholder.com/100" },
+  { name: "Delimondo Corned Beef", price: 99.99, image: "https://via.placeholder.com/100" },
 
-      { name: "Eggs (Tray of 6)", price: 56.99, image: "https://via.placeholder.com/100" },
-      { name: "Eggs (Tray of 12)", price: 109.99, image: "https://via.placeholder.com/100" },
+  // 🥚 Eggs
+  { name: "Eggs (Tray of 6)", price: 56.99, image: "https://via.placeholder.com/100" },
+  { name: "Eggs (Tray of 12)", price: 109.99, image: "https://via.placeholder.com/100" },
 
-      { name: "Sinandomeng Rice 3kg", price: 199.99, image: "https://via.placeholder.com/100" },
-      { name: "Sinandomeng Rice 5kg", price: 329.99, image: "https://via.placeholder.com/100" },
-      { name: "Sinandomeng Rice 10kg", price: 639.99, image: "https://via.placeholder.com/100" },
-    ];
+  // 🍚 Rice
+  { name: "Sinandomeng Rice 3kg", price: 199.99, image: "https://via.placeholder.com/100" },
+  { name: "Sinandomeng Rice 5kg", price: 329.99, image: "https://via.placeholder.com/100" },
+  { name: "Sinandomeng Rice 10kg", price: 639.99, image: "https://via.placeholder.com/100" },
+
+  // 🪥 Toothpaste
+  { name: "Colgate Triple Action Toothpaste 100ml", price: 59.99, image: "https://via.placeholder.com/100" },
+  { name: "Sensodyne Extra Fresh 100g", price: 149.99, image: "https://via.placeholder.com/100" },
+  { name: "Close-Up Ever Fresh Gel 100ml", price: 69.99, image: "https://via.placeholder.com/100" },
+  { name: "Palmolive Naturals Toothpaste 100ml", price: 49.99, image: "https://via.placeholder.com/100" },
+
+  // 🧼 Soaps
+  { name: "Safeguard Pure White Soap 135g", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Lifebuoy Total 10 Bath Soap 135g", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Dettol Original Bar 135g", price: 29.99, image: "https://via.placeholder.com/100" },
+  { name: "Johnson's Baby Soap 125g", price: 24.99, image: "https://via.placeholder.com/100" },
+  { name: "Dove Beauty Bar 100g", price: 34.99, image: "https://via.placeholder.com/100" },
+  { name: "Eskinol Whitening Bar 135g", price: 24.99, image: "https://via.placeholder.com/100" },
+
+  // 🧴 Lotion
+  { name: "Nivea Natural Fairness Lotion 200ml", price: 199.99, image: "https://via.placeholder.com/100" },
+  { name: "Vaseline Aloe Fresh Lotion 200ml", price: 179.99, image: "https://via.placeholder.com/100" },
+  { name: "Aveeno Daily Moisturizing Lotion 225ml", price: 349.99, image: "https://via.placeholder.com/100" },
+  { name: "Bio-Oil Skincare Oil 60ml", price: 269.99, image: "https://via.placeholder.com/100" }
+  
+    // 🧀 Cheese Products
+  { name: "Eden Cheese 165g", price: 64.99, image: "https://via.placeholder.com/100" },
+  { name: "Eden Cheese 450g Block", price: 164.99, image: "https://via.placeholder.com/100" },
+  { name: "Cheez Whiz Original 220g", price: 89.99, image: "https://via.placeholder.com/100" },
+  { name: "Cheez Whiz Pimiento 220g", price: 94.99, image: "https://via.placeholder.com/100" },
+  { name: "Magnolia Quickmelt Cheese 165g", price: 72.99, image: "https://via.placeholder.com/100" },
+  { name: "Magnolia Cheddar Cheese 165g", price: 74.99, image: "https://via.placeholder.com/100" },
+  { name: "Kraft Eden Melt Sarap 165g", price: 76.99, image: "https://via.placeholder.com/100" },
+  
+  // 🧀 Cheese
+{ name: "Eden Cheese 165g", price: 64.99, image: "https://via.placeholder.com/100" },
+{ name: "Eden Cheese 450g Block", price: 164.99, image: "https://via.placeholder.com/100" },
+{ name: "Cheez Whiz Original 220g", price: 89.99, image: "https://via.placeholder.com/100" },
+{ name: "Cheez Whiz Pimiento 220g", price: 94.99, image: "https://via.placeholder.com/100" },
+{ name: "Magnolia Quickmelt Cheese 165g", price: 72.99, image: "https://via.placeholder.com/100" },
+{ name: "Magnolia Cheddar Cheese 165g", price: 74.99, image: "https://via.placeholder.com/100" },
+
+// 🧈 Butter & Margarine
+{ name: "Star Margarine Classic 250g", price: 42.99, image: "https://via.placeholder.com/100" },
+{ name: "Star Margarine Sweet Blend 250g", price: 44.99, image: "https://via.placeholder.com/100" },
+{ name: "Magnolia Gold Butter Unsalted 200g", price: 85.99, image: "https://via.placeholder.com/100" },
+{ name: "Anchor Salted Butter 227g", price: 149.99, image: "https://via.placeholder.com/100" },
+
+// 🥛 Powdered Milk & Choco Drinks
+{ name: "Bear Brand Powdered Milk 320g", price: 112.99, image: "https://via.placeholder.com/100" },
+{ name: "Nido Fortified Powdered Milk 320g", price: 179.99, image: "https://via.placeholder.com/100" },
+{ name: "Alaska Powdered Milk Drink 300g", price: 94.99, image: "https://via.placeholder.com/100" },
+{ name: "Milo Chocolate Powder 220g", price: 92.99, image: "https://via.placeholder.com/100" },
+{ name: "Swiss Miss Chocolate Drink (3pcs)", price: 49.99, image: "https://via.placeholder.com/100" },
+
+// 🧴 Shampoo Sachet (6pcs)
+{ name: "Palmolive Naturals Shampoo Sachet (6pcs)", price: 37.99, image: "https://via.placeholder.com/100" },
+{ name: "Head & Shoulders Cool Menthol Sachet (6pcs)", price: 41.99, image: "https://via.placeholder.com/100" },
+{ name: "Sunsilk Strong & Long Sachet (6pcs)", price: 35.99, image: "https://via.placeholder.com/100" },
+{ name: "Cream Silk Conditioner Pink Sachet (6pcs)", price: 39.99, image: "https://via.placeholder.com/100" },
+
+// 🧼 Dishwashing Liquids
+{ name: "Joy Dishwashing Liquid Kalamansi 200ml", price: 39.99, image: "https://via.placeholder.com/100" },
+{ name: "Joy Dishwashing Liquid Lemon 500ml", price: 72.99, image: "https://via.placeholder.com/100" },
+{ name: "Axion Dishwashing Paste Kalamansi 350g", price: 46.99, image: "https://via.placeholder.com/100" },
+{ name: "Axion Dishwashing Paste Lemon 350g", price: 46.99, image: "https://via.placeholder.com/100" },
+{ name: "Smart Dishwashing Liquid Kalamansi 250ml", price: 32.99, image: "https://via.placeholder.com/100" },
+{ name: "Smart Dishwashing Paste Lemon 350g", price: 29.99, image: "https://via.placeholder.com/100" },
+
+// 🧴 Zonrox and Bleach
+{ name: "Zonrox Original Bleach 500ml", price: 34.99, image: "https://via.placeholder.com/100" },
+{ name: "Zonrox ColorSafe 500ml", price: 39.99, image: "https://via.placeholder.com/100" },
+{ name: "Zonrox Floral Scent 500ml", price: 38.99, image: "https://via.placeholder.com/100" },
+{ name: "Clorox Bleach Regular 1L", price: 74.99, image: "https://via.placeholder.com/100" },
+
+// 🧹 All-Purpose Cleaners
+{ name: "Mr. Muscle Multi-Surface Cleaner 500ml", price: 69.99, image: "https://via.placeholder.com/100" },
+{ name: "Domex Ultra Thick Bleach 500ml", price: 64.99, image: "https://via.placeholder.com/100" },
+{ name: "Lysol Disinfectant Spray 170g", price: 159.99, image: "https://via.placeholder.com/100" },
+{ name: "Fabuloso All Purpose Cleaner Lavender 500ml", price: 59.99, image: "https://via.placeholder.com/100" },
+{ name: "Tuff Toilet Bowl Cleaner 500ml", price: 49.99, image: "https://via.placeholder.com/100" },
+
+// 👶 Baby Care
+{ name: "EQ Dry Diapers Small (10pcs)", price: 89.99, image: "https://via.placeholder.com/100" },
+{ name: "Pampers Baby Dry Medium (10pcs)", price: 124.99, image: "https://via.placeholder.com/100" },
+{ name: "Johnson’s Baby Powder 100g", price: 42.99, image: "https://via.placeholder.com/100" },
+{ name: "Johnson’s Baby Cologne 125ml", price: 54.99, image: "https://via.placeholder.com/100" },
+{ name: "Baby Wipes (Travel Pack, 20s)", price: 36.99, image: "https://via.placeholder.com/100" },
+
+// 🧂 Snacks - Boy Bawang
+{ name: "Boy Bawang Garlic 100g", price: 21.99, image: "https://via.placeholder.com/100" },
+{ name: "Boy Bawang Spicy 100g", price: 21.99, image: "https://via.placeholder.com/100" },
+{ name: "Boy Bawang BBQ 100g", price: 21.99, image: "https://via.placeholder.com/100" },
+];
+
     function renderProducts() {
 const list = document.getElementById('product-list');
 list.innerHTML = '';
