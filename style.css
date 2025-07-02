@@ -327,8 +327,23 @@ footer {
 .whatsapp-float:hover {
   transform: scale(1.1);
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
+.cart-modal {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.cart-modal.hidden {
+  transform: translate(-50%, -60%);
+  opacity: 0;
+  pointer-events: none;
+}
+.card:hover {
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  transform: scale(1.02);
+  transition: transform 0.2s;
+}
+.checkout-btn {
+  border-radius: 8px;
+  font-size: 1rem;
+}
+#payment-method {
+  background: #f0f0f0;
 }
