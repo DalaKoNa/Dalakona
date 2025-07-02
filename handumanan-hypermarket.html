@@ -71,20 +71,37 @@ width: 100%; cursor: pointer;
     </div>
   </header>
 
- <div class="search-bar">
-<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
-</div>
- 
+ <div class="search-bar filter-bar">
+  <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">
   <select id="categoryFilter" onchange="filterProducts()">
-      <option value="All">All Categories</option>
-      <option value="Rice">Rice & Grains</option>
-      <option value="Canned">Canned Goods</option>
-      <option value="Toiletries">Toiletries</option>
-      <option value="Snacks">Snacks</option>
-      <option value="Condiments">Condiments</option>
-      <option value="Beverages">Beverages</option>
-      <option value="Household">Household</option>
-    </select>
+    <option value="All">All Categories</option>
+    <option value="Rice">Rice & Grains</option>
+    <option value="Canned">Canned Goods</option>
+    <option value="Toiletries">Toiletries</option>
+    <option value="Snacks">Snacks</option>
+    <option value="Condiments">Condiments</option>
+    <option value="Beverages">Beverages</option>
+    <option value="Household">Household</option>
+  </select>
+</div>
+
+<script>
+function filterProducts() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const selectedCategory = document.getElementById('categoryFilter').value;
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    const name = card.querySelector('h4').textContent.toLowerCase();
+    const category = card.getAttribute('data-category');
+
+    const matchesSearch = name.includes(search);
+    const matchesCategory = selectedCategory === "All" || category === selectedCategory;
+
+    card.style.display = matchesSearch && matchesCategory ? '' : 'none';
+  });
+}
+</script>
   </div>
 
   <div class="grid" id="product-list"></div>
