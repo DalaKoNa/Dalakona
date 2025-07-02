@@ -349,7 +349,8 @@ function updateCartSummary() {
 }
 
 function toggleCart() {
-  document.getElementById('cart-modal').classList.toggle('hidden');
+  const modal = document.getElementById('cart-modal');
+  modal.classList.toggle('hidden');
 }
 
 function validateForm() {
