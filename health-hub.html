@@ -298,115 +298,152 @@ const products = [
 { name: "Nasal Saline Spray for Infants (per 30 mL)", price: 84.99, description: "Para sa barado nga ilong sang baby" }
 ];
 function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
+  const list = document.getElementById('product-list');
+  list.innerHTML = '';
 
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <h4>${item.name}</h4>
-            <p class="desc">${item.description || 'Wala sang dugang nga detalye.'}</p>
-            <p class="price">₱${item.price ? item.price.toFixed(2) : 'N/A'}</p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
-            </div>
-          </div>
-        `;
-      });
-    }
+  products.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.name = item.name.toLowerCase();
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
-    }
+    card.innerHTML = `
+      <h4>${item.name}</h4>
+      <p class="desc">${item.description}</p>
+      <p class="price">₱${item.price.toFixed(2)}</p>
+      <div class="qty-controls">
+        <button onclick="decreaseQty(${index})">-</button>
+        <span id="qty-${index}">0</span>
+        <button onclick="increaseQty(${index})">+</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
 
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
-    }
+function increaseQty(i) {
+  const item = products[i];
+  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+  cart[item.name].qty++;
+  updateQty(i);
+}
 
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    }
+function decreaseQty(i) {
+  const item = products[i];
+  if (cart[item.name]) {
+    cart[item.name].qty--;
+    if (cart[item.name].qty <= 0) delete cart[item.name];
+  }
+  updateQty(i);
+}
 
-    function toggleCart() {
-      alert("Cart functionality coming soon");
-    }
+function updateQty(i) {
+  const item = products[i];
+  const qty = cart[item.name]?.qty || 0;
+  document.getElementById(`qty-${i}`).innerText = qty;
+  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  updateCartSummary();
+  validateForm();
+}
 
-    function filterProducts() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.card');
+function updateCartSummary() {
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Health Hub</p>
+    <ul style="list-style: none; padding: 0;">`;
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    total += item.qty * item.price;
+  });
+  const fee = 29.99;
+  const grand = total + fee;
+  html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+  <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+  <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+  document.getElementById('cart-summary').innerHTML = html;
+}
 
-      cards.forEach(card => {
-        const name = card.querySelector('h4').textContent.toLowerCase();
-        if (name.includes(input)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
+function toggleCart() {
+  document.getElementById('cart-modal').classList.toggle('hidden');
+}
 
-    window.onload = renderProducts;
-// ✅ Initialize everything
-document.addEventListener('DOMContentLoaded', () => {
+function filterProducts() {
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    const name = card.querySelector('h4').textContent.toLowerCase();
+    card.style.display = name.includes(input) ? '' : 'none';
+  });
+}
+
+function validateForm() {
+  const allFilled = requiredFields.every(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  });
+
+  const method = document.getElementById('payment-method').value;
+  const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const requiresRef = method !== 'Cash';
+
+  const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+  if (allowCheckout) {
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+  } else {
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+  }
+}
+
+window.onload = () => {
   renderProducts();
 
   const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
   document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
   document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
 
-  requiredFields.forEach(id => {
-    document.getElementById(id)?.addEventListener('input', validateForm);
-  });
+  document.getElementById('delivery-date').disabled = true;
+  document.getElementById('delivery-time').disabled = true;
 
-  document.getElementById('payment-method')?.addEventListener('change', function () {
-    const method = this.value;
-    const refInput = document.getElementById('payment-ref');
-    const link = document.getElementById('payment-link');
+  const method = document.getElementById('payment-method').value;
+  const refInput = document.getElementById('payment-ref');
+  if (refInput) {
+    refInput.style.display = method === 'Cash' ? 'none' : 'block';
+  }
 
-    link.href = `payment-instructions.html?method=${method}`;
-    link.textContent = `View ${method} instructions`;
+  validateForm();
+};
 
-    if (method === 'Cash') {
-      refInput.style.display = 'none';
-      refInput.value = '';
-    } else {
-      refInput.style.display = 'block';
-    }
+document.getElementById('payment-method').addEventListener('change', function () {
+  const method = this.value;
+  const link = document.getElementById('payment-link');
+  const refInput = document.getElementById('payment-ref');
 
-    validateForm();
-  });
+  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+  link.textContent = `View ${method} instructions`;
 
-  document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+  if (method === 'Cash') {
+    refInput.style.display = 'none';
+    refInput.value = '';
+  } else {
+    refInput.style.display = 'block';
+  }
+
+  validateForm();
+});
+
+requiredFields.forEach(id => {
+  document.getElementById(id).addEventListener('input', validateForm);
 });
 document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-  
-function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
 </script>
 
 </script>
