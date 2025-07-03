@@ -3,166 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Handumanan Grocery Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #fffaf7; padding: 1rem; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-.cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
-.cart-count {
-position: absolute; top: -8px; right: -10px; background: red; color: white;
-border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
-text-align: center; line-height: 16px;
-}
-h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
-.search-bar { margin-bottom: 1rem; text-align: center; }
-.search-bar input {
-padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
-}
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-.card {
-background: white; border: 1px solid #ddd; border-radius: 12px;
-padding: 1rem; display: flex; flex-direction: column;
-justify-content: space-between; height: 100%; text-align: center;
-}
-.card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
-.qty-controls {
-display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
-}
-.qty-controls button {
-background: #333; color: white; border: none;
-padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
-}
-.cart-modal {
-position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-background: white; width: 90%; max-width: 600px; max-height: 90vh;
-overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-border-radius: 20px; z-index: 9999;
-}
-.cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
-.form-section, .cart-summary { margin-top: 1rem; }
-.form-section input, .form-section select {
-width: 100%; padding: 0.5rem; margin: 0.5rem 0;
-}
-.checkout-btn {
-margin-top: 1rem; background: green; color: white;
-padding: 0.8rem; width: 100%; border: none;
-font-weight: bold; cursor: pointer;
-}
-.hidden { display: none; }
-.line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
-.location-btn {
-background: #008060; color: white; padding: 0.5rem;
-border: none; border-radius: 6px; margin-top: 0.5rem;
-width: 100%; cursor: pointer;
-}
-</style>
+  <title>Dala🚲Na Handumanan Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fffaf7; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
+    .search-bar { margin-bottom: 1rem; text-align: center; }
+    .search-bar input {
+      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .card {
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
+    }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
+    .qty-controls {
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
+    }
+    .qty-controls button {
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
+    }
+    .cart-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
+    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
+    .location-btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<header>
+  <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na Handumanan Grocery Hub</h1>
+    <h1>Dala🚲Na Handumanan Hub</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
     </div>
   </header>
 
- <div class="search-bar filter-bar">
-  <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">
-  <select id="categoryFilter" onchange="filterProducts()">
-    <option value="All">All Categories</option>
-    <option value="Rice">Rice & Grains</option>
-    <option value="Canned">Canned Goods</option>
-    <option value="Toiletries">Toiletries</option>
-    <option value="Snacks">Snacks</option>
-    <option value="Condiments">Condiments</option>
-    <option value="Beverages">Beverages</option>
-    <option value="Household">Household</option>
-  </select>
+    <div class="search-bar filter-bar">
+<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">  
 </div>
-
-<script>
-function filterProducts() {
-  const searchInput = document.getElementById('searchInput').value.toLowerCase();
-  const category = document.getElementById('categoryFilter').value;
-
-  document.querySelectorAll('.card').forEach(card => {
-    const name = card.getAttribute('data-name');
-    const cardCategory = card.getAttribute('data-category');
-
-    const matchesSearch = name.includes(searchInput);
-    const matchesCategory = category === 'All' || cardCategory === category;
-
-    if (matchesSearch && matchesCategory) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
-</script>
-  </div>
 
   <div class="grid" id="product-list"></div>
 
   <div class="cart-modal hidden" id="cart-modal">
-  <div class="close-btn" onclick="toggleCart()">&times;</div>
-  <div id="cart-summary"></div>
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
-  <div class="form-section">
-    <h3>Customer Info</h3>
-    <input type="text" id="customer-name" placeholder="Full Name" required>
-    <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-    <input type="email" id="customer-email" placeholder="Email Address" required>
-    <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
-    <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-    <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
-    <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
+    <div class="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required>
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+      <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
+      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
 
-    <h3>Delivery Details</h3>
-    <input type="date" id="delivery-date" disabled>
-    <input type="time" id="delivery-time" disabled>
-    <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-      ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-    </div>
 
-    <h3>Payment</h3>
-    <select id="payment-method">
-      <option value="GCash">GCash (may incur transfer fee)</option>
-      <option value="PayMaya">PayMaya (may incur transfer fee)</option>
-      <option value="Bank">Bank Transfer (may incur transfer fee)</option>
-      <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-    </select>
-
-    <div style="margin-top: 0.5rem;">
-      <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
-        View payment instructions
-      </a>
-    </div>
-
-    <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-      ✅ I agree to the
-      <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
-      Orders are final and subject to store policies.
-    </div>
-
-    <button
-      class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-      id="checkout-btn"
-      onclick="submitOrder()"
-      disabled
-    >
-      🛒 Checkout via WhatsApp
-    </button>
-  </div>
+<h3>Delivery Details</h3>
+<input type="date" id="delivery-date" disabled>
+<input type="time" id="delivery-time" disabled>
+<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
 </div>
 
-<!-- ✅ Scripts -->
-<script src="dalacart.js"></script>
+<h3>Payment</h3>
+<select id="payment-method">
+  <option value="GCash">GCash (may incur transfer fee)</option>
+  <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+  <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+  <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+</select>
+
+<div style="margin-top: 0.5rem;">
+  <a
+    id="payment-link"
+    href="payment-instructions.html?method=GCash"
+    target="_blank"
+    style="color: #008060; text-decoration: underline;"
+  >
+    View payment instructions
+  </a>
+</div>
+
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+  ✅ I agree to the
+  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+    Terms & Conditions
+  </a>.
+  Orders are final and subject to store policies.
+</div>
+
+<!-- ✅ Checkout Button -->
+<button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
 <script>
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
@@ -201,7 +178,7 @@ function filterProducts() {
     document.body.appendChild(iframe);
 
     // 2. Send WhatsApp messages
-    const message = `🧾 New Order - Dala🚲Na Handumanan Grocery Hub\n\nConfirmation #: ${confirmation}
+    const message = `🧾 New Order - Dala🚲Na Handumanan Hub\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -262,149 +239,127 @@ Ref #: ${ref || 'N/A'}`;
   
     const cart = {};
 const products = [
-  // 🍞 Breads
-  { name: "Gardenia Classic White Bread 400g – Soft white loaf for sandwiches", category: "Breads", price: 96.99, image: "https://via.placeholder.com/100" },
-  { name: "Gardenia Pandesal 300g – Filipino breakfast bread rolls", category: "Breads", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Angelina Tasty Loaf 400g – Budget-friendly white bread", category: "Breads", price: 94.99, image: "https://via.placeholder.com/100" },
+  // 🍚 Rice & Grains
+  { name: "Sinandomeng Rice 1kg", description: "Well-milled white rice (per kilo)", price: 51.98 },
+  { name: "Brown Rice 1kg", description: "Healthier whole grain rice option", price: 66.98 },
 
-  // 🥤 Drinks
-  { name: "Coca-Cola 1.5L – Classic soda refreshment", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Pepsi 1.5L – Cola-flavored soft drink", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Royal Tru Orange 1.5L – Orange-flavored soda", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Sprite 1.5L – Lemon-lime carbonated drink", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "C2 Green Tea Bottle – Ready-to-drink green tea", category: "Drinks", price: 26.99, image: "https://via.placeholder.com/100" },
-  { name: "Zest-O Juice Pack – Fruit juice drink for kids", category: "Drinks", price: 12.99, image: "https://via.placeholder.com/100" },
-  { name: "Minute Maid Orange – Real orange juice in bottle", category: "Drinks", price: 29.99, image: "https://via.placeholder.com/100" },
-
-  // 🍟 Chips
-  { name: "Piattos Small – Cheese-flavored potato snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Piattos Big – Large pack cheese potato snack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Small – Multigrain snack for energy", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Big – Large multigrain crunchy snack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Small – Toasted bread chip snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Big – Larger toasted bread chip pack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Small – Choco-filled corn puff snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Big – Chocolate corn puff snack (big)", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Boy Bawang Cornick Garlic 100g – Crunchy garlic corn snack", category: "Chips", price: 26.99, image: "https://via.placeholder.com/100" },
+  // 🍳 Eggs
+  { name: "Fresh Egg (1 piece)", description: "Farm-fresh medium egg", price: 10.99 },
+  { name: "Egg Tray (30 pcs)", description: "Bulk pack for family use", price: 250.99 },
 
   // 🐟 Canned Goods
-  { name: "555 Sardines Green – Classic sardines in oil", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "555 Sardines Red – Spicy sardines in oil", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Green – Regular sardines variant", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Red – Spicy sardines variant", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Green – Premium sardines in oil", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Red – Premium spicy sardines", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
+  { name: "555 Sardines in Tomato Sauce", description: "Classic Filipino sardines (155g)", price: 28.49 },
+  { name: "Ligo Sardines Spicy", description: "Spicy sardines in oil", price: 28.99 },
+  { name: "Argentina Corned Beef 150g", description: "Ready-to-eat beef for breakfast", price: 44.99 },
+  { name: "Century Tuna Flakes in Oil 180g", description: "Healthy canned tuna", price: 40.98 },
+  { name: "Maling Luncheon Meat", description: "Pork-based canned meat", price: 94.98 },
 
-  // 🍜 Noodles
-  { name: "Lucky Me Pancit Canton – Instant stir-fry noodles", category: "Noodles", price: 14.99, image: "https://via.placeholder.com/100" },
-  { name: "Lucky Me Pancit Canton (6 pack) – Family pack stir-fry noodles", category: "Noodles", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Nissin Cup Noodles – Instant cup noodle soup", category: "Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
+  // 🍜 Instant Noodles
+  { name: "Lucky Me Pancit Canton", description: "Instant stir-fried noodles", price: 16.99 },
+  { name: "Nissin Ramen Cup", description: "Convenient cup noodle soup", price: 26.99 },
+  { name: "Payless Xtra Big", description: "Big size instant noodles", price: 13.99 },
 
-  // 🥫 Meat Products
-  { name: "Argentina Corned Beef 150g – Ready-to-eat beef in can", category: "Meat Products", price: 39.99, image: "https://via.placeholder.com/100" },
-  { name: "Century Tuna Flakes 180g – Healthy canned tuna in oil", category: "Meat Products", price: 38.99, image: "https://via.placeholder.com/100" },
-  { name: "Maling Luncheon Meat – Pork-based canned meat", category: "Meat Products", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Delimondo Corned Beef – Premium corned beef in can", category: "Meat Products", price: 99.99, image: "https://via.placeholder.com/100" },
+  // 🍞 Breads
+  { name: "Gardenia Classic Loaf", description: "Soft white bread for sandwiches", price: 97.99 },
+  { name: "Angelina Tasty Loaf", description: "Budget white loaf bread", price: 74.99 },
+  { name: "Pandesal (per 10 pcs)", description: "Local bread rolls for breakfast", price: 26.99 },
 
-  // 🥚 Eggs
-  { name: "Eggs (Tray of 6) – Farm-fresh medium eggs", category: "Eggs", price: 56.99, image: "https://via.placeholder.com/100" },
-  { name: "Eggs (Tray of 12) – 1 dozen large brown eggs", category: "Eggs", price: 109.99, image: "https://via.placeholder.com/100" },
+  // 🧀 Dairy
+  { name: "Eden Cheese (165g)", description: "Processed cheddar block", price: 66.98 },
+  { name: "Bear Brand Milk Powder (320g)", description: "Nutritious powdered milk", price: 116.98 },
+  { name: "Alaska Condensed Milk", description: "For desserts and coffee", price: 38.99 },
 
-  // 🍚 Rice
-  { name: "Sinandomeng Rice 3kg – Well-milled local rice", category: "Rice", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 5kg – Fragrant white rice", category: "Rice", price: 329.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 10kg – Bulk rice for families", category: "Rice", price: 639.99, image: "https://via.placeholder.com/100" },
+  // 🥤 Beverages
+  { name: "Coca-Cola 1.5L", description: "Classic soda drink", price: 67.99 },
+  { name: "Sprite 1.5L", description: "Lemon-lime soda", price: 67.99 },
+  { name: "Zest-O Juice Drink", description: "Juice pack for kids", price: 13.99 },
+  { name: "Milo Powder Drink (220g)", description: "Energy drink with cocoa", price: 94.98 },
+  { name: "C2 Green Tea", description: "Ready-to-drink tea bottle", price: 28.98 },
 
-  // 🪥 Toothpaste
-  { name: "Colgate Triple Action Toothpaste 100ml – Cavity, fresh breath, whitening", category: "Toiletries", price: 59.99, image: "https://via.placeholder.com/100" },
-  { name: "Sensodyne Extra Fresh 100g – Toothpaste for sensitive teeth", category: "Toiletries", price: 149.99, image: "https://via.placeholder.com/100" },
-  { name: "Close-Up Ever Fresh Gel 100ml – Fresh breath gel toothpaste", category: "Toiletries", price: 69.99, image: "https://via.placeholder.com/100" },
-  { name: "Palmolive Naturals Toothpaste 100ml – Herbal toothpaste option", category: "Toiletries", price: 49.99, image: "https://via.placeholder.com/100" },
+  // 🍭 Snacks & Chips
+  { name: "Piattos Cheese (small)", description: "Potato snack for merienda", price: 20.99 },
+  { name: "Nova Multigrain Chips (small)", description: "Healthier grain-based chips", price: 20.99 },
+  { name: "Boy Bawang Garlic (100g)", description: "Crunchy garlic corn snack", price: 27.99 },
+  { name: "Moby Chocolate (small)", description: "Choco-filled corn puff", price: 20.99 },
+  { name: "Chippy BBQ (small)", description: "Corn snack with BBQ flavor", price: 19.98 },
 
-  // 🧼 Soaps
-  { name: "Safeguard Pure White Soap 135g – Germ protection bar soap", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Lifebuoy Total 10 Bath Soap 135g – Anti-bacterial bath bar", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Dettol Original Bar 135g – Disinfectant bath soap", category: "Toiletries", price: 29.99, image: "https://via.placeholder.com/100" },
-  { name: "Johnson's Baby Soap 125g – Gentle soap for babies", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
-  { name: "Dove Beauty Bar 100g – Moisturizing beauty soap", category: "Toiletries", price: 34.99, image: "https://via.placeholder.com/100" },
-  { name: "Eskinol Whitening Bar 135g – Skin brightening soap bar", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
+  // 🍪 Biscuits & Sweets
+  { name: "SkyFlakes Crackers (3s)", description: "Light and crunchy crackers", price: 11.99 },
+  { name: "Fita Biscuits (per pack)", description: "Sweet & salty sandwich biscuit", price: 11.99 },
+  { name: "Presto Peanut Butter Cookies", description: "Cream-filled cookies", price: 12.99 },
 
-  // 🧴 Lotion
-  { name: "Nivea Natural Fairness Lotion 200ml – Skin whitening and hydration", category: "Toiletries", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Vaseline Aloe Fresh Lotion 200ml – Cooling and soothing lotion", category: "Toiletries", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Aveeno Daily Moisturizing Lotion 225ml – For dry, sensitive skin", category: "Toiletries", price: 349.99, image: "https://via.placeholder.com/100" },
-  { name: "Bio-Oil Skincare Oil 60ml – Scar & stretch mark treatment", category: "Toiletries", price: 269.99, image: "https://via.placeholder.com/100" },
+  // 🧂 Condiments
+  { name: "Silver Swan Soy Sauce 200mL", description: "Essential Filipino seasoning", price: 13.99 },
+  { name: "Datu Puti Vinegar 250mL", description: "Suka for adobo and dipping", price: 15.99 },
+  { name: "Mamasita Oyster Sauce", description: "Flavor booster for stir fry", price: 19.99 },
 
-  // 🧀 Cheese Products
-  { name: "Eden Cheese 165g – Processed cheddar cheese block", category: "Cheese", price: 64.99, image: "https://via.placeholder.com/100" },
-  { name: "Eden Cheese 450g Block – Large size cheddar block", category: "Cheese", price: 164.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Original 220g – Spreadable cheese product", category: "Cheese", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Pimiento 220g – Cheese spread with bell pepper", category: "Cheese", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Quickmelt Cheese 165g – Melting cheese for dishes", category: "Cheese", price: 72.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Cheddar Cheese 165g – Classic cheddar flavor block", category: "Cheese", price: 74.99, image: "https://via.placeholder.com/100" },
-  { name: "Kraft Eden Melt Sarap 165g – Easy-melt cheese block", category: "Cheese", price: 76.99, image: "https://via.placeholder.com/100" },
+  // 🧼 Toiletries
+  { name: "Safeguard Soap 135g", description: "Antibacterial bath soap", price: 20.99 },
+  { name: "Colgate Toothpaste 100mL", description: "Triple-action toothpaste", price: 61.99 },
+  { name: "Lifebuoy Handwash 200mL", description: "Kills 99.9% of germs", price: 44.99 },
 
-  // 🧈 Butter & Margarine
-  { name: "Star Margarine Classic 250g – For baking and breakfast", category: "Butter & Margarine", price: 42.99, image: "https://via.placeholder.com/100" },
-  { name: "Star Margarine Sweet Blend 250g – Sweeter margarine variety", category: "Butter & Margarine", price: 44.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Gold Butter Unsalted 200g – Cooking-grade butter", category: "Butter & Margarine", price: 85.99, image: "https://via.placeholder.com/100" },
-  { name: "Anchor Salted Butter 227g – Imported full-cream butter", category: "Butter & Margarine", price: 149.99, image: "https://via.placeholder.com/100" },
+  // 🧴 Hygiene
+  { name: "Alcohol 70% Solution 250mL", description: "Hand & surface disinfectant", price: 56.99 },
+  { name: "Baby Wipes (20 sheets)", description: "Gentle wipes for babies", price: 36.99 },
+  { name: "Modess Sanitary Pads (8s)", description: "Reliable menstrual pads", price: 42.99 },
 
-  // 🥛 Powdered Milk & Choco Drinks
-  { name: "Bear Brand Powdered Milk 320g – Fortified powdered milk", category: "Milk & Drinks", price: 112.99, image: "https://via.placeholder.com/100" },
-  { name: "Nido Fortified Powdered Milk 320g – For kids 3 years and up", category: "Milk & Drinks", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Alaska Powdered Milk Drink 300g – Budget powdered milk drink", category: "Milk & Drinks", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Milo Chocolate Powder 220g – Energy drink with cocoa and malt", category: "Milk & Drinks", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Swiss Miss Chocolate Drink (3pcs) – Rich instant hot cocoa", category: "Milk & Drinks", price: 49.99, image: "https://via.placeholder.com/100" }
+  // 🧃 Powder Drinks
+  { name: "Tang Orange (25g)", description: "Instant fruit powder drink", price: 8.99 },
+  { name: "Nestea Lemon Iced Tea", description: "Refreshing iced tea mix", price: 9.99 },
+  { name: "Swiss Miss Cocoa (3s)", description: "Instant hot chocolate", price: 51.98 },
+
+  // 🍯 Other Essentials
+  { name: "White Sugar 1kg", description: "Sweetener for daily use", price: 49.99 },
+  { name: "Iodized Salt 500g", description: "Cooking and table salt", price: 13.99 },
+  { name: "Cooking Oil 500mL", description: "For frying & sautéing", price: 54.99 },
+  { name: "Laundry Bar Soap", description: "Bar for hand-washing clothes", price: 17.98 }
 ];
 
   function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = '';
-    products.forEach((item, index) => {
-      list.innerHTML += `
-        <div class="card" data-name="${item.name.toLowerCase()}">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price.toFixed(2)}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${index})">-</button>
-            <span id="qty-${index}">0</span>
-            <button onclick="increaseQty(${index})">+</button>
-          </div>
-        </div>`;
-    });
-  }
-
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
-  }
-
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+          <div class="card" data-name="${item.name.toLowerCase()}">
+            <h4>${item.name}</h4>
+            <p class="description">${item.description}</p>
+            <p><strong>₱${item.price.toFixed(2)}</strong></p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
+      });
     }
-    updateQty(i);
-  }
 
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-    validateForm();
-  }
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
+    }
 
-  function updateCartSummary() {
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
+      }
+      updateQty(i);
+    }
+
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+    }
+function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Handumanan Grocery Hub</p><ul style="list-style: none; padding: 0;">`;
+      <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
     let total = 0;
     Object.values(cart).forEach(item => {
       html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
@@ -418,11 +373,23 @@ const products = [
     document.getElementById('cart-summary').innerHTML = html;
   }
 
-  function toggleCart() {
-    document.getElementById('cart-modal').classList.toggle('hidden');
-  }
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
 
-  function validateForm() {
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const name = card.querySelector('h4').textContent.toLowerCase();
+        if (name.includes(input)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+ function validateForm() {
     const allFilled = requiredFields.every(id => {
       const el = document.getElementById(id);
       return el && el.value.trim() !== '';
@@ -445,12 +412,11 @@ const products = [
       checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
       checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
     }
-  }
+ }
+    window.onload = () => {
+  renderProducts();
 
-  window.onload = () => {
-    renderProducts();
-
-    const now = new Date();
+  const now = new Date();
     const oneHourLater = new Date(now.getTime() + 60 * 60000);
     document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
     document.getElementById('delivery-date').disabled = true;
@@ -488,26 +454,6 @@ const products = [
 
     validateForm();
   });
-
-  // Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-  
-function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
 </script>
 
 </script>
