@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
@@ -28,17 +28,14 @@
       padding: 1rem; display: flex; flex-direction: column;
       justify-content: space-between; height: 100%; text-align: center;
     }
-    .card h4 { font-size: 0.95rem; margin-bottom: 0.5rem; }
-    .card p.description { font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
     .qty-controls {
-      display: flex; justify-content: center; align-items: center; margin-top: 0.5rem;
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
     .qty-controls button {
       background: #333; color: white; border: none;
       padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
-
-    /* Cart modal styles */
     .cart-modal {
       position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
       background: white; width: 90%; max-width: 600px; max-height: 90vh;
@@ -46,11 +43,26 @@
       border-radius: 20px; z-index: 9999;
     }
     .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
-    .cart-summary { margin-top: 1rem; }
-    .hidden { display: none; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
     .checkout-btn {
-      background: green; color: white; padding: 0.8rem; border: none;
-      font-weight: bold; width: 100%; margin-top: 1rem; cursor: pointer;
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
+    .location-btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      width: 100%;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -132,15 +144,41 @@
   <script>
     const cart = {};
     const products = [
-      { name: "Paracetamol 500 mg (tablet)", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
-      { name: "Ibuprofen 200 mg (tablet)", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
-      { name: "Mefenamic Acid 500 mg (capsule)", description: "Para sa panakit sang pus-on o lawas", price: 10.50 },
-      { name: "Cetirizine 10 mg (tablet)", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
-      { name: "Loratadine 10 mg (tablet)", description: "Para sa allergy nga may sip-on o katol", price: 12.00 },
-      { name: "Vitamin C 500 mg (tablet)", description: "Para magpabakod sang immune system", price: 17.14 },
-      { name: "Multivitamins + Iron (tablet)", description: "Para sa anemia kag kabudlay", price: 22.14 },
-      { name: "Cough Syrup Adult (100 mL)", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
-      { name: "Cough Syrup Kids (60 mL)", description: "Para sa ubo sang kabataan", price: 98.75 }
+    { name: "Paracetamol 500 mg (tablet)", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
+    { name: "Ibuprofen 200 mg (tablet)", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
+    { name: "Mefenamic Acid 500 mg (capsule)", description: "Para sa panakit sang pus-on o lawas", price: 10.50 },
+    { name: "Cetirizine 10 mg (tablet)", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
+    { name: "Loratadine 10 mg (tablet)", description: "Para sa allergy nga may sip-on o katol", price: 12.00 },
+    { name: "Vitamin C 500 mg (tablet)", description: "Para magpabakod sang immune system", price: 17.14 },
+    { name: "Multivitamins + Iron (tablet)", description: "Para sa anemia kag kabudlay", price: 22.14 },
+    { name: "Cough Syrup Adult (100 mL)", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
+    { name: "Cough Syrup Kids (60 mL)", description: "Para sa ubo sang kabataan", price: 98.75 },
+    { name: "Loperamide 2 mg (tablet)", description: "Para sa pagtai nga wala untat", price: 10.14 },
+    { name: "Antacid Chewable (tablet)", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
+    { name: "Oral Rehydration Salts (ORS)", description: "Kontra dehydration sa diarrhea o suka", price: 15.00 },
+    { name: "Salbutamol Inhaler (puff)", description: "Para sa hapos kag asthma", price: 285.00 },
+    { name: "Hydrocortisone Cream (15g)", description: "Para sa panit nga may katol o allergy", price: 58.00 },
+    { name: "Betadine Solution (30 mL)", description: "Panglinis sang samad", price: 48.00 },
+    { name: "Band-Aid Strips (10 pcs)", description: "Pang-cover sang mga gagmay nga samad", price: 25.00 },
+    { name: "Alcohol 70% Solution (250 mL)", description: "Pang-disinfect sang kamot o gamit", price: 55.00 },
+    { name: "Thermometer (digital)", description: "Para sa pagsukod sang temperatura", price: 150.00 },
+    { name: "Sodium Ascorbate 500 mg (capsule)", description: "Vitamin C alternative para sa acidic", price: 20.00 },
+    { name: "Zinc Sulfate 20 mg (tablet)", description: "Para magpabakod sang resistensya", price: 9.00 },
+    { name: "Infant Vitamin Drops (15 mL)", description: "Para sa nutrisyon sang bata", price: 75.00 },
+    { name: "Gripe Water (60 mL)", description: "Para sa kabudlay sang tiyan o kabuhi sang baby", price: 68.50 },
+    { name: "Diaper Rash Cream (15g)", description: "Kontra pula kag katol sa diaper area", price: 82.00 },
+    { name: "Paracetamol Syrup Kids (60 mL)", description: "Para sa hilanat sang kabataan", price: 45.00 },
+    { name: "Baby Wipes (20 sheets)", description: "Panglimpyo sang panit sang baby", price: 35.00 },
+    { name: "Infant Saline Spray (20 mL)", description: "Para sa sip-on sang baby", price: 90.00 },
+    { name: "Amlodipine 5 mg (tablet)", description: "Para sa high blood pressure", price: 9.00 },
+    { name: "Losartan 50 mg (tablet)", description: "Para sa high blood kag kidney protection", price: 10.00 },
+    { name: "Metformin 500 mg (tablet)", description: "Para sa diabetes nga sugar control", price: 6.50 },
+    { name: "Gliclazide 30 mg (tablet)", description: "Para sa pagpanaog sang blood sugar", price: 8.75 },
+    { name: "Simvastatin 20 mg (tablet)", description: "Para sa cholesterol", price: 7.50 },
+    { name: "Aspirin 80 mg (tablet)", description: "Para sa pagpugong sang clot o stroke", price: 2.50 },
+    { name: "Calcium + Vitamin D3 (tablet)", description: "Para sa kusog nga tul-an", price: 12.00 },
+    { name: "Clopidogrel 75 mg (tablet)", description: "Pangpugong sa clot para sa may history sang stroke", price: 14.50 },
+    { name: "Isosorbide Dinitrate 5 mg (tablet)", description: "Para sa chest pain (angina)", price: 5.00 }
     ];
 
     function renderProducts() {
