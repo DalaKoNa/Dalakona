@@ -308,7 +308,7 @@ Ref #: ${ref || 'N/A'}`;
 function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
+      <p style="text-align: center;">Dala🚲Na Handumanan Hub</p><ul style="list-style: none; padding: 0;">`;
     let total = 0;
     Object.values(cart).forEach(item => {
       html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
