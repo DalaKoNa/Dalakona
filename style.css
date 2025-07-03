@@ -332,3 +332,17 @@ footer {
   color: #444;
   margin: 4px 0;
 }
+.card .desc {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 4px 0;
+  min-height: 2.4em;
+  line-height: 1.2em;
+}
+.card img {
+  object-fit: cover;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  height: 100px;
+  width: 100px;
+}
