@@ -140,6 +140,89 @@
 >
   🛒 Checkout via WhatsApp
 </button>
+<script>
+  async function submitOrder() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const address = document.getElementById('delivery-address').value.trim();
+    const notes = document.getElementById('delivery-notes').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
+
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const fee = 29.99;
+    const total = subtotal + fee;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+
+    // 1. Submit silently to Fillout
+    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+    filloutUrl.searchParams.append("customerName", name);
+    filloutUrl.searchParams.append("customerPhone", phone);
+    filloutUrl.searchParams.append("customerEmail", email);
+    filloutUrl.searchParams.append("deliveryAddress", address);
+    filloutUrl.searchParams.append("addressNotes", notes);
+    filloutUrl.searchParams.append("deliveryDate", date);
+    filloutUrl.searchParams.append("deliveryTime", time);
+    filloutUrl.searchParams.append("paymentMethod", method);
+    filloutUrl.searchParams.append("paymentReference", ref);
+    filloutUrl.searchParams.append("cartSummary", items);
+    filloutUrl.searchParams.append("confirmationNumber", confirmation);
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = filloutUrl.toString();
+    document.body.appendChild(iframe);
+
+    // 2. Send WhatsApp messages
+    const message = `🧾 New Order - Dala🚲Na Handumanan Hub\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
+
+Items: ${items}
+Subtotal: ₱${subtotal.toFixed(2)}
+Service Fee: ₱${fee.toFixed(2)}
+Total: ₱${total.toFixed(2)}
+
+Delivery: ${date} ${time}
+Payment: ${method}
+Ref #: ${ref || 'N/A'}`;
+
+    const encoded = encodeURIComponent(message);
+    const merchant = "63XXXXXXXXXX";
+    const admin = "63YYYYYYYYYY";
+    const driver = "63ZZZZZZZZZZ";
+
+    window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+
+    // 3. Redirect to thank you page
+    const thankyouUrl = new URL("thankyou.html", window.location.href);
+    thankyouUrl.searchParams.append("customerName", name);
+    thankyouUrl.searchParams.append("customerPhone", phone);
+    thankyouUrl.searchParams.append("customerEmail", email);
+    thankyouUrl.searchParams.append("deliveryAddress", address);
+    thankyouUrl.searchParams.append("addressNotes", notes);
+    thankyouUrl.searchParams.append("deliveryDate", date);
+    thankyouUrl.searchParams.append("deliveryTime", time);
+    thankyouUrl.searchParams.append("paymentMethod", method);
+    thankyouUrl.searchParams.append("paymentReference", ref);
+    thankyouUrl.searchParams.append("cartSummary", items);
+    thankyouUrl.searchParams.append("confirmationNumber", confirmation);
+    thankyouUrl.searchParams.append("total", total.toFixed(2));
+
+    setTimeout(() => {
+      window.location.href = thankyouUrl.toString();
+    }, 2000);
+  }
+</script>
 
   <script>
     const cart = {};
