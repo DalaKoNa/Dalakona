@@ -297,48 +297,66 @@ const products = [
 { name: "Nasal Saline Spray for Infants (per 30 mL)", price: 84.99, description: "Para sa barado nga ilong sang baby" }
 ];
 function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = '';
+const list = document.getElementById('product-list');
+list.innerHTML = '';
+products.forEach((item, index) => {
+list.innerHTML += `
+<div class="card">
+<img src="https://via.placeholder.com/100" alt="${item.name}" />
+<h4>${item.name}</h4>
+<p style="font-size: 0.85rem; color: #444; margin-top: -0.5rem;">${item.description}</p>
+<p><strong>₱${item.price.toFixed(2)}</strong></p>
+<div class="qty-controls">
+<button onclick="decreaseQty(${index})">-</button>
+<span id="qty-${index}">0</span>
+<button onclick="increaseQty(${index})">+</button>
+</div>
+</div>
+`;
+});
+}
 
-    products.forEach((item, index) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h4>${item.name}</h4>
-        <p class="desc">${item.description}</p>
-        <p><strong>₱${item.price.toFixed(2)}</strong></p>
-        <div class="qty-controls">
-          <button onclick="decreaseQty(${index})">-</button>
-          <span id="qty-${index}">0</span>
-          <button onclick="increaseQty(${index})">+</button>
-        </div>
-      `;
-      list.appendChild(card);
-    });
-  }
+function increaseQty(i) {
+const item = products[i];
+if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+cart[item.name].qty++;
+updateQty(i);
+}
 
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
-  }
+function decreaseQty(i) {
+const item = products[i];
+if (cart[item.name]) {
+cart[item.name].qty--;
+if (cart[item.name].qty <= 0) delete cart[item.name];
+}
+updateQty(i);
+}
 
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
-    }
-    updateQty(i);
-  }
+function updateQty(i) {
+const item = products[i];
+const qty = cart[item.name]?.qty || 0;
+document.getElementById(`qty-${i}`).innerText = qty;
+document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+}
 
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-  }
+function filterProducts() {
+const input = document.getElementById('searchInput').value.toLowerCase();
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+const name = card.querySelector('h4').textContent.toLowerCase();
+if (name.includes(input)) {
+card.style.display = '';
+} else {
+card.style.display = 'none';
+}
+});
+}
+
+function toggleCart() {
+alert('Cart functionality not yet implemented in this demo');
+}
+
+window.onload = () => renderProducts();
 
   function updateCartSummary() {
     let html = `
