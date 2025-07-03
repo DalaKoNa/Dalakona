@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
@@ -76,7 +76,7 @@
     </div>
   </header>
 
-  <div class="search-bar">
+    <div class="search-bar">
     <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
   </div>
 
@@ -140,9 +140,6 @@
 >
   🛒 Checkout via WhatsApp
 </button>
-
-<!-- ✅ Scripts -->
-<script src="dalacart.js"></script>
 <script>
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
@@ -227,79 +224,84 @@ Ref #: ${ref || 'N/A'}`;
   }
 </script>
 
-</body>
-</html>
-<script>
-  const requiredFields = [
-    'customer-name',
-    'customer-phone',
-    'customer-email',
-    'delivery-address',
-    'delivery-date',
-    'delivery-time',
-    'payment-method'
-  ];
+  <script>
+    const cart = {};
+    const products = [
+  { name: "Pandesal (per pc)", description: "Malum-ok nga tinapay nga paborito sa pamahaw", price: 4.00 },
+  { name: "Cheese Ensaymada (per pc)", description: "Tinapay nga may mantikilya, asukar kag grated nga keso", price: 18.00 },
+  { name: "Spanish Bread (per pc)", description: "Tinapay nga may tam-is nga palaman sa sulod", price: 7.50 },
+  { name: "Monay (per pc)", description: "Daku kag bug-at nga tinapay, busog sa tiyan", price: 12.00 },
+  { name: "Putok (per pc)", description: "Tinapay nga may crack sa ibabaw, may gamay nga katam-is", price: 10.00 },
+  { name: "Pan de Coco (per pc)", description: "Tinapay nga may tam-is nga palaman nga lubi", price: 15.00 },
+  { name: "Ube Cheese Pandesal (per pc)", description: "Ube-flavored nga pandesal nga may keso sa sulod", price: 10.00 },
+  { name: "Tasty Loaf Bread (per slice)", description: "Malum-ok nga pan para sa sandwich", price: 3.00 },
+  { name: "Raisin Bread (per slice)", description: "Tinapay nga may pasas, hapos lang kan-on", price: 5.00 },
+  { name: "Banana Bread (per slice)", description: "Malinamnam kag mamit-ang tinapay nga may saging", price: 20.00 },
+  { name: "Choco Marble Cake (per slice)", description: "Chocolate kag vanilla nga halu-halo nga cake", price: 25.00 },
+  { name: "Yema Bread (per pc)", description: "Tinapay nga may tam-is nga yema sa tunga", price: 18.00 },
+  { name: "Creamy Tuna Bun (per pc)", description: "Tinapay nga may creamy nga tuna palaman", price: 22.00 },
+  { name: "Ham and Cheese Roll (per pc)", description: "Roll nga tinapay may ham kag keso", price: 28.00 },
+  { name: "Egg Pie (per slice)", description: "Pie nga may tam-is nga itlog nga palaman", price: 30.00 },
+  { name: "Mini Mamon (per pc)", description: "Malum-ok kag mabug-at nga sponge cake", price: 15.00 },
+  { name: "Chocolate Crinkle (per pc)", description: "Fudgy nga cookie nga may asukar sa ibabaw", price: 7.00 },
+  { name: "Oatmeal Cookie (per pc)", description: "Cookie nga may oats kag pasas", price: 8.00 },
+  { name: "Butter Cake (per slice)", description: "Cake nga humot kag mayaman sa mantikilya", price: 25.00 },
+  { name: "Coffee Bun (per pc)", description: "Tinapay nga may kape nga flavor sa ibabaw", price: 18.00 },
+  { name: "Cinnamon Roll (per pc)", description: "Roll nga tinapay may cinnamon kag tam-is nga glaze", price: 28.00 },
+  { name: "Sugar Donut (per pc)", description: "Pinirito nga donut nga may asukar", price: 10.00 },
+  { name: "Cream Puff (per pc)", description: "Tinapay nga puno sang matam-is nga cream", price: 35.00 },
+  { name: "Egg Sandwich (per pc)", description: "Pan nga may itlog nga palaman", price: 30.00 },
+  { name: "Cheesy Garlic Bread (per slice)", description: "Tinapay nga may bawang kag keso", price: 12.00 },
+  { name: "Mini Pizza Bread (per pc)", description: "Tinapay nga daw pizza may ham kag keso", price: 35.00 },
+  { name: "Ube Hopia (per pc)", description: "Hopia nga puno sang ube halaya", price: 9.00 },
+  { name: "Custard Cake (per slice)", description: "Cake nga may creamy nga ibabaw nga custard", price: 30.00 },
+  { name: "Macaroon (per pc)", description: "Gamay nga cake nga puno sang lubi", price: 8.00 },
+  { name: "Milky Cheese Roll (per pc)", description: "Malum-ok nga tinapay nga may gatas kag keso", price: 20.00 }
+];
 
-  const cart = {};
 
-  // Example bakery products
-  const products = [
-    { name: "Pandesal (6 pcs)", price: 25, image: "https://via.placeholder.com/100" },
-    { name: "Cheese Bread", price: 10, image: "https://via.placeholder.com/100" },
-    { name: "Spanish Bread", price: 12, image: "https://via.placeholder.com/100" },
-    { name: "Ensaymada", price: 15, image: "https://via.placeholder.com/100" },
-    { name: "Ube Cheese Pandesal", price: 20, image: "https://via.placeholder.com/100" },
-    { name: "Egg Pie (slice)", price: 35, image: "https://via.placeholder.com/100" },
-    { name: "Buko Pie", price: 50, image: "https://via.placeholder.com/100" },
-    { name: "Banana Bread", price: 60, image: "https://via.placeholder.com/100" },
-    { name: "Taisan Loaf", price: 45, image: "https://via.placeholder.com/100" },
-    { name: "Crinkles (5 pcs)", price: 30, image: "https://via.placeholder.com/100" }
-  ];
-
-  function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = '';
-    products.forEach((item, index) => {
-      list.innerHTML += `
-        <div class="card" data-name="${item.name.toLowerCase()}">
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>₱${item.price.toFixed(2)}</p>
-          <div class="qty-controls">
-            <button onclick="decreaseQty(${index})">-</button>
-            <span id="qty-${index}">0</span>
-            <button onclick="increaseQty(${index})">+</button>
-          </div>
-        </div>`;
-    });
-  }
-
-  function increaseQty(i) {
-    const item = products[i];
-    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-    cart[item.name].qty++;
-    updateQty(i);
-  }
-
-  function decreaseQty(i) {
-    const item = products[i];
-    if (cart[item.name]) {
-      cart[item.name].qty--;
-      if (cart[item.name].qty <= 0) delete cart[item.name];
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, index) => {
+        list.innerHTML += `
+          <div class="card" data-name="${item.name.toLowerCase()}">
+            <h4>${item.name}</h4>
+            <p class="description">${item.description}</p>
+            <p><strong>₱${item.price.toFixed(2)}</strong></p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${index})">-</button>
+              <span id="qty-${index}">0</span>
+              <button onclick="increaseQty(${index})">+</button>
+            </div>
+          </div>`;
+      });
     }
-    updateQty(i);
-  }
 
-  function updateQty(i) {
-    const item = products[i];
-    const qty = cart[item.name]?.qty || 0;
-    document.getElementById(`qty-${i}`).innerText = qty;
-    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    updateCartSummary();
-    validateForm();
-  }
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
+    }
 
-  function updateCartSummary() {
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
+      }
+      updateQty(i);
+    }
+
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+    }
+function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
       <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
@@ -316,11 +318,23 @@ Ref #: ${ref || 'N/A'}`;
     document.getElementById('cart-summary').innerHTML = html;
   }
 
-  function toggleCart() {
-    document.getElementById('cart-modal').classList.toggle('hidden');
-  }
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
 
-  function validateForm() {
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const name = card.querySelector('h4').textContent.toLowerCase();
+        if (name.includes(input)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+ function validateForm() {
     const allFilled = requiredFields.every(id => {
       const el = document.getElementById(id);
       return el && el.value.trim() !== '';
@@ -343,12 +357,11 @@ Ref #: ${ref || 'N/A'}`;
       checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
       checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
     }
-  }
+ }
+    window.onload = () => {
+  renderProducts();
 
-  window.onload = () => {
-    renderProducts();
-
-    const now = new Date();
+  const now = new Date();
     const oneHourLater = new Date(now.getTime() + 60 * 60000);
     document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
     document.getElementById('delivery-date').disabled = true;
@@ -386,26 +399,6 @@ Ref #: ${ref || 'N/A'}`;
 
     validateForm();
   });
-
-  // Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-  
-function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
 </script>
 
 </script>
