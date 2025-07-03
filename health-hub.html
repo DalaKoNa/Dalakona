@@ -401,22 +401,6 @@ Ref #: ${ref || 'N/A'}`;
 
     validateForm();
   });
-
-  // Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
 </script>
 
 </script>
