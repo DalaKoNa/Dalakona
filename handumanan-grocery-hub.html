@@ -363,21 +363,6 @@ const products = [
 { name: "Angel All-Purpose Cream 250mL", description: "Creamy blend ideal for cooking", price: 49.99 },
 
 ];
-
-  function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <h4>${item.name}</h4>
-            <p class="description">${item.description}</p>
-            <p><strong>₱${item.price.toFixed(2)}</strong></p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
-            </div>
           </div>`;
       });
     }
@@ -408,7 +393,7 @@ const products = [
 function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
+      <p style="text-align: center;">Dala🚲Na Handumanan Hub</p><ul style="list-style: none; padding: 0;">`;
     let total = 0;
     Object.values(cart).forEach(item => {
       html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
