@@ -85,6 +85,7 @@
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
 
+
     <div class="form-section">
       <h3>Customer Info</h3>
       <input type="text" id="customer-name" placeholder="Full Name" required>
@@ -295,174 +296,157 @@ const products = [
 { name: "Baby Wipes (per pack)", price: 45.99, description: "Para sa limpyo sang panit sang baby" },
 { name: "Nasal Saline Spray for Infants (per 30 mL)", price: 84.99, description: "Para sa barado nga ilong sang baby" }
 ];
-<script>
-const products = [
-  { name: "Paracetamol 500 mg (per tablet)", price: 7.14, description: "Para sa hilanat kag kasakit sang lawas" },
-  { name: "Ibuprofen 200 mg (per tablet)", price: 8.64, description: "Kontra kasakit kag panubag sang lawas" },
-  { name: "Mefenamic Acid 500 mg (per tablet)", price: 9.94, description: "Para sa kasakit, labina kon nagamenstruate" },
-  { name: "Loperamide 2 mg (per tablet)", price: 10.14, description: "Para sa pagtai nga wala untat" },
-  { name: "Domperidone 10 mg (per tablet)", price: 11.89, description: "Para sa suka, kabudlay magdigest, kag kabuhi" },
-  { name: "Omeprazole 20 mg (per capsule)", price: 12.89, description: "Para sa ulcer, GERD, kag asido nga tiyan" },
-  { name: "Cetirizine 10 mg (per tablet)", price: 14.14, description: "Para sa allergy, sip-on kag hilanat" },
-  { name: "Loratadine 10 mg (per tablet)", price: 15.14, description: "Anti-allergy nga indi makapahuyop" },
-  { name: "Antacid (per chewable tablet)", price: 9.64, description: "Para sa asido o kabudlay sang tiyan" },
-  { name: "Vitamin C 500 mg (per tablet)", price: 17.14, description: "Para magpabakod sang immune system" },
-  { name: "Multivitamins Adult (per capsule)", price: 22.14, description: "Para sa adlaw-adlaw nga nutrisyon" },
-  { name: "Diphenhydramine 25 mg (per tablet)", price: 8.98, description: "Pampatulog nga anti-allergy" },
-  { name: "Cough Syrup Adult (100 mL)", price: 123.49, description: "Para sa uga o mabudlay nga ubo" },
-  { name: "Nasal Spray Decongestant (15 mL)", price: 143.49, description: "Para sa barado nga ilong" },
-  { name: "Topical Antibiotic Ointment (15 g)", price: 98.49, description: "Para sa samad kag pagpanit" },
-  { name: "Paracetamol Syrup (60 mL)", price: 61.98, description: "Para sa hilanat sang kabataan" },
-  { name: "Ibuprofen Syrup (60 mL)", price: 66.98, description: "Para sa kasakit kag hilanat sang bata" }
-];
-
 function renderProducts() {
-  const list = document.getElementById('product-list');
-  list.innerHTML = '';
+    const list = document.getElementById('product-list');
+    list.innerHTML = '';
 
-  products.forEach((item, index) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.name = item.name.toLowerCase();
-
-    card.innerHTML = `
-      <h4>${item.name}</h4>
-      <p class="desc">${item.description}</p>
-      <p class="price">₱${item.price.toFixed(2)}</p>
-      <div class="qty-controls">
-        <button onclick="decreaseQty(${index})">-</button>
-        <span id="qty-${index}">0</span>
-        <button onclick="increaseQty(${index})">+</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-}
-
-function increaseQty(i) {
-  const item = products[i];
-  if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-  cart[item.name].qty++;
-  updateQty(i);
-}
-
-function decreaseQty(i) {
-  const item = products[i];
-  if (cart[item.name]) {
-    cart[item.name].qty--;
-    if (cart[item.name].qty <= 0) delete cart[item.name];
-  }
-  updateQty(i);
-}
-
-function updateQty(i) {
-  const item = products[i];
-  const qty = cart[item.name]?.qty || 0;
-  document.getElementById(`qty-${i}`).innerText = qty;
-  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-  updateCartSummary();
-  validateForm();
-}
-
-function updateCartSummary() {
-  let html = `
-    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-    <p style="text-align: center;">Dala🚲Na Health Hub</p>
-    <ul style="list-style: none; padding: 0;">`;
-  let total = 0;
-  Object.values(cart).forEach(item => {
-    html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-    total += item.qty * item.price;
-  });
-  const fee = 29.99;
-  const grand = total + fee;
-  html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-  <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-  <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-  document.getElementById('cart-summary').innerHTML = html;
-}
-
-function toggleCart() {
-  document.getElementById('cart-modal').classList.toggle('hidden');
-}
-
-function filterProducts() {
-  const input = document.getElementById('searchInput').value.toLowerCase();
-  const cards = document.querySelectorAll('.card');
-
-  cards.forEach(card => {
-    const name = card.querySelector('h4').textContent.toLowerCase();
-    card.style.display = name.includes(input) ? '' : 'none';
-  });
-}
-
-function validateForm() {
-  const allFilled = requiredFields.every(id => {
-    const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
-  });
-
-  const method = document.getElementById('payment-method').value;
-  const ref = document.getElementById('payment-ref')?.value.trim() || '';
-  const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-  const checkoutBtn = document.getElementById('checkout-btn');
-  const requiresRef = method !== 'Cash';
-
-  const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
-
-  if (allowCheckout) {
-    checkoutBtn.disabled = false;
-    checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-    checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-  } else {
-    checkoutBtn.disabled = true;
-    checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-    checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-  }
-}
-
-window.onload = () => {
-  renderProducts();
-
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60000);
-  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-
-  document.getElementById('delivery-date').disabled = true;
-  document.getElementById('delivery-time').disabled = true;
-
-  const method = document.getElementById('payment-method').value;
-  const refInput = document.getElementById('payment-ref');
-  if (refInput) {
-    refInput.style.display = method === 'Cash' ? 'none' : 'block';
+    products.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h4>${item.name}</h4>
+        <p class="desc">${item.description}</p>
+        <p><strong>₱${item.price.toFixed(2)}</strong></p>
+        <div class="qty-controls">
+          <button onclick="decreaseQty(${index})">-</button>
+          <span id="qty-${index}">0</span>
+          <button onclick="increaseQty(${index})">+</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
   }
 
-  validateForm();
-};
-
-document.getElementById('payment-method').addEventListener('change', function () {
-  const method = this.value;
-  const link = document.getElementById('payment-link');
-  const refInput = document.getElementById('payment-ref');
-
-  link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-  link.textContent = `View ${method} instructions`;
-
-  if (method === 'Cash') {
-    refInput.style.display = 'none';
-    refInput.value = '';
-  } else {
-    refInput.style.display = 'block';
+  function increaseQty(i) {
+    const item = products[i];
+    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+    cart[item.name].qty++;
+    updateQty(i);
   }
 
-  validateForm();
-});
+  function decreaseQty(i) {
+    const item = products[i];
+    if (cart[item.name]) {
+      cart[item.name].qty--;
+      if (cart[item.name].qty <= 0) delete cart[item.name];
+    }
+    updateQty(i);
+  }
 
+  function updateQty(i) {
+    const item = products[i];
+    const qty = cart[item.name]?.qty || 0;
+    document.getElementById(`qty-${i}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  }
+
+  function updateCartSummary() {
+    let html = `
+      <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+      <p style="text-align: center;">Dala🚲Na Bakery</p><ul style="list-style: none; padding: 0;">`;
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+      total += item.qty * item.price;
+    });
+    const fee = 29.99;
+    const grand = total + fee;
+    html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+      <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+      <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+    document.getElementById('cart-summary').innerHTML = html;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const requiresRef = method !== 'Cash';
+
+    const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+    if (allowCheckout) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    }
+  }
+
+  window.onload = () => {
+    renderProducts();
+
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+    document.getElementById('delivery-date').disabled = true;
+    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+    document.getElementById('delivery-time').disabled = true;
+
+    const deliveryNote = document.getElementById('delivery-note');
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+
+    // Auto-hide or show reference field on page load
+    const method = document.getElementById('payment-method').value;
+    const refInput = document.getElementById('payment-ref');
+    if (refInput) {
+      refInput.style.display = method === 'Cash' ? 'none' : 'block';
+    }
+
+    validateForm();
+  };
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    const refInput = document.getElementById('payment-ref');
+
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+
+    if (method === 'Cash') {
+      refInput.style.display = 'none';
+      refInput.value = '';
+    } else {
+      refInput.style.display = 'block';
+    }
+
+    validateForm();
+  });
+
+  // Listen to all fields
 requiredFields.forEach(id => {
-  document.getElementById(id).addEventListener('input', validateForm);
+document.getElementById(id).addEventListener('input', validateForm);
 });
 document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+  
+function filterProducts() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+      const name = card.querySelector('h4').textContent.toLowerCase();
+      if (name.includes(input)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
 </script>
 
 </script>
