@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲Na Health Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
     h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
     .search-bar { margin-bottom: 1rem; text-align: center; }
     .search-bar input {
@@ -21,22 +28,41 @@
       padding: 1rem; display: flex; flex-direction: column;
       justify-content: space-between; height: 100%; text-align: center;
     }
-    .card h4 { font-size: 1rem; margin-bottom: 0.25rem; }
-    .card p { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
     .qty-controls {
-      display: flex; justify-content: center; align-items: center; margin-top: 0.5rem;
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
     .qty-controls button {
       background: #333; color: white; border: none;
       padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
     }
+    .cart-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
+    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html" class="back-btn">&#8592;</a>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Dala🚲Na Health Hub</h1>
-    <div></div>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
   </header>
 
   <div class="search-bar">
@@ -45,20 +71,42 @@
 
   <div class="grid" id="product-list"></div>
 
-  <script>
-    const cart = {};
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
+    <div class="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required>
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+      <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="📍 Address" required>
+      <input type="text" id="delivery-notes" placeholder="Landmarks or Notes (Optional)">
+
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="Cash">Cash on Delivery (COD)</option>
+        <option value="GCash">GCash</option>
+        <option value="Bank">Bank Transfer</option>
+      </select>
+      <input type="text" id="payment-ref" placeholder="Payment reference # (if applicable)">
+
+      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">Checkout via WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    const requiredFields = ['customer-name', 'customer-phone', 'customer-email', 'delivery-address'];
+    const cart = {};
     const products = [
-      { name: "Paracetamol 500 mg", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
-      { name: "Ibuprofen 200 mg", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
-      { name: "Mefenamic Acid 500 mg", description: "Para sa kasakit, labi na kon nagamenstruate", price: 9.94 },
-      { name: "Loperamide 2 mg", description: "Para sa pagtai nga wala untat", price: 10.14 },
-      { name: "Domperidone 10 mg", description: "Para sa suka, kabudlay magdigest, kag kabuhi", price: 11.89 },
-      { name: "Omeprazole 20 mg", description: "Para sa ulcer, GERD, kag asido nga tiyan", price: 12.89 },
-      { name: "Cetirizine 10 mg", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
-      { name: "Vitamin C 500 mg", description: "Para magpabakod sang immune system", price: 17.14 },
-      { name: "Cough Syrup Adult", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
-      { name: "Antacid", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
+      { name: "Paracetamol 500 mg", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
+      { name: "Ibuprofen 200 mg", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
+      { name: "Loperamide 2 mg", description: "Para sa pagtai nga wala untat", price: 10.14 },
+      { name: "Omeprazole 20 mg", description: "Para sa ulcer kag asido nga tiyan", price: 12.89 },
+      { name: "Cetirizine 10 mg", description: "Para sa allergy kag sip-on", price: 14.14 },
+      { name: "Vitamin C 500 mg", description: "Para magpabakod sang immune system", price: 17.14 },
+      { name: "Hydrocortisone Cream", description: "Para sa allergy sa panit", price: 108.49 },
+      { name: "Eye Drops Lubricant", description: "Para sa uga kag kapoy nga mata", price: 69.99 }
     ];
 
     function renderProducts() {
@@ -68,7 +116,7 @@
         list.innerHTML += `
           <div class="card">
             <h4>${item.name}</h4>
-            <p>${item.description}</p>
+            <small>${item.description}</small>
             <p><strong>₱${item.price.toFixed(2)}</strong></p>
             <div class="qty-controls">
               <button onclick="decreaseQty(${index})">-</button>
@@ -83,7 +131,7 @@
       const item = products[i];
       if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
       cart[item.name].qty++;
-      document.getElementById(`qty-${i}`).innerText = cart[item.name].qty;
+      updateQty(i);
     }
 
     function decreaseQty(i) {
@@ -92,20 +140,73 @@
         cart[item.name].qty--;
         if (cart[item.name].qty <= 0) delete cart[item.name];
       }
-      document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
+      updateQty(i);
+    }
+
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+    }
+
+    function updateCartSummary() {
+      let html = '<h2>📓 Your Receipt</h2><ul>';
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        html += `<li>${item.qty}x ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
+        total += item.qty * item.price;
+      });
+      const fee = 29.99;
+      html += `</ul><hr><p><strong>Subtotal:</strong> ₱${total.toFixed(2)}</p>`;
+      html += `<p><strong>Service Fee:</strong> ₱${fee.toFixed(2)}</p>`;
+      html += `<h3>Total: ₱${(total + fee).toFixed(2)}</h3>`;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
+
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('customer-name').value;
+      const phone = document.getElementById('customer-phone').value;
+      const email = document.getElementById('customer-email').value;
+      const address = document.getElementById('delivery-address').value;
+      const notes = document.getElementById('delivery-notes').value;
+      const method = document.getElementById('payment-method').value;
+      const ref = document.getElementById('payment-ref').value;
+      const summary = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+      const total = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0) + 29.99;
+
+      const msg = `📓 Dala Health Hub Order\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\ud83d\udccd Address: ${address}\nNotes: ${notes}\n\nItems: ${summary}\nPayment: ${method}\nRef: ${ref}\nTotal: ₱${total.toFixed(2)}`;
+      const encoded = encodeURIComponent(msg);
+
+      // Fillout tracking
+      const fillout = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+      fillout.searchParams.set("customerName", name);
+      fillout.searchParams.set("customerPhone", phone);
+      fillout.searchParams.set("customerEmail", email);
+      fillout.searchParams.set("deliveryAddress", address);
+      fillout.searchParams.set("addressNotes", notes);
+      fillout.searchParams.set("paymentMethod", method);
+      fillout.searchParams.set("paymentReference", ref);
+      fillout.searchParams.set("cartSummary", summary);
+
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = fillout.toString();
+      document.body.appendChild(iframe);
+
+      window.open(`https://wa.me/63XXXXXXXXXX?text=${encoded}`);
     }
 
     function filterProducts() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.card');
-
-      cards.forEach(card => {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
         const name = card.querySelector('h4').textContent.toLowerCase();
-        if (name.includes(input)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = name.includes(q) ? '' : 'none';
       });
     }
 
