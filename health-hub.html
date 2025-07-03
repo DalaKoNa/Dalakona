@@ -1,5 +1,4 @@
 <!-- Dala🚲Na Health Hub Page -->
-<!-- Dala🚲Na Health Hub Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,11 +32,17 @@
     .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
     .form-section input, .form-section select { width: 100%; padding: 0.5rem; margin: 0.5rem 0; }
     .checkout-btn {
-      margin-top: 1rem; background: green; color: white;
+      margin-top: 1rem; background: gray; color: white;
       padding: 0.8rem; width: 100%; border: none;
-      font-weight: bold; cursor: pointer;
+      font-weight: bold; cursor: not-allowed;
+    }
+    .checkout-btn.enabled {
+      background: green;
+      cursor: pointer;
     }
     .hidden { display: none; }
+    .location-btn { background: #444; color: white; padding: 0.4rem 0.6rem; border: none; border-radius: 5px; margin-bottom: 0.5rem; cursor: pointer; }
+    .payment-note { font-size: 0.85rem; color: #555; margin-top: 0.3rem; }
   </style>
 </head>
 <body>
@@ -62,6 +67,7 @@
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
       <input type="text" id="delivery-address" placeholder="📍 Delivery address" required>
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
       <input type="text" id="delivery-notes" placeholder="Landmarks (optional)">
       <input type="text" id="payment-ref" placeholder="GCash/Bank Ref # (if applicable)">
 
@@ -71,229 +77,321 @@
 
       <h3>Payment Method</h3>
       <select id="payment-method">
+        <option value="">-- Select --</option>
         <option value="GCash">GCash</option>
         <option value="PayMaya">PayMaya</option>
         <option value="Bank">Bank Transfer</option>
         <option value="Cash">Cash on Delivery</option>
       </select>
-
-      <div style="margin-top: 0.5rem;">
-        <a
-          id="payment-link"
-          href="payment-instructions.html?method=GCash"
-          target="_blank"
-          style="color: #008060; text-decoration: underline;"
-        >
+      <div class="payment-note">
+        <a id="payment-link" href="#" target="_blank" style="color: #008060; text-decoration: underline; display: none;">
           View payment instructions
         </a>
       </div>
 
-      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-        ✅ I agree to the
-        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-          Terms & Conditions
-        </a>.
-        Orders are final and subject to store policies.
-      </div>
-
-      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
+      <!-- ✅ Checkout Button -->
+      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>
+        🛒 Checkout via WhatsApp
+      </button>
     </div>
   </div>
 
   <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+          document.getElementById('delivery-address').value = mapsUrl;
+          validateForm();
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    const requiredFields = [
+      'customer-name', 'customer-phone', 'customer-email',
+      'delivery-address', 'payment-method'
+    ];
+
+    requiredFields.forEach(id => {
+      document.getElementById(id).addEventListener('input', validateForm);
+    });
     document.getElementById('payment-method').addEventListener('change', function () {
       const method = this.value;
       const link = document.getElementById('payment-link');
-      const refInput = document.getElementById('payment-ref');
-
       link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
       link.textContent = `View ${method} instructions`;
-
-      if (method === 'Cash') {
-        refInput.style.display = 'none';
-        refInput.value = '';
-      } else {
-        refInput.style.display = 'block';
-      }
+      link.style.display = method ? 'inline' : 'none';
+      validateForm();
     });
 
-    window.onload = () => {
-      renderProducts();
-      const now = new Date();
-      const oneHourLater = new Date(now.getTime() + 60 * 60000);
-      document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-      document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+    function validateForm() {
+      const allFilled = requiredFields.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim() !== '';
+      });
 
-      // Hide ref input if Cash
-      const method = document.getElementById('payment-method').value;
-      const refInput = document.getElementById('payment-ref');
-      if (method === 'Cash') {
-        refInput.style.display = 'none';
-        refInput.value = '';
+      const cartHasItems = true; // Assume cart logic elsewhere
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      if (allFilled && cartHasItems) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.classList.add('enabled');
       } else {
-        refInput.style.display = 'block';
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.remove('enabled');
       }
-    };
+    }
   </script>
 </body>
 </html>
+<script>
+  const cart = {};
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-address',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
 
-  <script>
-    const cart = {};
-    const products = [
-  { name: "Paracetamol 500 mg Tablet", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
-  { name: "Ibuprofen 200 mg Tablet", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
-  { name: "Mefenamic Acid 500 mg Capsule", description: "Para sa kasakit sang ulo, pus-on o ngipon", price: 12.49 },
-  { name: "Cetirizine 10 mg Tablet", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
-  { name: "Loratadine 10 mg Tablet", description: "Ginabunalan sang allergy o sip-on", price: 11.95 },
-  { name: "Vitamin C 500 mg Tablet", description: "Para magpabakod sang immune system", price: 17.14 },
-  { name: "Sodium Ascorbate Capsule", description: "Non-acidic Vitamin C para indi maghapdi ang tiyan", price: 21.89 },
-  { name: "Multivitamins Tablet", description: "Para sa adlaw-adlaw nga nutrisyon", price: 22.14 },
-  { name: "Zinc + Vitamin C Syrup", description: "Para sa pagpalig-on sang immune system sang bata", price: 118.99 },
-  { name: "Cough Syrup (Adult)", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
-  { name: "Cough Syrup (Kids)", description: "Para sa ubo sang kabataan", price: 99.89 },
-  { name: "Salbutamol Syrup", description: "Ginagamit sa ubo nga may sip-on kag asthmatik nga kondisyon", price: 132.79 },
-  { name: "Phenylpropanolamine + Chlorphenamine Tablet", description: "Para sa sip-on kag ubo", price: 8.50 },
-  { name: "Loperamide 2 mg Capsule", description: "Para sa pagtai nga wala untat", price: 10.14 },
-  { name: "Hyoscine N-butylbromide Tablet", description: "Para sa kasakit sang tiyan", price: 16.14 },
-  { name: "Meclizine 25 mg Tablet", description: "Para sa hilo o pagpaniklo sang tiyan", price: 11.64 },
-  { name: "Domperidone 10 mg Tablet", description: "Para sa kabudlay sang tiyan ukon pagpaniklo", price: 13.25 },
-  { name: "Antacid Chewable Tablet", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
-  { name: "Oral Rehydration Salts (ORS)", description: "Ginagamit sa dehydration sang bata ukon tigulang", price: 6.89 },
-  { name: "Nasal Spray (Saline)", description: "Para sa pagbuka sang ilong kag pagtanggal sip-on", price: 85.99 },
-  { name: "Betadine Gargle 120ml", description: "Para sa sore throat ukon panglanggob", price: 147.00 },
-  { name: "Hydrocortisone Cream 1%", description: "Ginagamit sa katol, rashes ukon allergy sang panit", price: 63.25 },
-  { name: "Calamine Lotion", description: "Para sa kagat sang insekto ukon panit nga may iritasyon", price: 54.90 },
-  { name: "Isopropyl Alcohol 70% 250ml", description: "Para sa disinfection sang kamot ukon panit", price: 49.75 },
-  { name: "Digital Thermometer", description: "Para sa pagsukod sang temperatura sang lawas", price: 185.00 }
+ const products = [
+  { name: "Paracetamol 500 mg (tablet)", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
+  { name: "Ibuprofen 200 mg (tablet)", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
+  { name: "Mefenamic Acid 500 mg (capsule)", description: "Para sa panakit sang pus-on o lawas", price: 10.50 },
+  { name: "Cetirizine 10 mg (tablet)", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
+  { name: "Loratadine 10 mg (tablet)", description: "Para sa allergy nga may sip-on o katol", price: 12.00 },
+  { name: "Vitamin C 500 mg (tablet)", description: "Para magpabakod sang immune system", price: 17.14 },
+  { name: "Multivitamins + Iron (tablet)", description: "Para sa anemia kag kabudlay", price: 22.14 },
+  { name: "Cough Syrup Adult (100 mL)", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
+  { name: "Cough Syrup Kids (60 mL)", description: "Para sa ubo sang kabataan", price: 98.75 },
+  { name: "Loperamide 2 mg (tablet)", description: "Para sa pagtai nga wala untat", price: 10.14 },
+  { name: "Antacid Chewable (tablet)", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
+  { name: "Oral Rehydration Salts (ORS)", description: "Kontra dehydration sa diarrhea o suka", price: 15.00 },
+  { name: "Salbutamol Inhaler (puff)", description: "Para sa hapos kag asthma", price: 285.00 },
+  { name: "Hydrocortisone Cream (15g)", description: "Para sa panit nga may katol o allergy", price: 58.00 },
+  { name: "Betadine Solution (30 mL)", description: "Panglinis sang samad", price: 48.00 },
+  { name: "Band-Aid Strips (10 pcs)", description: "Pang-cover sang mga gagmay nga samad", price: 25.00 },
+  { name: "Alcohol 70% Solution (250 mL)", description: "Pang-disinfect sang kamot o gamit", price: 55.00 },
+  { name: "Thermometer (digital)", description: "Para sa pagsukod sang temperatura", price: 150.00 },
+  { name: "Sodium Ascorbate 500 mg (capsule)", description: "Vitamin C alternative para sa acidic", price: 20.00 },
+  { name: "Zinc Sulfate 20 mg (tablet)", description: "Para magpabakod sang resistensya", price: 9.00 }
+  { name: "Infant Vitamin Drops (15 mL)", description: "Para sa nutrisyon sang bata", price: 75.00 },
+{ name: "Gripe Water (60 mL)", description: "Para sa kabudlay sang tiyan o kabuhi sang baby", price: 68.50 },
+{ name: "Diaper Rash Cream (15g tube)", description: "Kontra pula kag katol sa diaper area", price: 82.00 },
+{ name: "Paracetamol Syrup Kids (60 mL)", description: "Para sa hilanat sang kabataan", price: 45.00 },
+{ name: "Baby Wipes (unscented, 20 sheets)", description: "Panglimpyo sang panit sang baby", price: 35.00 },
+{ name: "Infant Saline Nasal Spray (20 mL)", description: "Para sa sip-on sang baby", price: 90.00 },
+{ name: "Digital Baby Thermometer", description: "Para sa hapos nga pagsukod sang temperatura", price: 170.00 },
+{ name: "Gas Relief Drops (simethicone, 15 mL)", description: "Para sa kabuhi nga gas o bloated nga baby", price: 95.00 }
+{ name: "Amlodipine 5 mg (tablet)", description: "Para sa high blood pressure", price: 9.00 },
+{ name: "Losartan 50 mg (tablet)", description: "Para sa high blood kag kidney protection", price: 10.00 },
+{ name: "Metformin 500 mg (tablet)", description: "Para sa diabetes nga sugar control", price: 6.50 },
+{ name: "Gliclazide 30 mg (tablet)", description: "Para sa pagpanaog sang blood sugar", price: 8.75 },
+{ name: "Simvastatin 20 mg (tablet)", description: "Para sa cholesterol", price: 7.50 },
+{ name: "Aspirin 80 mg (tablet)", description: "Para sa pagpugong sang clot o stroke", price: 2.50 },
+{ name: "Calcium + Vitamin D3 (tablet)", description: "Para sa kusog nga tul-an", price: 12.00 },
+{ name: "Maintenance Multivitamins (tablet)", description: "Para sa adlaw-adlaw nga health support", price: 10.00 },
+{ name: "Clopidogrel 75 mg (tablet)", description: "Pangpugong sa clot para sa may history sang stroke", price: 14.50 },
+{ name: "Isosorbide Dinitrate 5 mg (tablet)", description: "Para sa chest pain (angina)", price: 5.00 }
 ];
 
-    function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, i) => {
-        list.innerHTML += `
-          <div class="card">
-            <h4>${item.name}</h4>
-            <p style="font-size: 0.85rem; color: #555;">${item.description}</p>
-            <p><strong>₱${item.price.toFixed(2)}</strong></p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${i})">-</button>
-              <span id="qty-${i}">0</span>
-              <button onclick="increaseQty(${i})">+</button>
-            </div>
-          </div>`;
-      });
+  function renderProducts() {
+    const list = document.getElementById('product-list');
+    list.innerHTML = '';
+    products.forEach((item, i) => {
+      list.innerHTML += `
+        <div class="card">
+          <h4>${item.name}</h4>
+          <p style="font-size: 0.85rem; color: #555;">${item.description}</p>
+          <p><strong>₱${item.price.toFixed(2)}</strong></p>
+          <div class="qty-controls">
+            <button onclick="decreaseQty(${i})">-</button>
+            <span id="qty-${i}">0</span>
+            <button onclick="increaseQty(${i})">+</button>
+          </div>
+        </div>`;
+    });
+  }
+
+  function increaseQty(i) {
+    const item = products[i];
+    if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+    cart[item.name].qty++;
+    updateQty(i);
+  }
+
+  function decreaseQty(i) {
+    const item = products[i];
+    if (cart[item.name]) {
+      cart[item.name].qty--;
+      if (cart[item.name].qty <= 0) delete cart[item.name];
     }
+    updateQty(i);
+  }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
+  function updateQty(i) {
+    const item = products[i];
+    const qty = cart[item.name]?.qty || 0;
+    document.getElementById(`qty-${i}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    updateCartSummary();
+    validateForm();
+  }
+
+  function updateCartSummary() {
+    let html = `
+      <h3>🧾 Receipt Summary</h3>
+      <ul style="list-style: none; padding: 0;">`;
+    let total = 0;
+    Object.values(cart).forEach(item => {
+      html += `<li><strong>${item.qty}x</strong> ${item.name}<br><span style="font-size:0.85rem; color:#666;">${item.description}</span> <span style="float:right;">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+      total += item.qty * item.price;
+    });
+    const fee = 29.99;
+    const grand = total + fee;
+    html += `</ul><hr>
+      <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+      <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+      <hr><h3>Total: ₱${grand.toFixed(2)}</h3>`;
+    document.getElementById('cart-summary').innerHTML = html;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
+
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const requiresRef = method !== 'Cash';
+
+    const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+    if (allowCheckout) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600');
     }
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
+  }
+
+  requiredFields.forEach(id => {
+    document.getElementById(id).addEventListener('input', validateForm);
+  });
+  document.getElementById('payment-ref').addEventListener('input', validateForm);
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const refInput = document.getElementById('payment-ref');
+    if (method === 'Cash') {
+      refInput.style.display = 'none';
+      refInput.value = '';
+    } else {
+      refInput.style.display = 'block';
     }
-    function updateQty(i) {
-      const item = products[i];
-      document.getElementById(`qty-${i}`).innerText = cart[item.name]?.qty || 0;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-    }
-    function updateCartSummary() {
-      let html = `<h2 style="text-align: center;">🧾 Receipt Summary</h2><ul style="list-style: none; padding: 0;">`;
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        html += `<li><strong>${item.qty}x</strong> ${item.name} - ₱${(item.qty * item.price).toFixed(2)}</li>`;
-        total += item.qty * item.price;
-      });
-      const fee = 29.99;
-      html += `</ul><hr><p><strong>Subtotal:</strong> ₱${total.toFixed(2)}</p>
-               <p><strong>Service Fee:</strong> ₱${fee.toFixed(2)}</p>
-               <h3>Total: ₱${(total + fee).toFixed(2)}</h3>`;
-      document.getElementById('cart-summary').innerHTML = html;
-    }
-    function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('hidden');
-    }
+    validateForm();
+  });
 
-    function submitOrder() {
-      const name = document.getElementById('customer-name').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const address = document.getElementById('delivery-address').value.trim();
-      const notes = document.getElementById('delivery-notes').value.trim();
-      const ref = document.getElementById('payment-ref').value.trim();
-      const method = document.getElementById('payment-method').value;
-      const date = document.getElementById('delivery-date').value;
-      const time = document.getElementById('delivery-time').value;
+  async function submitOrder() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const address = document.getElementById('delivery-address').value.trim();
+    const notes = document.getElementById('delivery-notes').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref').value.trim();
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-      const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-      const fee = 29.99;
-      const total = subtotal + fee;
-      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const fee = 29.99;
+    const total = subtotal + fee;
 
-      const message = `🧾 New Order - Dala🚲Na Health Hub\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n📍 Address: ${address}\n📌 Notes: ${notes || 'N/A'}\n\nItems: ${items}\nSubtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${fee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}\n\nDelivery: ${date} ${time}\nPayment: ${method}\nRef #: ${ref || 'N/A'}`;
+    // 1. Submit silently to Fillout
+    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+    filloutUrl.searchParams.append("customerName", name);
+    filloutUrl.searchParams.append("customerPhone", phone);
+    filloutUrl.searchParams.append("customerEmail", email);
+    filloutUrl.searchParams.append("deliveryAddress", address);
+    filloutUrl.searchParams.append("addressNotes", notes);
+    filloutUrl.searchParams.append("deliveryDate", date);
+    filloutUrl.searchParams.append("deliveryTime", time);
+    filloutUrl.searchParams.append("paymentMethod", method);
+    filloutUrl.searchParams.append("paymentReference", ref);
+    filloutUrl.searchParams.append("cartSummary", items);
+    filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
-      const encoded = encodeURIComponent(message);
-      const merchant = '63XXXXXXXXXX';
-      const admin = '63YYYYYYYYYY';
-      const driver = '63ZZZZZZZZZZ';
-      window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
-      window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
-      window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = filloutUrl.toString();
+    document.body.appendChild(iframe);
 
-      const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-      filloutUrl.searchParams.append("customerName", name);
-      filloutUrl.searchParams.append("customerPhone", phone);
-      filloutUrl.searchParams.append("customerEmail", email);
-      filloutUrl.searchParams.append("deliveryAddress", address);
-      filloutUrl.searchParams.append("addressNotes", notes);
-      filloutUrl.searchParams.append("deliveryDate", date);
-      filloutUrl.searchParams.append("deliveryTime", time);
-      filloutUrl.searchParams.append("paymentMethod", method);
-      filloutUrl.searchParams.append("paymentReference", ref);
-      filloutUrl.searchParams.append("cartSummary", items);
-      filloutUrl.searchParams.append("confirmationNumber", confirmation);
+    // 2. Send WhatsApp messages
+    const message = `🧾 New Order - Dala🚲Na Health Hub\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}
 
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = filloutUrl.toString();
-      document.body.appendChild(iframe);
+Items: ${items}
+Subtotal: ₱${subtotal.toFixed(2)}
+Service Fee: ₱${fee.toFixed(2)}
+Total: ₱${total.toFixed(2)}
 
-      const thankyouUrl = new URL("thankyou.html", window.location.href);
-      thankyouUrl.searchParams.append("customerName", name);
-      thankyouUrl.searchParams.append("customerPhone", phone);
-      thankyouUrl.searchParams.append("customerEmail", email);
-      thankyouUrl.searchParams.append("deliveryAddress", address);
-      thankyouUrl.searchParams.append("addressNotes", notes);
-      thankyouUrl.searchParams.append("deliveryDate", date);
-      thankyouUrl.searchParams.append("deliveryTime", time);
-      thankyouUrl.searchParams.append("paymentMethod", method);
-      thankyouUrl.searchParams.append("paymentReference", ref);
-      thankyouUrl.searchParams.append("cartSummary", items);
-      thankyouUrl.searchParams.append("confirmationNumber", confirmation);
-      thankyouUrl.searchParams.append("total", total.toFixed(2));
+Delivery: ${date} ${time}
+Payment: ${method}
+Ref #: ${ref || 'N/A'}`;
 
-      setTimeout(() => {
-        window.location.href = thankyouUrl.toString();
-      }, 2000);
-    }
+    const encoded = encodeURIComponent(message);
+    const merchant = "63XXXXXXXXXX";
+    const admin = "63YYYYYYYYYY";
+    const rider = "63ZZZZZZZZZZ";
 
-    window.onload = () => {
-      renderProducts();
-      const now = new Date();
-      const oneHourLater = new Date(now.getTime() + 60 * 60000);
-      document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-      document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-    };
-  </script>
+    window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${rider}?text=${encoded}`, '_blank');
+
+    // 3. Redirect to thank you page
+    const thankyouUrl = new URL("thankyou.html", window.location.href);
+    thankyouUrl.searchParams.append("confirmationNumber", confirmation);
+    thankyouUrl.searchParams.append("customerName", name);
+    thankyouUrl.searchParams.append("total", total.toFixed(2));
+    setTimeout(() => {
+      window.location.href = thankyouUrl.toString();
+    }, 2000);
+  }
+
+  window.onload = () => {
+    renderProducts();
+
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+
+    validateForm();
+    updateCartSummary();
+  };
+</script>
+</script>
 </body>
 </html>
