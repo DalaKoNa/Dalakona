@@ -263,99 +263,99 @@ Ref #: ${ref || 'N/A'}`;
     const cart = {};
 const products = [
   // 🍞 Breads
-  { name: "Gardenia Classic White Bread 400g", category: "Breads", price: 96.99, image: "https://via.placeholder.com/100" },
-  { name: "Gardenia Pandesal 300g", category: "Breads", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Angelina Tasty Loaf 400g", category: "Breads", price: 94.99, image: "https://via.placeholder.com/100" },
+  { name: "Gardenia Classic White Bread 400g – Soft white loaf for sandwiches", category: "Breads", price: 96.99, image: "https://via.placeholder.com/100" },
+  { name: "Gardenia Pandesal 300g – Filipino breakfast bread rolls", category: "Breads", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Angelina Tasty Loaf 400g – Budget-friendly white bread", category: "Breads", price: 94.99, image: "https://via.placeholder.com/100" },
 
   // 🥤 Drinks
-  { name: "Coca-Cola 1.5L", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Pepsi 1.5L", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Royal Tru Orange 1.5L", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Sprite 1.5L", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "C2 Green Tea Bottle", category: "Drinks", price: 26.99, image: "https://via.placeholder.com/100" },
-  { name: "Zest-O Juice Pack", category: "Drinks", price: 12.99, image: "https://via.placeholder.com/100" },
-  { name: "Minute Maid Orange", category: "Drinks", price: 29.99, image: "https://via.placeholder.com/100" },
+  { name: "Coca-Cola 1.5L – Classic soda refreshment", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Pepsi 1.5L – Cola-flavored soft drink", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Royal Tru Orange 1.5L – Orange-flavored soda", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Sprite 1.5L – Lemon-lime carbonated drink", category: "Drinks", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "C2 Green Tea Bottle – Ready-to-drink green tea", category: "Drinks", price: 26.99, image: "https://via.placeholder.com/100" },
+  { name: "Zest-O Juice Pack – Fruit juice drink for kids", category: "Drinks", price: 12.99, image: "https://via.placeholder.com/100" },
+  { name: "Minute Maid Orange – Real orange juice in bottle", category: "Drinks", price: 29.99, image: "https://via.placeholder.com/100" },
 
   // 🍟 Chips
-  { name: "Piattos Small", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Piattos Big", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Small", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Nova Big", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Small", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Bread Pan Big", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Small", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Moby Big", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
-  { name: "Boy Bawang Cornick Garlic 100g", category: "Chips", price: 26.99, image: "https://via.placeholder.com/100" },
+  { name: "Piattos Small – Cheese-flavored potato snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Piattos Big – Large pack cheese potato snack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Nova Small – Multigrain snack for energy", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Nova Big – Large multigrain crunchy snack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Bread Pan Small – Toasted bread chip snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Bread Pan Big – Larger toasted bread chip pack", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Moby Small – Choco-filled corn puff snack", category: "Chips", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Moby Big – Chocolate corn puff snack (big)", category: "Chips", price: 66.99, image: "https://via.placeholder.com/100" },
+  { name: "Boy Bawang Cornick Garlic 100g – Crunchy garlic corn snack", category: "Chips", price: 26.99, image: "https://via.placeholder.com/100" },
 
   // 🐟 Canned Goods
-  { name: "555 Sardines Green", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "555 Sardines Red", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Green", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Ligo Sardines Red", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Green", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
-  { name: "Mega Sardines Red", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
+  { name: "555 Sardines Green – Classic sardines in oil", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
+  { name: "555 Sardines Red – Spicy sardines in oil", category: "Canned Goods", price: 26.25, image: "https://via.placeholder.com/100" },
+  { name: "Ligo Sardines Green – Regular sardines variant", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
+  { name: "Ligo Sardines Red – Spicy sardines variant", category: "Canned Goods", price: 26.75, image: "https://via.placeholder.com/100" },
+  { name: "Mega Sardines Green – Premium sardines in oil", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
+  { name: "Mega Sardines Red – Premium spicy sardines", category: "Canned Goods", price: 27.25, image: "https://via.placeholder.com/100" },
 
   // 🍜 Noodles
-  { name: "Lucky Me Pancit Canton", category: "Noodles", price: 14.99, image: "https://via.placeholder.com/100" },
-  { name: "Lucky Me Pancit Canton (6 pack)", category: "Noodles", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Nissin Cup Noodles", category: "Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
+  { name: "Lucky Me Pancit Canton – Instant stir-fry noodles", category: "Noodles", price: 14.99, image: "https://via.placeholder.com/100" },
+  { name: "Lucky Me Pancit Canton (6 pack) – Family pack stir-fry noodles", category: "Noodles", price: 89.99, image: "https://via.placeholder.com/100" },
+  { name: "Nissin Cup Noodles – Instant cup noodle soup", category: "Noodles", price: 24.99, image: "https://via.placeholder.com/100" },
 
   // 🥫 Meat Products
-  { name: "Argentina Corned Beef 150g", category: "Meat Products", price: 39.99, image: "https://via.placeholder.com/100" },
-  { name: "Century Tuna Flakes 180g", category: "Meat Products", price: 38.99, image: "https://via.placeholder.com/100" },
-  { name: "Maling Luncheon Meat", category: "Meat Products", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Delimondo Corned Beef", category: "Meat Products", price: 99.99, image: "https://via.placeholder.com/100" },
+  { name: "Argentina Corned Beef 150g – Ready-to-eat beef in can", category: "Meat Products", price: 39.99, image: "https://via.placeholder.com/100" },
+  { name: "Century Tuna Flakes 180g – Healthy canned tuna in oil", category: "Meat Products", price: 38.99, image: "https://via.placeholder.com/100" },
+  { name: "Maling Luncheon Meat – Pork-based canned meat", category: "Meat Products", price: 92.99, image: "https://via.placeholder.com/100" },
+  { name: "Delimondo Corned Beef – Premium corned beef in can", category: "Meat Products", price: 99.99, image: "https://via.placeholder.com/100" },
 
   // 🥚 Eggs
-  { name: "Eggs (Tray of 6)", category: "Eggs", price: 56.99, image: "https://via.placeholder.com/100" },
-  { name: "Eggs (Tray of 12)", category: "Eggs", price: 109.99, image: "https://via.placeholder.com/100" },
+  { name: "Eggs (Tray of 6) – Farm-fresh medium eggs", category: "Eggs", price: 56.99, image: "https://via.placeholder.com/100" },
+  { name: "Eggs (Tray of 12) – 1 dozen large brown eggs", category: "Eggs", price: 109.99, image: "https://via.placeholder.com/100" },
 
   // 🍚 Rice
-  { name: "Sinandomeng Rice 3kg", category: "Rice", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 5kg", category: "Rice", price: 329.99, image: "https://via.placeholder.com/100" },
-  { name: "Sinandomeng Rice 10kg", category: "Rice", price: 639.99, image: "https://via.placeholder.com/100" },
+  { name: "Sinandomeng Rice 3kg – Well-milled local rice", category: "Rice", price: 199.99, image: "https://via.placeholder.com/100" },
+  { name: "Sinandomeng Rice 5kg – Fragrant white rice", category: "Rice", price: 329.99, image: "https://via.placeholder.com/100" },
+  { name: "Sinandomeng Rice 10kg – Bulk rice for families", category: "Rice", price: 639.99, image: "https://via.placeholder.com/100" },
 
   // 🪥 Toothpaste
-  { name: "Colgate Triple Action Toothpaste 100ml", category: "Toiletries", price: 59.99, image: "https://via.placeholder.com/100" },
-  { name: "Sensodyne Extra Fresh 100g", category: "Toiletries", price: 149.99, image: "https://via.placeholder.com/100" },
-  { name: "Close-Up Ever Fresh Gel 100ml", category: "Toiletries", price: 69.99, image: "https://via.placeholder.com/100" },
-  { name: "Palmolive Naturals Toothpaste 100ml", category: "Toiletries", price: 49.99, image: "https://via.placeholder.com/100" },
+  { name: "Colgate Triple Action Toothpaste 100ml – Cavity, fresh breath, whitening", category: "Toiletries", price: 59.99, image: "https://via.placeholder.com/100" },
+  { name: "Sensodyne Extra Fresh 100g – Toothpaste for sensitive teeth", category: "Toiletries", price: 149.99, image: "https://via.placeholder.com/100" },
+  { name: "Close-Up Ever Fresh Gel 100ml – Fresh breath gel toothpaste", category: "Toiletries", price: 69.99, image: "https://via.placeholder.com/100" },
+  { name: "Palmolive Naturals Toothpaste 100ml – Herbal toothpaste option", category: "Toiletries", price: 49.99, image: "https://via.placeholder.com/100" },
 
   // 🧼 Soaps
-  { name: "Safeguard Pure White Soap 135g", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Lifebuoy Total 10 Bath Soap 135g", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
-  { name: "Dettol Original Bar 135g", category: "Toiletries", price: 29.99, image: "https://via.placeholder.com/100" },
-  { name: "Johnson's Baby Soap 125g", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
-  { name: "Dove Beauty Bar 100g", category: "Toiletries", price: 34.99, image: "https://via.placeholder.com/100" },
-  { name: "Eskinol Whitening Bar 135g", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
+  { name: "Safeguard Pure White Soap 135g – Germ protection bar soap", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Lifebuoy Total 10 Bath Soap 135g – Anti-bacterial bath bar", category: "Toiletries", price: 19.99, image: "https://via.placeholder.com/100" },
+  { name: "Dettol Original Bar 135g – Disinfectant bath soap", category: "Toiletries", price: 29.99, image: "https://via.placeholder.com/100" },
+  { name: "Johnson's Baby Soap 125g – Gentle soap for babies", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
+  { name: "Dove Beauty Bar 100g – Moisturizing beauty soap", category: "Toiletries", price: 34.99, image: "https://via.placeholder.com/100" },
+  { name: "Eskinol Whitening Bar 135g – Skin brightening soap bar", category: "Toiletries", price: 24.99, image: "https://via.placeholder.com/100" },
 
   // 🧴 Lotion
-  { name: "Nivea Natural Fairness Lotion 200ml", category: "Toiletries", price: 199.99, image: "https://via.placeholder.com/100" },
-  { name: "Vaseline Aloe Fresh Lotion 200ml", category: "Toiletries", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Aveeno Daily Moisturizing Lotion 225ml", category: "Toiletries", price: 349.99, image: "https://via.placeholder.com/100" },
-  { name: "Bio-Oil Skincare Oil 60ml", category: "Toiletries", price: 269.99, image: "https://via.placeholder.com/100" },
+  { name: "Nivea Natural Fairness Lotion 200ml – Skin whitening and hydration", category: "Toiletries", price: 199.99, image: "https://via.placeholder.com/100" },
+  { name: "Vaseline Aloe Fresh Lotion 200ml – Cooling and soothing lotion", category: "Toiletries", price: 179.99, image: "https://via.placeholder.com/100" },
+  { name: "Aveeno Daily Moisturizing Lotion 225ml – For dry, sensitive skin", category: "Toiletries", price: 349.99, image: "https://via.placeholder.com/100" },
+  { name: "Bio-Oil Skincare Oil 60ml – Scar & stretch mark treatment", category: "Toiletries", price: 269.99, image: "https://via.placeholder.com/100" },
 
   // 🧀 Cheese Products
-  { name: "Eden Cheese 165g", category: "Cheese", price: 64.99, image: "https://via.placeholder.com/100" },
-  { name: "Eden Cheese 450g Block", category: "Cheese", price: 164.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Original 220g", category: "Cheese", price: 89.99, image: "https://via.placeholder.com/100" },
-  { name: "Cheez Whiz Pimiento 220g", category: "Cheese", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Quickmelt Cheese 165g", category: "Cheese", price: 72.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Cheddar Cheese 165g", category: "Cheese", price: 74.99, image: "https://via.placeholder.com/100" },
-  { name: "Kraft Eden Melt Sarap 165g", category: "Cheese", price: 76.99, image: "https://via.placeholder.com/100" },
+  { name: "Eden Cheese 165g – Processed cheddar cheese block", category: "Cheese", price: 64.99, image: "https://via.placeholder.com/100" },
+  { name: "Eden Cheese 450g Block – Large size cheddar block", category: "Cheese", price: 164.99, image: "https://via.placeholder.com/100" },
+  { name: "Cheez Whiz Original 220g – Spreadable cheese product", category: "Cheese", price: 89.99, image: "https://via.placeholder.com/100" },
+  { name: "Cheez Whiz Pimiento 220g – Cheese spread with bell pepper", category: "Cheese", price: 94.99, image: "https://via.placeholder.com/100" },
+  { name: "Magnolia Quickmelt Cheese 165g – Melting cheese for dishes", category: "Cheese", price: 72.99, image: "https://via.placeholder.com/100" },
+  { name: "Magnolia Cheddar Cheese 165g – Classic cheddar flavor block", category: "Cheese", price: 74.99, image: "https://via.placeholder.com/100" },
+  { name: "Kraft Eden Melt Sarap 165g – Easy-melt cheese block", category: "Cheese", price: 76.99, image: "https://via.placeholder.com/100" },
 
   // 🧈 Butter & Margarine
-  { name: "Star Margarine Classic 250g", category: "Butter & Margarine", price: 42.99, image: "https://via.placeholder.com/100" },
-  { name: "Star Margarine Sweet Blend 250g", category: "Butter & Margarine", price: 44.99, image: "https://via.placeholder.com/100" },
-  { name: "Magnolia Gold Butter Unsalted 200g", category: "Butter & Margarine", price: 85.99, image: "https://via.placeholder.com/100" },
-  { name: "Anchor Salted Butter 227g", category: "Butter & Margarine", price: 149.99, image: "https://via.placeholder.com/100" },
+  { name: "Star Margarine Classic 250g – For baking and breakfast", category: "Butter & Margarine", price: 42.99, image: "https://via.placeholder.com/100" },
+  { name: "Star Margarine Sweet Blend 250g – Sweeter margarine variety", category: "Butter & Margarine", price: 44.99, image: "https://via.placeholder.com/100" },
+  { name: "Magnolia Gold Butter Unsalted 200g – Cooking-grade butter", category: "Butter & Margarine", price: 85.99, image: "https://via.placeholder.com/100" },
+  { name: "Anchor Salted Butter 227g – Imported full-cream butter", category: "Butter & Margarine", price: 149.99, image: "https://via.placeholder.com/100" },
 
   // 🥛 Powdered Milk & Choco Drinks
-  { name: "Bear Brand Powdered Milk 320g", category: "Milk & Drinks", price: 112.99, image: "https://via.placeholder.com/100" },
-  { name: "Nido Fortified Powdered Milk 320g", category: "Milk & Drinks", price: 179.99, image: "https://via.placeholder.com/100" },
-  { name: "Alaska Powdered Milk Drink 300g", category: "Milk & Drinks", price: 94.99, image: "https://via.placeholder.com/100" },
-  { name: "Milo Chocolate Powder 220g", category: "Milk & Drinks", price: 92.99, image: "https://via.placeholder.com/100" },
-  { name: "Swiss Miss Chocolate Drink (3pcs)", category: "Milk & Drinks", price: 49.99, image: "https://via.placeholder.com/100" }
+  { name: "Bear Brand Powdered Milk 320g – Fortified powdered milk", category: "Milk & Drinks", price: 112.99, image: "https://via.placeholder.com/100" },
+  { name: "Nido Fortified Powdered Milk 320g – For kids 3 years and up", category: "Milk & Drinks", price: 179.99, image: "https://via.placeholder.com/100" },
+  { name: "Alaska Powdered Milk Drink 300g – Budget powdered milk drink", category: "Milk & Drinks", price: 94.99, image: "https://via.placeholder.com/100" },
+  { name: "Milo Chocolate Powder 220g – Energy drink with cocoa and malt", category: "Milk & Drinks", price: 92.99, image: "https://via.placeholder.com/100" },
+  { name: "Swiss Miss Chocolate Drink (3pcs) – Rich instant hot cocoa", category: "Milk & Drinks", price: 49.99, image: "https://via.placeholder.com/100" }
 ];
 
   function renderProducts() {
