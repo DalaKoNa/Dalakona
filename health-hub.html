@@ -336,8 +336,91 @@ Ref #: ${ref || 'N/A'}`;
         }
       });
     }
+ function validateForm() {
+    const allFilled = requiredFields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() !== '';
+    });
 
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
+    const cartHasItems = Object.values(cart).some(item => item.qty > 0);
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const requiresRef = method !== 'Cash';
+
+    const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
+
+    if (allowCheckout) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
+    } else {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
+    }
+ }
     window.onload = () => renderProducts();
-  </script>
+  const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+    document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+    document.getElementById('delivery-date').disabled = true;
+    document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+    document.getElementById('delivery-time').disabled = true;
+
+    const deliveryNote = document.getElementById('delivery-note');
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+
+    // Auto-hide or show reference field on page load
+    const method = document.getElementById('payment-method').value;
+    const refInput = document.getElementById('payment-ref');
+    if (refInput) {
+      refInput.style.display = method === 'Cash' ? 'none' : 'block';
+    }
+
+    validateForm();
+  };
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const link = document.getElementById('payment-link');
+    const refInput = document.getElementById('payment-ref');
+
+    link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+    link.textContent = `View ${method} instructions`;
+
+    if (method === 'Cash') {
+      refInput.style.display = 'none';
+      refInput.value = '';
+    } else {
+      refInput.style.display = 'block';
+    }
+
+    validateForm();
+  });
+
+  // Listen to all fields
+requiredFields.forEach(id => {
+document.getElementById(id).addEventListener('input', validateForm);
+});
+document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+  
+function filterProducts() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+      const name = card.querySelector('h4').textContent.toLowerCase();
+      if (name.includes(input)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</script>
 </body>
 </html>
