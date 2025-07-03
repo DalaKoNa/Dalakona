@@ -73,11 +73,9 @@
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
-    </div>
-  </header>
 
     <div class="search-bar filter-bar">
-<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">  
+<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">
 </div>
 
   <div class="grid" id="product-list"></div>
@@ -224,18 +222,8 @@ Ref #: ${ref || 'N/A'}`;
   }
 </script>
 
-<script>
-  const requiredFields = [
-    'customer-name',
-    'customer-phone',
-    'customer-email',
-    'delivery-address',
-    'delivery-date',
-    'delivery-time',
-    'payment-method'
-  ];
-  
-    const cart = {};
+  <script>
+const cart = {};
 const products = [
   // 🍚 Rice & Grains
   { name: "Sinandomeng Rice 1kg", description: "Well-milled white rice (per kilo)", price: 51.98 },
@@ -363,9 +351,6 @@ const products = [
 { name: "Angel All-Purpose Cream 250mL", description: "Creamy blend ideal for cooking", price: 49.99 },
 
 ];
-          </div>`;
-      });
-    }
 
     function increaseQty(i) {
       const item = products[i];
