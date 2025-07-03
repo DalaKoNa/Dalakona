@@ -1,4 +1,5 @@
 <!-- Dala🚲Na Health Hub Page -->
+<!-- Dala🚲Na Health Hub Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,22 +77,96 @@
         <option value="Cash">Cash on Delivery</option>
       </select>
 
+      <div style="margin-top: 0.5rem;">
+        <a
+          id="payment-link"
+          href="payment-instructions.html?method=GCash"
+          target="_blank"
+          style="color: #008060; text-decoration: underline;"
+        >
+          View payment instructions
+        </a>
+      </div>
+
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the
+        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+          Terms & Conditions
+        </a>.
+        Orders are final and subject to store policies.
+      </div>
+
       <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
     </div>
   </div>
 
   <script>
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const link = document.getElementById('payment-link');
+      const refInput = document.getElementById('payment-ref');
+
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
+
+      if (method === 'Cash') {
+        refInput.style.display = 'none';
+        refInput.value = '';
+      } else {
+        refInput.style.display = 'block';
+      }
+    });
+
+    window.onload = () => {
+      renderProducts();
+      const now = new Date();
+      const oneHourLater = new Date(now.getTime() + 60 * 60000);
+      document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+      document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+
+      // Hide ref input if Cash
+      const method = document.getElementById('payment-method').value;
+      const refInput = document.getElementById('payment-ref');
+      if (method === 'Cash') {
+        refInput.style.display = 'none';
+        refInput.value = '';
+      } else {
+        refInput.style.display = 'block';
+      }
+    };
+  </script>
+</body>
+</html>
+
+  <script>
     const cart = {};
     const products = [
-      { name: "Paracetamol 500 mg", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
-      { name: "Ibuprofen 200 mg", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
-      { name: "Cetirizine 10 mg", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
-      { name: "Vitamin C 500 mg", description: "Para magpabakod sang immune system", price: 17.14 },
-      { name: "Cough Syrup Adult", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
-      { name: "Loperamide 2 mg", description: "Para sa pagtai nga wala untat", price: 10.14 },
-      { name: "Antacid Chewable", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
-      { name: "Multivitamins", description: "Para sa adlaw-adlaw nga nutrisyon", price: 22.14 }
-    ];
+  { name: "Paracetamol 500 mg Tablet", description: "Para sa hilanat kag kasakit sang lawas", price: 7.14 },
+  { name: "Ibuprofen 200 mg Tablet", description: "Kontra kasakit kag panubag sang lawas", price: 8.64 },
+  { name: "Mefenamic Acid 500 mg Capsule", description: "Para sa kasakit sang ulo, pus-on o ngipon", price: 12.49 },
+  { name: "Cetirizine 10 mg Tablet", description: "Para sa allergy, sip-on kag hilanat", price: 14.14 },
+  { name: "Loratadine 10 mg Tablet", description: "Ginabunalan sang allergy o sip-on", price: 11.95 },
+  { name: "Vitamin C 500 mg Tablet", description: "Para magpabakod sang immune system", price: 17.14 },
+  { name: "Sodium Ascorbate Capsule", description: "Non-acidic Vitamin C para indi maghapdi ang tiyan", price: 21.89 },
+  { name: "Multivitamins Tablet", description: "Para sa adlaw-adlaw nga nutrisyon", price: 22.14 },
+  { name: "Zinc + Vitamin C Syrup", description: "Para sa pagpalig-on sang immune system sang bata", price: 118.99 },
+  { name: "Cough Syrup (Adult)", description: "Para sa uga o mabudlay nga ubo", price: 123.49 },
+  { name: "Cough Syrup (Kids)", description: "Para sa ubo sang kabataan", price: 99.89 },
+  { name: "Salbutamol Syrup", description: "Ginagamit sa ubo nga may sip-on kag asthmatik nga kondisyon", price: 132.79 },
+  { name: "Phenylpropanolamine + Chlorphenamine Tablet", description: "Para sa sip-on kag ubo", price: 8.50 },
+  { name: "Loperamide 2 mg Capsule", description: "Para sa pagtai nga wala untat", price: 10.14 },
+  { name: "Hyoscine N-butylbromide Tablet", description: "Para sa kasakit sang tiyan", price: 16.14 },
+  { name: "Meclizine 25 mg Tablet", description: "Para sa hilo o pagpaniklo sang tiyan", price: 11.64 },
+  { name: "Domperidone 10 mg Tablet", description: "Para sa kabudlay sang tiyan ukon pagpaniklo", price: 13.25 },
+  { name: "Antacid Chewable Tablet", description: "Para sa asido o kabudlay sang tiyan", price: 9.64 },
+  { name: "Oral Rehydration Salts (ORS)", description: "Ginagamit sa dehydration sang bata ukon tigulang", price: 6.89 },
+  { name: "Nasal Spray (Saline)", description: "Para sa pagbuka sang ilong kag pagtanggal sip-on", price: 85.99 },
+  { name: "Betadine Gargle 120ml", description: "Para sa sore throat ukon panglanggob", price: 147.00 },
+  { name: "Hydrocortisone Cream 1%", description: "Ginagamit sa katol, rashes ukon allergy sang panit", price: 63.25 },
+  { name: "Calamine Lotion", description: "Para sa kagat sang insekto ukon panit nga may iritasyon", price: 54.90 },
+  { name: "Isopropyl Alcohol 70% 250ml", description: "Para sa disinfection sang kamot ukon panit", price: 49.75 },
+  { name: "Digital Thermometer", description: "Para sa pagsukod sang temperatura sang lawas", price: 185.00 }
+];
 
     function renderProducts() {
       const list = document.getElementById('product-list');
