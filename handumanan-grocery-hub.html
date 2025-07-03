@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Handumanan Hypermarket</title>
+  <title>Dala🚲Na Handumanan Grocery Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
 <style>
@@ -64,7 +64,7 @@ width: 100%; cursor: pointer;
 <body>
 <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Dala🚲Na Hypermarket</h1>
+    <h1>Dala🚲Na Handumanan Grocery Hub</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
@@ -201,7 +201,7 @@ function filterProducts() {
     document.body.appendChild(iframe);
 
     // 2. Send WhatsApp messages
-    const message = `🧾 New Order - Dala🚲Na Handumanan Hypermarket\n\nConfirmation #: ${confirmation}
+    const message = `🧾 New Order - Dala🚲Na Handumanan Grocery Hub\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -404,7 +404,7 @@ const products = [
   function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Handumanan Hypermarket</p><ul style="list-style: none; padding: 0;">`;
+      <p style="text-align: center;">Dala🚲Na Handumanan Grocery Hub</p><ul style="list-style: none; padding: 0;">`;
     let total = 0;
     Object.values(cart).forEach(item => {
       html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
