@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲Na Health Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -28,6 +28,7 @@
       padding: 1rem; display: flex; flex-direction: column;
       justify-content: space-between; height: 100%; text-align: center;
     }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
     .qty-controls {
       display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
     }
@@ -80,8 +81,7 @@
   </div>
 
   <div class="grid" id="product-list"></div>
-
-  <div class="cart-modal hidden" id="cart-modal">
+<div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
 
@@ -178,7 +178,6 @@
     iframe.style.display = "none";
     iframe.src = filloutUrl.toString();
     document.body.appendChild(iframe);
-
     // 2. Send WhatsApp messages
     const message = `🧾 New Order - Dala🚲Na Health Hub\n\nConfirmation #: ${confirmation}
 Name: ${name}
@@ -240,7 +239,6 @@ Ref #: ${ref || 'N/A'}`;
   ];
 
   const cart = {};
-
 const products = [
   // 👨‍⚕️ ADULT TABLETS & CAPSULES
   { name: "Paracetamol 500 mg (per tablet)", price: 7.14, description: "Para sa hilanat kag kasakit sang lawas" },
@@ -297,6 +295,27 @@ const products = [
 { name: "Baby Wipes (per pack)", price: 45.99, description: "Para sa limpyo sang panit sang baby" },
 { name: "Nasal Saline Spray for Infants (per 30 mL)", price: 84.99, description: "Para sa barado nga ilong sang baby" }
 ];
+<script>
+const products = [
+  { name: "Paracetamol 500 mg (per tablet)", price: 7.14, description: "Para sa hilanat kag kasakit sang lawas" },
+  { name: "Ibuprofen 200 mg (per tablet)", price: 8.64, description: "Kontra kasakit kag panubag sang lawas" },
+  { name: "Mefenamic Acid 500 mg (per tablet)", price: 9.94, description: "Para sa kasakit, labina kon nagamenstruate" },
+  { name: "Loperamide 2 mg (per tablet)", price: 10.14, description: "Para sa pagtai nga wala untat" },
+  { name: "Domperidone 10 mg (per tablet)", price: 11.89, description: "Para sa suka, kabudlay magdigest, kag kabuhi" },
+  { name: "Omeprazole 20 mg (per capsule)", price: 12.89, description: "Para sa ulcer, GERD, kag asido nga tiyan" },
+  { name: "Cetirizine 10 mg (per tablet)", price: 14.14, description: "Para sa allergy, sip-on kag hilanat" },
+  { name: "Loratadine 10 mg (per tablet)", price: 15.14, description: "Anti-allergy nga indi makapahuyop" },
+  { name: "Antacid (per chewable tablet)", price: 9.64, description: "Para sa asido o kabudlay sang tiyan" },
+  { name: "Vitamin C 500 mg (per tablet)", price: 17.14, description: "Para magpabakod sang immune system" },
+  { name: "Multivitamins Adult (per capsule)", price: 22.14, description: "Para sa adlaw-adlaw nga nutrisyon" },
+  { name: "Diphenhydramine 25 mg (per tablet)", price: 8.98, description: "Pampatulog nga anti-allergy" },
+  { name: "Cough Syrup Adult (100 mL)", price: 123.49, description: "Para sa uga o mabudlay nga ubo" },
+  { name: "Nasal Spray Decongestant (15 mL)", price: 143.49, description: "Para sa barado nga ilong" },
+  { name: "Topical Antibiotic Ointment (15 g)", price: 98.49, description: "Para sa samad kag pagpanit" },
+  { name: "Paracetamol Syrup (60 mL)", price: 61.98, description: "Para sa hilanat sang kabataan" },
+  { name: "Ibuprofen Syrup (60 mL)", price: 66.98, description: "Para sa kasakit kag hilanat sang bata" }
+];
+
 function renderProducts() {
   const list = document.getElementById('product-list');
   list.innerHTML = '';
@@ -444,21 +463,6 @@ requiredFields.forEach(id => {
   document.getElementById(id).addEventListener('input', validateForm);
 });
 document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-
-function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
 </script>
 
 </script>
