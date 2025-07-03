@@ -77,7 +77,7 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search medicines or essentials...">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
   </div>
 
   <div class="grid" id="product-list"></div>
@@ -96,88 +96,92 @@
       <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
       <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
 
-      <h3>Delivery Details</h3>
-      <input type="date" id="delivery-date" disabled>
-      <input type="time" id="delivery-time" disabled>
-      <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-        ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-      </div>
 
-      <h3>Payment</h3>
-      <select id="payment-method">
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Bank">Bank Transfer</option>
-        <option value="Cash">Cash on Delivery (COD)</option>
-      </select>
+<h3>Delivery Details</h3>
+<input type="date" id="delivery-date" disabled>
+<input type="time" id="delivery-time" disabled>
+<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+  ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
+</div>
 
-      <div style="margin-top: 0.5rem;">
-        <a
-          id="payment-link"
-          href="payment-instructions.html?method=GCash"
-          target="_blank"
-          style="color: #008060; text-decoration: underline;"
-        >
-          View payment instructions
-        </a>
-      </div>
+<h3>Payment</h3>
+<select id="payment-method">
+  <option value="GCash">GCash (may incur transfer fee)</option>
+  <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+  <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+  <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+</select>
 
-      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-        Terms & Conditions</a>.
-      </div>
+<div style="margin-top: 0.5rem;">
+  <a
+    id="payment-link"
+    href="payment-instructions.html?method=GCash"
+    target="_blank"
+    style="color: #008060; text-decoration: underline;"
+  >
+    View payment instructions
+  </a>
+</div>
 
-      <button
-        class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-        id="checkout-btn"
-        onclick="submitOrder()"
-        disabled
-      >
-        🛒 Checkout via WhatsApp
-      </button>
-    </div>
-  </div>
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+  ✅ I agree to the
+  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+    Terms & Conditions
+  </a>.
+  Orders are final and subject to store policies.
+</div>
+
+<!-- ✅ Checkout Button -->
+<button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
+
 <!-- ✅ Scripts -->
 <script src="dalacart.js"></script>
 <script>
-async function submitOrder() {
-const name = document.getElementById('customer-name').value.trim();
-const phone = document.getElementById('customer-phone').value.trim();
-const email = document.getElementById('customer-email').value.trim();
-const address = document.getElementById('delivery-address').value.trim();
-const notes = document.getElementById('delivery-notes').value.trim();
-const date = document.getElementById('delivery-date').value;
-const time = document.getElementById('delivery-time').value;
-const method = document.getElementById('payment-method').value;
-const ref = document.getElementById('payment-ref')?.value.trim() || '';
+  async function submitOrder() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const address = document.getElementById('delivery-address').value.trim();
+    const notes = document.getElementById('delivery-notes').value.trim();
+    const date = document.getElementById('delivery-date').value;
+    const time = document.getElementById('delivery-time').value;
+    const method = document.getElementById('payment-method').value;
+    const ref = document.getElementById('payment-ref')?.value.trim() || '';
 
-const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-const fee = 29.99;
-const total = subtotal + fee;
-const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const fee = 29.99;
+    const total = subtotal + fee;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-// 1. Submit silently to Fillout
-const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-filloutUrl.searchParams.append("customerName", name);
-filloutUrl.searchParams.append("customerPhone", phone);
-filloutUrl.searchParams.append("customerEmail", email);
-filloutUrl.searchParams.append("deliveryAddress", address);
-filloutUrl.searchParams.append("addressNotes", notes);
-filloutUrl.searchParams.append("deliveryDate", date);
-filloutUrl.searchParams.append("deliveryTime", time);
-filloutUrl.searchParams.append("paymentMethod", method);
-filloutUrl.searchParams.append("paymentReference", ref);
-filloutUrl.searchParams.append("cartSummary", items);
-filloutUrl.searchParams.append("confirmationNumber", confirmation);
+    // 1. Submit silently to Fillout
+    const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
+    filloutUrl.searchParams.append("customerName", name);
+    filloutUrl.searchParams.append("customerPhone", phone);
+    filloutUrl.searchParams.append("customerEmail", email);
+    filloutUrl.searchParams.append("deliveryAddress", address);
+    filloutUrl.searchParams.append("addressNotes", notes);
+    filloutUrl.searchParams.append("deliveryDate", date);
+    filloutUrl.searchParams.append("deliveryTime", time);
+    filloutUrl.searchParams.append("paymentMethod", method);
+    filloutUrl.searchParams.append("paymentReference", ref);
+    filloutUrl.searchParams.append("cartSummary", items);
+    filloutUrl.searchParams.append("confirmationNumber", confirmation);
 
-const iframe = document.createElement("iframe");
-iframe.style.display = "none";
-iframe.src = filloutUrl.toString();
-document.body.appendChild(iframe);
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = filloutUrl.toString();
+    document.body.appendChild(iframe);
 
-// 2. Send WhatsApp messages
-const message = `🧾 New Order - Dala🚲Na Health Hub\n\nConfirmation #: ${confirmation}
+    // 2. Send WhatsApp messages
+    const message = `🧾 New Order - Dala🚲Na Health Hub\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -193,49 +197,51 @@ Delivery: ${date} ${time}
 Payment: ${method}
 Ref #: ${ref || 'N/A'}`;
 
-const encoded = encodeURIComponent(message);
-const merchant = "63XXXXXXXXXX";
-const admin = "63YYYYYYYYYY";
-const driver = "63ZZZZZZZZZZ";
+    const encoded = encodeURIComponent(message);
+    const merchant = "63XXXXXXXXXX";
+    const admin = "63YYYYYYYYYY";
+    const driver = "63ZZZZZZZZZZ";
 
-window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
-window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
-window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${merchant}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
 
-// 3. Redirect to thank you page
-const thankyouUrl = new URL("thankyou.html", window.location.href);
-thankyouUrl.searchParams.append("customerName", name);
-thankyouUrl.searchParams.append("customerPhone", phone);
-thankyouUrl.searchParams.append("customerEmail", email);
-thankyouUrl.searchParams.append("deliveryAddress", address);
-thankyouUrl.searchParams.append("addressNotes", notes);
-thankyouUrl.searchParams.append("deliveryDate", date);
-thankyouUrl.searchParams.append("deliveryTime", time);
-thankyouUrl.searchParams.append("paymentMethod", method);
-thankyouUrl.searchParams.append("paymentReference", ref);
-thankyouUrl.searchParams.append("cartSummary", items);
-thankyouUrl.searchParams.append("confirmationNumber", confirmation);
-thankyouUrl.searchParams.append("total", total.toFixed(2));
+    // 3. Redirect to thank you page
+    const thankyouUrl = new URL("thankyou.html", window.location.href);
+    thankyouUrl.searchParams.append("customerName", name);
+    thankyouUrl.searchParams.append("customerPhone", phone);
+    thankyouUrl.searchParams.append("customerEmail", email);
+    thankyouUrl.searchParams.append("deliveryAddress", address);
+    thankyouUrl.searchParams.append("addressNotes", notes);
+    thankyouUrl.searchParams.append("deliveryDate", date);
+    thankyouUrl.searchParams.append("deliveryTime", time);
+    thankyouUrl.searchParams.append("paymentMethod", method);
+    thankyouUrl.searchParams.append("paymentReference", ref);
+    thankyouUrl.searchParams.append("cartSummary", items);
+    thankyouUrl.searchParams.append("confirmationNumber", confirmation);
+    thankyouUrl.searchParams.append("total", total.toFixed(2));
 
-setTimeout(() => {
-window.location.href = thankyouUrl.toString();
-}, 2000);
-}
+    setTimeout(() => {
+      window.location.href = thankyouUrl.toString();
+    }, 2000);
+  }
 </script>
+
 </body>
 </html>
 <script>
-const requiredFields = [
-'customer-name',
-'customer-phone',
-'customer-email',
-'delivery-address',
-'delivery-date',
-'delivery-time',
-'payment-method'
-];
+  const requiredFields = [
+    'customer-name',
+    'customer-phone',
+    'customer-email',
+    'delivery-address',
+    'delivery-date',
+    'delivery-time',
+    'payment-method'
+  ];
 
-const cart = {};
+  const cart = {};
+
 const products = [
   // 👨‍⚕️ ADULT TABLETS & CAPSULES
   { name: "Paracetamol 500 mg (per tablet)", price: 7.14, description: "Para sa hilanat kag kasakit sang lawas" },
@@ -292,25 +298,21 @@ const products = [
 { name: "Baby Wipes (per pack)", price: 45.99, description: "Para sa limpyo sang panit sang baby" },
 { name: "Nasal Saline Spray for Infants (per 30 mL)", price: 84.99, description: "Para sa barado nga ilong sang baby" }
 ];
-  
 function renderProducts() {
     const list = document.getElementById('product-list');
     list.innerHTML = '';
-
     products.forEach((item, index) => {
       list.innerHTML += `
         <div class="card" data-name="${item.name.toLowerCase()}">
-          <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}">
+          <img src="${item.image}" alt="${item.name}">
           <h4>${item.name}</h4>
-          <p class="desc">${item.description || 'Wala sang dugang nga detalye.'}</p>
-          <p class="price">₱${item.price.toFixed(2)}</p>
+          <p>₱${item.price.toFixed(2)}</p>
           <div class="qty-controls">
             <button onclick="decreaseQty(${index})">-</button>
             <span id="qty-${index}">0</span>
             <button onclick="increaseQty(${index})">+</button>
           </div>
-        </div>
-      `;
+        </div>`;
     });
   }
 
@@ -342,8 +344,7 @@ function renderProducts() {
   function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-      <p style="text-align: center;">Dala🚲Na Health Hub</p>
-      <ul style="list-style: none; padding: 0;">`;
+      <p style="text-align: center;">Dala🚲Na Health Hub</p><ul style="list-style: none; padding: 0;">`;
     let total = 0;
     Object.values(cart).forEach(item => {
       html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
@@ -386,29 +387,21 @@ function renderProducts() {
     }
   }
 
-  function filterProducts() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('h4').textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
   window.onload = () => {
     renderProducts();
 
     const now = new Date();
     const oneHourLater = new Date(now.getTime() + 60 * 60000);
     document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+    document.getElementById('delivery-date').disabled = true;
     document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+    document.getElementById('delivery-time').disabled = true;
 
-    // Hide payment ref if Cash is selected
+    const deliveryNote = document.getElementById('delivery-note');
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+
+    // Auto-hide or show reference field on page load
     const method = document.getElementById('payment-method').value;
     const refInput = document.getElementById('payment-ref');
     if (refInput) {
@@ -436,11 +429,27 @@ function renderProducts() {
     validateForm();
   });
 
-  requiredFields.forEach(id => {
-    document.getElementById(id).addEventListener('input', validateForm);
-  });
+  // Listen to all fields
+requiredFields.forEach(id => {
+document.getElementById(id).addEventListener('input', validateForm);
+});
+document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+  
+function filterProducts() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
 
-  document.getElementById('payment-ref')?.addEventListener('input', validateForm);
+    cards.forEach(card => {
+      const name = card.querySelector('h4').textContent.toLowerCase();
+      if (name.includes(input)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
 </script>
 </body>
 </html>
