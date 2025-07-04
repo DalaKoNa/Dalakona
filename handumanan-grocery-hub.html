@@ -108,8 +108,18 @@
   <option value="Tissue">Tissue</option>
 </select>
 
-<div id="product-list" class="grid grid-cols-2 gap-3"></div>
-<button id="loadMore" onclick="loadMoreProducts()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Load More</button>
+<!-- Product List -->
+  <div id="product-list" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+
+  <!-- Load More Button -->
+  <button id="loadMore" onclick="loadMoreProducts()" class="mt-4 px-4 py-2 bg-green-600 text-white rounded hidden">
+    Load More
+  </button>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
