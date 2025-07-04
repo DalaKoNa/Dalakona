@@ -1,247 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dala🚲Na Handumanan Grocery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css" />
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script defer src="/js/firebase-init.js"></script>
+    <script defer src="/js/dala-cart.js"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
+      <a href="select-store.html" class="text-lg font-semibold">⬅ Back</a>
+      <h1 class="text-xl font-bold text-green-700">Handumanan Grocery Hub</h1>
+      <button id="cartBtn" class="relative">
+        🛒<span id="cart-count" class="ml-1 bg-green-600 text-white rounded-full px-2 text-xs">0</span>
+      </button>
+    </header>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na | Handumanan Grocery Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="/firebase-init.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <!-- Search -->
+    <div class="p-4">
+      <input id="searchInput" type="text" placeholder="Search products..." class="w-full border rounded p-2" />
+    </div>
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f7f7f7;
-      padding-bottom: 80px;
-    }
+    <!-- Product Categories -->
+    <div id="productCategories" class="p-4 grid grid-cols-2 gap-2 text-sm font-semibold text-gray-700">
+      <button onclick="filterCategory('All')" class="bg-green-100 px-2 py-1 rounded">All</button>
+      <button onclick="filterCategory('Canned')" class="bg-green-100 px-2 py-1 rounded">Canned Goods</button>
+      <button onclick="filterCategory('Snacks')" class="bg-green-100 px-2 py-1 rounded">Snacks</button>
+      <button onclick="filterCategory('Drinks')" class="bg-green-100 px-2 py-1 rounded">Drinks</button>
+      <button onclick="filterCategory('Condiments')" class="bg-green-100 px-2 py-1 rounded">Condiments</button>
+      <button onclick="filterCategory('Personal Care')" class="bg-green-100 px-2 py-1 rounded">Personal Care</button>
+    </div>
 
-    header {
-      background: #16a34a;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    <!-- Product Grid -->
+    <div id="productList" class="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4"></div>
 
-    .back-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.2rem;
-    }
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50 hidden">
+      <div class="bg-white w-full max-w-md h-full p-4 overflow-y-auto relative">
+        <button onclick="toggleCart()" class="absolute top-2 right-2 text-gray-600 text-xl">&times;</button>
+        <h2 class="text-lg font-bold mb-4">🧾 Your Dala🚲Na Cart</h2>
+        <div id="cart-items"></div>
+        <div class="mt-4 border-t pt-2">
+          <p id="cart-total" class="text-right font-bold text-lg"></p>
+          <p class="text-sm text-gray-500">₱3.69 markup applied. No VAT.</p>
+        </div>
 
-    .title {
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
+        <!-- Embedded Fillout Modal -->
+        <div class="mt-4">
+          <iframe id="fillout-form" src="" width="100%" height="400" frameborder="0" allowtransparency="true" style="border: none; border-radius: 8px; background: transparent;"></iframe>
+        </div>
 
-    .cart-btn {
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: white;
-      position: relative;
-    }
+        <!-- Checkout Button -->
+        <button id="checkoutBtn" class="w-full bg-green-600 text-white py-2 px-4 mt-4 rounded" onclick="checkout()">✅ Checkout & Send Order</button>
 
-    .cart-count {
-      background: #facc15;
-      color: black;
-      border-radius: 9999px;
-      font-size: 0.7rem;
-      padding: 0.1rem 0.4rem;
-      position: absolute;
-      top: -6px;
-      right: -6px;
-    }
+        <!-- Terms -->
+        <p class="text-xs text-gray-500 mt-2">By checking out, you agree to our <a href="#" class="underline">terms & conditions</a>.</p>
+      </div>
+    </div>
 
-    .filter-bar {
-      padding: 0.5rem 1rem;
-      display: flex;
-      gap: 0.5rem;
-      background: white;
-    }
+    <script>
+      const markup = 3.69;
 
-    .filter-bar input, .filter-bar select {
-      flex: 1;
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
+      const products = [
+        { name: 'Sardines in Tomato Sauce', category: 'Canned', price: 17.00 },
+        { name: 'Corned Beef 150g', category: 'Canned', price: 39.00 },
+        { name: 'Tuna Flakes 180g', category: 'Canned', price: 42.00 },
+        { name: 'Nova Chips', category: 'Snacks', price: 27.00 },
+        { name: 'Piattos Cheese', category: 'Snacks', price: 26.00 },
+        { name: 'Coke 1.5L', category: 'Drinks', price: 67.00 },
+        { name: 'Milo 24g', category: 'Drinks', price: 9.00 },
+        { name: 'Soy Sauce 200ml', category: 'Condiments', price: 13.00 },
+        { name: 'Vinegar 250ml', category: 'Condiments', price: 11.00 },
+        { name: 'Shampoo Sachet', category: 'Personal Care', price: 6.00 },
+        { name: 'Toothpaste Small', category: 'Personal Care', price: 22.00 }
+      ];
 
-    .product-list {
-      padding: 1rem;
-    }
+      let filteredCategory = 'All';
 
-    .product-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+      function filterCategory(cat) {
+        filteredCategory = cat;
+        renderProducts();
+      }
 
-    .product-info {
-      flex: 1;
-    }
+      function renderProducts() {
+        const list = document.getElementById('productList');
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        list.innerHTML = '';
 
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        const filtered = products.filter(p => {
+          const matchCategory = filteredCategory === 'All' || p.category === filteredCategory;
+          const matchSearch = p.name.toLowerCase().includes(search);
+          return matchCategory && matchSearch;
+        });
 
-    .qty-controls button {
-      padding: 0.3rem 0.6rem;
-      font-size: 1rem;
-    }
-
-    .cart-drawer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: white;
-      border-top: 2px solid #ccc;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
-      padding: 1rem;
-      display: none;
-      flex-direction: column;
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-
-    .cart-drawer.open {
-      display: flex;
-    }
-
-    .checkout-btn {
-      margin-top: 1rem;
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 0.75rem;
-      font-size: 1.1rem;
-      border-radius: 0.5rem;
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <button class="back-btn" onclick="window.history.back()">←</button>
-    <div class="title">Handumanan Grocery Hub</div>
-    <button class="cart-btn" onclick="toggleCart()">
-      <i class="fas fa-shopping-cart"></i>
-      <span class="cart-count" id="cartCount">0</span>
-    </button>
-  </header>
-
-  <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search...">
-    <select id="categorySelect">
-      <option value="all">All</option>
-      <option value="Toiletries">Toiletries</option>
-      <option value="Canned Goods">Canned Goods</option>
-      <!-- Add more categories -->
-    </select>
-  </div>
-
-  <div class="product-list" id="productList"></div>
-
-  <div class="cart-drawer" id="cartDrawer">
-    <div id="cartItems"></div>
-    <div id="cartTotal"></div>
-    <button class="checkout-btn" onclick="checkout()">Checkout</button>
-  </div>
-
-  <script>
-    const markupRate = 0.10;
-    const serviceFee = 29.99;
-    const cart = {};
-    const products = [
-      { name: "Safeguard Soap", category: "Toiletries", basePrice: 18, description: "100g bar" },
-      { name: "Argentina Corned Beef", category: "Canned Goods", basePrice: 35, description: "150g can" },
-      { name: "Surf Detergent", category: "Toiletries", basePrice: 12, description: "70g sachet" }
-      // Add more items here...
-    ];
-
-    function renderProducts() {
-      const list = document.getElementById('productList');
-      const category = document.getElementById('categorySelect').value;
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      list.innerHTML = '';
-      products.forEach(product => {
-        const matches = (category === 'all' || product.category === category) && product.name.toLowerCase().includes(search);
-        if (matches) {
-          const price = (product.basePrice * (1 + markupRate)).toFixed(2);
+        filtered.forEach((p, i) => {
+          const price = (p.price + markup).toFixed(2);
           list.innerHTML += `
-            <div class="product-card">
-              <div class="product-info">
-                <div><strong>${product.name}</strong> - ₱${price}</div>
-                <small>${product.description}</small>
-              </div>
-              <div class="qty-controls">
-                <button onclick="changeQty('${product.name}', -1)">-</button>
-                <span>${cart[product.name]?.qty || 0}</span>
-                <button onclick="changeQty('${product.name}', 1)">+</button>
-              </div>
+            <div class="bg-white p-3 shadow rounded text-center">
+              <p class="font-semibold text-sm">${p.name}</p>
+              <p class="text-green-600 font-bold">₱${price}</p>
+              <button onclick="addToCart(${i})" class="mt-2 bg-green-500 text-white px-2 py-1 rounded text-sm">Add</button>
             </div>
           `;
-        }
-      });
-    }
+        });
+      }
 
-    function changeQty(name, delta) {
-      const product = products.find(p => p.name === name);
-      if (!cart[name]) cart[name] = { product, qty: 0 };
-      cart[name].qty += delta;
-      if (cart[name].qty <= 0) delete cart[name];
-      document.getElementById('cartCount').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      document.getElementById('searchInput').addEventListener('input', renderProducts);
+
       renderProducts();
-      updateCart();
-    }
 
-    function updateCart() {
-      const cartItems = document.getElementById('cartItems');
-      const cartTotal = document.getElementById('cartTotal');
-      let subtotal = 0;
-      cartItems.innerHTML = '';
-      Object.values(cart).forEach(({ product, qty }) => {
-        const price = product.basePrice * (1 + markupRate);
-        subtotal += price * qty;
-        cartItems.innerHTML += `<div>${product.name} x${qty} - ₱${(price * qty).toFixed(2)}</div>`;
-      });
-      const total = subtotal + serviceFee;
-      cartTotal.innerHTML = `<strong>Subtotal:</strong> ₱${subtotal.toFixed(2)}<br><strong>Service Fee:</strong> ₱${serviceFee.toFixed(2)}<br><strong>Total:</strong> ₱${total.toFixed(2)}`;
-    }
-
-    function toggleCart() {
-      document.getElementById('cartDrawer').classList.toggle('open');
-    }
-
-    function checkout() {
-      const isLoggedIn = window.firebaseUser;
-      if (!isLoggedIn) return alert('Please login first');
-      const cartSummary = Object.values(cart).map(({ product, qty }) => `${product.name} x${qty}`).join(', ');
-      // Prefill Fillout modal logic goes here...
-      alert(`Proceeding to Fillout checkout...\nCart: ${cartSummary}`);
-    }
-
-    document.getElementById('searchInput').addEventListener('input', renderProducts);
-    document.getElementById('categorySelect').addEventListener('change', renderProducts);
-
-    renderProducts();
-  </script>
-</body>
-
+      // The rest of cart functions, Fillout autofill, WhatsApp message sending, Firebase login detection are inside /js/dala-cart.js
+    </script>
+  </body>
 </html>
