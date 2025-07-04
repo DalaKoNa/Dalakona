@@ -577,44 +577,37 @@ Ref #: ${ref || 'N/A'}`;
   });
 }
 
-
+// Filter products by selected category
 function filterByCategory() {
-  const selected = document.getElementById('categoryFilter').value;
-  const cards = document.querySelectorAll('#product-list .card');
+  const category = document.getElementById('categoryFilter').value;
 
-  cards.forEach(card => {
-    const category = card.getAttribute('data-category');
-    if (selected === 'all' || category === selected) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-    }
-  });
+  if (category === 'all') {
+    renderProducts(products);
+  } else {
+    const filtered = products.filter(p => p.category === category);
+    renderProducts(filtered);
+  }
 }
 
-    function increaseQty(i) {
-      const item = products[i];
-      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-      cart[item.name].qty++;
-      updateQty(i);
-    }
+// Increase product quantity
+function increaseQty(index) {
+  quantities[index]++;
+  document.getElementById(`qty-${index}`).textContent = quantities[index];
+}
 
-    function decreaseQty(i) {
-      const item = products[i];
-      if (cart[item.name]) {
-        cart[item.name].qty--;
-        if (cart[item.name].qty <= 0) delete cart[item.name];
-      }
-      updateQty(i);
-    }
+// Decrease product quantity
+function decreaseQty(index) {
+  if (quantities[index] > 0) {
+    quantities[index]--;
+    document.getElementById(`qty-${index}`).textContent = quantities[index];
+  }
+}
 
-    function updateQty(i) {
-      const item = products[i];
-      const qty = cart[item.name]?.qty || 0;
-      document.getElementById(`qty-${i}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-    }
+// Initial load
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+});
+
 function updateCartSummary() {
     let html = `
       <h2 style="text-align: center;">🧾 Receipt Summary</h2>
