@@ -75,7 +75,7 @@
 </head>
 <body>
   <header>
-    <a href="select-store.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     <h1>Handumanan Grocery Hub</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
@@ -96,7 +96,7 @@
   </div>
 
   <script>
-    const markup = 3.69;
+    const markup = 1.99;
     const cart = {};
     const categorizedProducts = {
       "Fruits": [
@@ -104,17 +104,17 @@
         { name: "Banana (1kg)", base: 30 }
       ],
       "Snacks": [
-      { name: "Piattos (Cheese, 85g)", base: 17 },
-      { name: "Nova (BBQ, 80g)", base: 19 },
-      { name: "Piattos (Sour Cream, 85g)", base: 17 },
-      { name: "Nova (Cheddar, 80g)", base: 19 },
-      { name: "Chippy (BBQ, 90g)", base: 16 },
-      { name: "Chippy (Garlic & Vinegar, 90g)", base: 16 },
-      { name: "Tortillos (Cheese, 100g)", base: 18 },
-      { name: "Vcut (Spicy BBQ, 60g)", base: 14 },
-      { name: "Clover Chips (Cheese, 110g)", base: 21 },
-      { name: "Mr. Chips (Nacho Cheese, 100g)", base: 19 }
-    ],
+        { name: "Piattos (Cheese, 85g)", base: 17 },
+        { name: "Nova (BBQ, 80g)", base: 19 },
+        { name: "Piattos (Sour Cream, 85g)", base: 17 },
+        { name: "Nova (Cheddar, 80g)", base: 19 },
+        { name: "Chippy (BBQ, 90g)", base: 16 },
+        { name: "Chippy (Garlic & Vinegar, 90g)", base: 16 },
+        { name: "Tortillos (Cheese, 100g)", base: 18 },
+        { name: "Vcut (Spicy BBQ, 60g)", base: 14 },
+        { name: "Clover Chips (Cheese, 110g)", base: 21 },
+        { name: "Mr. Chips (Nacho Cheese, 100g)", base: 19 }
+      ],
       "Beverages": [
         { name: "Coke Mismo", base: 20 },
         { name: "Mineral Water 500ml", base: 15 }
@@ -133,7 +133,8 @@
         { name: "555 Sardines", base: 20 },
         { name: "Century Tuna", base: 35 },
         { name: "Argentina Corned Beef", base: 45 }
-      ],
+      ]
+    };
 
     function renderProductList() {
       const container = document.getElementById('product-list');
