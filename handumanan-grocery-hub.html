@@ -148,8 +148,7 @@
     <option value="Bank">Bank Transfer</option>
   </select>
   <input type="text" id="payment-ref" placeholder="Payment reference # (for online payments)" style="display:none;" />
-  <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
-</div>
+  <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
 
 <script>
      const markup = 1.99;
@@ -214,7 +213,7 @@
           const card = document.createElement("div");
           card.className = "product-card";
           card.innerHTML = `
-            <div class="product-name">📦 ${prodName.trim()}</div>
+            <div class="product-name"> ${prodName.trim()}</div>
             <div class="product-description">${flavorOrType || "—"}</div>
             <div class="product-size">${grams || ""}</div>
             <div class="product-footer">
@@ -239,6 +238,7 @@
       if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
       cart[name].qty++;
       updateQtyDisplay(name);
+      updateCartSummary(); //
     }
 
     function decreaseQty(name) {
@@ -246,6 +246,7 @@
         cart[name].qty--;
         if (cart[name].qty <= 0) delete cart[name];
         updateQtyDisplay(name);
+        updateCartSummary(); //
       }
     }
 
@@ -255,6 +256,29 @@
       document.getElementById(`qty-${id}`).innerText = qty;
       document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
     }
+function updateCartSummary() {
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Handumanan</p>
+    <ul style="list-style: none; padding: 0;">`;
+
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `<li><strong>${item.qty}x</strong> ${item.name} 
+              <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    total += item.qty * item.price;
+  });
+
+  const fee = 29.99;
+  const grand = total + fee;
+
+  html += `</ul><hr>
+    <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+
+  document.getElementById('cart-summary').innerHTML = html;
+}
 
     function toggleCart() {
   const modal = document.getElementById('cart-modal');
