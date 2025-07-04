@@ -552,12 +552,19 @@ Ref #: ${ref || 'N/A'}`;
 { name: "Top Creamery Coffee Blend 3in1 (10s)", description: "Premium cafe-style blend", price: 109.99, category: "3in1 Coffee" },
 { name: "Blend 45 Original Coffee Mix (30g x 10)", description: "Classic Pinoy budget blend", price: 79.99, category: "3in1 Coffee" }
 ];
+let quantities = [];
 
-   function renderProducts() {
+function renderProducts(filteredProducts = products) {
   const list = document.getElementById('product-list');
   list.innerHTML = '';
 
-  products.forEach((item, index) => {
+  filteredProducts.forEach((item, index) => {
+    // Ensure quantities array is aligned with rendered list
+    const globalIndex = products.findIndex(p => p.name === item.name);
+    if (quantities[globalIndex] === undefined) {
+      quantities[globalIndex] = 0;
+    }
+
     const card = document.createElement('div');
     card.className = 'card';
     card.setAttribute('data-name', item.name.toLowerCase());
@@ -568,19 +575,18 @@ Ref #: ${ref || 'N/A'}`;
       <p class="text-sm text-gray-500">${item.description}</p>
       <p class="font-bold text-green-700">₱${item.price.toFixed(2)}</p>
       <div class="qty-controls">
-        <button onclick="decreaseQty(${index})">-</button>
-        <span id="qty-${index}">0</span>
-        <button onclick="increaseQty(${index})">+</button>
+        <button onclick="decreaseQty(${globalIndex})">-</button>
+        <span id="qty-${globalIndex}">${quantities[globalIndex]}</span>
+        <button onclick="increaseQty(${globalIndex})">+</button>
       </div>`;
 
     list.appendChild(card);
   });
 }
 
-// Filter products by selected category
+// 🔍 Filter by category
 function filterByCategory() {
   const category = document.getElementById('categoryFilter').value;
-
   if (category === 'all') {
     renderProducts(products);
   } else {
@@ -589,13 +595,13 @@ function filterByCategory() {
   }
 }
 
-// Increase product quantity
+// ➕ Increase quantity
 function increaseQty(index) {
   quantities[index]++;
   document.getElementById(`qty-${index}`).textContent = quantities[index];
 }
 
-// Decrease product quantity
+// ➖ Decrease quantity
 function decreaseQty(index) {
   if (quantities[index] > 0) {
     quantities[index]--;
@@ -603,8 +609,9 @@ function decreaseQty(index) {
   }
 }
 
-// Initial load
+// 🚀 On first load
 document.addEventListener("DOMContentLoaded", () => {
+  quantities = new Array(products.length).fill(0);
   renderProducts();
 });
 
