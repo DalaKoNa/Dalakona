@@ -26,33 +26,18 @@
       padding: 0.5rem 1rem; background: #008060; color: white; border: none; border-radius: 5px; cursor: pointer;
     }
     .category-title {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      font-weight: bold;
+      margin-top: 1rem; font-size: 1.2rem; font-weight: bold; cursor: pointer;
     }
     .product-row {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
+      padding: 0.5rem 0; border-bottom: 1px solid #eee; display: flex; flex-direction: column;
     }
-    .product-name {
-      font-weight: 600;
-    }
+    .product-name { font-weight: 600; }
     .qty-controls {
-      display: flex;
-      align-items: center;
-      margin-top: 0.25rem;
-      gap: 0.5rem;
+      display: flex; align-items: center; margin-top: 0.25rem; gap: 0.5rem;
     }
     .qty-controls button {
-      padding: 0.2rem 0.6rem;
-      background: #008060;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
+      padding: 0.2rem 0.6rem; background: #008060; color: white;
+      border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
     }
     .cart-modal {
       position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -93,6 +78,12 @@
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
+    <div class="form-section">
+      <input id="custName" placeholder="Customer Name" required />
+      <input id="custPhone" placeholder="Phone Number" required />
+      <input id="custAddress" placeholder="Address" required />
+      <button class="checkout-btn" onclick="sendWhatsAppOrder()">Send Order via WhatsApp</button>
+    </div>
   </div>
 
   <script>
@@ -101,38 +92,30 @@
     const categorizedProducts = {
       "Fruits": [
         { name: "Mango (per pc)", base: 15 },
-        { name: "Banana (1kg)", base: 30 }
+        { name: "Banana (1kg)", base: 30 },
+        { name: "Apple (per pc)", base: 25 },
+        { name: "Orange (per pc)", base: 20 }
+      ],
+      "Rice": [
+        { name: "Sinandomeng (1kg)", base: 45 },
+        { name: "Dinorado (1kg)", base: 50 },
+        { name: "Jasmine Rice (1kg)", base: 55 }
+      ],
+      "Condiments": [
+        { name: "Silver Swan Soy Sauce 200ml", base: 15 },
+        { name: "Datu Puti Vinegar 250ml", base: 14 },
+        { name: "UFC Banana Ketchup 320g", base: 20 }
+      ],
+      "Dairy": [
+        { name: "Bear Brand Powdered Milk (80g)", base: 28 },
+        { name: "Alaska Condensed Milk (300ml)", base: 32 },
+        { name: "Magnolia Cheddar Cheese (165g)", base: 48 }
       ],
       "Snacks": [
         { name: "Piattos (Cheese, 85g)", base: 17 },
         { name: "Nova (BBQ, 80g)", base: 19 },
-        { name: "Piattos (Sour Cream, 85g)", base: 17 },
-        { name: "Nova (Cheddar, 80g)", base: 19 },
         { name: "Chippy (BBQ, 90g)", base: 16 },
-        { name: "Chippy (Garlic & Vinegar, 90g)", base: 16 },
-        { name: "Tortillos (Cheese, 100g)", base: 18 },
-        { name: "Vcut (Spicy BBQ, 60g)", base: 14 },
-        { name: "Clover Chips (Cheese, 110g)", base: 21 },
-        { name: "Mr. Chips (Nacho Cheese, 100g)", base: 19 }
-      ],
-      "Beverages": [
-        { name: "Coke Mismo", base: 20 },
-        { name: "Mineral Water 500ml", base: 15 }
-      ],
-      "Frozen": [
-        { name: "Hotdog (1 pack)", base: 70 },
-        { name: "Chicken Nuggets (200g)", base: 85 },
-        { name: "Tilapia (per pc)", base: 40 }
-      ],
-      "Toiletries": [
-        { name: "Safeguard Soap", base: 28 },
-        { name: "Closeup Toothpaste", base: 52 },
-        { name: "Head & Shoulders Shampoo", base: 135 }
-      ],
-      "Canned Goods": [
-        { name: "555 Sardines", base: 20 },
-        { name: "Century Tuna", base: 35 },
-        { name: "Argentina Corned Beef", base: 45 }
+        { name: "Tortillos (Cheese, 100g)", base: 18 }
       ]
     };
 
@@ -141,10 +124,10 @@
       container.innerHTML = "";
       for (const [category, items] of Object.entries(categorizedProducts)) {
         const catDiv = document.createElement("div");
-        catDiv.innerHTML = `<div class="category-title">${category}</div>`;
+        catDiv.innerHTML = `<div class="category-title" onclick="this.nextElementSibling.classList.toggle('hidden')">${category}</div><div>`;
         items.forEach(item => {
           const id = item.name.replace(/\s+/g, "-");
-          const price = +(item.base * markup).toFixed(2);
+          const price = +(item.base + markup).toFixed(2);
           const qty = cart[item.name]?.qty || 0;
           catDiv.innerHTML += `
             <div class="product-row" id="row-${id}">
@@ -157,6 +140,7 @@
             </div>
           `;
         });
+        catDiv.innerHTML += `</div>`;
         container.appendChild(catDiv);
       }
     }
@@ -164,7 +148,7 @@
     function increaseQty(name) {
       const item = findProduct(name);
       if (!item) return;
-      if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base * markup).toFixed(2) };
+      if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
       cart[name].qty++;
       updateQtyDisplay(name);
     }
@@ -218,6 +202,18 @@
         }
       }
       return null;
+    }
+
+    function sendWhatsAppOrder() {
+      const name = document.getElementById('custName').value;
+      const phone = document.getElementById('custPhone').value;
+      const address = document.getElementById('custAddress').value;
+      let message = `Hello! I'd like to order:%0A`;
+      Object.values(cart).forEach(item => {
+        message += `• ${item.qty}x ${item.name} = ₱${(item.qty * item.price).toFixed(2)}%0A`;
+      });
+      message += `Subtotal: ₱${Object.values(cart).reduce((t, i) => t + i.qty * i.price, 0).toFixed(2)}%0AService Fee: ₱29.99%0ATotal: ₱${(Object.values(cart).reduce((t, i) => t + i.qty * i.price, 0) + 29.99).toFixed(2)}%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}`;
+      window.open(`https://wa.me/63XXXXXXXXXX?text=${message}`, '_blank');
     }
 
     window.onload = renderProductList;
