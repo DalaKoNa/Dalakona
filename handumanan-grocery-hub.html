@@ -485,6 +485,7 @@ function updateCartSummary() {
       if (el) el.addEventListener('input', validateForm);
     });
 
+    // ✅ Handle payment method logic
     document.getElementById('payment-method').addEventListener('change', function () {
       const method = this.value;
       const refInput = document.getElementById('payment-ref');
@@ -504,10 +505,10 @@ function updateCartSummary() {
         link.textContent = `View ${method} instructions`;
       }
 
-      validateForm?.();
+      validateForm();
     });
 
-    // 🔁 Trigger change once on load to ensure payment-ref is shown/hidden correctly
+    // ✅ Trigger once on load
     document.getElementById('payment-method').dispatchEvent(new Event('change'));
 
     validateForm(); // Initial validation
@@ -595,6 +596,3 @@ Ref #: ${ref || 'N/A'}`;
     }, 2000);
   }
 </script>
-
-</body>
-</html>
