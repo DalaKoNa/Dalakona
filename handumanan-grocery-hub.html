@@ -127,24 +127,27 @@
 
   <div id="product-list"></div>
 
-  <div class="cart-modal hidden" id="cart-modal">
-    <div class="close-btn" onclick="toggleCart()">&times;</div>
-    <div class="cart-summary" id="cart-summary"></div>
-    <div class="form-section" id="form-section"></div>
- <h3>Delivery Details</h3>
-  <input type="date" id="delivery-date" required disabled>
-  <input type="time" id="delivery-time" required disabled>
-  <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
+<div class="cart-modal hidden" id="cart-modal">
+  <div class="close-btn" onclick="toggleCart()">&times;</div>
 
-  <h3>Customer Info</h3>
+  <div class="cart-summary" id="cart-summary"></div>
+
+  <!-- ✅ Begin form section -->
+  <div class="form-section" id="form-section">
+    
+    <h3>Customer Info</h3>
     <input type="text" id="customer-name" placeholder="Full Name" required />
     <input type="tel" id="customer-phone" placeholder="Phone Number" required />
     <input type="email" id="customer-email" placeholder="Email Address" required />
     <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
     <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
     <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
-  </div>
- <div class="form-section">
+
+    <h3>Delivery Details</h3>
+    <input type="date" id="delivery-date" required disabled />
+    <input type="time" id="delivery-time" required disabled />
+    <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
+
     <h3>Payment</h3>
     <select id="payment-method">
       <option value="GCash">GCash (may incur transfer fee)</option>
@@ -179,7 +182,6 @@
       Orders are final and subject to store policies.
     </div>
 
-    <!-- ✅ Checkout Button -->
     <button
       class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
       id="checkout-btn"
@@ -188,7 +190,11 @@
     >
       🛒 Checkout via WhatsApp
     </button>
-  
+
+  </div> <!-- ✅ close form-section -->
+
+</div> <!-- ✅ close cart-modal -->
+
 <script>
      const markup = 1.99;
     const cart = {};
