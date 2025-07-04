@@ -6,9 +6,8 @@
   <title>Dala🚲Na Handumanan Grocery Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="style.css" /> <!-- external styles (modular) -->
+  <link rel="stylesheet" href="style.css" />
   <script defer src="/js/firebase-init.js"></script>
-  <script defer src="/js/dala-cart.js"></script>
   <script defer src="/js/handumanan-products.js"></script>
 </head>
 <body>
@@ -68,23 +67,25 @@
         </a>. Orders are final and subject to store policies.
       </div>
 
-      <button
-        class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-        id="checkout-btn"
-        onclick="submitOrder()"
-        disabled
-      >
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
         🛒 Checkout via WhatsApp
       </button>
     </div>
   </div>
 
   <script>
+    const cart = {};
+
+    function toggleCart() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
+
     window.onload = () => {
       renderProducts();
       autoFillDeliveryTime();
       validateForm();
     };
   </script>
+  <script src="/js/dala-cart.js"></script>
 </body>
 </html>
