@@ -457,57 +457,62 @@ function updateCartSummary() {
           return null;
   }
 
-  window.onload = () => {
-    renderProductList();
+ window.onload = () => {
+  renderProductList();
 
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60000);
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
 
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
 
-    if (deliveryDate && deliveryTime) {
-      deliveryDate.value = now.toISOString().split('T')[0];
-      deliveryDate.disabled = true;
-      deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-      deliveryTime.disabled = true;
+  if (deliveryDate && deliveryTime) {
+    deliveryDate.value = now.toISOString().split('T')[0];
+    deliveryDate.disabled = true;
+    deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+    deliveryTime.disabled = true;
+  }
+
+  if (deliveryNote) {
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+  }
+
+  // Add input listeners to validate form
+  ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', validateForm);
+  });
+
+  // Handle payment method logic
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const refInput = document.getElementById('payment-ref');
+    const link = document.getElementById('payment-link');
+
+    if (refInput) {
+      if (method === 'Cash') {
+        refInput.style.display = 'none';
+        refInput.value = '';
+      } else {
+        refInput.style.display = 'block';
+      }
     }
 
-    if (deliveryNote) {
-      deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-      deliveryNote.style.display = "block";
+    if (link) {
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
     }
 
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', validateForm);
-    });
+    validateForm?.(); // Optional safety check
+  });
 
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
+  // ✅ Trigger once on page load to apply current selection (e.g. show/hide ref field)
+  document.getElementById('payment-method').dispatchEvent(new Event('change'));
 
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
-
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm();
-    });
-
-    validateForm(); // initial validation
-  };
+  validateForm(); // initial validation
+};
 
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
@@ -591,33 +596,6 @@ Ref #: ${ref || 'N/A'}`;
     }, 2000);
   }
 <script>
-  window.onload = function () {
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
-
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
-
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm?.(); // Optional safety
-    });
-
-    // 🔁 Trigger once on load to set the correct state
-    document.getElementById('payment-method').dispatchEvent(new Event('change'));
-  };
-</script>
 
 </body>
 </html>
