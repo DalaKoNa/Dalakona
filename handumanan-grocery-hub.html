@@ -251,454 +251,111 @@ Ref #: ${ref || 'N/A'}`;
   <script>
     const cart = {};
     const products = [
-  // 🥛 Condensed & Evaporated Milk
-{ name: "Alaska Condensed Milk 300mL", description: "Sweetened condensed milk for desserts", price: 42.99 },
-{ name: "Milkmaid Condensed Milk 300mL", description: "Premium condensed milk from Nestlé", price: 64.99 },
-{ name: "Carnation Condensada 300mL", description: "Classic sweetened milk for leche flan", price: 59.99 },
-{ name: "Angel Condensada 300mL", description: "Budget sweetened milk for halo-halo", price: 39.99 },
-{ name: "Birch Tree Condensada 300mL", description: "Creamy and affordable condensed milk", price: 41.99 },
-{ name: "Cowbell Condensada 390g", description: "Imported creamy condensed milk", price: 69.99 },
-{ name: "Eagle Brand Condensed Milk 396g", description: "Thick American-style sweet milk", price: 89.99 },
-{ name: "Nestlé Condensed Milk Tube 100g", description: "Squeezable tube for easy desserts", price: 44.99 },
-{ name: "Alaska Condensada Chocolate 168mL", description: "Choco-flavored condensed milk", price: 24.99 },
-{ name: "Alaska Condensada Strawberry 168mL", description: "Strawberry sweetened milk", price: 24.99 },
-{ name: "Angel Evaporated Milk 370mL", description: "Economical evaporated milk", price: 33.99 },
-{ name: "Alaska Evaporated Filled Milk 370mL", description: "Creamy and smooth evap milk", price: 35.99 },
-{ name: "Carnation Evaporated Milk 370mL", description: "Premium evap milk for creamy dishes", price: 42.99 },
-{ name: "Milk Magic Evaporated Milk 370mL", description: "Everyday kitchen staple", price: 31.99 },
-{ name: "Alaska Evaporated Milk 154mL", description: "Small-size can for single recipes", price: 19.99 },
-{ name: "Angel Evaporated Milk 154mL", description: "Mini evap milk for desserts", price: 18.99 },
-{ name: "Bear Brand Sterilized Evap 200mL", description: "Ready-to-drink creamy milk", price: 29.99 },
-{ name: "Nestlé Fresh Milk Evaporated 370mL", description: "UHT-grade creamy evap milk", price: 46.99 },
-{ name: "Alaska Condensed Milk Pouch 200mL", description: "Budget refill pouch version", price: 28.99 },
-{ name: "Angel Condensada Pouch 200mL", description: "Easy-pour sweet milk pouch", price: 27.99 }
+  // 🍫 Chocolate Bars
+  { name: "Flat Tops Milk Chocolate (per piece)", description: "Classic Filipino chocolate snack", price: 8.98, category: "Snacks" },
+  { name: "Cloud 9 Classic Bar (per piece)", description: "Chewy chocolate bar with caramel", price: 18.98, category: "Snacks" },
+  { name: "Cloud 9 Overload (per piece)", description: "Larger bar with extra caramel & nuts", price: 21.98, category: "Snacks" },
+  { name: "Lala Chocolate Bar (per piece)", description: "Condensed milk-based choco bar", price: 12.98, category: "Snacks" },
+  { name: "Choco Mucho Dark Chocolate (per piece)", description: "Crunchy wafer bar with dark chocolate", price: 20.98, category: "Snacks" },
+  { name: "Choco Mucho Cookies & Cream (per piece)", description: "White choco bar with cookie bits", price: 20.98, category: "Snacks" },
+  { name: "Hany Milk Chocolate (per piece)", description: "Chocnut-style peanut milk chocolate", price: 14.98, category: "Snacks" },
+  { name: "Chocnut Peanut Bar (5 pcs/pack)", description: "Crumbly chocolate peanut snack", price: 27.98, category: "Snacks" },
+  
+  // 🍪 Biscuits & Cookies
+  { name: "Hansel Mocha Sandwich (10s pack)", description: "10 mocha cream-filled sandwich biscuits", price: 78.00, category: "Biscuits" },
+  { name: "Hansel Chocolate Sandwich (10s pack)", description: "10 chocolate-filled sandwich biscuits", price: 78.00, category: "Biscuits" },
+  { name: "Rebisco Choco Sandwich (10s pack)", description: "10 twin chocolate sandwich crackers", price: 85.99, category: "Biscuits" },
+  { name: "Rebisco Strawberry Sandwich (10s pack)", description: "10 sweet pink sandwich crackers", price: 85.99, category: "Biscuits" },
+  { name: "Cream-O Chocolate Cookies (10s pack)", description: "10 Oreo-style cookie sandwiches", price: 89.99, category: "Biscuits" },
+  { name: "Cream-O Vanilla Cookies (10s pack)", description: "10 vanilla-flavored sandwich cookie packs", price: 89.99, category: "Biscuits" },
+  { name: "Presto Peanut Butter Cookies (10s pack)", description: "10 peanut butter sandwich cookie packs", price: 87.99, category: "Biscuits" },
+
+ // 🥛 UHT / Sterilized Milk
+{ name: "Bear Brand Sterilized Milk 200mL", description: "Ready-to-drink sterilized milk", price: 19.99, category: "Milk" },
+{ name: "Bear Brand Sterilized Milk 400mL", description: "Larger can for kids and adults", price: 36.99, category: "Milk" },
+{ name: "Alaska Sterilized Milk 200mL", description: "Creamy sterilized milk drink", price: 18.99, category: "Milk" },
+{ name: "Magnolia Fresh Milk 1L (UHT)", description: "Long-life full cream milk", price: 97.99, category: "Milk" },
+{ name: "Selecta Fortified Milk 1L (UHT)", description: "UHT milk with vitamins for families", price: 89.99, category: "Milk" },
+{ name: "Selecta Flavored Milk Choco 250mL", description: "Ready-to-drink chocolate milk", price: 24.99, category: "Milk" },
+{ name: "Selecta Flavored Milk Strawberry 250mL", description: "Fruity strawberry milk drink", price: 24.99, category: "Milk" },
+{ name: "Bear Brand Choco Milk Drink 200mL", description: "Chocolate-flavored ready-to-drink milk", price: 22.99, category: "Milk" },
+
+// 🧁 Creams (New Category)
+{ name: "Nestlé All Purpose Cream 250mL", description: "Versatile cream for cooking and desserts", price: 55.99, category: "Cream" },
+{ name: "Nestlé All Purpose Cream 125mL", description: "Smaller size for single recipes", price: 32.99, category: "Cream" },
+{ name: "Alaska Crema All Purpose Cream 250mL", description: "Affordable cream for salad and pasta", price: 49.99, category: "Cream" },
+{ name: "Angel All Purpose Cream 250mL", description: "Creamy consistency for dishes", price: 48.99, category: "Cream" },
+{ name: "Alaska Crema Asada 370mL", description: "Sweetened cream for fruit salad", price: 47.99, category: "Cream" },
+{ name: "Angel Kremdensada 410mL", description: "Combination of cream and condensed milk", price: 46.99, category: "Cream" }
+{ name: "Gardenia Classic White Bread 400g", description: "Soft white bread loaf", price: 67.99, category: "Bakery" },
+{ name: "Gardenia Pandesal Pack (10 pcs)", description: "Ready-to-eat soft pandesal", price: 42.99, category: "Bakery" },
+{ name: "Super Loaf Bread 400g", description: "Budget loaf alternative", price: 48.99, category: "Bakery" },
+{ name: "Monay Bread (4 pcs)", description: "Local dense bread great for pairing", price: 29.99, category: "Bakery" },
+{ name: "Tasty Bread (per loaf)", description: "Pandesal-style white bread", price: 54.99, category: "Bakery" },
+{ name: "Zest-O Orange Juice Drink 250mL", description: "Popular Filipino juice drink", price: 11.99, category: "Beverages" },
+{ name: "Tang Orange Powdered Juice 25g", description: "Just add water – single serve", price: 7.99, category: "Beverages" },
+{ name: "Nestea Iced Tea Powder Lemon 25g", description: "Cold lemon iced tea sachet", price: 9.99, category: "Beverages" },
+{ name: "Del Monte Pineapple Juice 240mL", description: "Refreshing pineapple drink", price: 22.99, category: "Beverages" },
+{ name: "C2 Green Tea Apple 355mL", description: "Ready-to-drink bottled tea", price: 23.99, category: "Beverages" },
+{ name: "Argentina Corned Beef 150g", description: "Classic breakfast favorite", price: 41.99, category: "Canned Goods" },
+{ name: "Purefoods Corned Beef 150g", description: "Premium chunky corned beef", price: 53.99, category: "Canned Goods" },
+{ name: "CDO Vienna Sausage 155g", description: "Easy canned snack or meal", price: 26.99, category: "Canned Goods" },
+{ name: "555 Sardines in Tomato Sauce 155g", description: "Everyday ulam staple", price: 19.99, category: "Canned Goods" },
+{ name: "Mega Sardines Green 155g", description: "Tatak Mega freshness", price: 24.99, category: "Canned Goods" },
+{ name: "Lucky Me Pancit Canton Classic", description: "Quick stir-fried noodle meal", price: 14.99, category: "Noodles" },
+{ name: "Lucky Me Chicken Mami", description: "Instant soup noodles", price: 13.99, category: "Noodles" },
+{ name: "Payless Pancit Canton", description: "Budget pancit canton alternative", price: 11.99, category: "Noodles" },
+{ name: "Sinandomeng Rice 1kg", description: "Local white rice (premium grain)", price: 64.99, category: "Rice" },
+{ name: "Dinorado Rice 1kg", description: "Aromatic & soft cooking rice", price: 69.99, category: "Rice" },
+
+{ name: "Minola Coconut Oil 1L", description: "Affordable and healthy cooking oil", price: 99.99, category: "Cooking" },
+{ name: "Golden Fiesta Canola Oil 1L", description: "Heart-friendly cooking oil", price: 122.99, category: "Cooking" },
+{ name: "Baguio Vegetable Oil 1L", description: "General-purpose cooking oil", price: 114.99, category: "Cooking" },
+{ name: "La Española Olive Oil 250mL", description: "For gourmet and healthy dishes", price: 189.99, category: "Cooking" },
+{ name: "Datu Puti Sukang Iloko 750mL", description: "Local vinegar for sawsawan", price: 22.99, category: "Cooking" },
+{ name: "Piattos Cheese (85g)", description: "Crunchy hexagon potato snack", price: 28.99, category: "Snacks" },
+{ name: "Nova Multigrain BBQ (78g)", description: "Healthy-ish crunch with flavor", price: 27.99, category: "Snacks" },
+{ name: "Chippy Chili & Cheese (110g)", description: "Spicy corn chip classic", price: 29.99, category: "Snacks" },
+{ name: "Vcut Spicy BBQ Chips (60g)", description: "Wavy spicy potato snack", price: 24.99, category: "Snacks" },
+{ name: "SkyFlakes Crackers (pack of 3)", description: "Saltine-style Filipino classic", price: 17.99, category: "Snacks" },
+{ name: "Head & Shoulders Cool Menthol 12mL", description: "Anti-dandruff shampoo sachet", price: 6.99, category: "Toiletries" },
+{ name: "Palmolive Naturals Anti-Hair Fall 12mL", description: "Sachet shampoo with cream formula", price: 6.99, category: "Toiletries" },
+{ name: "Cream Silk Conditioner Standout 10mL", description: "Sachet hair conditioner", price: 6.99, category: "Toiletries" },
+{ name: "Colgate Regular Toothpaste 35g", description: "Cavity protection for the family", price: 29.99, category: "Toiletries" },
+{ name: "Closeup Red Gel Toothpaste 50mL", description: "Fresh breath and whitening", price: 38.99, category: "Toiletries" },
+{ name: "EQ Dry Diapers Small (4 pcs)", description: "Budget-friendly baby diapers", price: 39.99, category: "Baby" },
+{ name: "Pampers Baby Dry Small (4 pcs)", description: "Trusted dry protection", price: 54.99, category: "Baby" },
+{ name: "Johnson's Baby Powder 50g", description: "Gentle powder for baby’s skin", price: 28.99, category: "Baby" },
+{ name: "Tiny Buds Natural Baby Bottle Wash 60mL", description: "Plant-based bottle cleaner", price: 39.99, category: "Baby" },
+{ name: "Tender Care Baby Wipes (20s)", description: "Soft & gentle for baby's skin", price: 29.99, category: "Baby" },
+{ name: "Pedigree Adult Beef Dog Food 1.2kg", description: "Complete and balanced kibble", price: 269.99, category: "Pets" },
+{ name: "Whiskas Ocean Fish Cat Food 1.1kg", description: "Kibble for adult cats", price: 249.99, category: "Pets" },
+{ name: "Cosi Pet Dog Treats Jerky 100g", description: "Chewy dog reward treats", price: 57.99, category: "Pets" },
+{ name: "Pet Clean Deodorizer Spray 250mL", description: "Removes pet odor and disinfects", price: 64.99, category: "Pets" },
+{ name: "Pet Bowl (Plastic – Medium)", description: "Food and water bowl for pets", price: 34.99, category: "Pets" },
+{ name: "Domex Ultra Thick Bleach 500mL", description: "Kills 99.9% of germs, thick formula", price: 59.99, category: "Toilet Cleaners" },
+{ name: "Domex Ultra Thick Bleach 200mL", description: "Toilet cleaner for home use", price: 38.99, category: "Toilet Cleaners" },
+{ name: "Lysol Toilet Bowl Cleaner 500mL", description: "Disinfects and removes stains", price: 89.99, category: "Toilet Cleaners" },
+{ name: "Zonrox Toilet Cleaner 500mL", description: "Bleach-based toilet cleaner", price: 41.99, category: "Toilet Cleaners" },
+{ name: "Domex Power Toilet Sachet 50mL", description: "Sachet toilet cleaner for single use", price: 17.99, category: "Toilet Cleaners" },
+{ name: "Joy Dishwashing Liquid Kalamansi 200mL", description: "Powerful grease remover, citrus scent", price: 27.99, category: "Kitchen" },
+{ name: "Surf Dishwashing Liquid 200mL", description: "Budget-friendly dish cleaner", price: 24.99, category: "Kitchen" },
+{ name: "Smart Dishwashing Paste Kalamansi 400g", description: "Thick dishwashing paste", price: 34.99, category: "Kitchen" },
+{ name: "Scotch-Brite Scrub Pad (per piece)", description: "Durable dish and pot scrubber", price: 11.99, category: "Kitchen" },
+{ name: "Generic Sponge Scrubber (per piece)", description: "Affordable kitchen sponge", price: 9.99, category: "Kitchen" },
+{ name: "Zonrox Regular Bleach 500mL", description: "Whitening bleach and disinfectant", price: 31.99, category: "Cleaning" },
+{ name: "Zonrox Colorsafe Bleach 500mL", description: "Gentle bleach for colored fabrics", price: 34.99, category: "Cleaning" },
+{ name: "Mr. Muscle Multi-Surface Cleaner 500mL", description: "For kitchen counters, tiles, surfaces", price: 78.99, category: "Cleaning" },
+{ name: "Lysol Disinfectant Spray 170g", description: "Kills 99.9% germs in air and surfaces", price: 189.99, category: "Cleaning" },
+{ name: "Glade Room Spray Ocean Escape 320mL", description: "Eliminates odors, fresh scent", price: 84.99, category: "Cleaning" },
+{ name: "Sanicare Toilet Paper 2-Ply (3 rolls)", description: "Soft and strong bath tissue", price: 46.99, category: "Tissue" },
+{ name: "Freshee Bathroom Tissue (4 rolls)", description: "Economical toilet tissue", price: 49.99, category: "Tissue" },
+{ name: "Kleenex Facial Tissue 100 pulls", description: "Soft tissue for face and hygiene", price: 36.99, category: "Tissue" },
+{ name: "Mighty Wipes Paper Towel Roll", description: "Absorbent kitchen towel", price: 44.99, category: "Tissue" },
+{ name: "Sanicare Interfolded Paper Towel (175 pulls)", description: "Ideal for kitchen or bathroom use", price: 59.99, category: "Tissue" },
 
-  // ☕️ Powdered Creamers
-{ name: "Nestlé Coffeemate 170g", description: "Classic powdered coffee creamer", price: 59.99 },
-{ name: "Nestlé Coffeemate 450g", description: "Larger pack for daily coffee use", price: 124.99 },
-{ name: "Nestlé Coffeemate 900g", description: "Family-size creamy powdered creamer", price: 239.99 },
-{ name: "Coffeemate Creamy White 33g (sachet)", description: "Single-serve creamy sachet", price: 11.99 },
-{ name: "Coffeemate Creamy White 11g (stick)", description: "Stick pack for 1 cup serving", price: 5.99 },
-{ name: "Selecta Coffee Creamer 170g", description: "Budget-friendly powdered creamer", price: 48.99 },
-{ name: "Selecta Coffee Creamer 33g", description: "Economy sachet creamer", price: 10.99 },
-{ name: "Great Taste White Creamy 33g", description: "3-in-1 instant creamy coffee", price: 10.99 },
-{ name: "Nescafé Creamy White 27g", description: "Milky and smooth coffee creamer mix", price: 10.99 },
-{ name: "Kopiko Blanca Creamy Coffee Mix 30g", description: "Creamy coffee with rich taste", price: 11.99 },
-{ name: "Alaska Crema Powdered Creamer 250g", description: "Multi-purpose creamer for coffee or cooking", price: 68.99 },
-{ name: "Everyday Creamer Powder 200g", description: "Affordable creamer for hot drinks", price: 42.99 },
-{ name: "Angel All-Purpose Creamer 300g", description: "Can be used in coffee, desserts, or cooking", price: 59.99 },
-{ name: "Bear Brand Adult Plus Creamy 33g", description: "Creamy milk powder blend with nutrients", price: 13.99 },
-{ name: "Nutriblend Creamer Milk Powder 300g", description: "Fortified creamer-style milk powder", price: 54.99 }
-
-// ☕️ 3-in-1 Coffee (Per Sachet & Packs)
-
-// Single Sachets (Per Piece)
-{ name: "Nescafé Original 3-in-1 Coffee 28g", description: "Classic instant coffee with sugar and creamer", price: 10.99 },
-{ name: "Nescafé Creamy White 3-in-1 Coffee 27g", description: "Smooth and creamy white coffee blend", price: 10.99 },
-{ name: "Kopiko Blanca Creamy Coffee 30g", description: "Mild and milky coffee favorite", price: 11.99 },
-{ name: "Great Taste White 3-in-1 Coffee 30g", description: "Creamy coffee with light sweetness", price: 10.99 },
-{ name: "Great Taste Brown Barako 30g", description: "Stronger barako-style 3-in-1", price: 10.99 },
-{ name: "San Mig 3-in-1 Strong Coffee Mix 28g", description: "Rich and bold Filipino instant coffee", price: 10.99 },
-{ name: "Kopiko Black 3-in-1 30g", description: "Bolder coffee flavor with strong aroma", price: 10.99 },
-{ name: "Energen Choco+Coffee 40g", description: "Coffee with added cereal nutrition", price: 13.99 },
-
-// Packs (Multiple Sachets)
-{ name: "Nescafé Original 3-in-1 Coffee (10s)", description: "10 sachets of the original Nescafé blend", price: 99.99 },
-{ name: "Nescafé Creamy White 3-in-1 (10s)", description: "10x27g creamy smooth sachets", price: 99.99 },
-{ name: "Kopiko Blanca Creamy Coffee (10s)", description: "10 sachets of soft and milky blend", price: 109.99 },
-{ name: "Great Taste White 3-in-1 (10s)", description: "10-pack creamy light coffee sachets", price: 99.99 },
-{ name: "San Mig 3-in-1 Coffee Mix (10s)", description: "Rich Filipino-style 10-sachet pack", price: 98.99 },
-{ name: "Energen Chocolate + Coffee (5s)", description: "5 sachets fortified drink with cereal and coffee", price: 54.99 },
-{ name: "Kopiko Black 3-in-1 Strong Coffee (10s)", description: "10 sachets of intense-flavor instant coffee", price: 104.99 },
-{ name: "Great Taste Brown 3-in-1 Barako (10s)", description: "Full-bodied local blend 10-pack", price: 99.99 }
-
-  // 🥤 UHT / Sterilized Milk
-{ name: "Bear Brand Sterilized Milk 200mL", description: "Ready-to-drink sterilized milk", price: 19.99 },
-{ name: "Bear Brand Sterilized Milk 400mL", description: "Larger can for kids and adults", price: 36.99 },
-{ name: "Bear Brand Fortified Powdered Milk Drink 320g", description: "Nutritious milk drink in powder form", price: 112.99 },
-
-{ name: "Alaska Sterilized Milk 200mL", description: "Creamy sterilized milk drink", price: 18.99 },
-{ name: "Alaska Sterilized Milk 370mL", description: "Sweetened creamy sterilized milk in can", price: 33.99 },
-{ name: "Alaska Fortified UHT Milk 1L", description: "Vitamin-rich UHT milk for kids", price: 88.99 },
-
-{ name: "Magnolia Fresh Milk 1L (UHT)", description: "Long-life full cream milk", price: 97.99 },
-{ name: "Magnolia Choco Milk 200mL", description: "Chocolate-flavored sterilized milk", price: 23.99 },
-{ name: "Magnolia Low Fat Milk 1L (UHT)", description: "Low-fat long shelf-life milk", price: 98.99 },
-
-{ name: "Selecta Fortified Milk 1L (UHT)", description: "UHT milk with vitamins for families", price: 89.99 },
-{ name: "Selecta Moo Chocolate Milk 200mL", description: "Kid-favorite choco milk in tetra pack", price: 21.99 },
-
-{ name: "Nestlé Fresh Milk 1L (UHT)", description: "Premium full cream milk with UHT processing", price: 98.99 },
-{ name: "Nestlé Low Fat Milk 1L (UHT)", description: "Lower fat option for healthy diets", price: 98.99 },
-{ name: "Nestlé Non-Fat Milk 1L (UHT)", description: "UHT skim milk for calorie-conscious", price: 98.99 },
-{ name: "Nestlé Chuckie Chocolate Milk 250mL", description: "Choco milk treat loved by kids", price: 24.99 },
-
-{ name: "Cowhead Pure Milk 1L (UHT)", description: "Imported premium UHT milk", price: 109.99 },
-{ name: "Cowhead Low Fat Milk 1L (UHT)", description: "Imported low fat long shelf milk", price: 109.99 },
-{ name: "Cowhead Chocolate Milk 1L", description: "Creamy chocolate-flavored milk drink", price: 114.99 }
-
-  // 🍶 All-Purpose Cream
-{ name: "Nestlé All-Purpose Cream 125mL", description: "Mini pack of classic Nestlé cream", price: 31.99 },
-{ name: "Nestlé All-Purpose Cream 250mL", description: "Versatile cream for desserts & dishes", price: 57.99 },
-{ name: "Nestlé All-Purpose Cream 500mL", description: "Big size for bulk recipes & parties", price: 109.99 },
-{ name: "Nestlé All-Purpose Cream (Choco) 250mL", description: "Chocolate-flavored dessert cream", price: 59.99 },
-
-{ name: "Alaska Crema All-Purpose Cream 125mL", description: "Affordable cream for daily use", price: 26.99 },
-{ name: "Alaska Crema All-Purpose Cream 250mL", description: "Budget-friendly kitchen cream", price: 47.99 },
-{ name: "Alaska Crema All-Purpose Cream 500mL", description: "Large size creamy blend for dishes", price: 89.99 },
-
-{ name: "Angel All-Purpose Cream 250mL", description: "Creamy blend ideal for cooking", price: 49.99 },
-{ name: "Angel Kremdensada 410mL", description: "Cream + Condensada combo in one", price: 59.99 },
-
-{ name: "Magnolia All-Purpose Cream 250mL", description: "Trusted creamy kitchen essential", price: 53.99 },
-{ name: "Cowbell All-Purpose Cream 250mL", description: "All-around cream alternative", price: 45.99 },
-{ name: "Jolly Cow All-Purpose Cream 250mL", description: "Smooth cream for recipes & desserts", price: 48.99 }
-
-  // 🍚 Rice & Grains
-{ name: "Doña Maria Jasponica Rice 1kg", description: "Premium jasmine rice blend", price: 108.99 },
-{ name: "Doña Maria Jasponica Rice 2kg", description: "Premium jasmine rice blend", price: 215.99 },
-{ name: "Doña Maria Jasponica Rice 5kg", description: "Premium jasmine rice blend", price: 528.99 },
-{ name: "Doña Maria Jasponica Rice 10kg", description: "Premium jasmine rice blend", price: 1_049.99 },
-
-{ name: "Golden Phoenix Jasmine Rice 2kg", description: "Thai jasmine rice", price: 229.99 },
-{ name: "Golden Phoenix Jasmine Rice 3kg", description: "Thai jasmine rice", price: 315.99 },
-{ name: "Golden Phoenix Jasmine Rice 5kg", description: "Thai jasmine rice", price: 425.99 },
-{ name: "Golden Phoenix Jasmine Rice 10kg", description: "Thai jasmine rice", price: 849.99 },
-
-{ name: "Milagrosa Dinorado Rice 1kg", description: "Aromatic soft local rice", price: 89.99 },
-{ name: "Milagrosa Dinorado Rice 2kg", description: "Aromatic soft local rice", price: 174.99 },
-{ name: "Milagrosa Dinorado Rice 5kg", description: "Aromatic soft local rice", price: 429.99 },
-{ name: "Milagrosa Dinorado Rice 10kg", description: "Aromatic soft local rice", price: 849.99 },
-
-{ name: "Sinandomeng Rice 1kg", description: "Well-milled white rice", price: 51.98 },
-{ name: "Sinandomeng Rice 2kg", description: "Well-milled white rice", price: 103.98 },
-{ name: "Sinandomeng Rice 5kg", description: "Well-milled white rice", price: 254.98 },
-{ name: "Sinandomeng Rice 10kg", description: "Well-milled white rice", price: 509.98 },
-
-{ name: "Brown Rice 1kg", description: "Healthier whole grain rice", price: 66.98 },
-{ name: "Brown Rice 2kg", description: "Healthier whole grain rice", price: 132.98 },
-{ name: "Brown Rice 5kg", description: "Healthier whole grain rice", price: 329.98 },
-{ name: "Brown Rice 10kg", description: "Healthier whole grain rice", price: 649.98 },
-
-{ name: "Red Rice 1kg", description: "Fiber-rich native red rice", price: 72.99 },
-{ name: "Red Rice 2kg", description: "Fiber-rich native red rice", price: 144.99 },
-{ name: "Red Rice 5kg", description: "Fiber-rich native red rice", price: 359.99 },
-
-{ name: "Black Rice 1kg", description: "High-antioxidant heirloom rice", price: 84.99 },
-{ name: "Black Rice 2kg", description: "High-antioxidant heirloom rice", price: 166.99 },
-{ name: "Black Rice 5kg", description: "High-antioxidant heirloom rice", price: 419.99 }
-// 🍳 Eggs & Meat
-{ name: "Fresh Egg (1 piece)", description: "Farm‑fresh medium egg", price: 10.99 },
-{ name: "Egg Tray (10 pcs)", description: "Small tray for households", price: 85.99 },
-{ name: "Egg Tray (30 pcs)", description: "Bulk pack for family use", price: 250.99 },
-
-{ name: "Purefoods Tender Juicy Hotdog Regular 250g", description: "Kids' favorite classic hotdog", price: 68.99 },
-{ name: "Purefoods Tender Juicy Hotdog Jumbo 250g", description: "Extra juicy jumbo size", price: 72.99 },
-{ name: "CDO Chicken Hotdog 250g", description: "Affordable frozen hotdog pack", price: 54.99 },
-{ name: "King Sue Chicken Hotdog 250g", description: "Budget-friendly hotdog brand", price: 51.99 },
-
-{ name: "Pork Tocino Pack 250g", description: "Filipino-style sweet cured pork", price: 66.99 },
-{ name: "CDO Pork Tocino Sweet & Meaty 250g", description: "Sweet pork tocino ready to cook", price: 68.99 },
-{ name: "Purefoods Tocino Classic 250g", description: "Classic-style sweet tocino", price: 69.99 },
-
-{ name: "Longganisa Pack 250g", description: "Native sausage for breakfast", price: 64.99 },
-{ name: "Pampanga's Best Skinless Longganisa 250g", description: "Best-selling skinless sausage", price: 72.99 },
-{ name: "CDO Longganisa Garlic 250g", description: "Strong garlic flavor Filipino sausage", price: 69.99 },
-
-{ name: "Chicken Nuggets 200g", description: "Frozen crispy chicken bites", price: 69.99 },
-{ name: "Purefoods Chicken Nuggets 200g", description: "Kid-friendly breaded nuggets", price: 74.99 },
-
-{ name: "Frozen Chicken Breast 1kg", description: "Boneless chicken for frying or adobo", price: 219.99 },
-{ name: "Frozen Ground Pork 500g", description: "Ready-to-cook pork for menudo or lumpia", price: 149.99 },
-{ name: "Frozen Ground Beef 500g", description: "Lean ground beef for spaghetti or tacos", price: 169.99 }
-
-// 🥫 Canned Goods
-{ name: "Century Tuna Flakes in Oil 180g", description: "Lean protein canned tuna", price: 42.99 },
-{ name: "Century Tuna Hot & Spicy 180g", description: "Spicy tuna perfect with rice", price: 43.99 },
-{ name: "Century Tuna Caldereta 180g", description: "Ready-to-eat tuna in caldereta sauce", price: 45.99 },
-{ name: "555 Tuna Adobo 155g", description: "Tuna in savory Filipino adobo sauce", price: 34.99 },
-{ name: "555 Tuna Afritada 155g", description: "Tuna in sweet tomato sauce", price: 34.99 },
-
-{ name: "555 Sardines in Tomato Sauce 155g", description: "Budget ulam staple", price: 26.99 },
-{ name: "555 Sardines with Chili 155g", description: "Maanghang na sardinas", price: 27.99 },
-{ name: "Ligo Sardines Green 155g", description: "Sardinas na masarap i‑prito", price: 27.99 },
-{ name: "Ligo Sardines Red (Hot) 155g", description: "Spicy sardines variant", price: 27.99 },
-{ name: "Mega Sardines in Oil 155g", description: "Premium sardines in oil", price: 28.99 },
-{ name: "Mega Sardines in Tomato Sauce 155g", description: "Best-selling sardinas", price: 28.99 },
-
-{ name: "Argentina Corned Beef 150g", description: "Breakfast‑favorite beef hash", price: 45.99 },
-{ name: "Argentina Corned Beef Chunky 175g", description: "Larger chunky beef hash", price: 57.99 },
-{ name: "Delimondo Corned Beef 260g", description: "Premium pure beef corned beef", price: 96.99 },
-{ name: "Palm Corned Beef 340g", description: "New Zealand imported canned beef", price: 114.99 },
-
-{ name: "Maling Luncheon Meat 397g", description: "Ready-to-eat pork luncheon meat", price: 96.99 },
-{ name: "Holiday Luncheon Meat 260g", description: "Budget luncheon meat option", price: 58.99 },
-{ name: "Argentina Meat Loaf 150g", description: "Easy canned ulam", price: 29.99 },
-{ name: "Purefoods Liver Spread 85g", description: "Savory liver paste for pandesal", price: 18.99 },
-{ name: "Reno Liver Spread 85g", description: "Classic Filipino favorite", price: 20.99 },
-
-{ name: "Hunt's Pork & Beans 230g", description: "Beans in sweet tomato sauce", price: 25.99 },
-{ name: "CDO Funtastyk Pork BBQ 150g", description: "Canned pork barbecue in sauce", price: 49.99 },
-{ name: "Swift Spaghetti Sauce with Meat 250g", description: "For instant pasta meals", price: 33.99 }
-
-// 🍜 Noodles & Pasta
-{ name: "Lucky Me Pancit Canton Original 60g", description: "Quick-cook stir‑fry noodles", price: 15.99 },
-{ name: "Lucky Me Pancit Canton Kalamansi 60g", description: "Tangy calamansi flavor", price: 15.99 },
-{ name: "Lucky Me Pancit Canton Hot Chili 60g", description: "Extra spicy variant", price: 15.99 },
-{ name: "Lucky Me Pancit Canton Chilimansi 60g", description: "Chili + calamansi fusion", price: 15.99 },
-{ name: "Lucky Me Pancit Canton Extra Big 130g", description: "Larger serving size", price: 29.99 },
-
-{ name: "Lucky Me Beef Instant Noodles 55g", description: "Beef-flavored sopas noodles", price: 11.99 },
-{ name: "Lucky Me Chicken Instant Noodles 55g", description: "Pinoy chicken noodle soup", price: 11.99 },
-{ name: "Lucky Me Bulalo Instant Noodles 55g", description: "Savory bone marrow broth flavor", price: 11.99 },
-{ name: "Lucky Me La Paz Batchoy Noodles 55g", description: "Ilonggo favorite noodle soup", price: 11.99 },
-
-{ name: "Nissin Ramen Tonkotsu 120g", description: "Japanese-style creamy pork ramen", price: 42.99 },
-{ name: "Nissin Cup Noodles Chicken 64g", description: "Ready-to-eat cup soup", price: 27.99 },
-{ name: "Nissin Cup Noodles Seafood 64g", description: "Seafood-flavored cup noodle", price: 27.99 },
-
-{ name: "Quickchow Chicken Mami 60g", description: "Budget instant noodle mami", price: 10.99 },
-{ name: "Payless Xtra Big Pancit Canton 130g", description: "Large spicy dry noodles", price: 26.99 },
-{ name: "Payless Instant Mami Beef 60g", description: "Affordable beef mami", price: 9.99 },
-
-// 🍝 Pasta
-{ name: "El Real Spaghetti Pasta 500g", description: "Affordable pasta choice", price: 38.99 },
-{ name: "Royal Spaghetti Pasta 500g", description: "Popular Filipino pasta", price: 41.99 },
-{ name: "Fiesta Spaghetti Pasta 1kg", description: "Family-size pasta pack", price: 72.99 },
-{ name: "Ideal Spaghetti Pasta 500g", description: "Premium durum pasta", price: 49.99 },
-{ name: "San Remo Spaghetti Pasta 500g", description: "Italian-quality spaghetti", price: 64.99 },
-
-{ name: "Royal Macaroni Elbow 200g", description: "Perfect for sopas or salad", price: 26.99 },
-{ name: "Royal Macaroni Elbow 400g", description: "Larger elbow macaroni pack", price: 49.99 },
-{ name: "Ideal Penne Rigate 500g", description: "Tube-shaped pasta for sauces", price: 54.99 },
-{ name: "San Remo Fettuccine Pasta 500g", description: "Flat ribbon pasta for creamy dishes", price: 69.99 }
-
-// 🍞 Bakery & Bread
-{ name: "Gardenia Classic White Bread 400g", description: "Soft loaf perfect for sandwiches", price: 97.99 },
-{ name: "Gardenia Pandesal 300g", description: "Pandesal pack for breakfast", price: 67.99 },
-{ name: "Angelina Tasty Loaf 400g", description: "Budget-friendly white bread loaf", price: 94.99 },
-{ name: "Angelina Wheat Loaf 400g", description: "High-fiber whole wheat loaf", price: 96.99 },
-{ name: "Superloaf White Bread 400g", description: "Affordable loaf alternative", price: 84.99 },
-
-// Per Piece Local Breads
-{ name: "Monay Bread (per piece)", description: "Dense local bread roll", price: 7.99 },
-{ name: "Spanish Bread (per piece)", description: "Sweet buttery filled bread", price: 8.99 },
-{ name: "Ensaymada (per piece)", description: "Soft bread with margarine and cheese", price: 9.99 },
-{ name: "Cheese Bread (per piece)", description: "Sweet bread topped with cheese bits", price: 8.99 },
-{ name: "Pan de Coco (per piece)", description: "Bread with sweet coconut filling", price: 9.99 },
-{ name: "Tasty Loaf Slice (per piece)", description: "Single slice of soft white bread", price: 5.99 },
-
-// Premium & Specialty
-{ name: "Gardenia High Fiber Wheat Bread 400g", description: "Ideal for healthy sandwiches", price: 104.99 },
-{ name: "Gardenia Chocolate Chip Loaf 400g", description: "Sweet snack loaf with chocolate chips", price: 109.99 },
-{ name: "Gardenia Milky White Bread 400g", description: "Enriched soft white loaf", price: 101.99 },
-
-// Buns & Rolls
-{ name: "Burger Bun (per piece)", description: "Round bun for burgers or sandwiches", price: 9.99 },
-{ name: "Hotdog Bun (per piece)", description: "Long bun for hotdogs or sausages", price: 9.99 },
-{ name: "Mini Pack Pandesal (6 pcs)", description: "Soft local breakfast bread", price: 29.99 },
-{ name: "Regular Pack Pandesal (10 pcs)", description: "Daily breakfast staple bread", price: 42.99 }
-
- // 🧀 Dairy & Cheese
-{ name: "Eden Cheese 165g", description: "Processed cheddar cheese block", price: 65.99 },
-{ name: "Eden Cheese 450g Block", description: "Larger size cheddar cheese block", price: 154.99 },
-{ name: "Eden Quickmelt 165g", description: "Melts easily for baking or toppings", price: 74.99 },
-{ name: "Eden Queso de Bola 165g", description: "Holiday-style cheese ball", price: 84.99 },
-
-{ name: "Magnolia Quickmelt Cheese 165g", description: "Ideal for baked dishes", price: 74.99 },
-{ name: "Magnolia Cheddar Cheese 165g", description: "Classic cheddar flavor block", price: 76.99 },
-{ name: "Magnolia Cream Cheese 225g", description: "Perfect for cheesecakes and frosting", price: 129.99 },
-
-{ name: "Kraft Eden Melt Sarap 165g", description: "Soft-melt cheese for hot dishes", price: 76.99 },
-{ name: "Kraft Cheddar Cheese 180g", description: "Rich-tasting cheese block", price: 98.99 },
-{ name: "Danes Cheese Ball 165g", description: "Round holiday cheese favorite", price: 82.99 },
-
-// Grated & Sliced Cheese
-{ name: "Eden Grated Cheese 45g", description: "Convenient cheese topping pack", price: 32.99 },
-{ name: "Magnolia Grated Cheese 45g", description: "Quick topping for pasta or bread", price: 34.99 },
-{ name: "Eden Cheese Slices 170g (10s)", description: "Perfect for sandwiches", price: 87.99 },
-{ name: "Cheez Whiz Slices 165g", description: "Individually packed cheese slices", price: 89.99 },
-
-// Cheese Spreads
-{ name: "Cheez Whiz Original 220g", description: "Spreadable cheddar cheese", price: 89.99 },
-{ name: "Cheez Whiz Pimiento 220g", description: "Cheese spread with bell pepper flavor", price: 92.99 },
-{ name: "Magnolia Cheezee Spread 220g", description: "Budget cheese spread", price: 74.99 },
-{ name: "Danes Cheese Spread 220g", description: "Creamy cheese sandwich spread", price: 72.99 }
-
- // 🥤 Drinks & Beverages
-{ name: "Coca‑Cola 1.5L PET Bottle", description: "Classic cola refreshment", price: 72.99 },
-{ name: "Coca‑Cola 500mL Bottle", description: "Chilled cola for one", price: 29.99 },
-{ name: "Coca‑Cola Zero Sugar 1.5L", description: "Sugar-free classic cola", price: 72.99 },
-{ name: "Pepsi 1.5L PET Bottle", description: "Bold cola taste", price: 71.99 },
-{ name: "Sprite 1.5L PET Bottle", description: "Lemon-lime soda", price: 71.99 },
-{ name: "Royal Tru Orange 1.5L", description: "Sweet citrus soft drink", price: 71.99 },
-{ name: "Mountain Dew 1.5L", description: "Citrus-flavored soda", price: 71.99 },
-
-{ name: "Zest‑O Orange Juice Drink 250mL", description: "Ready-to-drink juice for kids", price: 13.99 },
-{ name: "Minute Maid Orange Juice 300mL", description: "Real orange juice in bottle", price: 29.99 },
-{ name: "Del Monte Pineapple Juice Can 240mL", description: "Ready‑to‑drink fruit juice", price: 19.99 },
-{ name: "Tropicana Mango Juice 355mL Can", description: "Premium mango juice", price: 31.99 },
-
-{ name: "Milo Chocolate Drink Sachet 22g", description: "Energy drink for kids", price: 10.99 },
-{ name: "Milo Ready‑to‑Drink 180mL", description: "Choco malt drink box", price: 19.99 },
-{ name: "Milo Chocolate Powder 220g", description: "Drink mix with vitamins", price: 92.99 },
-
-{ name: "Bear Brand Powdered Milk 150g", description: "Fortified milk powder", price: 65.99 },
-{ name: "Bear Brand Choco Milk Drink Box 180mL", description: "Chocolate milk drink", price: 18.99 },
-{ name: "Alaska Powdered Milk 300g", description: "Economical powdered milk", price: 92.99 },
-{ name: "Nido Fortified Milk 320g", description: "For kids 3 years and up", price: 179.99 },
-
-{ name: "C2 Green Tea Apple 355mL Bottle", description: "Ready‑to‑drink green tea", price: 26.99 },
-{ name: "Real Leaf Green Tea Honey Lemon 500mL", description: "Chilled tea with a hint of lemon", price: 32.99 },
-
-{ name: "Gatorade Blue Bolt 500mL", description: "Hydrating sports drink", price: 39.99 },
-{ name: "Gatorade Orange 500mL", description: "Electrolyte drink for energy", price: 39.99 },
-{ name: "Pocari Sweat Ion Drink 500mL", description: "Japanese hydration drink", price: 42.99 },
-{ name: "Summit Natural Drinking Water 500mL", description: "Bottled water for on-the-go", price: 15.99 },
-{ name: "Wilkins Distilled Water 1L", description: "Clean and safe drinking water", price: 26.99 }
-// 🍭 Snacks & Chips
-{ name: "Piattos Cheese (big)", description: "Large potato snack with cheese flavor", price: 66.99 },
-{ name: "Nova Multigrain Chips (big)", description: "Big pack multigrain crunch", price: 66.99 },
-{ name: "Chippy BBQ (big)", description: "Large corn chip with smoky BBQ taste", price: 64.99 },
-{ name: "Moby Chocolate (big)", description: "Big choco-filled corn puff snack", price: 66.99 },
-
-{ name: "Vcut Spicy BBQ (small)", description: "Ridged potato chips with spice", price: 20.99 },
-{ name: "Vcut Spicy BBQ (big)", description: "Bigger pack of Vcut chips", price: 66.99 },
-{ name: "Roller Coaster Cheese (small)", description: "Ring-shaped cheese snack", price: 19.99 },
-{ name: "Roller Coaster Cheese (big)", description: "Large fun snack for kids", price: 64.99 },
-
-{ name: "Bread Pan Garlic Butter (small)", description: "Toasted bread snack bites", price: 20.99 },
-{ name: "Bread Pan Garlic Butter (big)", description: "Crispy snack in big pack", price: 66.99 },
-{ name: "Mr. Chips Nacho Cheese (small)", description: "Corn chips with nacho flavor", price: 20.99 },
-{ name: "Mr. Chips Nacho Cheese (big)", description: "Family-sized nacho chip snack", price: 66.99 },
-
-{ name: "Sweet Corn Snack (small)", description: "Sweet corn puff snack", price: 19.99 },
-{ name: "Sweet Corn Snack (big)", description: "Bigger pack for sharing", price: 64.99 },
-{ name: "Tomato Ketchup Chips (small)", description: "Unique Filipino ketchup snack", price: 20.99 },
-{ name: "Tomi Sweet Corn (small)", description: "Classic childhood puffed corn", price: 18.99 },
-
-// Local Favorites
-{ name: "SkyFlakes Crackers Pack (3s)", description: "Classic plain crackers", price: 20.99 },
-{ name: "Fita Biscuits (small pack)", description: "Round salty biscuits", price: 15.99 },
-{ name: "Hansel Mocha Sandwich", description: "Cream-filled sandwich biscuits", price: 21.99 },
-{ name: "Rebisco Choco Sandwich", description: "Choco cream sandwich crackers", price: 21.99 },
-{ name: "Lala Chocolate Bar", description: "Local milk chocolate bar", price: 16.99 },
-{ name: "Flat Tops Milk Chocolate", description: "Classic Filipino chocolate snack", price: 18.99 },
-{ name: "Cloud 9 Classic Bar", description: "Chewy chocolate bar with caramel", price: 19.99 },
-{ name: "Chocnut Peanut Bar (pack of 5)", description: "Crumbly chocolate peanut snack", price: 26.99 },
-
-// 🍪 Biscuits & Sandwich Cookies (10s pack)
-{ name: "Hansel Mocha Sandwich (10s pack)", description: "10 mocha cream-filled sandwich biscuits", price: 87.99 },
-{ name: "Hansel Chocolate Sandwich (10s pack)", description: "10 chocolate-filled sandwich biscuits", price: 87.99 },
-{ name: "Rebisco Choco Sandwich (10s pack)", description: "10 twin chocolate sandwich crackers", price: 85.99 },
-{ name: "Rebisco Strawberry Sandwich (10s pack)", description: "10 sweet pink sandwich crackers", price: 85.99 },
-{ name: "Cream-O Chocolate Cookies (10s pack)", description: "10 Oreo-style cookie sandwiches", price: 89.99 },
-{ name: "Cream-O Vanilla Cookies (10s pack)", description: "10 vanilla-flavored sandwich cookie packs", price: 89.99 },
-{ name: "Presto Peanut Butter Cookies (10s pack)", description: "10 peanut butter sandwich cookie packs", price: 87.99 },
-// 🍫 Chocolate Bars & Local Favorites
-{ name: "Choco Mucho Dark Chocolate (per piece)", description: "Crunchy wafer bar with dark chocolate", price: 20.98 },
-{ name: "Choco Mucho Cookies & Cream (per piece)", description: "White choco bar with cookie bits", price: 20.98 },
-{ name: "Cloud 9 Classic Bar (per piece)", description: "Caramel, nougat, and peanuts", price: 18.98 },
-{ name: "Cloud 9 Overload (per piece)", description: "Larger bar with extra caramel & nuts", price: 21.98 },
-{ name: "Flat Tops Milk Chocolate (per piece)", description: "Local chocolate cup classic", price: 8.98 },
-{ name: "Lala Chocolate Bar (per piece)", description: "Condensed milk-based choco bar", price: 12.98 },
-{ name: "Chocnut Peanut Bar (5 pcs/pack)", description: "Crumbly peanut chocolate candy", price: 27.98 },
-{ name: "Hany Milk Chocolate (per piece)", description: "Chocnut-style peanut milk chocolate", price: 14.98 },
-{ name: "Stik-O Chocolate Wafer Stick (per pack)", description: "Wafer stick snack tube – assorted sticks inside", price: 19.98 },
-{ name: "White Rabbit Creamy Candy (5 pcs/pack)", description: "Milky chewy candy in a mini pack", price: 11.98 },
-{ name: "Potchi Strawberry Gummies (per pack)", description: "Sweet strawberry-flavored chewy candy", price: 14.98 },
-{ name: "Mentos Mint Roll (per pack)", description: "Roll of refreshing mint candy tablets", price: 21.98 },
-{ name: "XO Coffee Candy (per pack)", description: "Coffee-flavored hard candies in pouch", price: 15.98 },
-{ name: "Snow Bear Menthol Candy (per pack)", description: "Mentholated hard candy for cooling relief", price: 15.98 },
-{ name: "Halls Mentholyptus (per pack)", description: "Cooling menthol lozenges for throat relief", price: 17.98 },
-{ name: "Judge Chewing Gum (per pack)", description: "Bubble gum with intense mint flavor", price: 6.98 },
-{ name: "Chupa Chups Lollipop (per piece)", description: "Fruity flavored hard candy on a stick", price: 7.98 },
-{ name: "Sugus Fruit Chews (per pack)", description: "Assorted fruity chewy candy squares", price: 11.98 },
-
-// 🧂 Pantry & Condiments
-{ name: "Silver Swan Soy Sauce 1L", description: "Pang‑adobo soy sauce", price: 35.99 },
-{ name: "Silver Swan Soy Sauce 500mL", description: "For everyday lutong bahay", price: 22.99 },
-{ name: "Datu Puti Vinegar 1L", description: "Sukang Maasim classic vinegar", price: 24.99 },
-{ name: "Datu Puti Vinegar 750mL", description: "Pang-sawsawan kag paksiw", price: 20.99 },
-{ name: "Marca Piña Soy Sauce 1L", description: "Alternative savory soy sauce", price: 33.99 },
-{ name: "Del Monte Tomato Sauce 250g", description: "Filipino‑style spaghetti sauce", price: 24.99 },
-{ name: "Del Monte Tomato Sauce 500g", description: "Pang menudo o spaghetti", price: 39.99 },
-{ name: "UFC Sweet Filipino Style Spaghetti Sauce 500g", description: "Ready-to-use pasta sauce", price: 42.99 },
-{ name: "Hunt's Tomato Sauce 250g", description: "Rich tomato flavor for dishes", price: 25.99 },
-{ name: "UFC Banana Ketchup 320g", description: "Sweet Filipino ketchup", price: 23.99 },
-{ name: "Jufran Banana Ketchup 320g", description: "Sweet and tangy ketchup blend", price: 24.99 },
-{ name: "Lady's Choice Mayonnaise 220mL", description: "Creamy mayo for sandwiches", price: 43.99 },
-{ name: "Lady's Choice Mayonnaise 470mL", description: "Best for macaroni salad", price: 83.99 },
-{ name: "Clara Ole Barbecue Marinade 250g", description: "Ready BBQ timpla in pouch", price: 39.99 },
-{ name: "Knorr Liquid Seasoning 250mL", description: "Pang dagdag lasa sa fried rice o ulam", price: 54.99 },
-{ name: "Knorr Cubes Chicken (6 pcs)", description: "Pampasarap sa sabaw kag sinabawan", price: 17.99 },
-{ name: "Knorr Cubes Beef (6 pcs)", description: "For rich beef-flavored dishes", price: 18.99 },
-{ name: "Ajinomoto Umami Seasoning 100g", description: "Timpladong pampalasa", price: 34.99 },
-{ name: "Magic Sarap All-In-One Seasoning 8g x 12s", description: "Complete timpla mix", price: 21.99 },
-{ name: "McCormick Ground Black Pepper 30g", description: "Giling nga paminta para sa luto", price: 35.99 },
-{ name: "Marca Piña Fish Sauce (Patis) 350mL", description: "Authentic patis flavor", price: 28.99 },
-{ name: "Silver Swan Fish Sauce 385mL", description: "Savory patis for cooking", price: 26.99 },
-{ name: "Reno Liver Spread 85g", description: "For pan de sal, or meaty caldereta", price: 22.99 },
-// 🧺 Laundry Detergent (6's Pack)
-{ name: "Tide Detergent Powder 70g x6", description: "Powerful stain remover powder – 6s pack", price: 49.99 },
-{ name: "Ariel Detergent Powder 66g x6", description: "Deep-clean detergent powder – 6s pack", price: 52.99 },
-{ name: "Surf Detergent Powder 70g x6", description: "Budget detergent with floral scent – 6s pack", price: 46.99 },
-{ name: "Pride Powder Detergent 70g x6", description: "Effective cleaning for daily laundry – 6s pack", price: 45.99 },
-{ name: "Boom Detergent Powder 70g x6", description: "Affordable laundry powder – 6s pack", price: 39.99 },
-{ name: "Champion Detergent Powder 70g x6", description: "Classic formula laundry soap – 6s pack", price: 41.99 },
-
-// 🧼 Bar Soaps (60g per piece)
-{ name: "Safeguard Pure White Soap 60g", description: "Anti-bacterial bar for germ protection", price: 18.99 },
-{ name: "Lifebuoy Total 10 Bar Soap 60g", description: "Anti-bacterial protection for daily use", price: 18.99 },
-{ name: "Palmolive Naturals White + Milk Soap 60g", description: "Moisturizing with milk protein", price: 19.99 },
-{ name: "Johnson’s Baby Soap 60g", description: "Gentle and hypoallergenic for babies", price: 21.99 },
-{ name: "Silka Papaya Whitening Soap 60g", description: "Papaya extract for smoother, fairer skin", price: 17.99 },
-{ name: "Kojie San Skin Lightening Soap 60g", description: "With Kojic acid for even skin tone", price: 26.99 },
-{ name: "Dove White Beauty Bar 60g", description: "With ¼ moisturizing cream for soft skin", price: 22.99 },
-{ name: "Bioderm Germicidal Soap 60g", description: "Affordable protection from germs", price: 14.99 },
-{ name: "Camay Classic Bar Soap 60g", description: "Floral scented bath soap", price: 16.99 },
-{ name: "Perla Laundry Soap White 60g", description: "Gentle soap for delicate clothing and skin", price: 14.99 },
-// 🧴 Fabric Conditioner – Sachets and Packs
-{ name: "Downy Passion Fabric Conditioner 36mL", description: "Long-lasting floral scent – per sachet", price: 9.99 },
-{ name: "Downy Passion Fabric Conditioner 36mL x6", description: "6-sachet pack of long-lasting scent", price: 59.99 },
-
-{ name: "Downy Sunrise Fresh 36mL", description: "Fresh morning scent – per sachet", price: 9.99 },
-{ name: "Downy Sunrise Fresh 36mL x6", description: "6-sachet pack for lasting freshness", price: 59.99 },
-
-{ name: "Surf Fabric Conditioner 25mL", description: "Budget-friendly floral freshness – per sachet", price: 7.99 },
-{ name: "Surf Fabric Conditioner 25mL x6", description: "6-pack of Surf sachets", price: 47.99 },
-
-{ name: "Sta. Lucia Fabric Conditioner 25mL", description: "Affordable softness and scent – per sachet", price: 6.99 },
-{ name: "Sta. Lucia Fabric Conditioner 25mL x6", description: "6-pack sachets for daily use", price: 41.99 },
-  // 💡 Household Essentials
-
-{ name: "Zonrox Regular Bleach 250mL", description: "Disinfects and whitens surfaces and clothes", price: 19.99 },
-{ name: "Zonrox ColorSafe Bleach 250mL", description: "For colored clothes – chlorine-free", price: 21.99 },
-{ name: "Zonrox Regular Bleach 500mL", description: "Multi-purpose bleach for cleaning", price: 31.99 },
-{ name: "Zonrox ColorSafe Bleach 500mL", description: "Gentle bleach alternative for delicates", price: 34.99 },
-
-{ name: "Domex Ultra Thick Toilet Cleaner 50mL", description: "Kills germs and removes stains – sachet", price: 17.99 },
-{ name: "Domex Ultra Thick Toilet Cleaner 200mL", description: "Disinfects toilet bowls and surfaces", price: 42.99 },
-
-{ name: "Pride Laundry Powder 500g", description: "Stain remover for hand or machine wash", price: 29.99 },
-{ name: "Surf Laundry Detergent 500g", description: "With floral fragrance – powder type", price: 30.99 },
-{ name: "Tide Detergent Powder 500g", description: "Powerful clean and freshness", price: 32.99 },
-{ name: "Tide Detergent Powder 70g x6", description: "Small sachets bundle for budget wash", price: 59.99 },
-
-{ name: "Joy Dishwashing Liquid Kalamansi 200mL", description: "Powerful grease remover, citrus scent", price: 27.99 },
-{ name: "Joy Dishwashing Liquid Lemon 200mL", description: "Lemon-fresh dishwashing cleaner", price: 27.99 },
-{ name: "Surf Dishwashing Liquid 200mL", description: "Budget-friendly dish soap with fragrance", price: 24.99 },
-
-{ name: "Scotch-Brite Scrub Pad (per piece)", description: "Durable kitchen and dish scrub", price: 11.99 },
-{ name: "Generic Scrub Pad (per piece)", description: "Affordable dish and pot cleaner", price: 9.99 },
-
-{ name: "Plastic Trash Bag Large (10 pcs)", description: "For heavy household waste", price: 24.99 },
-{ name: "Plastic Trash Bag Medium (10 pcs)", description: "Everyday use for light garbage", price: 19.99 },
-
-{ name: "Candles (pack of 5)", description: "For brownouts and emergencies", price: 29.99 },
-{ name: "Matchsticks (box)", description: "Lighting gas stoves or candles", price: 4.99 },
-{ name: "Lighter (refillable)", description: "Quick ignition tool for home use", price: 14.99 },
 ];
+
 
     function renderProducts() {
   const list = document.getElementById('product-list');
