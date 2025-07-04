@@ -141,14 +141,50 @@
   <input type="email" id="customer-email" placeholder="Email Address" required>
   <input type="text" id="delivery-address" placeholder="📍 Address or Google Maps link" required>
   <input type="text" id="delivery-notes" placeholder="🏠 Notes (optional)">
-  <select id="payment-method">
-    <option value="Cash">Cash on Delivery (Recommended)</option>
-    <option value="GCash">GCash</option>
-    <option value="PayMaya">PayMaya</option>
-    <option value="Bank">Bank Transfer</option>
-  </select>
-  <input type="text" id="payment-ref" placeholder="Payment reference # (for online payments)" style="display:none;" />
-  <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
+ <select id="payment-method">
+  <option value="Cash">Cash on Delivery (Recommended)</option>
+  <option value="GCash">GCash</option>
+  <option value="PayMaya">PayMaya</option>
+  <option value="Bank">Bank Transfer</option>
+</select>
+
+<input
+  type="text"
+  id="payment-ref"
+  placeholder="Payment reference # (for online payments)"
+  style="display:none;"
+/>
+
+<!-- ✅ Payment Instructions Link -->
+<div style="margin-top: 0.5rem;">
+  <a
+    id="payment-link"
+    href="payment-instructions.html?method=GCash"
+    target="_blank"
+    style="color: #008060; text-decoration: underline;"
+  >
+    View payment instructions
+  </a>
+</div>
+
+<!-- ✅ Terms & Conditions Notice -->
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+  ✅ I agree to the
+  <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+    Terms & Conditions
+  </a>.
+  Orders are final and subject to store policies.
+</div>
+
+<!-- ✅ Checkout Button (Initially Disabled) -->
+<button
+  class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+  id="checkout-btn"
+  onclick="submitOrder()"
+  disabled
+>
+  🛒 Checkout via WhatsApp
+</button>
 
 <script>
      const markup = 1.99;
