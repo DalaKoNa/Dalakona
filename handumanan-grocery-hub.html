@@ -590,6 +590,33 @@ Ref #: ${ref || 'N/A'}`;
       window.location.href = thankyouUrl.toString();
     }, 2000);
   }
+<script>
+  window.onload = function () {
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const refInput = document.getElementById('payment-ref');
+      const link = document.getElementById('payment-link');
+
+      if (refInput) {
+        if (method === 'Cash') {
+          refInput.style.display = 'none';
+          refInput.value = '';
+        } else {
+          refInput.style.display = 'block';
+        }
+      }
+
+      if (link) {
+        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+        link.textContent = `View ${method} instructions`;
+      }
+
+      validateForm?.(); // Optional safety
+    });
+
+    // 🔁 Trigger once on load to set the correct state
+    document.getElementById('payment-method').dispatchEvent(new Event('change'));
+  };
 </script>
 
 </body>
