@@ -86,7 +86,7 @@
   <option value="Beverages">Beverages</option>
   <option value="Biscuits">Biscuits</option>
   <option value="Baby">Baby</option>
-  <option value="Canned Goods">🥫 Canned Goods</option>
+  <option value="Canned Goods">Canned Goods</option>
   <option value="Chips">Chips</option>
   <option value="Chocolate">Chocolate</option>
   <option value="Cleaning">Cleaning</option>
@@ -553,7 +553,7 @@ Ref #: ${ref || 'N/A'}`;
 { name: "Blend 45 Original Coffee Mix (30g x 10)", description: "Classic Pinoy budget blend", price: 79.99, category: "3in1 Coffee" }
 ];
 
-    function renderProducts() {
+   function renderProducts() {
   const list = document.getElementById('product-list');
   list.innerHTML = '';
 
@@ -564,7 +564,6 @@ Ref #: ${ref || 'N/A'}`;
     card.setAttribute('data-category', item.category);
 
     card.innerHTML = `
-      <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" loading="lazy" class="rounded"/>
       <h4 class="font-semibold mt-2">${item.name}</h4>
       <p class="text-sm text-gray-500">${item.description}</p>
       <p class="font-bold text-green-700">₱${item.price.toFixed(2)}</p>
@@ -577,6 +576,7 @@ Ref #: ${ref || 'N/A'}`;
     list.appendChild(card);
   });
 }
+
 
 function filterByCategory() {
   const selected = document.getElementById('categoryFilter').value;
