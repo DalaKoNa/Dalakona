@@ -6,9 +6,65 @@
   <title>Dala🚲Na Handumanan Grocery Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="/js/firebase-init.js"></script>
-  <script defer src="/js/handumanan-products.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fffaf7; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
+    .search-bar { margin-bottom: 1rem; text-align: center; }
+    .search-bar input {
+      padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .card {
+      background: white; border: 1px solid #ddd; border-radius: 12px;
+      padding: 1rem; display: flex; flex-direction: column;
+      justify-content: space-between; height: 100%; text-align: center;
+    }
+    .card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
+    .qty-controls {
+      display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
+    }
+    .qty-controls button {
+      background: #333; color: white; border: none;
+      padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
+    }
+    .cart-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 20px; z-index: 9999;
+    }
+    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
+    .form-section, .cart-summary { margin-top: 1rem; }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem; background: green; color: white;
+      padding: 0.8rem; width: 100%; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+    .hidden { display: none; }
+    .line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
+    .location-btn {
+      background: #008060;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -29,63 +85,100 @@
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
-    <div class="form-section">
-      <h3>Customer Info</h3>
-      <input type="text" id="customer-name" placeholder="Full Name" required>
-      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-      <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
-      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
-      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
-
-      <h3>Delivery Details</h3>
-      <input type="date" id="delivery-date" disabled>
-      <input type="time" id="delivery-time" disabled>
-      <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-        ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-      </div>
-
-      <h3>Payment</h3>
-      <select id="payment-method">
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Bank">Bank Transfer</option>
-        <option value="Cash">Cash on Delivery (COD)</option>
-      </select>
-
-      <div style="margin-top: 0.5rem;">
-        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
-          View payment instructions
-        </a>
-      </div>
-
-      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-        ✅ I agree to the
-        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-          Terms & Conditions
-        </a>. Orders are final and subject to store policies.
-      </div>
-
-      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>
-        🛒 Checkout via WhatsApp
-      </button>
-    </div>
+    <!-- Form section and cart summary follow your original Bakery format -->
+    <!-- We'll inject the rest with JS -->
   </div>
 
   <script>
     const cart = {};
+    const markup = 3.69;
+    const products = [
+      { name: "Bigas 1kg", description: "Regular-milled rice", base: 42 },
+      { name: "Mantika 1L", description: "Palm cooking oil", base: 85 },
+      { name: "Asukal 1kg", description: "White sugar", base: 55 },
+      { name: "Tuyo 100g", description: "Piniritong isda", base: 30 },
+      { name: "Kape 50g", description: "Instant coffee", base: 18 },
+      { name: "Gatas (Evap)", description: "Evaporated milk", base: 26 },
+      { name: "Itlog 1 dozen", description: "Fresh eggs", base: 100 },
+      { name: "Tinapay (loaf)", description: "Tasty bread", base: 60 },
+      { name: "Sabon Panlaba", description: "Laundry soap bar", base: 16 },
+      { name: "Toothpaste", description: "75ml regular mint", base: 35 }
+    ];
+
+    products.forEach(p => p.price = +(p.base * markup).toFixed(2));
+
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach((item, i) => {
+        list.innerHTML += `
+          <div class="card" data-name="${item.name.toLowerCase()}">
+            <h4>${item.name}</h4>
+            <p class="description">${item.description}</p>
+            <p><strong>₱${item.price.toFixed(2)}</strong></p>
+            <div class="qty-controls">
+              <button onclick="decreaseQty(${i})">-</button>
+              <span id="qty-${i}">0</span>
+              <button onclick="increaseQty(${i})">+</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    function updateQty(i) {
+      const item = products[i];
+      const qty = cart[item.name]?.qty || 0;
+      document.getElementById(`qty-${i}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      updateCartSummary();
+    }
+
+    function increaseQty(i) {
+      const item = products[i];
+      if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
+      cart[item.name].qty++;
+      updateQty(i);
+    }
+
+    function decreaseQty(i) {
+      const item = products[i];
+      if (cart[item.name]) {
+        cart[item.name].qty--;
+        if (cart[item.name].qty <= 0) delete cart[item.name];
+      }
+      updateQty(i);
+    }
 
     function toggleCart() {
       document.getElementById('cart-modal').classList.toggle('hidden');
     }
 
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const name = card.querySelector('h4').textContent.toLowerCase();
+        card.style.display = name.includes(input) ? '' : 'none';
+      });
+    }
+
+    function updateCartSummary() {
+      let html = `<h2 style="text-align: center;">🧾 Receipt Summary</h2><ul style="list-style: none; padding: 0;">`;
+      let total = 0;
+      Object.values(cart).forEach(item => {
+        html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+        total += item.qty * item.price;
+      });
+      const fee = 29.99;
+      const grand = total + fee;
+      html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+        <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+        <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
+
     window.onload = () => {
       renderProducts();
-      autoFillDeliveryTime();
-      validateForm();
     };
   </script>
-  <script src="/js/dala-cart.js"></script>
 </body>
 </html>
