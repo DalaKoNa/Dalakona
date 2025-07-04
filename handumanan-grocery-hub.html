@@ -456,6 +456,26 @@ function updateCartSummary() {
       }
           return null;
     }
+function validateForm() {
+  const name = document.getElementById('customer-name')?.value.trim();
+  const phone = document.getElementById('customer-phone')?.value.trim();
+  const email = document.getElementById('customer-email')?.value.trim();
+  const address = document.getElementById('delivery-address')?.value.trim();
+  const method = document.getElementById('payment-method')?.value;
+  const ref = document.getElementById('payment-ref')?.value.trim();
+
+  const isCash = method === 'Cash';
+  const isRefValid = isCash || ref.length > 3;
+
+  const isValid = name && phone && email && address && isRefValid;
+
+  const btn = document.getElementById('checkout-btn');
+  if (btn) {
+    btn.disabled = !isValid;
+    btn.classList.toggle('cursor-not-allowed', !isValid);
+    btn.style.background = isValid ? "#008060" : "#ccc";
+  }
+}
   window.onload = () => {
     renderProductList();
 
