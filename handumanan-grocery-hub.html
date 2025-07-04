@@ -80,7 +80,31 @@
 <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">
 </div>
 
-  <div class="grid" id="product-list"></div>
+  <div class="filter-bar" style="margin: 1rem 0;">
+  <label for="categoryFilter"><strong>🗂️ Filter by Category:</strong></label>
+  <select id="categoryFilter" onchange="filterByCategory()">
+    <option value="all">All</option>
+    <option value="Breads">Breads</option>
+    <option value="Drinks">Drinks</option>
+    <option value="Chips">Chips</option>
+    <option value="Canned Goods">Canned Goods</option>
+    <option value="Noodles">Noodles</option>
+    <option value="Meat Products">Meat Products</option>
+    <option value="Eggs">Eggs</option>
+    <option value="Rice">Rice</option>
+    <option value="Toiletries">Toiletries</option>
+    <option value="Cheese">Cheese</option>
+    <option value="Butter & Margarine">Butter & Margarine</option>
+    <option value="Milk & Drinks">Milk & Drinks</option>
+    <option value="Condensed & Evap Milk">Condensed & Evap Milk</option>
+    <option value="UHT Milk">UHT Milk</option>
+    <option value="3in1 Coffee">3in1 Coffee</option>
+    <option value="Laundry">Laundry</option>
+  </select>
+</div>
+
+<!-- ✅ Product List Container -->
+<div id="product-list" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
@@ -677,22 +701,43 @@ Ref #: ${ref || 'N/A'}`;
 ];
 
     function renderProducts() {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach((item, index) => {
-        list.innerHTML += `
-          <div class="card" data-name="${item.name.toLowerCase()}">
-            <h4>${item.name}</h4>
-            <p class="description">${item.description}</p>
-            <p><strong>₱${item.price.toFixed(2)}</strong></p>
-            <div class="qty-controls">
-              <button onclick="decreaseQty(${index})">-</button>
-              <span id="qty-${index}">0</span>
-              <button onclick="increaseQty(${index})">+</button>
-            </div>
-          </div>`;
-      });
+  const list = document.getElementById('product-list');
+  list.innerHTML = '';
+
+  products.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('data-name', item.name.toLowerCase());
+    card.setAttribute('data-category', item.category);
+
+    card.innerHTML = `
+      <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" loading="lazy" class="rounded"/>
+      <h4 class="font-semibold mt-2">${item.name}</h4>
+      <p class="text-sm text-gray-500">${item.description}</p>
+      <p class="font-bold text-green-700">₱${item.price.toFixed(2)}</p>
+      <div class="qty-controls">
+        <button onclick="decreaseQty(${index})">-</button>
+        <span id="qty-${index}">0</span>
+        <button onclick="increaseQty(${index})">+</button>
+      </div>`;
+
+    list.appendChild(card);
+  });
+}
+
+function filterByCategory() {
+  const selected = document.getElementById('categoryFilter').value;
+  const cards = document.querySelectorAll('#product-list .card');
+
+  cards.forEach(card => {
+    const category = card.getAttribute('data-category');
+    if (selected === 'all' || category === selected) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
     }
+  });
+}
 
     function increaseQty(i) {
       const item = products[i];
