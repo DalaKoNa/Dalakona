@@ -80,28 +80,32 @@
 <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search grocery items...">
 </div>
 
-  <div class="filter-bar" style="margin: 1rem 0;">
-  <label for="categoryFilter"><strong>🗂️ Filter by Category:</strong></label>
   <select id="categoryFilter" onchange="filterByCategory()">
-    <option value="all">All</option>
-    <option value="Breads">Breads</option>
-    <option value="Drinks">Drinks</option>
-    <option value="Chips">Chips</option>
-    <option value="Canned Goods">Canned Goods</option>
-    <option value="Noodles">Noodles</option>
-    <option value="Meat Products">Meat Products</option>
-    <option value="Eggs">Eggs</option>
-    <option value="Rice">Rice</option>
-    <option value="Toiletries">Toiletries</option>
-    <option value="Cheese">Cheese</option>
-    <option value="Butter & Margarine">Butter & Margarine</option>
-    <option value="Milk & Drinks">Milk & Drinks</option>
-    <option value="Condensed & Evap Milk">Condensed & Evap Milk</option>
-    <option value="UHT Milk">UHT Milk</option>
-    <option value="3in1 Coffee">3in1 Coffee</option>
-    <option value="Laundry">Laundry</option>
-  </select>
-</div>
+  <option value="all">All</option>
+  <option value="Bakery">Bakery</option>
+  <option value="Beverages">Beverages</option>
+  <option value="Biscuits">Biscuits</option>
+  <option value="Baby">Baby</option>
+  <option value="Canned Goods">Canned Goods</option>
+  <option value="Chips">Chips</option>
+  <option value="Cleaning">Cleaning</option>
+  <option value="Cooking">Cooking</option>
+  <option value="Cream">Cream</option>
+  <option value="Drinks">Drinks</option>
+  <option value="Eggs">Eggs</option>
+  <option value="Laundry">Laundry</option>
+  <option value="Meat Products">Meat Products</option>
+  <option value="Milk">Milk</option>
+  <option value="Noodles">Noodles</option>
+  <option value="Pets">Pets</option>
+  <option value="Rice">Rice</option>
+  <option value="Snacks">Snacks</option>
+  <option value="3in1 Coffee">3in1 Coffee</option>
+  <option value="Toiletries">Toiletries</option>
+  <option value="Toilet Cleaners">Toilet Cleaners</option>
+  <option value="Tissue">Tissue</option>
+  <option value="Kitchen">Kitchen</option>
+</select>
 
 <!-- ✅ Product List Container -->
 <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
@@ -286,7 +290,7 @@ Ref #: ${ref || 'N/A'}`;
 { name: "Alaska Crema All Purpose Cream 250mL", description: "Affordable cream for salad and pasta", price: 49.99, category: "Cream" },
 { name: "Angel All Purpose Cream 250mL", description: "Creamy consistency for dishes", price: 48.99, category: "Cream" },
 { name: "Alaska Crema Asada 370mL", description: "Sweetened cream for fruit salad", price: 47.99, category: "Cream" },
-{ name: "Angel Kremdensada 410mL", description: "Combination of cream and condensed milk", price: 46.99, category: "Cream" }
+{ name: "Angel Kremdensada 410mL", description: "Combination of cream and condensed milk", price: 46.99, category: "Cream" },
 { name: "Gardenia Classic White Bread 400g", description: "Soft white bread loaf", price: 67.99, category: "Bakery" },
 { name: "Gardenia Pandesal Pack (10 pcs)", description: "Ready-to-eat soft pandesal", price: 42.99, category: "Bakery" },
 { name: "Super Loaf Bread 400g", description: "Budget loaf alternative", price: 48.99, category: "Bakery" },
@@ -355,7 +359,6 @@ Ref #: ${ref || 'N/A'}`;
 { name: "Sanicare Interfolded Paper Towel (175 pulls)", description: "Ideal for kitchen or bathroom use", price: 59.99, category: "Tissue" },
 
 ];
-
 
     function renderProducts() {
   const list = document.getElementById('product-list');
