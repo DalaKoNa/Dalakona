@@ -17,7 +17,7 @@
       border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
       text-align: center; line-height: 16px;
     }
-    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; font-size: 1.25rem; }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
     .search-bar { margin-bottom: 1rem; text-align: center; display: flex; justify-content: center; gap: 0.5rem; }
     .search-bar input {
       padding: 0.5rem; width: 60%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
@@ -26,16 +26,16 @@
       padding: 0.5rem 1rem; background: #008060; color: white; border: none; border-radius: 5px; cursor: pointer;
     }
     .category-title {
-      margin-top: 1rem;
-      font-size: 1rem;
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
       font-weight: bold;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 2px solid #ccc;
       padding-bottom: 0.25rem;
     }
-    .grid {
+    .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
       margin-top: 0.5rem;
     }
     .product-card {
@@ -43,43 +43,71 @@
       border-radius: 10px;
       padding: 0.5rem;
       background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 140px;
     }
-    .product-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .product-price { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
+    .product-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    .product-card .desc {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    .product-card .price {
+      font-weight: bold;
+      margin: 0.25rem 0;
+    }
     .qty-controls {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
     .qty-controls button {
-      padding: 0.25rem 0.5rem;
+      padding: 0.3rem 0.6rem;
       background: #008060;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .cart-modal {
+      position: fixed;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white;
+      width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      z-index: 9999;
+    }
+    .cart-modal .close-btn {
+      text-align: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .form-section, .cart-summary {
+      margin-top: 1rem;
+    }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem;
+      background: green;
+      color: white;
+      padding: 0.8rem;
+      width: 100%;
+      border: none;
       font-weight: bold;
       cursor: pointer;
     }
-    .cart-modal {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: white; width: 95%; max-width: 600px; max-height: 90vh;
-      overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      border-radius: 20px; z-index: 9999;
-    }
-    .cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
-    .cart-summary { margin-top: 1rem; font-size: 0.9rem; }
-    .checkout-btn {
-      margin-top: 1rem; background: green; color: white;
-      padding: 0.8rem; width: 100%; border: none;
-      font-weight: bold; cursor: pointer;
-    }
     .hidden { display: none; }
-    .form-section input, .form-section select {
-      width: 100%; padding: 0.5rem; margin: 0.3rem 0;
-    }
   </style>
 </head>
 <body>
@@ -102,42 +130,43 @@
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
-    <div class="form-section">
-      <h3>Delivery Details</h3>
-      <input type="date" id="delivery-date" required disabled>
-      <input type="time" id="delivery-time" required disabled>
-      <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
-      <input type="text" id="customer-name" placeholder="Full Name" required>
-      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-      <input type="email" id="customer-email" placeholder="Email Address" required>
-      <input type="text" id="delivery-address" placeholder="📍 Address or Google Maps link" required>
-      <input type="text" id="delivery-notes" placeholder="🏠 Notes (optional)">
-      <select id="payment-method">
-        <option value="Cash">Cash on Delivery (Recommended)</option>
-        <option value="GCash">GCash</option>
-        <option value="PayMaya">PayMaya</option>
-        <option value="Bank">Bank Transfer</option>
-      </select>
-      <input type="text" id="payment-ref" placeholder="Payment reference # (for online payments)" style="display:none;" />
-      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
-    </div>
-  </div>
+    <div class="form-section" id="form-section"></div>
+ <h3>Delivery Details</h3>
+  <input type="date" id="delivery-date" required disabled>
+  <input type="time" id="delivery-time" required disabled>
+  <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
 
-  <script>
-    const markup = 1.99;
+  <input type="text" id="customer-name" placeholder="Full Name" required>
+  <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+  <input type="email" id="customer-email" placeholder="Email Address" required>
+  <input type="text" id="delivery-address" placeholder="📍 Address or Google Maps link" required>
+  <input type="text" id="delivery-notes" placeholder="🏠 Notes (optional)">
+  <select id="payment-method">
+    <option value="Cash">Cash on Delivery (Recommended)</option>
+    <option value="GCash">GCash</option>
+    <option value="PayMaya">PayMaya</option>
+    <option value="Bank">Bank Transfer</option>
+  </select>
+  <input type="text" id="payment-ref" placeholder="Payment reference # (for online payments)" style="display:none;" />
+  <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
+</div>
+
+<script>
+     const markup = 1.99;
     const cart = {};
+
     const categorizedProducts = {
       "Snacks": [
-  { name: "Piattos (Cheese, 85g)", base: 17 },
-  { name: "Nova (BBQ, 80g)", base: 19 },
-  { name: "Chippy (Garlic, 90g)", base: 16 },
-  { name: "Tortillos (Cheese, 100g)", base: 18 },
-  { name: "Vcut (Spicy BBQ, 60g)", base: 14 },
-  { name: "Clover Chips (Cheese, 110g)", base: 21 },
-  { name: "Mr. Chips (Nacho Cheese, 100g)", base: 19 },
-  { name: "Roller Coaster (Cheddar, 65g)", base: 15 },
-  { name: "Oishi Prawn Crackers (90g)", base: 14 },
-  { name: "Oishi Marty’s Chicharon (Plain, 90g)", base: 16 }
+        { name: "Piattos (Cheese, 85g)", base: 17 },
+        { name: "Nova (BBQ, 80g)", base: 19 },
+        { name: "Chippy (Garlic, 90g)", base: 16 },
+        { name: "Tortillos (Cheese, 100g)", base: 18 },
+        { name: "Vcut (Spicy BBQ, 60g)", base: 14 },
+        { name: "Clover Chips (Cheese, 110g)", base: 21 },
+        { name: "Mr. Chips (Nacho Cheese, 100g)", base: 19 },
+        { name: "Roller Coaster (Cheddar, 65g)", base: 15 },
+        { name: "Oishi Prawn Crackers (90g)", base: 14 },
+        { name: "Oishi Marty’s Chicharon (Plain, 90g)", base: 16 }
       ],
       "Frozen": [
         { name: "Hotdog (500g)", base: 72 },
@@ -166,30 +195,40 @@
       ]
     };
 
-    function renderProducts() {
-      const container = document.getElementById("product-list");
+    function renderProductList() {
+      const container = document.getElementById('product-list');
       container.innerHTML = "";
-      for (const [category, products] of Object.entries(categorizedProducts)) {
+      for (const [category, items] of Object.entries(categorizedProducts)) {
         const section = document.createElement("div");
-        section.innerHTML = `<div class='category-title'>${category}</div><div class='grid'></div>`;
-        const grid = section.querySelector(".grid");
-        products.forEach(p => {
-          const id = p.name.replace(/\s+/g, "-");
-          const price = +(p.base + markup).toFixed(2);
-          const qty = cart[p.name]?.qty || 0;
+        section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+        const grid = section.querySelector('.product-grid');
+
+        items.forEach(item => {
+          const id = item.name.replace(/\s+/g, '-').toLowerCase();
+          const price = (item.base + markup).toFixed(2);
+          const qty = cart[item.name]?.qty || 0;
+
+          const [prodName, details] = item.name.split('(');
+          const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
+
           const card = document.createElement("div");
           card.className = "product-card";
           card.innerHTML = `
-            <div class="product-name">${p.name}</div>
-            <div class="product-price">₱${price}</div>
-            <div class="qty-controls">
-              <button onclick="decreaseQty('${p.name}')">-</button>
-              <span id="qty-${id}">${qty}</span>
-              <button onclick="increaseQty('${p.name}')">+</button>
+            <div class="product-name">📦 ${prodName.trim()}</div>
+            <div class="product-description">${flavorOrType || "—"}</div>
+            <div class="product-size">${grams || ""}</div>
+            <div class="product-footer">
+              <div class="product-price">₱${price}</div>
+              <div class="qty-controls">
+                <button onclick="decreaseQty('${item.name}')">-</button>
+                <span id="qty-${id}">${qty}</span>
+                <button onclick="increaseQty('${item.name}')">+</button>
+              </div>
             </div>
           `;
           grid.appendChild(card);
         });
+
         container.appendChild(section);
       }
     }
@@ -211,141 +250,84 @@
     }
 
     function updateQtyDisplay(name) {
-      const id = name.replace(/\s+/g, "-");
+      const id = name.replace(/\s+/g, '-').toLowerCase();
       const qty = cart[name]?.qty || 0;
       document.getElementById(`qty-${id}`).innerText = qty;
       document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-      updateCartSummary();
-    }
-
-    function updateCartSummary() {
-      let html = `<h3>🧾 Receipt Summary</h3><ul style='list-style:none;padding-left:0;'>`;
-      let total = 0;
-      Object.values(cart).forEach(item => {
-        html += `<li>${item.qty}x ${item.name} <span style='float:right;'>₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-        total += item.qty * item.price;
-      });
-      const fee = 29.99;
-      html += `</ul><hr><p>Subtotal: ₱${total.toFixed(2)}</p><p>Service Fee: ₱${fee.toFixed(2)}</p><hr><h4>Total: ₱${(total + fee).toFixed(2)}</h4>`;
-      document.getElementById('cart-summary').innerHTML = html;
-    }
-
-    function findProduct(name) {
-      for (const list of Object.values(categorizedProducts)) {
-        for (const item of list) {
-          if (item.name === name) return item;
-        }
-      }
-      return null;
     }
 
     function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('hidden');
-    }
+  const modal = document.getElementById('cart-modal');
+  modal.classList.toggle('hidden');
+}
 
     function filterProducts() {
-      const term = document.getElementById('searchInput').value.toLowerCase();
+      const search = document.getElementById('searchInput').value.toLowerCase();
       document.querySelectorAll('.product-card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none';
+        card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
       });
     }
 
-    function submitOrder() {
-      const name = document.getElementById('customer-name').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const address = document.getElementById('delivery-address').value.trim();
-      const notes = document.getElementById('delivery-notes').value.trim();
-      const method = document.getElementById('payment-method').value;
-      const ref = document.getElementById('payment-ref').value.trim();
-      const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-      const subtotal = Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0);
-      const total = subtotal + 29.99;
-      const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    function findProduct(name) {
+      for (const items of Object.values(categorizedProducts)) {
+        for (const item of items) {
+          if (item.name === name) return item;
+        }
+      }
+          return null;
+  }
 
-      const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-      filloutUrl.searchParams.append("customerName", name);
-      filloutUrl.searchParams.append("customerPhone", phone);
-      filloutUrl.searchParams.append("customerEmail", email);
-      filloutUrl.searchParams.append("deliveryAddress", address);
-      filloutUrl.searchParams.append("addressNotes", notes);
-      filloutUrl.searchParams.append("deliveryDate", new Date().toISOString().split('T')[0]);
-      filloutUrl.searchParams.append("deliveryTime", new Date().toTimeString().slice(0, 5));
-      filloutUrl.searchParams.append("paymentMethod", method);
-      filloutUrl.searchParams.append("paymentReference", ref);
-      filloutUrl.searchParams.append("cartSummary", items);
-      filloutUrl.searchParams.append("confirmationNumber", confirmation);
+  window.onload = () => {
+    renderProductList();
 
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = filloutUrl.toString();
-      document.body.appendChild(iframe);
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60000);
 
-      const message = `🧾 New Order - Dala Grocery\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\nNotes: ${notes}\nItems: ${items}\nTotal: ₱${total.toFixed(2)}\nPayment: ${method}\nRef: ${ref || 'N/A'}`;
-      const encoded = encodeURIComponent(message);
-      const merchant = "63XXXXXXXXXX";
-      const admin = "63YYYYYYYYYY";
-      const driver = "63ZZZZZZZZZZ";
+    const deliveryDate = document.getElementById('delivery-date');
+    const deliveryTime = document.getElementById('delivery-time');
+    const deliveryNote = document.getElementById('delivery-note');
 
-      window.open(`https://wa.me/${merchant}?text=${encoded}`);
-      window.open(`https://wa.me/${admin}?text=${encoded}`);
-      window.open(`https://wa.me/${driver}?text=${encoded}`);
-
-      setTimeout(() => {
-        window.location.href = `thankyou.html?confirmation=${confirmation}`;
-      }, 2000);
+    if (deliveryDate && deliveryTime) {
+      deliveryDate.value = now.toISOString().split('T')[0];
+      deliveryDate.disabled = true;
+      deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+      deliveryTime.disabled = true;
     }
 
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const refInput = document.getElementById('payment-ref');
-      refInput.style.display = this.value === 'Cash' ? 'none' : 'block';
+    if (deliveryNote) {
+      deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+      deliveryNote.style.display = "block";
+    }
+
+    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', validateForm);
     });
 
-window.onload = () => {
-  renderProducts();
+    document.getElementById('payment-method').addEventListener('change', function () {
+      const method = this.value;
+      const refInput = document.getElementById('payment-ref');
+      const link = document.getElementById('payment-link');
 
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+      if (refInput) {
+        if (method === 'Cash') {
+          refInput.style.display = 'none';
+          refInput.value = '';
+        } else {
+          refInput.style.display = 'block';
+        }
+      }
 
-  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+      if (link) {
+        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+        link.textContent = `View ${method} instructions`;
+      }
 
-  const deliveryNote = document.getElementById('delivery-note');
-  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-  deliveryNote.style.display = "block";
+      validateForm();
+    });
 
-  // (Also place other logic like validateForm, ref logic, etc. here if needed)
-};
-
-  </script>
-<script>
-  const markup = 1.99;
-  const cart = {};
-
-  function validateForm() {
-    const name = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
-    const email = document.getElementById('customer-email').value.trim();
-    const address = document.getElementById('delivery-address').value.trim();
-    const method = document.getElementById('payment-method').value;
-    const refInput = document.getElementById('payment-ref');
-    const itemsInCart = Object.keys(cart).length > 0;
-
-    const refValid = method === 'Cash' || (refInput && refInput.value.trim() !== "");
-
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const allowCheckout = name && phone && email && address && refValid && itemsInCart;
-
-    if (allowCheckout) {
-      checkoutBtn.disabled = false;
-      checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-    } else {
-      checkoutBtn.disabled = true;
-      checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-    }
-  }
+    validateForm(); // initial validation
+  };
 
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
@@ -428,60 +410,6 @@ Ref #: ${ref || 'N/A'}`;
       window.location.href = thankyouUrl.toString();
     }, 2000);
   }
-
-  window.onload = () => {
-    renderProducts();
-
-    // Auto set + disable delivery time and date
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60000);
-
-    const deliveryDate = document.getElementById('delivery-date');
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
-
-    if (deliveryDate && deliveryTime) {
-      deliveryDate.value = now.toISOString().split('T')[0];
-      deliveryDate.disabled = true;
-      deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-      deliveryTime.disabled = true;
-    }
-
-    if (deliveryNote) {
-      deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-      deliveryNote.style.display = "block";
-    }
-
-    // Attach validation listeners
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', validateForm);
-    });
-
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
-
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
-
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm();
-    });
-
-    validateForm(); // initial validation
-  };
 </script>
 
 </body>
