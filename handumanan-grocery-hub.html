@@ -108,8 +108,8 @@
   <option value="Tissue">Tissue</option>
 </select>
 
-<!-- ✅ Product List Container -->
-<div id="product-list" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+<div id="product-list" class="grid grid-cols-2 gap-3"></div>
+<button id="loadMore" onclick="loadMoreProducts()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Load More</button>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
@@ -552,36 +552,45 @@ Ref #: ${ref || 'N/A'}`;
 { name: "Top Creamery Coffee Blend 3in1 (10s)", description: "Premium cafe-style blend", price: 109.99, category: "3in1 Coffee" },
 { name: "Blend 45 Original Coffee Mix (30g x 10)", description: "Classic Pinoy budget blend", price: 79.99, category: "3in1 Coffee" }
 ];
-let quantities = [];
+let productsPerPage = 30;
+let currentPage = 1;
 
-function renderProducts(filteredProducts = products) {
+function renderProductsPage() {
   const list = document.getElementById('product-list');
-  list.innerHTML = '';
+  const start = (currentPage - 1) * productsPerPage;
+  const end = currentPage * productsPerPage;
+  const pagedProducts = products.slice(0, end);
+  list.innerHTML = ''; // Clear for now; you can append instead
 
-  filteredProducts.forEach((item, index) => {
-    // Ensure quantities array is aligned with rendered list
-    const globalIndex = products.findIndex(p => p.name === item.name);
-    if (quantities[globalIndex] === undefined) {
-      quantities[globalIndex] = 0;
-    }
-
+  pagedProducts.forEach((item, index) => {
     const card = document.createElement('div');
+    const globalIndex = products.findIndex(p => p.name === item.name);
+    quantities[globalIndex] = quantities[globalIndex] || 0;
+
     card.className = 'card';
-    card.setAttribute('data-name', item.name.toLowerCase());
-    card.setAttribute('data-category', item.category);
-
     card.innerHTML = `
-      <h4 class="font-semibold mt-2">${item.name}</h4>
-      <p class="text-sm text-gray-500">${item.description}</p>
-      <p class="font-bold text-green-700">₱${item.price.toFixed(2)}</p>
-      <div class="qty-controls">
-        <button onclick="decreaseQty(${globalIndex})">-</button>
+      <img src="${item.image || 'https://via.placeholder.com/120x120'}" class="rounded mb-2 w-full h-24 object-cover"/>
+      <h4 class="font-semibold text-sm">${item.name}</h4>
+      <p class="text-xs text-gray-500">${item.description}</p>
+      <p class="font-bold text-green-700 mt-1">₱${item.price.toFixed(2)}</p>
+      <div class="qty-controls mt-1 flex items-center gap-2">
+        <button onclick="decreaseQty(${globalIndex})" class="px-2 bg-gray-200 rounded">-</button>
         <span id="qty-${globalIndex}">${quantities[globalIndex]}</span>
-        <button onclick="increaseQty(${globalIndex})">+</button>
+        <button onclick="increaseQty(${globalIndex})" class="px-2 bg-gray-200 rounded">+</button>
       </div>`;
-
     list.appendChild(card);
   });
+
+  // Show or hide Load More button
+  const loadMoreBtn = document.getElementById('loadMore');
+  if (end >= products.length) loadMoreBtn.style.display = 'none';
+  else loadMoreBtn.style.display = 'block';
+}
+
+// Load more products on button click
+function loadMoreProducts() {
+  currentPage++;
+  renderProductsPage();
 }
 
 // 🔍 Filter by category
