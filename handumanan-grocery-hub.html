@@ -1,125 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dala🚲Na Handumanan Grocery Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css" />
-    <script defer src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script defer src="/js/firebase-init.js"></script>
-    <script defer src="/js/dala-cart.js"></script>
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
-      <a href="select-store.html" class="text-lg font-semibold">⬅ Back</a>
-      <h1 class="text-xl font-bold text-green-700">Handumanan Grocery Hub</h1>
-      <button id="cartBtn" class="relative">
-        🛒<span id="cart-count" class="ml-1 bg-green-600 text-white rounded-full px-2 text-xs">0</span>
-      </button>
-    </header>
-
-    <!-- Search -->
-    <div class="p-4">
-      <input id="searchInput" type="text" placeholder="Search products..." class="w-full border rounded p-2" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲Na Handumanan Grocery Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="/js/firebase-init.js"></script>
+  <script defer src="/js/dala-cart.js"></script>
+</head>
+<body>
+  <header>
+    <a href="select-store.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h1>Handumanan Grocery Hub</h1>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
     </div>
+  </header>
 
-    <!-- Product Categories -->
-    <div id="productCategories" class="p-4 grid grid-cols-2 gap-2 text-sm font-semibold text-gray-700">
-      <button onclick="filterCategory('All')" class="bg-green-100 px-2 py-1 rounded">All</button>
-      <button onclick="filterCategory('Canned')" class="bg-green-100 px-2 py-1 rounded">Canned Goods</button>
-      <button onclick="filterCategory('Snacks')" class="bg-green-100 px-2 py-1 rounded">Snacks</button>
-      <button onclick="filterCategory('Drinks')" class="bg-green-100 px-2 py-1 rounded">Drinks</button>
-      <button onclick="filterCategory('Condiments')" class="bg-green-100 px-2 py-1 rounded">Condiments</button>
-      <button onclick="filterCategory('Personal Care')" class="bg-green-100 px-2 py-1 rounded">Personal Care</button>
-    </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search groceries...">
+  </div>
 
-    <!-- Product Grid -->
-    <div id="productList" class="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4"></div>
+  <div class="grid" id="product-list"></div>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50 hidden">
-      <div class="bg-white w-full max-w-md h-full p-4 overflow-y-auto relative">
-        <button onclick="toggleCart()" class="absolute top-2 right-2 text-gray-600 text-xl">&times;</button>
-        <h2 class="text-lg font-bold mb-4">🧾 Your Dala🚲Na Cart</h2>
-        <div id="cart-items"></div>
-        <div class="mt-4 border-t pt-2">
-          <p id="cart-total" class="text-right font-bold text-lg"></p>
-          <p class="text-sm text-gray-500">₱3.69 markup applied. No VAT.</p>
-        </div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
+    <div class="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required>
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+      <input type="email" id="customer-email" placeholder="Email Address" required>
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
+      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
 
-        <!-- Embedded Fillout Modal -->
-        <div class="mt-4">
-          <iframe id="fillout-form" src="" width="100%" height="400" frameborder="0" allowtransparency="true" style="border: none; border-radius: 8px; background: transparent;"></iframe>
-        </div>
-
-        <!-- Checkout Button -->
-        <button id="checkoutBtn" class="w-full bg-green-600 text-white py-2 px-4 mt-4 rounded" onclick="checkout()">✅ Checkout & Send Order</button>
-
-        <!-- Terms -->
-        <p class="text-xs text-gray-500 mt-2">By checking out, you agree to our <a href="#" class="underline">terms & conditions</a>.</p>
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" disabled>
+      <input type="time" id="delivery-time" disabled>
+      <div id="delivery-note" style="font-size: 0.85rem; color: #444;">
+        ✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
       </div>
+
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery (COD)</option>
+      </select>
+
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">
+          View payment instructions
+        </a>
+      </div>
+
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the
+        <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
+          Terms & Conditions
+        </a>. Orders are final and subject to store policies.
+      </div>
+
+      <button
+        class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+        id="checkout-btn"
+        onclick="submitOrder()"
+        disabled
+      >
+        🛒 Checkout via WhatsApp
+      </button>
     </div>
+  </div>
 
-    <script>
-      const markup = 3.69;
-
-      const products = [
-        { name: 'Sardines in Tomato Sauce', category: 'Canned', price: 17.00 },
-        { name: 'Corned Beef 150g', category: 'Canned', price: 39.00 },
-        { name: 'Tuna Flakes 180g', category: 'Canned', price: 42.00 },
-        { name: 'Nova Chips', category: 'Snacks', price: 27.00 },
-        { name: 'Piattos Cheese', category: 'Snacks', price: 26.00 },
-        { name: 'Coke 1.5L', category: 'Drinks', price: 67.00 },
-        { name: 'Milo 24g', category: 'Drinks', price: 9.00 },
-        { name: 'Soy Sauce 200ml', category: 'Condiments', price: 13.00 },
-        { name: 'Vinegar 250ml', category: 'Condiments', price: 11.00 },
-        { name: 'Shampoo Sachet', category: 'Personal Care', price: 6.00 },
-        { name: 'Toothpaste Small', category: 'Personal Care', price: 22.00 }
-      ];
-
-      let filteredCategory = 'All';
-
-      function filterCategory(cat) {
-        filteredCategory = cat;
-        renderProducts();
-      }
-
-      function renderProducts() {
-        const list = document.getElementById('productList');
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        list.innerHTML = '';
-
-        const filtered = products.filter(p => {
-          const matchCategory = filteredCategory === 'All' || p.category === filteredCategory;
-          const matchSearch = p.name.toLowerCase().includes(search);
-          return matchCategory && matchSearch;
-        });
-
-        filtered.forEach((p, i) => {
-          const price = (p.price + markup).toFixed(2);
-          list.innerHTML += `
-            <div class="bg-white p-3 shadow rounded text-center">
-              <p class="font-semibold text-sm">${p.name}</p>
-              <p class="text-green-600 font-bold">₱${price}</p>
-              <button onclick="addToCart(${i})" class="mt-2 bg-green-500 text-white px-2 py-1 rounded text-sm">Add</button>
-            </div>
-          `;
-        });
-      }
-
-      document.getElementById('searchInput').addEventListener('input', renderProducts);
-
+  <script src="/js/handumanan-products.js"></script>
+  <script>
+    window.onload = () => {
       renderProducts();
-
-      // The rest of cart functions, Fillout autofill, WhatsApp message sending, Firebase login detection are inside /js/dala-cart.js
-    </script>
-  </body>
+      autoFillDeliveryTime();
+      validateForm();
+    };
+  </script>
+</body>
 </html>
