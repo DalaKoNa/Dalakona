@@ -475,6 +475,7 @@ function validateForm() {
     btn.classList.toggle('cursor-not-allowed', !isValid);
     btn.style.background = isValid ? "#008060" : "#ccc";
   }
+}
 function getLocation() {
   const addressInput = document.getElementById('delivery-address');
   if (!navigator.geolocation) {
