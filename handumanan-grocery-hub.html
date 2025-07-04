@@ -103,6 +103,10 @@
     <div class="close-btn" onclick="toggleCart()">&times;</div>
     <div class="cart-summary" id="cart-summary"></div>
     <div class="form-section">
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" required disabled>
+      <input type="time" id="delivery-time" required disabled>
+      <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
       <input type="text" id="customer-name" placeholder="Full Name" required>
       <input type="tel" id="customer-phone" placeholder="Phone Number" required>
       <input type="email" id="customer-email" placeholder="Email Address" required>
@@ -290,7 +294,22 @@
       refInput.style.display = this.value === 'Cash' ? 'none' : 'block';
     });
 
-    window.onload = renderProducts;
+window.onload = () => {
+  renderProducts();
+
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60000);
+
+  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+
+  const deliveryNote = document.getElementById('delivery-note');
+  deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+  deliveryNote.style.display = "block";
+
+  // (Also place other logic like validateForm, ref logic, etc. here if needed)
+};
+
   </script>
 </body>
 </html>
