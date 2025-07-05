@@ -347,33 +347,25 @@ footer {
   width: 100px;
 }
 #cart-summary ul li {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  column-gap: 0.5rem;
   font-size: 0.95rem;
   line-height: 1.4;
-  margin-bottom: 0.25rem;
-}
-
-#cart-summary ul li {
-  display: flex;
-  align-items: flex-start;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  margin-bottom: 0.25rem;
-  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 #cart-summary ul li strong {
   white-space: nowrap;
-  margin-right: 0.4rem;
 }
 
 #cart-summary ul li .item-name {
-  flex: 1;
   word-break: break-word;
 }
 
 #cart-summary ul li .item-price {
   white-space: nowrap;
-  margin-left: auto;
+  text-align: right;
+  justify-self: end;
 }
