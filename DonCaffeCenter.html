@@ -251,23 +251,20 @@ document.getElementById('cart-count').innerText = Object.values(cart).reduce((a,
 function updateCartSummary() {
   let html = `
     <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-    <p style="text-align: center;">Dala🚲Na Don M Caffe</p>
+    <p style="text-align: center;">Dala🚲Na Bakery Hub</p>
     <ul style="list-style: none; padding: 0;">`;
 
   let total = 0;
   Object.values(cart).forEach(item => {
-    const lineTotal = (item.qty * item.price).toFixed(2);
-    total += +lineTotal;
-
     html += `
-  <li class="cart-item-line">
-    <div class="item-left">
-      <strong>${item.qty}x</strong>
-      <span class="item-name">${item.name}</span>
-    </div>
-    <div class="item-price">₱${(item.qty * item.price).toFixed(2)}</div>
-  </li>`;
-
+      <li class="cart-item-line">
+        <div class="item-left">
+          <strong>${item.qty}x</strong>
+          <span class="item-name">${item.name}</span>
+        </div>
+        <div class="item-price">₱${(item.qty * item.price).toFixed(2)}</div>
+      </li>`;
+    total += item.qty * item.price;
   });
 
   const fee = 29.99;
