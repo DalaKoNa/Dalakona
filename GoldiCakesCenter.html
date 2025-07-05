@@ -5,145 +5,408 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲Na GoldiCakes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #fffaf7; padding: 1rem; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-.cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
-.cart-count {
-position: absolute; top: -8px; right: -10px; background: red; color: white;
-border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
-text-align: center; line-height: 16px;
-}
-h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
-.search-bar { margin-bottom: 1rem; text-align: center; }
-.search-bar input {
-padding: 0.5rem; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
-}
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-.card {
-background: white; border: 1px solid #ddd; border-radius: 12px;
-padding: 1rem; display: flex; flex-direction: column;
-justify-content: space-between; height: 100%; text-align: center;
-}
-.card img { max-width: 100%; height: 100px; object-fit: contain; margin-bottom: 0.5rem; }
-.qty-controls {
-display: flex; justify-content: center; align-items: center; margin: 0.5rem 0;
-}
-.qty-controls button {
-background: #333; color: white; border: none;
-padding: 0.3rem 0.6rem; margin: 0 0.5rem; cursor: pointer;
-}
-.cart-modal {
-position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-background: white; width: 90%; max-width: 600px; max-height: 90vh;
-overflow-y: auto; padding: 1rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-border-radius: 20px; z-index: 9999;
-}
-.cart-modal .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; }
-.form-section, .cart-summary { margin-top: 1rem; }
-.form-section input, .form-section select {
-width: 100%; padding: 0.5rem; margin: 0.5rem 0;
-}
-.checkout-btn {
-margin-top: 1rem; background: green; color: white;
-padding: 0.8rem; width: 100%; border: none;
-font-weight: bold; cursor: pointer;
-}
-.hidden { display: none; }
-.line-break { border-top: 1px solid #ccc; margin: 0.5rem 0; }
-.location-btn {
-background: #008060;
-color: white;
-padding: 0.5rem;
-border: none;
-border-radius: 6px;
-margin-top: 0.5rem;
-width: 100%;
-cursor: pointer;
-}
-</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fffaf7; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
+    .search-bar { margin-bottom: 1rem; text-align: center; display: flex; justify-content: center; gap: 0.5rem; }
+    .search-bar input {
+      padding: 0.5rem; width: 60%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .search-bar button {
+      padding: 0.5rem 1rem; background: #008060; color: white; border: none; border-radius: 5px; cursor: pointer;
+    }
+    .category-title {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.25rem;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 0.5rem;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+    .product-card h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .product-card .desc { font-size: 0.8rem; color: #555; }
+    .product-card .price { font-weight: bold; margin: 0.25rem 0; }
+    .qty-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .qty-controls button {
+      padding: 0.3rem 0.6rem;
+      background: #008060;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .cart-modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      z-index: 9999;
+    }
+    .cart-modal .close-btn {
+      text-align: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .form-section, .cart-summary {
+      margin-top: 1rem;
+    }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem;
+      background: green;
+      color: white;
+      padding: 0.8rem;
+      width: 100%;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-<header>
-<a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-<h1>Dala🚲Na GoldiCakes</h1>
-<div class="cart-btn" onclick="toggleCart()">
-<i class="fas fa-receipt"></i>
-<span class="cart-count" id="cart-count">0</span>
-</div>
-</header>
+  <header>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h1>GoldiCakes</h1>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </header>
 
-<div class="search-bar">
-<input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search breads or pastries...">
-</div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search cakes...">
+    <button onclick="filterProducts()">Search</button>
+  </div>
 
-<div class="grid" id="product-list"></div>
+  <div id="product-list"></div>
 
-<div class="cart-modal hidden" id="cart-modal">
-<div class="close-btn" onclick="toggleCart()">&times;</div>
-<div class="cart-summary" id="cart-summary"></div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
-<div class="form-section">
-<h3>Customer Info</h3>
-<input type="text" id="customer-name" placeholder="Full Name" required>
-<input type="tel" id="customer-phone" placeholder="Phone Number" required>
-<input type="email" id="customer-email" placeholder="Email Address" required>
-<input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required>
-<button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-<input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)">
-<input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem;" />
+    <!-- Form Section -->
+    <div class="form-section" id="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required />
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required />
+      <input type="email" id="customer-email" placeholder="Email Address" required />
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
 
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" required disabled />
+      <input type="time" id="delivery-time" required disabled />
+      <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
 
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date" disabled>
-<input type="time" id="delivery-time" disabled>
-<div id="delivery-note" style="font-size: 0.85rem; color: #444;">
-✅ Allow 1 hour for merchant confirmation and delivery. Time is auto-set.
-</div>
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash (may incur transfer fee)</option>
+        <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+        <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+        <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+      </select>
 
-<h3>Payment</h3>
-<select id="payment-method">
-<option value="GCash">GCash (may incur transfer fee)</option>
-<option value="PayMaya">PayMaya (may incur transfer fee)</option>
-<option value="Bank">Bank Transfer (may incur transfer fee)</option>
-<option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-</select>
+      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
 
-<div style="margin-top: 0.5rem;">
-<a
-id="payment-link"
-href="payment-instructions.html?method=GCash"
-target="_blank"
-style="color: #008060; text-decoration: underline;"
->
-View payment instructions
-</a>
-</div>
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
+      </div>
 
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the
-<a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-Terms & Conditions
-</a>.
-Orders are final and subject to store policies.
-</div>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
+        Orders are final and subject to store policies.
+      </div>
 
-<!-- ✅ Checkout Button -->
-<button
-class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-id="checkout-btn"
-onclick="submitOrder()"
-disabled
->
-🛒 Checkout via WhatsApp
-</button>
-
-<!-- ✅ Scripts -->
-<script src="dalacart.js"></script>
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
+    </div>
+  </div>
 <script>
+  const markup = 1.99;
+  const cart = {};
+const categorizedProducts = {
+  "Premium Cakes": [
+    { name: "Black Forest Cake (Petite)", base: 552 },
+    { name: "Chocolate Caramel Decadence", base: 794 },
+    { name: "Royal Fudge w/ Toblerone", base: 794 },
+    { name: "Mango Dream (9\" Round)", base: 828 },
+    { name: "Classic Sansrival", base: 1012 },
+  ],
+  "Choco Sulit Cakes": [
+    { name: "Luscious Chocolate (9\" Round)", base: 689 },
+    { name: "Classic Choco Balloons (9\" Round)", base: 518 },
+    { name: "Classic Mocha Balloons (9\" Round)", base: 558 },
+  ],
+  "Greeting Cakes": [
+    { name: "Luscious Caramel (9\" Round)", base: 689 },
+    { name: "Luscious Caramel (8x12)", base: 989 },
+    { name: "Classic Choco Balloons (8x12)", base: 777 },
+    { name: "Celebrate Chocolate (8x12)", base: 777 },
+  ],
+  "Bitbit (6s)": [
+    { name: "Assorted Butter Slices (6s)", base: 252 },
+    { name: "Fluffy Mamon (6s)", base: 204 },
+    { name: "Cheesy Ensaymada (6s)", base: 246 },
+  ],
+  "Rolls & Snacks": [
+    { name: "Chocolate Whole Roll", base: 695 },
+    { name: "Brazo de Mercedes (Roll)", base: 529 },
+    { name: "Chiffon Cake Slice", base: 43 },
+    { name: "Chocolate Cake Slice", base: 45 },
+    { name: "Ube Vanilla Slice", base: 43 },
+  ]
+};
+function renderProductList() {
+const container = document.getElementById('product-list');
+container.innerHTML = "";
+for (const [category, items] of Object.entries(categorizedProducts)) {
+const section = document.createElement("div");
+section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+const grid = section.querySelector('.product-grid');
+
+items.forEach(item => {
+const id = item.name.replace(/\s+/g, '-').toLowerCase();
+const price = (item.base + markup).toFixed(2);
+const qty = cart[item.name]?.qty || 0;
+const [prodName, details] = item.name.split('(');
+const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
+
+const card = document.createElement("div");
+card.className = "product-card";
+card.innerHTML = `
+<div class="product-name"> ${prodName.trim()}</div>
+<div class="product-description">${flavorOrType || "—"}</div>
+<div class="product-size">${grams || ""}</div>
+<div class="product-footer">
+<div class="product-price">₱${price}</div>
+<div class="qty-controls">
+<button onclick="decreaseQty('${item.name}')">-</button>
+<span id="qty-${id}">${qty}</span>
+<button onclick="increaseQty('${item.name}')">+</button>
+</div>
+</div>
+`;
+grid.appendChild(card);
+});
+container.appendChild(section);
+}
+}
+
+function increaseQty(name) {
+const item = findProduct(name);
+if (!item) return;
+if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
+cart[name].qty++;
+updateQtyDisplay(name);
+updateCartSummary();
+}
+
+function decreaseQty(name) {
+if (cart[name]) {
+cart[name].qty--;
+if (cart[name].qty <= 0) delete cart[name];
+updateQtyDisplay(name);
+updateCartSummary();
+}
+}
+
+function updateQtyDisplay(name) {
+const id = name.replace(/\s+/g, '-').toLowerCase();
+const qty = cart[name]?.qty || 0;
+document.getElementById(`qty-${id}`).innerText = qty;
+document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+}
+
+function updateCartSummary() {
+let html = `
+<h2 style="text-align: center;">🧾 Receipt Summary</h2>
+<p style="text-align: center;">Dala🚲Na GoldiCakes</p>
+<ul style="list-style: none; padding: 0;">`;
+
+let total = 0;
+Object.values(cart).forEach(item => {
+html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+total += item.qty * item.price;
+});
+
+const fee = 29.99;
+const grand = total + fee;
+
+html += `</ul><hr>
+<p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+
+document.getElementById('cart-summary').innerHTML = html;
+}
+
+function toggleCart() {
+const modal = document.getElementById('cart-modal');
+modal.classList.toggle('hidden');
+}
+
+function filterProducts() {
+const search = document.getElementById('searchInput').value.toLowerCase();
+document.querySelectorAll('.product-card').forEach(card => {
+card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
+});
+}
+
+function findProduct(name) {
+for (const items of Object.values(categorizedProducts)) {
+for (const item of items) {
+if (item.name === name) return item;
+}
+}
+return null;
+}
+function validateForm() {
+const name = document.getElementById('customer-name')?.value.trim();
+const phone = document.getElementById('customer-phone')?.value.trim();
+const email = document.getElementById('customer-email')?.value.trim();
+const address = document.getElementById('delivery-address')?.value.trim();
+const method = document.getElementById('payment-method')?.value;
+const ref = document.getElementById('payment-ref')?.value.trim();
+
+const isCash = method === 'Cash';
+const isRefValid = isCash || ref.length > 3;
+
+const isValid = name && phone && email && address && isRefValid;
+
+const btn = document.getElementById('checkout-btn');
+if (btn) {
+btn.disabled = !isValid;
+btn.classList.toggle('cursor-not-allowed', !isValid);
+btn.style.background = isValid ? "#008060" : "#ccc";
+}
+}
+function getLocation() {
+const addressInput = document.getElementById('delivery-address');
+if (!navigator.geolocation) {
+alert("Geolocation is not supported by your browser.");
+return;
+}
+navigator.geolocation.getCurrentPosition(
+async (position) => {
+const { latitude, longitude } = position.coords;
+
+try {
+// Reverse geocoding via Nominatim API
+const response = await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+);
+const data = await response.json();
+
+const readableAddress = data.display_name || `https://www.google.com/maps?q=${latitude},${longitude}`;
+addressInput.value = readableAddress;
+
+validateForm(); // Revalidate form
+} catch (error) {
+console.error("Geocoding failed:", error);
+addressInput.value = `https://www.google.com/maps?q=${latitude},${longitude}`;
+alert("Failed to convert location to address. Map link was inserted instead.");
+}
+},
+(error) => {
+alert("Unable to retrieve your location. Please check location permission.");
+}
+);
+}
+
+// ✅ This should be completely outside, not inside findProduct
+window.onload = () => {
+renderProductList();
+
+const deliveryDate = document.getElementById('delivery-date');
+const deliveryTime = document.getElementById('delivery-time');
+const deliveryNote = document.getElementById('delivery-note');
+
+const now = new Date();
+const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+
+if (deliveryDate && deliveryTime) {
+deliveryDate.value = now.toISOString().split('T')[0];
+deliveryDate.disabled = true;
+deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+deliveryTime.disabled = true;
+}
+
+if (deliveryNote) {
+deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+deliveryNote.style.display = "block";
+}
+
+['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
+const el = document.getElementById(id);
+if (el) el.addEventListener('input', validateForm);
+});
+
+document.getElementById('payment-method').addEventListener('change', function () {
+const method = this.value;
+const refInput = document.getElementById('payment-ref');
+const link = document.getElementById('payment-link');
+
+if (refInput) {
+if (method === 'Cash') {
+refInput.style.display = 'none';
+refInput.value = '';
+} else {
+refInput.style.display = 'block';
+}
+}
+
+if (link) {
+link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+link.textContent = `View ${method} instructions`;
+}
+
+validateForm();
+});
+
+// ✅ Trigger once on load
+document.getElementById('payment-method').dispatchEvent(new Event('change'));
+
+validateForm(); // Initial validation
+};
+
 async function submitOrder() {
 const name = document.getElementById('customer-name').value.trim();
 const phone = document.getElementById('customer-phone').value.trim();
@@ -161,7 +424,7 @@ const fee = 29.99;
 const total = subtotal + fee;
 const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-// 1. Submit silently to Fillout
+// 1. Submit to Fillout silently
 const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
 filloutUrl.searchParams.append("customerName", name);
 filloutUrl.searchParams.append("customerPhone", phone);
@@ -180,7 +443,7 @@ iframe.style.display = "none";
 iframe.src = filloutUrl.toString();
 document.body.appendChild(iframe);
 
-// 2. Send WhatsApp messages
+// 2. Send to WhatsApp
 const message = `🧾 New Order - Dala🚲Na GoldiCakes\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
@@ -225,186 +488,8 @@ setTimeout(() => {
 window.location.href = thankyouUrl.toString();
 }, 2000);
 }
-</script>
-
-</body>
-</html>
-<script>
-const requiredFields = [
-'customer-name',
-'customer-phone',
-'customer-email',
-'delivery-address',
-'delivery-date',
-'delivery-time',
-'payment-method'
-];
-
-const cart = {};
-const products = [
-      { name: "Black Forest Cake (Whole)", price: 795.99, image: "https://goldilocks.com.ph/cdn/shop/products/BlackForest_Whole.jpg", allergens: "Eggs, Dairy, Wheat" },
-      { name: "Chocolate Caramel Decadence", price: 795.99, image: "https://goldilocks.com.ph/cdn/shop/products/ChocoCaramel.jpg", allergens: "Eggs, Dairy, Wheat, Nuts" },
-      { name: "Classic Sansrival", price: 1013.99, image: "https://goldilocks.com.ph/cdn/shop/products/Sansrival.jpg", allergens: "Eggs, Dairy, Nuts" },
-      { name: "Mango Dream Cake", price: 829.99, image: "https://goldilocks.com.ph/cdn/shop/products/MangoDream.jpg", allergens: "Eggs, Dairy, Mango" },
-      { name: "Chocolate Cherry Torte (Petite)", price: 553.99, image: "https://goldilocks.com.ph/cdn/shop/products/ChocoTortePetite.jpg", allergens: "Eggs, Dairy, Wheat" },
-      { name: "Chocolate Whole Roll", price: 345.99, image: "https://goldilocks.com.ph/cdn/shop/products/ChocoRoll.jpg", allergens: "Eggs, Dairy" },
-      { name: "Brazo de Mercedes", price: 530.99, image: "https://goldilocks.com.ph/cdn/shop/products/Brazo.jpg", allergens: "Eggs, Dairy" },
-      { name: "Bitbit Assorted Butter Slices (6s)", price: 253.99, image: "https://goldilocks.com.ph/cdn/shop/products/Bitbit6.jpg", allergens: "Eggs, Dairy, Wheat" },
-      { name: "Bitbit Fluffy Mamon (9s)", price: 307.99, image: "https://goldilocks.com.ph/cdn/shop/products/Mamon9s.jpg", allergens: "Eggs, Dairy, Wheat" }
-    ];
-function renderProducts() {
-const list = document.getElementById('product-list');
-list.innerHTML = '';
-products.forEach((item, index) => {
-list.innerHTML += `
-<div class="card" data-name="${item.name.toLowerCase()}">
-<img src="${item.image}" alt="${item.name}">
-<h4>${item.name}</h4>
-<p>₱${item.price.toFixed(2)}</p>
-<div class="qty-controls">
-<button onclick="decreaseQty(${index})">-</button>
-<span id="qty-${index}">0</span>
-<button onclick="increaseQty(${index})">+</button>
-</div>
-</div>`;
-});
-}
-
-function increaseQty(i) {
-const item = products[i];
-if (!cart[item.name]) cart[item.name] = { ...item, qty: 0 };
-cart[item.name].qty++;
-updateQty(i);
-}
-
-function decreaseQty(i) {
-const item = products[i];
-if (cart[item.name]) {
-cart[item.name].qty--;
-if (cart[item.name].qty <= 0) delete cart[item.name];
-}
-updateQty(i);
-}
-
-function updateQty(i) {
-const item = products[i];
-const qty = cart[item.name]?.qty || 0;
-document.getElementById(`qty-${i}`).innerText = qty;
-document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-updateCartSummary();
-validateForm();
-}
-
-function updateCartSummary() {
-let html = `
-<h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na GoldiCakes</p><ul style="list-style: none; padding: 0;">`;
-let total = 0;
-Object.values(cart).forEach(item => {
-html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-total += item.qty * item.price;
-});
-const fee = 29.99;
-const grand = total + fee;
-html += `</ul><hr><p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-document.getElementById('cart-summary').innerHTML = html;
-}
-
-function toggleCart() {
-document.getElementById('cart-modal').classList.toggle('hidden');
-}
-
-function validateForm() {
-const allFilled = requiredFields.every(id => {
-const el = document.getElementById(id);
-return el && el.value.trim() !== '';
-});
-
-const method = document.getElementById('payment-method').value;
-const ref = document.getElementById('payment-ref')?.value.trim() || '';
-const cartHasItems = Object.values(cart).some(item => item.qty > 0);
-const checkoutBtn = document.getElementById('checkout-btn');
-const requiresRef = method !== 'Cash';
-
-const allowCheckout = allFilled && cartHasItems && (!requiresRef || ref !== '');
-
-if (allowCheckout) {
-checkoutBtn.disabled = false;
-checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.add('bg-green-600', 'hover:scale-105', 'transition', 'duration-200');
-} else {
-checkoutBtn.disabled = true;
-checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-checkoutBtn.classList.remove('bg-green-600', 'hover:scale-105');
-}
-}
-
-window.onload = () => {
-renderProducts();
-
-const now = new Date();
-const oneHourLater = new Date(now.getTime() + 60 * 60000);
-document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-document.getElementById('delivery-date').disabled = true;
-document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-document.getElementById('delivery-time').disabled = true;
-
-const deliveryNote = document.getElementById('delivery-note');
-deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-deliveryNote.style.display = "block";
-
-// Auto-hide or show reference field on page load
-const method = document.getElementById('payment-method').value;
-const refInput = document.getElementById('payment-ref');
-if (refInput) {
-refInput.style.display = method === 'Cash' ? 'none' : 'block';
-}
-
-validateForm();
-};
-
-document.getElementById('payment-method').addEventListener('change', function () {
-const method = this.value;
-const link = document.getElementById('payment-link');
-const refInput = document.getElementById('payment-ref');
-
-link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-link.textContent = `View ${method} instructions`;
-
-if (method === 'Cash') {
-refInput.style.display = 'none';
-refInput.value = '';
-} else {
-refInput.style.display = 'block';
-}
-
-validateForm();
-});
-
-// Listen to all fields
-requiredFields.forEach(id => {
-document.getElementById(id).addEventListener('input', validateForm);
-});
-document.getElementById('payment-ref')?.addEventListener('input', validateForm);
-
-function filterProducts() {
-const input = document.getElementById('searchInput').value.toLowerCase();
-const cards = document.querySelectorAll('.card');
-
-cards.forEach(card => {
-const name = card.querySelector('h4').textContent.toLowerCase();
-if (name.includes(input)) {
-card.style.display = '';
-} else {
-card.style.display = 'none';
-
-}
-});
-}
-
 
 </script>
+
 </body>
 </html>
