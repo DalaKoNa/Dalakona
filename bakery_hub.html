@@ -286,6 +286,104 @@ disabled
       document.getElementById(`qty-${id}`).innerText = qty;
       document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
     }
+function updateCartSummary() {
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Market Hub</p>
+    <ul style="list-style: none; padding: 0;">`;
+
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    html += `<li><strong>${item.qty}x</strong> ${item.name} 
+              <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    total += item.qty * item.price;
+  });
+
+  const fee = 29.99;
+  const grand = total + fee;
+
+  html += `</ul><hr>
+    <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+
+  document.getElementById('cart-summary').innerHTML = html;
+}
+
+    function toggleCart() {
+  const modal = document.getElementById('cart-modal');
+  modal.classList.toggle('hidden');
+}
+
+    function filterProducts() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
+      });
+    }
+
+    function findProduct(name) {
+      for (const items of Object.values(categorizedProducts)) {
+        for (const item of items) {
+          if (item.name === name) return item;
+        }
+      }
+          return null;
+    }
+function validateForm() {
+  const name = document.getElementById('customer-name')?.value.trim();
+  const phone = document.getElementById('customer-phone')?.value.trim();
+  const email = document.getElementById('customer-email')?.value.trim();
+  const address = document.getElementById('delivery-address')?.value.trim();
+  const method = document.getElementById('payment-method')?.value;
+  const ref = document.getElementById('payment-ref')?.value.trim();
+
+  const isCash = method === 'Cash';
+  const isRefValid = isCash || ref.length > 3;
+
+  const isValid = name && phone && email && address && isRefValid;
+
+  const btn = document.getElementById('checkout-btn');
+  if (btn) {
+    btn.disabled = !isValid;
+    btn.classList.toggle('cursor-not-allowed', !isValid);
+    btn.style.background = isValid ? "#008060" : "#ccc";
+  }
+}
+function getLocation() {
+  const addressInput = document.getElementById('delivery-address');
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser.");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+
+      try {
+        // Reverse geocoding via Nominatim API
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await response.json();
+
+        const readableAddress = data.display_name || `https://www.google.com/maps?q=${latitude},${longitude}`;
+        addressInput.value = readableAddress;
+
+        validateForm(); // Revalidate form
+      } catch (error) {
+        console.error("Geocoding failed:", error);
+        addressInput.value = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        alert("Failed to convert location to address. Map link was inserted instead.");
+      }
+    },
+    (error) => {
+      alert("Unable to retrieve your location. Please check location permission.");
+    }
+  );
+}
+  window.onload = () => {
+    renderProductList();
 
 const deliveryTime = document.getElementById('delivery-time');
     const deliveryNote = document.getElementById('delivery-note');
