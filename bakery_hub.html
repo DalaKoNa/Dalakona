@@ -223,8 +223,10 @@ disabled
       { name: "Butterscotch (Pack)", base: 40 },
       { name: "Otap (Pack)", base: 42 },
     ]
-  };
-    const deliveryTime = document.getElementById('delivery-time');
+  };   
+
+
+const deliveryTime = document.getElementById('delivery-time');
     const deliveryNote = document.getElementById('delivery-note');
 
     if (deliveryDate && deliveryTime) {
@@ -310,7 +312,7 @@ disabled
     document.body.appendChild(iframe);
 
     // 2. Send to WhatsApp
-    const message = `🧾 New Order - Dala🚲Na Market Hub\n\nConfirmation #: ${confirmation}
+    const message = `🧾 New Order - Dala🚲Na Bakery Hub\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -355,6 +357,7 @@ Ref #: ${ref || 'N/A'}`;
     }, 2000);
   }
 </script>
+
 
 </body>
 </html>
