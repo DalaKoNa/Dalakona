@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲Na Bakery Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    /* Same styles as Handumanan Grocery Hub */
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <h1>Bakery Hub</h1>
+    <div class="cart-btn" onclick="toggleCart()">
+      <i class="fas fa-receipt"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search products...">
+    <button onclick="filterProducts()">Search</button>
+  </div>
+
+  <div id="product-list"></div>
+
+  <!-- Cart Modal, Form, Scripts -->
+  <!-- Copy everything from Handumanan Grocery Hub -->
+
+<script>
+  const markup = 1.99;
+  const cart = {};
+
+  const categorizedProducts = {
+    "Bread & Pastries": [
+      { name: "Pandesal (10 pcs)", base: 25 },
+      { name: "Cheese Bread (5 pcs)", base: 30 },
+      { name: "Spanish Bread (5 pcs)", base: 28 },
+      { name: "Ensaymada (2 pcs)", base: 35 },
+      { name: "Monay (3 pcs)", base: 18 },
+      { name: "Tasty Bread (Loaf)", base: 55 },
+      { name: "Ube Cheese Pandesal (3 pcs)", base: 38 },
+      { name: "Choco Marble Cake (Slice)", base: 45 },
+      { name: "Banana Bread (Slice)", base: 35 },
+      { name: "Egg Pie (Slice)", base: 40 }
+    ],
+    "Cakes": [
+      { name: "Chocolate Cake (Mini, 4")", base: 150 },
+      { name: "Ube Macapuno Cake (Mini, 4")", base: 155 },
+      { name: "Mocha Cake (Mini, 4")", base: 140 },
+      { name: "Red Velvet Cake (Mini, 4")", base: 160 },
+      { name: "Carrot Cake (Mini, 4")", base: 145 }
+    ],
+    "Pasalubong & Others": [
+      { name: "Biscocho (Pack)", base: 50 },
+      { name: "Barquillos (Pack)", base: 45 },
+      { name: "Piaya (3 pcs)", base: 35 },
+      { name: "Butterscotch (Pack)", base: 40 },
+      { name: "Otap (Pack)", base: 42 }
+    ]
+  };
+
+  // Render, Cart, Search, Form, Submit Logic
+  // Use same JS logic from Handumanan Grocery Hub
+</script>
+
+</body>
+</html>
