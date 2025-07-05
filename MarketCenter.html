@@ -430,16 +430,15 @@ function updateCartSummary() {
 
   let total = 0;
   Object.values(cart).forEach(item => {
-    const lineTotal = (item.qty * item.price).toFixed(2);
-    total += +lineTotal;
-
     html += `
-  <li>
-    <strong>${item.qty}x</strong>
-    <span class="item-name">${item.name}</span>
-    <span class="item-price">₱${(item.qty * item.price).toFixed(2)}</span>
-  </li>`;
-
+      <li class="cart-item-line">
+        <div class="item-left">
+          <strong>${item.qty}x</strong>
+          <span class="item-name">${item.name}</span>
+        </div>
+        <div class="item-price">₱${(item.qty * item.price).toFixed(2)}</div>
+      </li>`;
+    total += item.qty * item.price;
   });
 
   const fee = 29.99;
