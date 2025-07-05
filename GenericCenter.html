@@ -164,22 +164,32 @@ const cart = {};
 
 const categorizedProducts = {
   "Essential Medicines": [
-    { name: "Paracetamol 500mg (10 tabs)", base: 55 }, // alaga sa hilanat kag kasakit
-    { name: "Paracetamol 500mg (per tab)", base: 5.5 }, // kada isa
-    { name: "Bioflu Tablet (per tab)", base: 9.5 }, // para sa sip-on kag ubo
-    { name: "Cetirizine 10mg (per tab)", base: 7 }, // anti-allergy sa itchy nga sip-on
-    { name: "Loperamide 2mg (per tab)", base: 5.5 }, // pampalunga sang diarrhea
-    { name: "Ambroxol 30mg (per tab)", base: 7 }, // pantanggal-ubo (phlegm)
-    { name: "Kremil-S Sachet (1 tab)", base: 21 }, // pangmayos sang tiyan
-    { name: "Neozep (per tab)", base: 7.5 }, // para sa sip-on kag hilanat
-    { name: "Solmux 500mg (per cap)", base: 11 }, // ubo nga may plema
-    { name: "Alcohol 70% 250ml", base: 45 }, // panlimpyo sang sugat
-    { name: "Betadine Ointment 5g", base: 55 }, // antiseptic para sa sugat
+    { name: "Paracetamol 500mg (10 tabs)", base: 50.50, description: "Alaga sa hilanat kag kasakit" },
+    { name: "Paracetamol 500mg (per tab)", base: 2.75, description: "Kada isa" }, 
+    { name: "Bioflu Tablet (per tab)", base: 6.80, description: "Para sa sip‑on kag ubo" }, 
+    { name: "Cetirizine 10mg (per tab)", base: 8.25, description: "Anti‑allergy sa itchy nga sip‑on" }, 
+    { name: "Loperamide 2mg (per tab)", base: 6.25, description: "Pampalunga sang diarrhea" }, 
+    { name: "Ambroxol 30mg (per tab)", base: 195/30, description: "Pantanggal‑ubo (phlegm)" }, 
+    { name: "Kremil‑S Sachet (1 tab)", base: 3.50, description: "Pangmayos sang tiyan" }, 
+    { name: "Neozep (per tab)", base: 7.50, description: "Para sa sip‑on kag hilanat" }, 
+    { name: "Solmux 500mg (per cap)", base: 11.00, description: "Ubo nga may plema" }, 
+    { name: "Alcohol 70% 250ml", base: 45.00, description: "Panlimpyo sang sugat" }, 
+  ],
+  "First Aid & Antiseptic": [
+    { name: "Betadine Ointment 5g", base: 55.00, description: "Antiseptic para sa sugat" }, 
+    { name: "Hydrogen Peroxide 60ml", base: 25.00, description: "Pan‑disinfect sang sugat" }, 
+    { name: "Bandage Roll 2in", base: 20.00, description: "Pambalot sang pilas" },
   ],
   "Vitamins & Supplements": [
-    { name: "Vitamin C + Zinc (per tab)", base: 8 }, // para sa immune
-    { name: "Berocca 15s", base: 380 }, // para sa kusog kag focus
-    { name: "Enervon (30s)", base: 250 }, // booster sa bitamina
+    { name: "Vitamin C + Zinc (per tab)", base: 6.00, description: "Para sa immune" }, 
+    { name: "Berocca 15s", base: 330.25, description: "Para sa kusog kag focus" }, 
+    { name: "Enervon (30s)", base: 250.00, description: "Booster sa bitamina" }, 
+    { name: "Ascorbic Acid 500mg (per tab)", base: 3.00, description: "Basic vitamin C pangproteksyon" }.
+  ],
+  "Allergy & Pain Relief": [
+    { name: "Ibuprofen 200mg (per tab)", base: 6.50, description: "Kasakit sang ngipon kag lawas" }, 
+    { name: "Mefenamic Acid 500mg (per tab)", base: 9.25, description: "Para sa regla o kasakit sang tiyan" }, 
+    { name: "Loratadine 10mg (per tab)", base: 8.00, description: "Para sa allergy" },
   ]
 };
 
