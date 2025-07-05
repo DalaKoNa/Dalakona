@@ -346,29 +346,21 @@ footer {
   height: 100px;
   width: 100px;
 }
-/* Better receipt line wrapping with aligned prices */
 #cart-summary ul li {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
   font-size: 0.95rem;
   line-height: 1.3;
-  margin-bottom: 0.25rem;
-  gap: 1rem;
+  margin-bottom: 0.4rem;
 }
 
 #cart-summary ul li strong {
   white-space: nowrap;
+  margin-right: 0.25rem;
 }
 
 #cart-summary ul li span {
   white-space: nowrap;
-  flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  #cart-summary ul li {
-    flex-wrap: wrap;
-  }
+  text-align: right;
 }
