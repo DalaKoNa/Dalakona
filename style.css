@@ -346,26 +346,34 @@ footer {
   height: 100px;
   width: 100px;
 }
-#cart-summary ul li {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: start;
-  column-gap: 0.5rem;
+.cart-item-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.95rem;
   line-height: 1.4;
-  margin-bottom: 0.5rem;
 }
 
-#cart-summary ul li strong {
+.cart-item-line .item-left {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.cart-item-line .item-name {
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  color: #333;
+}
+
+.cart-item-line .item-price {
   white-space: nowrap;
-}
-
-#cart-summary ul li .item-name {
-  word-break: break-word;
-}
-
-#cart-summary ul li .item-price {
-  white-space: nowrap;
+  flex-shrink: 0;
   text-align: right;
-  justify-self: end;
+  min-width: 60px;
+  font-weight: bold;
 }
