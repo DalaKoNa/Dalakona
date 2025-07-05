@@ -297,54 +297,63 @@ function findProduct(name) {
     }
   }
   return null;
-    const deliveryTime = document.getElementById('delivery-time');
-    const deliveryNote = document.getElementById('delivery-note');
+}
 
-    if (deliveryDate && deliveryTime) {
-      deliveryDate.value = now.toISOString().split('T')[0];
-      deliveryDate.disabled = true;
-      deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-      deliveryTime.disabled = true;
+// ✅ This should be completely outside, not inside findProduct
+window.onload = () => {
+  renderProductList();
+
+  const deliveryDate = document.getElementById('delivery-date');
+  const deliveryTime = document.getElementById('delivery-time');
+  const deliveryNote = document.getElementById('delivery-note');
+
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+
+  if (deliveryDate && deliveryTime) {
+    deliveryDate.value = now.toISOString().split('T')[0];
+    deliveryDate.disabled = true;
+    deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
+    deliveryTime.disabled = true;
+  }
+
+  if (deliveryNote) {
+    deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+    deliveryNote.style.display = "block";
+  }
+
+  ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', validateForm);
+  });
+
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const refInput = document.getElementById('payment-ref');
+    const link = document.getElementById('payment-link');
+
+    if (refInput) {
+      if (method === 'Cash') {
+        refInput.style.display = 'none';
+        refInput.value = '';
+      } else {
+        refInput.style.display = 'block';
+      }
     }
 
-    if (deliveryNote) {
-      deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-      deliveryNote.style.display = "block";
+    if (link) {
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
     }
 
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', validateForm);
-    });
+    validateForm();
+  });
 
-    // ✅ Handle payment method logic
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
+  // ✅ Trigger once on load
+  document.getElementById('payment-method').dispatchEvent(new Event('change'));
 
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
-
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm();
-    });
-
-    // ✅ Trigger once on load
-    document.getElementById('payment-method').dispatchEvent(new Event('change'));
-
-    validateForm(); // Initial validation
-  };
+  validateForm(); // Initial validation
+};
 
   async function submitOrder() {
     const name = document.getElementById('customer-name').value.trim();
