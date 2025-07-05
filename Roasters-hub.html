@@ -165,15 +165,25 @@ Orders are final and subject to store policies.
     const cart = {};
 
     const categorizedProducts = {
-      "Inasal Chicken": [
-        { name: "Half Lechon Manok (Original)", base: 160 },
-        { name: "Half Lechon Manok (Spicy)", base: 160 },
-        { name: "Whole Lechon Manok (Original)", base: 310 },
-        { name: "Whole Lechon Manok (Spicy)", base: 310 },
-        { name: "Lechon Liempo (1/4 kg)", base: 160 },
-        { name: "Lechon Liempo (1/2 kg)", base: 310 },
-      ]
-    };
+  "Inasal Chicken": [
+    { name: "Half Lechon Manok (Original)", base: 180 },
+    { name: "Half Lechon Manok (Spicy)", base: 180 },
+    { name: "Whole Lechon Manok (Original)", base: 340 },
+    { name: "Whole Lechon Manok (Spicy)", base: 340 },
+    { name: "Lechon Liempo (1/4 kg)", base: 170 },
+    { name: "Lechon Liempo (1/2 kg)", base: 320 },
+  ],
+  "Sides & Extras": [
+    { name: "Rice (Solo Pack)", base: 25 },
+    { name: "Rice (Bucket, 5 cups)", base: 120 },
+    { name: "Sauce (Uling Secret Mix, small)", base: 15 },
+    { name: "Sauce (Uling Secret Mix, large)", base: 25 },
+    { name: "Sopas (cup)", base: 40 },
+    { name: "Steamed Vegetables (pack)", base: 60 },
+    { name: "Soft Drink (1.5 L)", base: 95 },
+    { name: "Soft Drink (330 ml)", base: 45 },
+  ]
+};
 
     function renderProductList() {
       const container = document.getElementById('product-list');
