@@ -270,10 +270,13 @@ function updateCartSummary() {
   const fee = 29.99;
   const grand = total + fee;
 
-  html += `</ul><hr>
-    <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+  html += `
+  <li>
+    <strong>${item.qty}x</strong>
+    <span class="item-name">${item.name}</span>
+    <span class="item-price">₱${(item.qty * item.price).toFixed(2)}</span>
+  </li>`;
+
 
   document.getElementById('cart-summary').innerHTML = html;
 }
