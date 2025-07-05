@@ -248,13 +248,6 @@ function decreaseQty(name) {
   }
 }
 
-function updateQtyDisplay(name) {
-  const id = name.replace(/\s+/g, '-').toLowerCase();
-  const qty = cart[name]?.qty || 0;
-  document.getElementById(`qty-${id}`).innerText = qty;
-  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-}
-
 function updateCartSummary() {
   let html = `
     <h2 style="text-align: center;">🧾 Receipt Summary</h2>
@@ -263,8 +256,15 @@ function updateCartSummary() {
 
   let total = 0;
   Object.values(cart).forEach(item => {
-    html += `<li><strong>${item.qty}x</strong> ${item.name}<span>₱${(item.qty * item.price).toFixed(2)}</span></li>`;
- total += item.qty * item.price;
+    const lineTotal = (item.qty * item.price).toFixed(2);
+    total += +lineTotal;
+
+    html += `
+      <li>
+        <strong>${item.qty}x</strong>
+        <span class="item-name">${item.name}</span>
+        <span class="item-price">₱${lineTotal}</span>
+      </li>`;
   });
 
   const fee = 29.99;
