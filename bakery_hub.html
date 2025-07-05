@@ -8,103 +8,97 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #fffaf7; padding: 1rem; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
-.cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
-.cart-count {
-position: absolute; top: -8px; right: -10px; background: red; color: white;
-border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
-text-align: center; line-height: 16px;
-}
-h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
-.search-bar { margin-bottom: 1rem; text-align: center; display: flex; justify-content: center; gap: 0.5rem; }
-.search-bar input {
-padding: 0.5rem; width: 60%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
-}
-.search-bar button {
-padding: 0.5rem 1rem; background: #008060; color: white; border: none; border-radius: 5px; cursor: pointer;
-}
-.category-title {
-margin-top: 1.5rem;
-font-size: 1.1rem;
-font-weight: bold;
-border-bottom: 2px solid #ccc;
-padding-bottom: 0.25rem;
-}
-.product-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-gap: 1rem;
-margin-top: 0.5rem;
-}
-.product-card {
-border: 1px solid #ddd;
-border-radius: 10px;
-padding: 0.5rem;
-background: #fff;
-box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-min-height: 140px;
-}
-.product-card h4 {
-font-size: 0.9rem;
-margin-bottom: 0.25rem;
-}
-.product-card .desc {
-font-size: 0.8rem;
-color: #555;
-}
-.product-card .price {
-font-weight: bold;
-margin: 0.25rem 0;
-}
-.qty-controls {
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.qty-controls button {
-padding: 0.3rem 0.6rem;
-background: #008060;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-position: fixed;
-top: 50%; left: 50%; transform: translate(-50%, -50%);
-background: white;
-width: 90%; max-width: 600px; max-height: 90vh;
-overflow-y: auto;
-padding: 1rem;
-box-shadow: 0 0 10px rgba(0,0,0,0.2);
-border-radius: 20px;
-z-index: 9999;
-}
-.cart-modal .close-btn {
-text-align: right;
-font-size: 1.5rem;
-cursor: pointer;
-}
-.form-section, .cart-summary {
-margin-top: 1rem;
-}
-.form-section input, .form-section select {
-width: 100%; padding: 0.5rem; margin: 0.5rem 0;
-}
-.checkout-btn {
-margin-top: 1rem;
-background: green;
-color: white;
-padding: 0.8rem;
-width: 100%;
-border: none;
-font-weight: bold;
-cursor: pointer;
-}
-.hidden { display: none; }
+    body { background: #fffaf7; padding: 1rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { font-size: 1.5rem; color: #333; text-decoration: none; }
+    .cart-btn { position: relative; font-size: 1.5rem; color: #333; cursor: pointer; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: red; color: white;
+      border-radius: 50%; font-size: 0.7rem; width: 16px; height: 16px;
+      text-align: center; line-height: 16px;
+    }
+    h1 { text-align: center; margin-bottom: 1rem; font-weight: bold; }
+    .search-bar { margin-bottom: 1rem; text-align: center; display: flex; justify-content: center; gap: 0.5rem; }
+    .search-bar input {
+      padding: 0.5rem; width: 60%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;
+    }
+    .search-bar button {
+      padding: 0.5rem 1rem; background: #008060; color: white; border: none; border-radius: 5px; cursor: pointer;
+    }
+    .category-title {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.25rem;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 0.5rem;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+    .product-card h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .product-card .desc { font-size: 0.8rem; color: #555; }
+    .product-card .price { font-weight: bold; margin: 0.25rem 0; }
+    .qty-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .qty-controls button {
+      padding: 0.3rem 0.6rem;
+      background: #008060;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .cart-modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      width: 90%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      z-index: 9999;
+    }
+    .cart-modal .close-btn {
+      text-align: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .form-section, .cart-summary {
+      margin-top: 1rem;
+    }
+    .form-section input, .form-section select {
+      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+    }
+    .checkout-btn {
+      margin-top: 1rem;
+      background: green;
+      color: white;
+      padding: 0.8rem;
+      width: 100%;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -124,178 +118,152 @@ cursor: pointer;
 
   <div id="product-list"></div>
 
- <div class="cart-modal hidden" id="cart-modal">
-<div class="close-btn" onclick="toggleCart()">&times;</div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
-<div class="cart-summary" id="cart-summary"></div>
+    <!-- Form Section -->
+    <div class="form-section" id="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required />
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required />
+      <input type="email" id="customer-email" placeholder="Email Address" required />
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
 
-<!-- ✅ Begin form section -->
-<div class="form-section" id="form-section">
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" required disabled />
+      <input type="time" id="delivery-time" required disabled />
+      <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
 
-<h3>Customer Info</h3>
-<input type="text" id="customer-name" placeholder="Full Name" required />
-<input type="tel" id="customer-phone" placeholder="Phone Number" required />
-<input type="email" id="customer-email" placeholder="Email Address" required />
-<input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
-<button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-<input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash (may incur transfer fee)</option>
+        <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+        <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+        <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+      </select>
 
-<h3>Delivery Details</h3>
-<input type="date" id="delivery-date" required disabled />
-<input type="time" id="delivery-time" required disabled />
-<div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
+      <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
 
-<h3>Payment</h3>
-<select id="payment-method">
-<option value="GCash">GCash (may incur transfer fee)</option>
-<option value="PayMaya">PayMaya (may incur transfer fee)</option>
-<option value="Bank">Bank Transfer (may incur transfer fee)</option>
-<option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-</select>
+      <div style="margin-top: 0.5rem;">
+        <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
+      </div>
 
-<input
-type="text"
-id="payment-ref"
-placeholder="📄 Payment reference number (required for GCash/Bank)"
-style="margin-top: 0.5rem; display: none;"
-/>
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
+        Orders are final and subject to store policies.
+      </div>
 
-<div style="margin-top: 0.5rem;">
-<a
-id="payment-link"
-href="payment-instructions.html?method=GCash"
-target="_blank"
-style="color: #008060; text-decoration: underline;"
->
-View payment instructions
-</a>
-</div>
+      <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
+    </div>
+  </div>
 
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the
-<a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-Terms & Conditions
-</a>.
-Orders are final and subject to store policies.
-</div>
+<script>// bakery.js
 
-<button
-class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-id="checkout-btn"
-onclick="submitOrder()"
-disabled
->
-🛒 Checkout via WhatsApp
-</button>
+const markup = 1.99;
+const cart = {};
 
-</div> <!-- ✅ close form-section -->
+const categorizedProducts = {
+  "Bread & Pastries": [
+    { name: "Pandesal (10 pcs)", base: 25 },
+    { name: "Cheese Bread (5 pcs)", base: 30 },
+    { name: "Spanish Bread (5 pcs)", base: 28 },
+    { name: "Ensaymada (2 pcs)", base: 35 },
+    { name: "Monay (3 pcs)", base: 18 },
+    { name: "Tasty Bread (Loaf)", base: 55 },
+    { name: "Ube Cheese Pandesal (3 pcs)", base: 38 },
+    { name: "Choco Marble Cake (Slice)", base: 45 },
+    { name: "Banana Bread (Slice)", base: 35 },
+    { name: "Egg Pie (Slice)", base: 40 },
+  ],
+  "Cakes": [
+    { name: "Chocolate Cake (Mini, 4\")", base: 150 },
+    { name: "Ube Macapuno Cake (Mini, 4\")", base: 155 },
+    { name: "Mocha Cake (Mini, 4\")", base: 140 },
+    { name: "Red Velvet Cake (Mini, 4\")", base: 160 },
+    { name: "Carrot Cake (Mini, 4\")", base: 145 },
+  ],
+  "Pasalubong & Others": [
+    { name: "Biscocho (Pack)", base: 50 },
+    { name: "Barquillos (Pack)", base: 45 },
+    { name: "Piaya (3 pcs)", base: 35 },
+    { name: "Butterscotch (Pack)", base: 40 },
+    { name: "Otap (Pack)", base: 42 },
+  ]
+};
 
-</div> <!-- ✅ close cart-modal -->
+function renderProductList() {
+  const container = document.getElementById('product-list');
+  container.innerHTML = "";
+  for (const [category, items] of Object.entries(categorizedProducts)) {
+    const section = document.createElement("div");
+    section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+    const grid = section.querySelector('.product-grid');
 
-<script>
-  const markup = 1.99;
-  const cart = {};
+    items.forEach(item => {
+      const id = item.name.replace(/\s+/g, '-').toLowerCase();
+      const price = (item.base + markup).toFixed(2);
+      const qty = cart[item.name]?.qty || 0;
+      const [prodName, details] = item.name.split('(');
+      const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
 
-  const categorizedProducts = {
-    "Bread & Pastries": [
-      { name: "Pandesal (10 pcs)", base: 25 },
-      { name: "Cheese Bread (5 pcs)", base: 30 },
-      { name: "Spanish Bread (5 pcs)", base: 28 },
-      { name: "Ensaymada (2 pcs)", base: 35 },
-      { name: "Monay (3 pcs)", base: 18 },
-      { name: "Tasty Bread (Loaf)", base: 55 },
-      { name: "Ube Cheese Pandesal (3 pcs)", base: 38 },
-      { name: "Choco Marble Cake (Slice)", base: 45 },
-      { name: "Banana Bread (Slice)", base: 35 },
-      { name: "Egg Pie (Slice)", base: 40 },
-    ],
-    "Cakes": [
-      { name: "Chocolate Cake (Mini, 4")", base: 150 },
-      { name: "Ube Macapuno Cake (Mini, 4")", base: 155 },
-      { name: "Mocha Cake (Mini, 4")", base: 140 },
-      { name: "Red Velvet Cake (Mini, 4")", base: 160 },
-      { name: "Carrot Cake (Mini, 4")", base: 145 },
-    ],
-    "Pasalubong & Others": [
-      { name: "Biscocho (Pack)", base: 50 },
-      { name: "Barquillos (Pack)", base: 45 },
-      { name: "Piaya (3 pcs)", base: 35 },
-      { name: "Butterscotch (Pack)", base: 40 },
-      { name: "Otap (Pack)", base: 42 },
-    ]
-  };   
-  function renderProductList() {
-      const container = document.getElementById('product-list');
-      container.innerHTML = "";
-      for (const [category, items] of Object.entries(categorizedProducts)) {
-        const section = document.createElement("div");
-        section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
-        const grid = section.querySelector('.product-grid');
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <div class="product-name"> ${prodName.trim()}</div>
+        <div class="product-description">${flavorOrType || "—"}</div>
+        <div class="product-size">${grams || ""}</div>
+        <div class="product-footer">
+          <div class="product-price">₱${price}</div>
+          <div class="qty-controls">
+            <button onclick="decreaseQty('${item.name}')">-</button>
+            <span id="qty-${id}">${qty}</span>
+            <button onclick="increaseQty('${item.name}')">+</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    container.appendChild(section);
+  }
+}
 
-        items.forEach(item => {
-          const id = item.name.replace(/\s+/g, '-').toLowerCase();
-          const price = (item.base + markup).toFixed(2);
-          const qty = cart[item.name]?.qty || 0;
+function increaseQty(name) {
+  const item = findProduct(name);
+  if (!item) return;
+  if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
+  cart[name].qty++;
+  updateQtyDisplay(name);
+  updateCartSummary();
+}
 
-          const [prodName, details] = item.name.split('(');
-          const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
+function decreaseQty(name) {
+  if (cart[name]) {
+    cart[name].qty--;
+    if (cart[name].qty <= 0) delete cart[name];
+    updateQtyDisplay(name);
+    updateCartSummary();
+  }
+}
 
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.innerHTML = `
-            <div class="product-name"> ${prodName.trim()}</div>
-            <div class="product-description">${flavorOrType || "—"}</div>
-            <div class="product-size">${grams || ""}</div>
-            <div class="product-footer">
-              <div class="product-price">₱${price}</div>
-              <div class="qty-controls">
-                <button onclick="decreaseQty('${item.name}')">-</button>
-                <span id="qty-${id}">${qty}</span>
-                <button onclick="increaseQty('${item.name}')">+</button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
+function updateQtyDisplay(name) {
+  const id = name.replace(/\s+/g, '-').toLowerCase();
+  const qty = cart[name]?.qty || 0;
+  document.getElementById(`qty-${id}`).innerText = qty;
+  document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+}
 
-        container.appendChild(section);
-      }
-    }
-
-    function increaseQty(name) {
-      const item = findProduct(name);
-      if (!item) return;
-      if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
-      cart[name].qty++;
-      updateQtyDisplay(name);
-      updateCartSummary(); //
-    }
-
-    function decreaseQty(name) {
-      if (cart[name]) {
-        cart[name].qty--;
-        if (cart[name].qty <= 0) delete cart[name];
-        updateQtyDisplay(name);
-        updateCartSummary(); //
-      }
-    }
-
-    function updateQtyDisplay(name) {
-      const id = name.replace(/\s+/g, '-').toLowerCase();
-      const qty = cart[name]?.qty || 0;
-      document.getElementById(`qty-${id}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    }
 function updateCartSummary() {
   let html = `
     <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-    <p style="text-align: center;">Dala🚲Na Market Hub</p>
+    <p style="text-align: center;">Dala🚲Na Bakery Hub</p>
     <ul style="list-style: none; padding: 0;">`;
 
   let total = 0;
   Object.values(cart).forEach(item => {
-    html += `<li><strong>${item.qty}x</strong> ${item.name} 
-              <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+    html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
     total += item.qty * item.price;
   });
 
@@ -310,25 +278,26 @@ function updateCartSummary() {
   document.getElementById('cart-summary').innerHTML = html;
 }
 
-    function toggleCart() {
+function toggleCart() {
   const modal = document.getElementById('cart-modal');
   modal.classList.toggle('hidden');
 }
 
-    function filterProducts() {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.product-card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
-      });
-    }
+function filterProducts() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
+  });
+}
 
-    function findProduct(name) {
-      for (const items of Object.values(categorizedProducts)) {
-        for (const item of items) {
-          if (item.name === name) return item;
-        }
-      }
-          return null;
+function findProduct(name) {
+  for (const items of Object.values(categorizedProducts)) {
+    for (const item of items) {
+      if (item.name === name) return item;
+    }
+  }
+  return null;
+}
     }
 function validateForm() {
   const name = document.getElementById('customer-name')?.value.trim();
@@ -347,7 +316,7 @@ function validateForm() {
   if (btn) {
     btn.disabled = !isValid;
     btn.classList.toggle('cursor-not-allowed', !isValid);
-    btn.style.background = isValid ? "#008060" : "#ccc";
+    btn.style.backgroud = isValid ? "#008060" : "#ccc";
   }
 }
 function getLocation() {
