@@ -155,45 +155,20 @@
       <option value="Bank">Bank Transfer (may incur transfer fee)</option>
       <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
     </select>
+<input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
 
-    <input
-      type="text"
-      id="payment-ref"
-      placeholder="📄 Payment reference number (required for GCash/Bank)"
-      style="margin-top: 0.5rem; display: none;"
-    />
+<div style="margin-top: 0.5rem;">
+<a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
+</div>
 
-    <div style="margin-top: 0.5rem;">
-      <a
-        id="payment-link"
-        href="payment-instructions.html?method=GCash"
-        target="_blank"
-        style="color: #008060; text-decoration: underline;"
-      >
-        View payment instructions
-      </a>
-    </div>
+<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
+Orders are final and subject to store policies.
+</div>
 
-    <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-      ✅ I agree to the
-      <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">
-        Terms & Conditions
-      </a>.
-      Orders are final and subject to store policies.
-    </div>
-
-    <button
-      class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-      id="checkout-btn"
-      onclick="submitOrder()"
-      disabled
-    >
-      🛒 Checkout via WhatsApp
-    </button>
-
-  </div> <!-- ✅ close form-section -->
-
-</div> <!-- ✅ close cart-modal -->
+<button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
+</div>
+</div>
 
 <script>
      const markup = 1.99;
@@ -455,8 +430,15 @@ function updateCartSummary() {
 
   let total = 0;
   Object.values(cart).forEach(item => {
-    html += `<li><strong>${item.qty}x</strong> ${item.name}<span>₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-    total += item.qty * item.price;
+    const lineTotal = (item.qty * item.price).toFixed(2);
+    total += +lineTotal;
+
+    html += `
+      <li>
+        <strong>${item.qty}x</strong>
+        <span class="item-name">${item.name}</span>
+        <span class="item-price">₱${lineTotal}</span>
+      </li>`;
   });
 
   const fee = 29.99;
