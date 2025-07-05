@@ -224,7 +224,68 @@ disabled
       { name: "Otap (Pack)", base: 42 },
     ]
   };   
+  function renderProductList() {
+      const container = document.getElementById('product-list');
+      container.innerHTML = "";
+      for (const [category, items] of Object.entries(categorizedProducts)) {
+        const section = document.createElement("div");
+        section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+        const grid = section.querySelector('.product-grid');
 
+        items.forEach(item => {
+          const id = item.name.replace(/\s+/g, '-').toLowerCase();
+          const price = (item.base + markup).toFixed(2);
+          const qty = cart[item.name]?.qty || 0;
+
+          const [prodName, details] = item.name.split('(');
+          const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
+
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+            <div class="product-name"> ${prodName.trim()}</div>
+            <div class="product-description">${flavorOrType || "—"}</div>
+            <div class="product-size">${grams || ""}</div>
+            <div class="product-footer">
+              <div class="product-price">₱${price}</div>
+              <div class="qty-controls">
+                <button onclick="decreaseQty('${item.name}')">-</button>
+                <span id="qty-${id}">${qty}</span>
+                <button onclick="increaseQty('${item.name}')">+</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        container.appendChild(section);
+      }
+    }
+
+    function increaseQty(name) {
+      const item = findProduct(name);
+      if (!item) return;
+      if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
+      cart[name].qty++;
+      updateQtyDisplay(name);
+      updateCartSummary(); //
+    }
+
+    function decreaseQty(name) {
+      if (cart[name]) {
+        cart[name].qty--;
+        if (cart[name].qty <= 0) delete cart[name];
+        updateQtyDisplay(name);
+        updateCartSummary(); //
+      }
+    }
+
+    function updateQtyDisplay(name) {
+      const id = name.replace(/\s+/g, '-').toLowerCase();
+      const qty = cart[name]?.qty || 0;
+      document.getElementById(`qty-${id}`).innerText = qty;
+      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+    }
 
 const deliveryTime = document.getElementById('delivery-time');
     const deliveryNote = document.getElementById('delivery-note');
