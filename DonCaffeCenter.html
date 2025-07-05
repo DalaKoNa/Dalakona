@@ -249,26 +249,33 @@ document.getElementById('cart-count').innerText = Object.values(cart).reduce((a,
 }
 
 function updateCartSummary() {
-let html = `
-<h2 style="text-align: center;">🧾 Receipt Summary</h2>
-<p style="text-align: center;">Dala🚲Na Don M Caffe</p>
-<ul style="list-style: none; padding: 0;">`;
+  let html = `
+    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
+    <p style="text-align: center;">Dala🚲Na Don M Caffe</p>
+    <ul style="list-style: none; padding: 0;">`;
 
-let total = 0;
-Object.values(cart).forEach(item => {
-html += `<li><strong>${item.qty}x</strong> ${item.name}<span>₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-total += item.qty * item.price;
-});
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    const lineTotal = (item.qty * item.price).toFixed(2);
+    total += +lineTotal;
 
-const fee = 29.99;
-const grand = total + fee;
+    html += `
+      <li>
+        <strong>${item.qty}x</strong>
+        <span class="item-name">${item.name}</span>
+        <span class="item-price">₱${lineTotal}</span>
+      </li>`;
+  });
 
-html += `</ul><hr>
-<p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
-<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+  const fee = 29.99;
+  const grand = total + fee;
 
-document.getElementById('cart-summary').innerHTML = html;
+  html += `</ul><hr>
+    <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+    <p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+    <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
+
+  document.getElementById('cart-summary').innerHTML = html;
 }
 
 function toggleCart() {
