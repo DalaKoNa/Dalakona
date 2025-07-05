@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Health Generic Hub</title>
+  <title>Dala🚲Na Generic</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
@@ -104,7 +104,7 @@
 <body>
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Health Hub</h1>
+    <h1>Generic</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
@@ -241,7 +241,7 @@ function updateQtyDisplay(name) {
 function updateCartSummary() {
   let html = `
     <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-    <p style="text-align: center;">Dala🚲Na Health Hub</p>
+    <p style="text-align: center;">Dala🚲Na Generic</p>
     <ul style="list-style: none; padding: 0;">`;
 
   let total = 0;
@@ -408,7 +408,7 @@ async function submitOrder() {
   iframe.src = filloutUrl.toString();
   document.body.appendChild(iframe);
 
-  const message = `🧾 New Order - Dala🚲Na Health Generic Hub\n\nConfirmation #: ${confirmation}
+  const message = `🧾 New Order - Dala🚲Na Generic\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
