@@ -255,11 +255,12 @@ function updateCartSummary() {
     total += +lineTotal;
 
     html += `
-      <li>
-        <strong>${item.qty}x</strong>
-        <span class="item-name">${item.name}</span>
-        <span class="item-price">₱${lineTotal}</span>
-      </li>`;
+  <li>
+    <strong>${item.qty}x</strong>
+    <span class="item-name">${item.name}</span>
+    <span class="item-price">₱${(item.qty * item.price).toFixed(2)}</span>
+  </li>`;
+
   });
 
   const fee = 29.99;
