@@ -114,13 +114,13 @@
 
   <div class="store-selector">
   <label for="store-select" style="font-weight: 600; display: block; margin-bottom: 0.25rem;">
-    Select Medicine Store <span style="color: red;">*</span>
+    Pili-a ang Botika <span style="color: red;">*</span>
   </label>
   <small style="display: block; margin-bottom: 0.5rem; color: #555;">
-    🏪 Please select a store before checkout. Orders are routed based on your selection.
+    🏪 Palihug pili sang botika antes mag-checkout. Ang imo order ipadala base sa imo nga pinilian.
   </small>
-  <select id="store-select" required onchange="validateForm()">
-    <option value="" disabled selected>Select Medicine Store</option>
+  <select id="store-select" required onchange="storeSelected()">
+    <option value="" disabled selected>Pili-a ang Botika</option>
     <option value="The Generic Pharmacy">The Generic Pharmacy</option>
     <option value="Watson">Watson</option>
   </select>
@@ -131,7 +131,9 @@
     <button onclick="filterProducts()">Search</button>
   </div>
 
+  <div id="product-container" style="display: none;">
   <div id="product-list" class="product-grid"></div>
+</div>
 
 <!-- CART MODAL SECTION -->
 <div class="cart-modal hidden" id="cart-modal">
@@ -219,7 +221,17 @@ const products = [
   { name: "Oral Rehydration Salt Sachet", description: "Para sa dehydration ukon pagtatae", rx: false },
   { name: "Isopropyl Alcohol 70% 150ml", description: "Pang-disinfect sang kamot", rx: false },
 ];
+function storeSelected() {
+  const store = document.getElementById('store-select').value;
+  const productContainer = document.getElementById('product-container');
 
+  if (store) {
+    productContainer.style.display = 'block';
+    renderProducts(); // ensure products show only after store selected
+  } else {
+    productContainer.style.display = 'none';
+  }
+}
 function renderProducts() {
   const container = document.getElementById('product-list');
   container.innerHTML = "";
@@ -242,11 +254,15 @@ function renderProducts() {
 }
 
 function increaseQty(name) {
+  const store = document.getElementById('store-select').value;
+  if (!store) {
+    alert("Please select a medicine store first.");
+    return;
+  }
   if (!cart[name]) cart[name] = { name, qty: 0 };
   cart[name].qty++;
   updateQtyDisplay(name);
   updateCartSummary();
-  validateForm();
 }
 
 function decreaseQty(name) {
