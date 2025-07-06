@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Generic</title>
+  <title>Dala🚲Na Gamot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
@@ -105,7 +105,7 @@
 <body>
   <header>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Generic</h1>
+    <h1>Gamot</h1>
     <div class="cart-btn" onclick="toggleCart()">
       <i class="fas fa-receipt"></i>
       <span class="cart-count" id="cart-count">0</span>
@@ -183,14 +183,41 @@ const DELIVERY_FEE = 29.99;
 const SERVICE_FEE = 10.01;
 const cart = {};
 const products = [
-  { name: "Paracetamol 500mg", description: "Pain and fever relief" },
-  { name: "Bioflu", description: "Cold and flu remedy" },
-  { name: "Neozep", description: "For colds and allergies" },
-  { name: "Vitamin C with Zinc", description: "Boosts immunity" },
-  { name: "Hydrite", description: "Rehydration solution" },
-  { name: "Cetirizine", description: "Antihistamine for allergies" },
-  { name: "Solmux", description: "Cough expectorant" },
-  { name: "Loperamide", description: "Anti-diarrheal" },
+  { name: "Paracetamol 500mg Tablet", description: "Para sa hilanat kag kasakit sang lawas", rx: false },
+  { name: "Bioflu 500mg Tablet", description: "Para sa flu, ubo, kag hilanat", rx: false },
+  { name: "Neozep Forte Tablet", description: "Kontra sipon kag ubo", rx: false },
+  { name: "Alaxan FR Capsule", description: "Para sa kasakit sang kalawasan", rx: false },
+  { name: "Mefenamic Acid 500mg Tablet", description: "Para sa puson kag kasakit sang ulo", rx: false },
+  { name: "Ibuprofen 400mg Tablet", description: "Para sa panakit kag hilanat", rx: false },
+  { name: "Diatabs 2mg Capsule", description: "Para sa hilo-hilo kag pagtatae", rx: false },
+  { name: "Loperamide 2mg Capsule", description: "Pangkontra sa pagtatae", rx: false },
+  { name: "Vitamin C 500mg Tablet", description: "Para sa resistensya sang lawas", rx: false },
+  { name: "Ascorbic Acid + Zinc Tablet", description: "Gina-paligon ang immune system", rx: false },
+  { name: "Multivitamins Tablet", description: "Para sa adlaw-adlaw nga kusog", rx: false },
+  { name: "Ferrous Sulfate 325mg Tablet", description: "Para sa anemia", rx: false },
+  { name: "Folic Acid 5mg Tablet", description: "Para sa mga nagabusong", rx: false },
+  { name: "Hydrite Oral Rehydration Salt", description: "Para sa dehydration kag hilo", rx: false },
+  { name: "Cetirizine 10mg Tablet", description: "Para sa allergy ukon sip-on", rx: false },
+  { name: "Loratadine 10mg Tablet", description: "Anti-allergy, indi makapatulog", rx: false },
+  { name: "Antacid Tablet", description: "Para sa kabudlayan sa tiyan", rx: false },
+  { name: "Charcoal Tablet", description: "Para sa hilo-hilo ukon food poisoning", rx: false },
+  { name: "Ascof Lagundi 120ml Syrup", description: "Herbal para sa ubo sang kabataan", rx: false },
+  { name: "Solmux 60ml Syrup", description: "Para sa ubo kag plema", rx: false },
+  { name: "Ambroxol 60ml Syrup", description: "Expectorant, pampagwa plema", rx: false },
+  { name: "Paracetamol 60ml Syrup", description: "Para sa hilanat sang kabataan", rx: false },
+  { name: "Ibuprofen 60ml Syrup", description: "Para sa hilanat kag panakit sang kabataan", rx: false },
+  { name: "Vitamin C Syrup 120ml", description: "Para sa kabataan nga may hilanat", rx: false },
+  { name: "Zinc Syrup 60ml", description: "Para sa resistensya sang kabataan", rx: false },
+  { name: "Efficascent Oil 50ml", description: "Ginagamit sa panakit sang kalawasan", rx: false },
+  { name: "Katinko 10g", description: "Para sa panuhot kag kasakit", rx: false },
+  { name: "Vicks Vaporub 25g", description: "Para sa sip-on kag ubo", rx: false },
+  { name: "Salonpas Patch", description: "Pang-ibot sang kasakit", rx: false },
+  { name: "Omega Pain Killer 60ml", description: "Ginagamit sa kasakit sang kasu-kasuan", rx: false },
+  { name: "Tolak Angin Herbal 15ml", description: "Pang-relief sang panuhot kag sip-on", rx: false },
+  { name: "Bactidol 120ml", description: "Para sa sore throat", rx: false },
+  { name: "Betadine Gargle 120ml", description: "Pangmumog kontra bakterya", rx: false },
+  { name: "Oral Rehydration Salt Sachet", description: "Para sa dehydration ukon pagtatae", rx: false },
+  { name: "Isopropyl Alcohol 70% 150ml", description: "Pang-disinfect sang kamot", rx: false },
 ];
 
 function renderProducts() {
@@ -313,7 +340,7 @@ async function submitOrder() {
   const total = DELIVERY_FEE + SERVICE_FEE;
   const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-  const message = `🧾 New Order - Dala🚲Na Generic Center\n\nConfirmation #: ${confirmation}
+  const message = `🧾 New Order - Dala🚲Na Gamot\n\nConfirmation #: ${confirmation}
 Store: ${store}
 Name: ${name}
 Phone: ${phone}
