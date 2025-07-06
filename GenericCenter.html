@@ -163,6 +163,7 @@ function increaseQty(name) {
   cart[name].qty++;
   updateQtyDisplay(name);
   updateCartSummary();
+  validateForm();
 }
 
 function decreaseQty(name) {
@@ -171,6 +172,7 @@ function decreaseQty(name) {
     if (cart[name].qty <= 0) delete cart[name];
     updateQtyDisplay(name);
     updateCartSummary();
+    validateForm();
   }
 }
 
@@ -186,10 +188,9 @@ function updateCartSummary() {
   let total = 0;
   Object.values(cart).forEach(item => {
     html += `<li><strong>${item.qty}x</strong> ${item.name}</li>`;
-    total += item.qty * 1; // Qty only, prices shown later by store
+    total += item.qty * 1;
   });
 
-  const final = (total * 0) + SERVICE_FEE + DELIVERY_FEE;
   html += `</ul><hr>
     <p><strong>Estimated Total:</strong> <span style="float:right;">Store Price</span></p>
     <p><strong>Service Fee:</strong> <span style="float:right;">₱${SERVICE_FEE.toFixed(2)}</span></p>
@@ -216,63 +217,30 @@ function validateForm() {
   const email = document.getElementById('customer-email')?.value.trim();
   const address = document.getElementById('delivery-address')?.value.trim();
   const store = document.getElementById('store-select')?.value;
-  const method = document.getElementById('payment-method')?.value;
-  const ref = document.getElementById('payment-ref')?.value.trim();
+  const hasItems = Object.keys(cart).length > 0;
 
-  const isCash = method === 'Cash';
-  const isRefValid = isCash || ref.length > 3;
-  const isValid = name && phone && email && address && isRefValid && store;
-
-  const btn = document.getElementById('checkout-btn');
-  btn.disabled = !isValid;
-  btn.classList.toggle('cursor-not-allowed', !isValid);
-  btn.style.background = isValid ? "#008060" : "#ccc";
+  const checkoutBtn = document.getElementById('checkout-btn');
+  checkoutBtn.disabled = !(name && phone && email && address && store && hasItems);
 }
 
 function getLocation() {
   const addressInput = document.getElementById('delivery-address');
-  if (!navigator.geolocation) return alert("Geolocation not supported.");
-  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${coords.latitude}&lon=${coords.longitude}`);
-      const data = await res.json();
-      addressInput.value = data.display_name || `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
-    } catch {
-      addressInput.value = `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
-    }
-    validateForm();
-  }, () => alert("Location denied."));
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser.");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      const link = `https://www.google.com/maps?q=${latitude},${longitude}`;
+      addressInput.value = link;
+      validateForm();
+    },
+    () => alert("Location access denied.")
+  );
 }
 
-window.onload = () => {
-  renderProducts();
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
-  document.getElementById('delivery-date').disabled = true;
-  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
-  document.getElementById('delivery-time').disabled = true;
-  document.getElementById('delivery-note').textContent = "🚚 Delivery within 1 hour from confirmation.";
-
-  ['customer-name','customer-phone','customer-email','delivery-address','payment-ref'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', validateForm);
-  });
-
-  document.getElementById('store-select')?.addEventListener('change', validateForm);
-  document.getElementById('payment-method').addEventListener('change', function () {
-    const refInput = document.getElementById('payment-ref');
-    if (this.value === 'Cash') {
-      refInput.style.display = 'none';
-      refInput.value = '';
-    } else {
-      refInput.style.display = 'block';
-    }
-    validateForm();
-  });
-  validateForm();
-};
-<script>
-function submitOrder() {
+async function submitOrder() {
   const name = document.getElementById('customer-name').value.trim();
   const phone = document.getElementById('customer-phone').value.trim();
   const email = document.getElementById('customer-email').value.trim();
@@ -282,12 +250,12 @@ function submitOrder() {
   const time = document.getElementById('delivery-time').value;
   const method = document.getElementById('payment-method').value;
   const ref = document.getElementById('payment-ref')?.value.trim() || '';
-  const store = document.getElementById('store-select').value;
+  const store = document.getElementById('store-select')?.value;
 
   const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
-  const subtotal = 0; // Store to compute price
+  const subtotal = 0; // to be computed by store
   const total = DELIVERY_FEE + SERVICE_FEE;
+  const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
   const message = `🧾 New Order - Dala🚲Na Generic Center\n\nConfirmation #: ${confirmation}
 Store: ${store}
@@ -320,7 +288,6 @@ Ref #: ${ref || 'N/A'}`;
   fillout.searchParams.append("confirmationNumber", confirmation);
   fillout.searchParams.append("storeName", store);
 
-  // Hidden iframe to submit Fillout form
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
   iframe.src = fillout.toString();
@@ -353,6 +320,27 @@ Ref #: ${ref || 'N/A'}`;
     window.location.href = thankyouUrl.toString();
   }, 2000);
 }
+
+window.onload = () => {
+  renderProducts();
+
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById('delivery-date').value = now.toISOString().split('T')[0];
+  document.getElementById('delivery-date').disabled = true;
+  document.getElementById('delivery-time').value = oneHourLater.toTimeString().slice(0, 5);
+  document.getElementById('delivery-time').disabled = true;
+  document.getElementById('delivery-note').textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
+
+  [
+    'customer-name', 'customer-phone', 'customer-email',
+    'delivery-address', 'store-select'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', validateForm);
+    if (el && el.tagName === "SELECT") el.addEventListener('change', validateForm);
+  });
+};
 </script>
 </body>
 </html>
