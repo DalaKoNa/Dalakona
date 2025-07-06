@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dala🚲Na | Cash In / Cash Out Station</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8f8f8;
+      background-color: #f4f4f4;
       margin: 0;
       padding: 0;
     }
@@ -106,7 +106,7 @@
     <div class="qr">
       <p>Send payment to:</p>
       <img src="your-gcash-qr-code.png" alt="GCash QR" />
-      <p>GCash: 0912-XXX-XXXX <br/>Name: Juan Dela Cruz</p>
+      <p>GCash: 0917-638-2740 <br/>Name: Dala Ko Na Cashier</p>
     </div>
 
     <div class="note">
@@ -126,17 +126,17 @@
       const ref = document.getElementById('gcashRef').value;
       const notes = document.getElementById('notes').value;
 
-      const message = 
-        `💸 *New ${type} Request*%0A` +
-        `👤 Name: ${name}%0A` +
-        `📱 Wallet: ${wallet}%0A` +
-        `📞 Number: ${number}%0A` +
-        `💰 Amount: ₱${amount}%0A` +
-        `🔖 Ref/Note: ${ref}%0A` +
-        `📝 Notes: ${notes}`;
+      const message =
+        `New ${type} Request\n` +
+        `Name: ${name}\n` +
+        `Wallet: ${wallet}\n` +
+        `Number: ${number}\n` +
+        `Amount: ₱${amount}\n` +
+        `Ref/Note: ${ref}\n` +
+        `Notes: ${notes}`;
 
       // Open WhatsApp to notify admin (replace with your number)
-      window.open(`https://wa.me/63XXXXXXXXXX?text=${message}`, '_blank');
+      window.open(`https://wa.me/639176382740?text=${encodeURIComponent(message)}`, '_blank');
     });
   </script>
 </body>
