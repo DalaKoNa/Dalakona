@@ -175,6 +175,11 @@
         Conditions</a>.
       Orders are final and subject to store policies.
     </div>
+<div id="payment-warning" style="display: none; font-size: 0.85rem; margin-top: 1rem; color: #444; background: #fdfdfd; border-left: 4px solid #008060; padding: 0.75rem;">
+  💬 <strong>Paandam:</strong> Palihog bayaran ang <strong>kabug-osan nga halin sa resibo</strong> nga nagalakip sang <strong>Delivery Fee</strong> kag <strong>Service Fee</strong>. 
+  Ang presyo sang mga bulong base sa ginpili nga botika. <br><br>
+  💰 Total nga bayaran: <strong id="estimated-total-text">₱40.00 + Store Price</strong>
+</div>
 
     <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn"
       onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
@@ -297,6 +302,14 @@ function updateCartSummary() {
     <hr><h3 style="text-align:center;">Total Due: ₱${(SERVICE_FEE + DELIVERY_FEE).toFixed(2)} + Store Price</h3>`;
 
   document.getElementById('cart-summary').innerHTML = html;
+// Update warning text and visibility
+const final = SERVICE_FEE + DELIVERY_FEE;
+const warningText = document.getElementById("estimated-total-text");
+const warningBox = document.getElementById("payment-warning");
+const selectedStore = document.getElementById("store-select")?.value;
+
+if (warningText) warningText.textContent = `₱${final.toFixed(2)} + Store Price`;
+if (warningBox) warningBox.style.display = selectedStore ? "block" : "none";
 }
 
 function toggleCart() {
