@@ -205,48 +205,62 @@ Orders are final and subject to store policies.
     { name: "Liempo Sisig", base: 330 },
   ]
 };
+<script>
+const cart = {};
+const markup = 1.99;
 
-      deliveryDate.disabled = true;
-      deliveryTime.value = oneHourLater.toTimeString().slice(0, 5);
-      deliveryTime.disabled = true;
-    }
+const categorizedProducts = {
+  "Inasal Menu": [
+    { name: "Half Lechon Manok (Original)", base: 160, desc: "Classic roasted chicken" },
+    { name: "Half Lechon Manok (Spicy)", base: 160, desc: "With chili spice" },
+    { name: "Whole Lechon Manok (Original)", base: 320, desc: "For sharing – classic flavor" },
+    { name: "Whole Lechon Manok (Spicy)", base: 320, desc: "Family-size, spicy" }
+  ]
+};
 
-    if (deliveryNote) {
-      deliveryNote.textContent = "✅ Delivery is scheduled within 1 hour from merchant confirmation.";
-      deliveryNote.style.display = "block";
-    }
+function renderProductList() {
+  const container = document.getElementById('product-list');
+  container.innerHTML = "";
+  for (const [category, items] of Object.entries(categorizedProducts)) {
+    const section = document.createElement("div");
+    section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+    const grid = section.querySelector('.product-grid');
 
-    ['customer-name', 'customer-phone', 'customer-email', 'delivery-address', 'payment-ref'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', validateForm);
+    items.forEach(item => {
+      const id = item.name.replace(/\s+/g, '-').toLowerCase();
+      const price = (item.base + markup).toFixed(2);
+      const qty = cart[item.name]?.qty || 0;
+
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <div class="product-name">${item.name}</div>
+        <div class="desc">${item.desc}</div>
+        <div class="price">₱${price}</div>
+        <div class="qty-controls">
+          <button onclick="decreaseQty('${item.name}')">-</button>
+          <span id="qty-${id}">${qty}</span>
+          <button onclick="increaseQty('${item.name}')">+</button>
+        </div>
+      `;
+      grid.appendChild(card);
     });
 
-    // ✅ Handle payment method logic
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
+    container.appendChild(section);
+  }
+}
 
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
+document.getElementById('store-selection').addEventListener('change', function () {
+  const selectedStore = this.value;
+  const productList = document.getElementById('product-list');
 
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm();
-    });
-
-    // ✅ Trigger once on load
-    document.getElementById('payment-method').dispatchEvent(new Event('change'));
-
+  if (selectedStore) {
+    productList.style.display = 'block';
+    renderProductList();
+  } else {
+    productList.style.display = 'none';
+  }
+});
     validateForm(); // Initial validation
   };
 
