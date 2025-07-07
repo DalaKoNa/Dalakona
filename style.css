@@ -377,3 +377,31 @@ footer {
   min-width: 60px;
   font-weight: bold;
 }
+.featured-images {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.featured-images h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #008060;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.image-grid img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
