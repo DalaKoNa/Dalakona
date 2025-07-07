@@ -286,15 +286,15 @@ function updateCartSummary() {
     subtotal += item.qty * item.price;
   });
 
-  const serviceFee = 10.01;
-  const deliveryFee = 29.99;
-  const total = subtotal + serviceFee + deliveryFee;
+ const serviceFee = 10.01;
+const deliveryFee = 29.99;
+const grand = total + serviceFee + deliveryFee;
 
-  html += `</ul><hr>
-    <p><strong>Subtotal:</strong> <span style="float:right;">₱${subtotal.toFixed(2)}</span></p>
-    <p><strong>Service Fee:</strong> <span style="float:right;">₱${serviceFee.toFixed(2)}</span></p>
-    <p><strong>Delivery Fee:</strong> <span style="float:right;">₱${deliveryFee.toFixed(2)}</span></p>
-    <hr><h3 style="text-align:center;">Total: ₱${total.toFixed(2)}</h3>`;
+html += `</ul><hr>
+<p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
+<p><strong>Service Fee:</strong> <span style="float:right;">₱${serviceFee.toFixed(2)}</span></p>
+<p><strong>Delivery Fee:</strong> <span style="float:right;">₱${deliveryFee.toFixed(2)}</span></p>
+<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
 
   document.getElementById('cart-summary').innerHTML = html;
 }
