@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
+    /* Inherit all styles from genericcenter.html (No VAT version) */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -49,9 +50,18 @@
       justify-content: space-between;
       min-height: 140px;
     }
-    .product-card h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
-    .product-card .desc { font-size: 0.8rem; color: #555; }
-    .product-card .price { font-weight: bold; margin: 0.25rem 0; }
+    .product-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    .product-card .desc {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    .product-card .price {
+      font-weight: bold;
+      margin: 0.25rem 0;
+    }
     .qty-controls {
       display: flex;
       justify-content: space-between;
@@ -64,11 +74,11 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 0.9rem;
     }
     .cart-modal {
       position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
       background: white;
       width: 90%; max-width: 600px; max-height: 90vh;
       overflow-y: auto;
@@ -116,7 +126,16 @@
     <button onclick="filterProducts()">Search</button>
   </div>
 
-  <div id="product-list"></div>
+  <div style="text-align:center; margin-top: 0.5rem;">
+    <label for="store-selection"><strong>Select Store</strong></label><br />
+    <select id="store-selection" required style="padding: 0.5rem; width: 60%; max-width: 300px; margin-top: 0.25rem;">
+      <option value="">Select a branch</option>
+      <option value="Uling Roaster">Proper – Uling Roaster</option>
+      <option value="Chooks to go">Burgos – Chooks to go</option>
+    </select>
+  </div>
+
+  <div id="product-list" style="display: none;"></div>
 
   <div class="cart-modal hidden" id="cart-modal">
     <div class="close-btn" onclick="toggleCart()">&times;</div>
