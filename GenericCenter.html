@@ -124,6 +124,13 @@
     <input type="text" id="searchInput" placeholder="Search products...">
     <button onclick="filterProducts()">Search</button>
   </div>
+     <h3>Select Store</h3>
+<select id="store-selection" required>
+  <option value="">Select a branch</option>
+  <option value="Watson">Watson Hypermarket</option>
+  <option value="The Generics Pharmacy">Proper</option>
+  <option value="JDN Pharmacy">Proper</option>
+</select>
 
   <div id="product-list"></div>
 
@@ -134,14 +141,6 @@
 
   <!-- ✅ Begin form section -->
   <div class="form-section" id="form-section">
-
-    <h3>Select Store</h3>
-<select id="store-selection" required>
-  <option value="">Select a branch</option>
-  <option value="Watson">Watson Hypermarket</option>
-  <option value="The Generics Pharmacy">Proper</option>
-  <option value="JDN Pharmacy">Proper</option>
-</select>
 
     <h3>Customer Info</h3>
     <input type="text" id="customer-name" placeholder="Full Name" required />
