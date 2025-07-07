@@ -324,3 +324,56 @@ footer {
   object-fit: cover;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
+<style>
+  #popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #popup-box {
+    background: #fffaf7;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  #popup-box h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #d17b00;
+  }
+
+  #popup-box .popup-btns {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+
+  #popup-box button {
+    padding: 0.6rem 1.2rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  #popup-understood {
+    background: #008060;
+    color: white;
+  }
+
+  #popup-cta {
+    background: #e5e5e5;
+    color: #444;
+  }
