@@ -122,7 +122,7 @@
   <body>
     <header>
       <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-      <h1>Chicken Inasal</h1>
+      <h1>Inasal</h1>
       <div class="cart-btn" onclick="toggleCart()">
         <i class="fas fa-receipt"></i>
         <span class="cart-count" id="cart-count">0</span>
@@ -138,7 +138,6 @@
       <label for="store-selection"><strong>Select Store</strong></label><br />
       <select id="store-selection" required style="padding: 0.5rem; width: 60%; max-width: 300px; margin-top: 0.25rem;">
         <option value="">Select a branch</option>
-        <option value="Inasal">Inasal (Main)</option>
         <option value="Uling Roaster Proper">Uling Roaster Proper</option>
         <option value="Chooks to Go">Chooks to Go</option>
       </select>
@@ -284,7 +283,7 @@
   function updateCartSummary() {
     let html = `
       <h2 style="text-align:center;">🧾 Receipt Summary</h2>
-      <p style="text-align:center;">Dala🚲Na Chicken Inasal</p>
+      <p style="text-align:center;">Dala🚲Na Inasal</p>
       <ul style="list-style:none; padding:0;">`;
 
     let subtotal = 0;
