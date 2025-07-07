@@ -438,10 +438,11 @@ function getLocation() {
     const ref = document.getElementById('payment-ref')?.value.trim() || '';
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
-    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-    const fee = 29.99;
-    const total = subtotal + fee;
-    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const serviceFee = 10.01;
+const deliveryFee = 29.99;
+const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+const total = subtotal + serviceFee + deliveryFee;
+const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     // 1. Submit to Fillout silently
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
@@ -472,7 +473,8 @@ Email: ${email}
 
 Items: ${items}
 Subtotal: ₱${subtotal.toFixed(2)}
-Service Fee: ₱${fee.toFixed(2)}
+Service Fee: ₱${serviceFee.toFixed(2)}
+Delivery Fee: ₱${deliveryFee.toFixed(2)}
 Total: ₱${total.toFixed(2)}
 
 Delivery: ${date} ${time}
