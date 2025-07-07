@@ -16,7 +16,7 @@ a {
   color: inherit;
 }
 
-/* === Header === */
+/* === French Storefront Header === */
 .navbar.storefront-header {
   display: flex;
   justify-content: space-between;
@@ -61,21 +61,23 @@ a {
   display: block;
 }
 
-/* === Awning Top === */
+/* === Storefront Awning Top (Paris-style) === */
 .awning-top {
   height: 90px;
   background: repeating-linear-gradient(90deg, #b71c1c 0 25px, #ffffff 25px 50px);
   position: relative;
   z-index: 10;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 90% 85%, 85% 100%, 80% 85%, 75% 100%, 70% 85%, 65% 100%, 60% 85%, 55% 100%, 50% 85%, 45% 100%, 40% 85%, 35% 100%, 30% 85%, 25% 100%, 20% 85%, 15% 100%, 10% 85%, 5% 100%, 0 85%);
+  clip-path: polygon(
+    0 0, 100% 0, 100% 85%, 95% 100%, 90% 85%,
+    85% 100%, 80% 85%, 75% 100%, 70% 85%, 65% 100%,
+    60% 85%, 55% 100%, 50% 85%, 45% 100%, 40% 85%,
+    35% 100%, 30% 85%, 25% 100%, 20% 85%, 15% 100%,
+    10% 85%, 5% 100%, 0 85%
+  );
   animation: slideDownFade 0.6s ease-out forwards;
   transform: translateY(-30px);
   opacity: 0;
-}
-@keyframes slideDownFade {
-  from { transform: translateY(-30px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
 }
 .awning-decor {
   height: 28px;
@@ -95,6 +97,16 @@ a {
   0% { transform: translateY(0); }
   50% { transform: translateY(1.5px); }
   100% { transform: translateY(0); }
+}
+@keyframes slideDownFade {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* === Hero Section === */
@@ -121,6 +133,7 @@ a {
   font-weight: 600;
   color: #b71c1c;
   margin: 0.2rem 0 1rem;
+  font-family: 'Cinzel', serif;
 }
 .hero p {
   font-size: 1.1rem;
@@ -164,6 +177,8 @@ a {
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   transition: transform 0.3s ease;
   animation: slideUp 0.4s ease;
+  display: flex;
+  flex-direction: column;
 }
 .storefront-card:hover {
   transform: scale(1.03);
@@ -172,28 +187,34 @@ a {
   0% { transform: translateY(20px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
+
+/* === Card Awning === */
 .storefront-card .awning {
   height: 30px;
-  background: repeating-linear-gradient(45deg, #d32f2f 0px, #d32f2f 10px, #fff 10px, #fff 20px);
+  background: repeating-linear-gradient(
+    45deg,
+    #d32f2f 0px,
+    #d32f2f 10px,
+    #fff 10px,
+    #fff 20px
+  );
 }
 
-/* === Card Content w/ Image Overlay === */
+/* === Card Content w/ Image Cover === */
 .storefront-content {
   position: relative;
   width: 100%;
   height: 200px;
   overflow: hidden;
-  border-bottom: 2px solid #d4a373;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  flex-shrink: 0;
 }
 .storefront-content img {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  top: 0;
-  left: 0;
   z-index: 1;
 }
 .storefront-content h3 {
@@ -201,39 +222,16 @@ a {
   bottom: 0;
   left: 0;
   right: 0;
-  margin: 0;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.45);
+  margin: 0;
+  background: rgba(0, 0, 0, 0.5);
   color: #fff;
-  font-size: 1.2rem;
-  font-weight: 600;
   z-index: 2;
-  text-align: center;
+  font-size: 1.2rem;
   font-family: 'Cinzel', serif;
 }
 
-/* === Horizontal Scroll Wrapper (optional) === */
-.storefront-scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto;
-}
-.storefront-scroll-wrapper::-webkit-scrollbar {
-  display: none;
-}
-.storefront-scroll-wrapper .storefront-card {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  width: 260px;
-}
-
-/* === Responsive === */
+/* === Responsive Layouts === */
 @media (max-width: 768px) {
   .storefront-wrapper-grid {
     grid-template-columns: 1fr;
@@ -280,7 +278,7 @@ footer {
   text-decoration: underline;
 }
 
-/* === WhatsApp Button === */
+/* === WhatsApp Floating Button === */
 .whatsapp-float {
   position: fixed;
   bottom: 20px;
@@ -298,4 +296,31 @@ footer {
 }
 .whatsapp-float:hover {
   transform: scale(1.1);
+}
+
+/* === Featured Section === */
+.featured-images {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  text-align: center;
+}
+.featured-images h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #008060;
+}
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.image-grid img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
