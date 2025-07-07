@@ -434,12 +434,15 @@ html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right
 total += item.qty * item.price;
 });
 
-const fee = 29.99;
-const grand = total + fee;
+const serviceFee = 29.99;
+const deliveryFee = 10.01;
+const totalFee = serviceFee + deliveryFee;
+const grand = total + totalFee;
 
 html += `</ul><hr>
 <p><strong>Subtotal:</strong> <span style="float:right;">₱${total.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${fee.toFixed(2)}</span></p>
+<p><strong>Service Fee:</strong> <span style="float:right;">₱${serviceFee.toFixed(2)}</span></p>
+<p><strong>Delivery Fee:</strong> <span style="float:right;">₱${deliveryFee.toFixed(2)}</span></p>
 <hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
 
 document.getElementById('cart-summary').innerHTML = html;
@@ -586,8 +589,11 @@ function getLocation() {
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
     const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-    const fee = 29.99;
-    const total = subtotal + fee;
+    const serviceFee = 29.99;
+    const deliveryFee = 10.01;
+    const totalFee = serviceFee + deliveryFee;
+    const total = subtotal + totalFee;
+
     const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     // 1. Submit to Fillout silently
@@ -619,7 +625,8 @@ Email: ${email}
 
 Items: ${items}
 Subtotal: ₱${subtotal.toFixed(2)}
-Service Fee: ₱${fee.toFixed(2)}
+Service Fee: ₱${serviceFee.toFixed(2)}
+Delivery Fee: ₱${deliveryFee.toFixed(2)}
 Total: ₱${total.toFixed(2)}
 
 Delivery: ${date} ${time}
