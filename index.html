@@ -242,17 +242,6 @@
 
   <div class="storefront-wrapper-grid">
   </div>  
- <div style="background-color: #fff4e6; border-left: 4px solid #d4a373; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.9rem; color: #555; line-height: 1.4;">
-  📣 <strong>Paandam:</strong> Wala kami sang pormal nga afilyado ukon partner sa mga tindahan nga nakalista. 
-  Ginabuligan lang namon ang mga lokal nga tindahan nga makalab-ot sa inyo paagi sa mas hapos nga pag-order online. 
-  Ini nga serbisyo halin sa <strong>Dala🚲Na</strong> para mapadasig kag mapasangkad ang pagpamalaklon.
-
-  <br /><br />
-  📣 <strong>Disclaimer:</strong> We are not formally affiliated or partnered with the stores listed. 
-  We simply help local stores reach you through a faster and easier online ordering system. 
-  This service is provided by <strong>Dala🚲Na</strong> to support local commerce.
-</div>
-
 <div class="storefront-wrapper-grid">
     
     <a href="MarketCenter.html" class="storefront-card" data-aos="fade-up">
@@ -504,5 +493,38 @@
     document.getElementById("merchantSearch").addEventListener("input", filterMerchants);
   });
 </script>
+<div id="popup-overlay">
+  <div id="popup-box">
+    <h2>📣 Paandam / Disclaimer</h2>
+    <p>
+      Wala kami sang pormal nga afilyado ukon partner sa mga tindahan nga nakalista. 
+      Ang <strong>Dala🚲Na</strong> naga-suporta sa lokal nga mga tindahan para mas mapadasig ang pagpamalaklon online. 
+      Ang presyo kag availability sang items posible maglain-lain depende sa oras kag tindahan.
+
+      <br><br>
+      🛒 <strong>Paano Mag-Order:</strong> Pili ka sang produkto, kumpletoha ang form, kag i-checkout. 
+      Isa ka mensahe sa WhatsApp ang awtomatik nga maga-generate. <strong>KINAHANGLAN nga isend mo ini sa tindahan</strong> para makumpirma ang order.
+
+      <br><br>
+      🚨 <strong>WhatsApp is REQUIRED.</strong> Orders are only confirmed when you send the message via WhatsApp.
+
+      <br><br>
+      We are not officially affiliated with the listed stores. This service helps local shops reach more customers.
+    </p>
+
+    <div class="popup-btns">
+      <button id="popup-understood">✅ Naintindihan ko</button>
+      <button id="popup-cta" onclick="document.getElementById('popup-overlay').style.display='none'">Padayon sa tindahan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Optional: prevent interaction until confirmed
+  document.getElementById("popup-understood").addEventListener("click", function () {
+    document.getElementById("popup-overlay").style.display = "none";
+  });
+</script>
+
 </body>
 </html>
