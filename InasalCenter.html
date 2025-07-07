@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
-    /* Inherit all styles from genericcenter.html (No VAT version) */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fffaf7; padding: 1rem; }
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -137,132 +136,120 @@
 
   <div id="product-list" style="display: none;"></div>
 
-  <div id="product-list" style="display: none;"></div>
+  <div class="cart-modal hidden" id="cart-modal">
+    <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="cart-summary" id="cart-summary"></div>
 
-<div class="cart-modal hidden" id="cart-modal">
-  <div class="close-btn" onclick="toggleCart()">&times;</div>
+    <div class="form-section" id="form-section">
+      <h3>Customer Info</h3>
+      <input type="text" id="customer-name" placeholder="Full Name" required />
+      <input type="tel" id="customer-phone" placeholder="Phone Number" required />
+      <input type="email" id="customer-email" placeholder="Email Address" required />
+      <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
+      <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
 
-  <div class="cart-summary" id="cart-summary"></div>
+      <h3>Delivery Details</h3>
+      <input type="date" id="delivery-date" required disabled />
+      <input type="time" id="delivery-time" required disabled />
 
-  <!-- ✅ Begin form section -->
-  <div class="form-section" id="form-section">
+      <h3>Payment</h3>
+      <select id="payment-method">
+        <option value="GCash">GCash</option>
+        <option value="PayMaya">PayMaya</option>
+        <option value="Bank">Bank Transfer</option>
+        <option value="Cash">Cash on Delivery (COD)</option>
+      </select>
+      <input type="text" id="payment-ref" placeholder="Payment Reference (for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
 
-    <h3>Customer Info</h3>
-    <input type="text" id="customer-name" placeholder="Full Name" required />
-    <input type="tel" id="customer-phone" placeholder="Phone Number" required />
-    <input type="email" id="customer-email" placeholder="Email Address" required />
-    <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
-    <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-    <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
+      <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+        ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060;">Terms & Conditions</a>.
+      </div>
 
-    <h3>Delivery Details</h3>
-    <input type="date" id="delivery-date" required disabled />
-    <input type="time" id="delivery-time" required disabled />
-    <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
+      <button class="checkout-btn" id="checkout-btn" onclick="submitOrder()">🛒 Checkout via WhatsApp</button>
+    </div>
+  </div>
 
-    <h3>Payment</h3>
-    <select id="payment-method">
-      <option value="GCash">GCash (may incur transfer fee)</option>
-      <option value="PayMaya">PayMaya (may incur transfer fee)</option>
-      <option value="Bank">Bank Transfer (may incur transfer fee)</option>
-      <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-    </select>
-<input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
-
-<div style="margin-top: 0.5rem;">
-<a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
-</div>
-
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
-Orders are final and subject to store policies.
-</div>
-
-<button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
-</div>
-</div>
 <script>
   const markup = 1.99;
   const cart = {};
 
   const categorizedProducts = {
-
-  "Lechon Manok": [
-    { name: "Lechon Manok (Whole, Spicy)", base: 270 },
-    { name: "Lechon Manok (Half, Spicy)", base: 135 },
-    { name: "Lechon Manok (Whole, Plain)", base: 260 },
-    { name: "Lechon Manok (Half, Plain)", base: 130 }
-  ],
-  "Roasted Chicken (Official)": [
-    { name: "Half Hot & Spicy Roast Chicken", base: 190 },
-    { name: "Half Pepper Roast Chicken", base: 190 },
-    { name: "Whole Hot & Spicy Roast Chicken", base: 370 },
-    { name: "Whole Pepper Roast Chicken", base: 370 },
-    { name: "Whole Sweet Roast Chicken", base: 370 }
-  ],
-  "Ready-to-Eat": [
-    { name: "1‑Pc Fried Chicken", base: 55 },
-    { name: "Liempo Sisig", base: 330 },
-  ]
-};
-<script>
-const cart = {};
-const markup = 1.99;
-
-const categorizedProducts = {
-  "Inasal Menu": [
-    { name: "Half Lechon Manok (Original)", base: 160, desc: "Classic roasted chicken" },
-    { name: "Half Lechon Manok (Spicy)", base: 160, desc: "With chili spice" },
-    { name: "Whole Lechon Manok (Original)", base: 320, desc: "For sharing – classic flavor" },
-    { name: "Whole Lechon Manok (Spicy)", base: 320, desc: "Family-size, spicy" }
-  ]
-};
-
-function renderProductList() {
-  const container = document.getElementById('product-list');
-  container.innerHTML = "";
-  for (const [category, items] of Object.entries(categorizedProducts)) {
-    const section = document.createElement("div");
-    section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
-    const grid = section.querySelector('.product-grid');
-
-    items.forEach(item => {
-      const id = item.name.replace(/\s+/g, '-').toLowerCase();
-      const price = (item.base + markup).toFixed(2);
-      const qty = cart[item.name]?.qty || 0;
-
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <div class="product-name">${item.name}</div>
-        <div class="desc">${item.desc}</div>
-        <div class="price">₱${price}</div>
-        <div class="qty-controls">
-          <button onclick="decreaseQty('${item.name}')">-</button>
-          <span id="qty-${id}">${qty}</span>
-          <button onclick="increaseQty('${item.name}')">+</button>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-
-    container.appendChild(section);
-  }
-}
-
-document.getElementById('store-selection').addEventListener('change', function () {
-  const selectedStore = this.value;
-  const productList = document.getElementById('product-list');
-
-  if (selectedStore) {
-    productList.style.display = 'block';
-    renderProductList();
-  } else {
-    productList.style.display = 'none';
-  }
-});
-    validateForm(); // Initial validation
+    "Inasal Menu": [
+      { name: "Half Lechon Manok (Original)", base: 160, desc: "Classic roasted chicken" },
+      { name: "Half Lechon Manok (Spicy)", base: 160, desc: "With chili spice" },
+      { name: "Whole Lechon Manok (Original)", base: 320, desc: "For sharing – classic flavor" },
+      { name: "Whole Lechon Manok (Spicy)", base: 320, desc: "Family-size, spicy" }
+    ]
   };
+
+  function renderProductList() {
+    const container = document.getElementById('product-list');
+    container.innerHTML = "";
+    for (const [category, items] of Object.entries(categorizedProducts)) {
+      const section = document.createElement("div");
+      section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
+      const grid = section.querySelector('.product-grid');
+
+      items.forEach(item => {
+        const id = item.name.replace(/\s+/g, '-').toLowerCase();
+        const price = (item.base + markup).toFixed(2);
+        const qty = cart[item.name]?.qty || 0;
+
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <div class="product-name">${item.name}</div>
+          <div class="desc">${item.desc || ''}</div>
+          <div class="price">₱${price}</div>
+          <div class="qty-controls">
+            <button onclick="decreaseQty('${item.name}')">-</button>
+            <span id="qty-${id}">${qty}</span>
+            <button onclick="increaseQty('${item.name}')">+</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      container.appendChild(section);
+    }
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  document.getElementById('store-selection').addEventListener('change', function () {
+    const selectedStore = this.value;
+    const productList = document.getElementById('product-list');
+    if (selectedStore) {
+      productList.style.display = 'block';
+      renderProductList();
+    } else {
+      productList.style.display = 'none';
+    }
+  });
+
+  function increaseQty(name) {
+    const product = categorizedProducts["Inasal Menu"].find(p => p.name === name);
+    if (!cart[name]) cart[name] = { qty: 0, name: name, price: product.base + markup };
+    cart[name].qty++;
+    renderProductList();
+    updateCartCount();
+  }
+
+  function decreaseQty(name) {
+    if (cart[name]) {
+      cart[name].qty--;
+      if (cart[name].qty <= 0) delete cart[name];
+      renderProductList();
+      updateCartCount();
+    }
+  }
+
+  function updateCartCount() {
+    const count = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cart-count").textContent = count;
+  }
 
   async function submitOrder() {
     const store = document.getElementById('store-selection')?.value;
@@ -278,12 +265,11 @@ document.getElementById('store-selection').addEventListener('change', function (
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
     const serviceFee = 10.01;
-const deliveryFee = 29.99;
-const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-const total = subtotal + serviceFee + deliveryFee;
-const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const deliveryFee = 29.99;
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const total = subtotal + serviceFee + deliveryFee;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
-    // 1. Submit to Fillout silently
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
     filloutUrl.searchParams.append("selectedStore", store);
     filloutUrl.searchParams.append("customerName", name);
@@ -303,8 +289,7 @@ const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
     iframe.src = filloutUrl.toString();
     document.body.appendChild(iframe);
 
-    // 2. Send to WhatsApp
-    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation} ...`;
+    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -321,7 +306,7 @@ Delivery: ${date} ${time}
 Payment: ${method}
 Ref #: ${ref || 'N/A'}`;
 
-const encoded = encodeURIComponent(message);
+    const encoded = encodeURIComponent(message);
     const merchant = "63XXXXXXXXXX";
     const admin = "63YYYYYYYYYY";
     const driver = "63ZZZZZZZZZZ";
@@ -330,7 +315,6 @@ const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/${admin}?text=${encoded}`, '_blank');
     window.open(`https://wa.me/${driver}?text=${encoded}`, '_blank');
 
-    // 3. Redirect to thank you page
     const thankyouUrl = new URL("thankyou.html", window.location.href);
     thankyouUrl.searchParams.append("customerName", name);
     thankyouUrl.searchParams.append("customerPhone", phone);
@@ -350,7 +334,10 @@ const encoded = encodeURIComponent(message);
       window.location.href = thankyouUrl.toString();
     }, 2000);
   }
-</script>
 
+  window.onload = () => {
+    updateCartCount();
+  };
+</script>
 </body>
 </html>
