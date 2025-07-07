@@ -493,36 +493,46 @@
     document.getElementById("merchantSearch").addEventListener("input", filterMerchants);
   });
 </script>
+<!-- BEGIN: Popup Overlay HTML + Script -->
 <div id="popup-overlay">
   <div id="popup-box">
     <h2>📣 Paandam / Disclaimer</h2>
     <p>
       Wala kami sang pormal nga afilyado ukon partner sa mga tindahan nga nakalista. 
-      Ang <strong>Dala🚲Na</strong> naga-suporta sa lokal nga mga tindahan para mas mapadasig ang pagpamalaklon online. 
+      Ang <strong>Dala🚲Na</strong> naga-suporta sa lokal nga mga tindahan para mapadasig ang pagpamalaklon online. 
       Ang presyo kag availability sang items posible maglain-lain depende sa oras kag tindahan.
 
       <br><br>
-      🛒 <strong>Paano Mag-Order:</strong> Pili ka sang produkto, kumpletoha ang form, kag i-checkout. 
-      Isa ka mensahe sa WhatsApp ang awtomatik nga maga-generate. <strong>KINAHANGLAN nga isend mo ini sa tindahan</strong> para makumpirma ang order.
+      🛒 <strong>Paano Mag-Order:</strong> Pili sang produkto, kumpletoha ang form, kag i-checkout. 
+      Isa ka mensahe sa WhatsApp ang awtomatik nga maga-generate. <strong>KINAHANGLAN mo ini i-send sa tindahan</strong> para makumpirma ang order.
 
       <br><br>
-      🚨 <strong>WhatsApp is REQUIRED.</strong> Orders are only confirmed when you send the message via WhatsApp.
+      🚨 <strong>WhatsApp is REQUIRED.</strong> Your order is only processed if you manually send the message via WhatsApp.
 
       <br><br>
-      We are not officially affiliated with the listed stores. This service helps local shops reach more customers.
+      We are not officially affiliated with the stores. We simply support local shops through this ordering system.
     </p>
 
     <div class="popup-btns">
       <button id="popup-understood">✅ Naintindihan ko</button>
-      <button id="popup-cta" onclick="document.getElementById('popup-overlay').style.display='none'">Padayon sa tindahan</button>
+      <button id="popup-cta">Padayon sa tindahan</button>
     </div>
   </div>
 </div>
 
 <script>
-  // Optional: prevent interaction until confirmed
-  document.getElementById("popup-understood").addEventListener("click", function () {
-    document.getElementById("popup-overlay").style.display = "none";
+  const understoodBtn = document.getElementById('popup-understood');
+  const ctaBtn = document.getElementById('popup-cta');
+  const overlay = document.getElementById('popup-overlay');
+
+  understoodBtn.addEventListener('click', () => {
+    ctaBtn.classList.add('enabled');
+  });
+
+  ctaBtn.addEventListener('click', () => {
+    if (ctaBtn.classList.contains('enabled')) {
+      overlay.style.display = 'none';
+    }
   });
 </script>
 
