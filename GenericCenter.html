@@ -135,7 +135,7 @@
   </select>
 </div>
 
-  <div id="product-list"></div>
+  <div id="product-list" style="display: none;"></div>
 
 <div class="cart-modal hidden" id="cart-modal">
   <div class="close-btn" onclick="toggleCart()">&times;</div>
@@ -356,7 +356,7 @@ function validateForm() {
   const isCash = method === 'Cash';
   const isRefValid = isCash || ref.length > 3;
 
-  const isValid = name && phone && email && address && isRefValid && store;
+  const isValid = name && phone && email && address && store && isRefValid;
 
   const btn = document.getElementById('checkout-btn');
   if (btn) {
@@ -364,6 +364,7 @@ function validateForm() {
     btn.classList.toggle('cursor-not-allowed', !isValid);
     btn.style.background = isValid ? "#008060" : "#ccc";
   }
+}
 }
 function getLocation() {
   const addressInput = document.getElementById('delivery-address');
@@ -397,6 +398,22 @@ function getLocation() {
     }
   );
 }
+let selectedStore = ""; // Global variable
+
+document.getElementById('store-selection').addEventListener('change', function () {
+  selectedStore = this.value;
+  const productList = document.getElementById('product-list');
+
+  if (selectedStore) {
+    productList.style.display = 'block';
+    renderProductList(); // Call your existing function to show the product grid
+  } else {
+    productList.style.display = 'none';
+  }
+
+  validateForm(); // Recheck if checkout can be enabled
+});
+  }
   window.onload = () => {
     renderProductList();
 
@@ -493,9 +510,7 @@ const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
     document.body.appendChild(iframe);
 
     // 2. Send to WhatsApp
-    const message = `🧾 New Order - Dala🚲Na Ikaayong lawas
-
-Confirmation #: ${confirmation} – ${store}
+    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation} ...`;
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
