@@ -446,7 +446,7 @@ document.getElementById('store-selection').addEventListener('change', function (
       const method = this.value;
       const refInput = document.getElementById('payment-ref');
       const link = document.getElementById('payment-link');
-
+    
       if (refInput) {
         if (method === 'Cash') {
           refInput.style.display = 'none';
@@ -463,7 +463,19 @@ document.getElementById('store-selection').addEventListener('change', function (
 
       validateForm();
     });
+document.getElementById('store-selection').addEventListener('change', function () {
+    selectedStore = this.value;
+    const productList = document.getElementById('product-list');
 
+    if (selectedStore) {
+      productList.style.display = 'block';
+      renderProductList();
+    } else {
+      productList.style.display = 'none';
+    }
+
+    validateForm();
+  });
     // ✅ Trigger once on load
     document.getElementById('payment-method').dispatchEvent(new Event('change'));
 
