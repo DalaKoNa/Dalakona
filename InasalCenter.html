@@ -180,19 +180,19 @@
   let selectedStore = "";
 
   const categorizedProducts = {
-    "Inasal": [
-      { name: "Full Lechon Manok", base: 370, desc: "Delicious charcoal-roasted whole chicken" },
-      { name: "Half Lechon Manok", base: 185, desc: "Half-portion of flavorful roasted chicken" }
-    ],
-    "Uling Roaster Proper": [
-      { name: "Full Lechon Manok (Uling Roaster)", base: 370, desc: "Uling-roasted, juicy whole chicken" },
-      { name: "Half Lechon Manok (Uling Roaster)", base: 185, desc: "Half serving of Uling Roaster’s roasted chicken" }
-    ],
-    "Chooks to Go": [
-      { name: "Full Lechon Manok (Chooks to Go)", base: 370, desc: "Tender and tasty lechon manok" },
-      { name: "Half Lechon Manok (Chooks to Go)", base: 185, desc: "Savory half-chicken from Chooks to Go" }
-    ]
-  };
+  "Uling Roaster Proper": [
+    { name: "Full Lechon Manok (Uling Roaster - Original)", base: 370, desc: "Whole chicken, charcoal-roasted in classic flavor" },
+    { name: "Full Lechon Manok (Uling Roaster - Spicy)", base: 370, desc: "Whole roasted chicken with a spicy kick" },
+    { name: "Half Lechon Manok (Uling Roaster - Original)", base: 185, desc: "Half chicken, classic charcoal-roasted" },
+    { name: "Half Lechon Manok (Uling Roaster - Spicy)", base: 185, desc: "Half chicken, spicy and juicy roasted" },
+  ],
+  "Chooks to Go": [
+    { name: "Full Lechon Manok (Chooks to Go - Sweet Roast)", base: 370, desc: "Whole chicken with signature sweet roast" },
+    { name: "Full Lechon Manok (Chooks to Go - Pepper Roast)", base: 370, desc: "Pepper-seasoned whole lechon manok" },
+    { name: "Half Lechon Manok (Chooks to Go - Sweet Roast)", base: 185, desc: "Half chicken with sweet roasted flavor" },
+    { name: "Half Lechon Manok (Chooks to Go - Pepper Roast)", base: 185, desc: "Half chicken, seasoned with black pepper" },
+  ]
+};
 
   function renderProductList() {
     const container = document.getElementById('product-list');
