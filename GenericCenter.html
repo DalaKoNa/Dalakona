@@ -124,13 +124,16 @@
     <input type="text" id="searchInput" placeholder="Search products...">
     <button onclick="filterProducts()">Search</button>
   </div>
-    <h3>Select Store</h3>
-<select id="store-selection" required>
-  <option value="">Select a branch</option>
-  <option value="Watson Hypermarket">Watson Hypermarket</option>
-  <option value="The Generics Pharmacy">Proper – The Generics Pharmacy</option>
-  <option value="JDN Pharmacy">Proper – JDN Pharmacy</option>
-</select>
+
+    <div style="text-align:center; margin-top: 0.5rem;">
+  <label for="store-selection"><strong>Select Store</strong></label><br />
+  <select id="store-selection" required style="padding: 0.5rem; width: 60%; max-width: 300px; margin-top: 0.25rem;">
+    <option value="">Select a branch</option>
+    <option value="Watson Hypermarket">Watson Hypermarket</option>
+    <option value="The Generics Pharmacy">Proper – The Generics Pharmacy</option>
+    <option value="JDN Pharmacy">Proper – JDN Pharmacy</option>
+  </select>
+</div>
 
   <div id="product-list"></div>
 
