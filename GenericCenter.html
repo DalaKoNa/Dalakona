@@ -438,7 +438,7 @@ function getLocation() {
   };
 
   async function submitOrder() {
-    const store = document.getElementById('store-selection')?.value || 'N/A';
+    const store = document.getElementById('store-selection')?.value;
     const name = document.getElementById('customer-name').value.trim();
     const phone = document.getElementById('customer-phone').value.trim();
     const email = document.getElementById('customer-email').value.trim();
@@ -458,7 +458,7 @@ const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     // 1. Submit to Fillout silently
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
-    filloutUrl.searchParams.append("store", store);
+    filloutUrl.searchParams.append("selectedStore", store);
     filloutUrl.searchParams.append("customerName", name);
     filloutUrl.searchParams.append("customerPhone", phone);
     filloutUrl.searchParams.append("customerEmail", email);
@@ -477,7 +477,9 @@ const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
     document.body.appendChild(iframe);
 
     // 2. Send to WhatsApp
-    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation}
+    const message = `🧾 New Order - Dala🚲Na Ikaayong lawas
+
+Confirmation #: ${confirmation} – ${store}
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
@@ -494,7 +496,7 @@ Delivery: ${date} ${time}
 Payment: ${method}
 Ref #: ${ref || 'N/A'}`;
 
-    const encoded = encodeURIComponent(message);
+const encoded = encodeURIComponent(message);
     const merchant = "63XXXXXXXXXX";
     const admin = "63YYYYYYYYYY";
     const driver = "63ZZZZZZZZZZ";
