@@ -515,6 +515,36 @@
     </div>
   </div>
 </div>
+<script>
+  const understoodBtn = document.getElementById('popup-understood');
+  const ctaBtn = document.getElementById('popup-cta');
+  const overlay = document.getElementById('popup-overlay');
+
+  function shouldShowDisclaimer() {
+    const lastAccepted = localStorage.getItem("disclaimerAcceptedAt");
+    if (!lastAccepted) return true;
+
+    const threeDays = 3 * 24 * 60 * 60 * 1000; // 3 days in ms
+    const now = Date.now();
+    return now - parseInt(lastAccepted) > threeDays;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!shouldShowDisclaimer()) {
+      overlay.style.display = "none";
+    }
+
+    understoodBtn.addEventListener('click', () => {
+      ctaBtn.classList.add('enabled');
+    });
+
+    ctaBtn.addEventListener('click', () => {
+      if (ctaBtn.classList.contains('enabled')) {
+        overlay.style.display = 'none';
+        localStorage.setItem("disclaimerAcceptedAt", Date.now().toString());
+      }
+    });
+  });
 </script>
 
 </body>
