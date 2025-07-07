@@ -16,7 +16,7 @@ a {
   color: inherit;
 }
 
-/* === French Storefront Header === */
+/* === Navbar Header === */
 .navbar.storefront-header {
   display: flex;
   justify-content: space-between;
@@ -61,7 +61,7 @@ a {
   display: block;
 }
 
-/* === Storefront Awning Top (Paris-style) === */
+/* === Awning Top (Decor) === */
 .awning-top {
   height: 90px;
   background: repeating-linear-gradient(
@@ -83,6 +83,10 @@ a {
   transform: translateY(-30px);
   opacity: 0;
 }
+@keyframes slideDownFade {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 .awning-decor {
   height: 28px;
   background: radial-gradient(circle at 10px 0, #ffffff 10px, transparent 11px),
@@ -95,42 +99,12 @@ a {
   background-size: 160px 100%;
   margin-top: -4px;
   box-shadow: inset 0 -6px 8px rgba(0, 0, 0, 0.1);
+  animation: ripple-wave 2s ease-in-out infinite;
 }
 @keyframes ripple-wave {
   0% { transform: translateY(0); }
   50% { transform: translateY(1.5px); }
   100% { transform: translateY(0); }
-}
-.awning-decor {
-  animation: ripple-wave 2s ease-in-out infinite;
-}
-
-/* === Slide-down animation === */
-@keyframes slideDownFade {
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* === Responsive Adjustments === */
-@media (max-width: 768px) {
-  .awning-top {
-    height: 70px;
-    clip-path: polygon(
-      0 0, 100% 0, 100% 82%, 97% 100%, 93% 82%,
-      89% 100%, 85% 82%, 81% 100%, 77% 82%,
-      73% 100%, 69% 82%, 65% 100%, 61% 82%,
-      57% 100%, 53% 82%, 49% 100%, 45% 82%,
-      41% 100%, 37% 82%, 33% 100%, 29% 82%,
-      25% 100%, 21% 82%, 17% 100%, 13% 82%,
-      9% 100%, 5% 82%, 0 100%
-    );
-  }
 }
 
 /* === Hero Section === */
@@ -157,7 +131,6 @@ a {
   font-weight: 600;
   color: #b71c1c;
   margin: 0.2rem 0 1rem;
-  font-family: 'Cinzel', serif;
 }
 .hero p {
   font-size: 1.1rem;
@@ -209,8 +182,6 @@ a {
   0% { transform: translateY(20px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-
-/* === Awning inside Card === */
 .storefront-card .awning {
   height: 30px;
   background: repeating-linear-gradient(
@@ -222,193 +193,11 @@ a {
   );
 }
 
-/* === Card Content === */
+/* === Storefront Content with Image Overlay === */
 .storefront-content {
-  padding: 1rem;
-}
-.storefront-content img {
-  width: 64px;
-  margin-bottom: 1rem;
-}
-.storefront-content h3 {
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-  color: #222;
-}
-.storefront-content p {
-  font-size: 0.95rem;
-  color: #444;
-}
-
-/* === Horizontal Scroll Cards === */
-.storefront-scroll-wrapper {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto;
-}
-.storefront-scroll-wrapper::-webkit-scrollbar {
-  display: none;
-}
-.storefront-scroll-wrapper .storefront-card {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  width: 260px;
-}
-
-/* === Responsive Layouts === */
-@media (max-width: 768px) {
-  .storefront-wrapper-grid {
-    grid-template-columns: 1fr;
-  }
-  .storefront-card {
-    width: 90%;
-  }
-  .title {
-    font-size: 1.2rem;
-  }
-  .hero img {
-    max-height: 160px;
-  }
-}
-
-/* === Footer === */
-footer {
-  background-color: #fff4ca;
-  padding: 2rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  font-size: 0.95rem;
-}
-.footer-left, .footer-right {
-  flex: 1;
-  min-width: 200px;
-  margin-bottom: 1rem;
-}
-.footer-left p {
-  margin: 0.4rem 0;
-}
-.socials a {
-  margin-right: 10px;
-  color: #cc8b00;
-  font-weight: bold;
-}
-.footer-right a {
-  display: block;
-  color: #333;
-  margin-bottom: 5px;
-}
-.footer-right a:hover {
-  text-decoration: underline;
-}
-
-/* === WhatsApp Floating Button === */
-.whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #25d366;
-  color: white;
-  font-size: 28px;
-  padding: 12px 16px;
-  border-radius: 50%;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  z-index: 1000;
-  text-decoration: none;
-  transition: transform 0.2s ease-in-out;
-}
-.whatsapp-float:hover {
-  transform: scale(1.1);
-}
-.description {
-  font-size: 0.85rem;
-  color: #444;
-  margin: 4px 0;
-}
-.card .desc {
-  font-size: 0.85rem;
-  color: #555;
-  margin: 4px 0;
-  min-height: 2.4em;
-  line-height: 1.2em;
-}
-.card img {
-  object-fit: cover;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  height: 100px;
-  width: 100px;
-}
-.cart-item-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-.cart-item-line .item-left {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.cart-item-line .item-name {
-  word-wrap: break-word;
-  white-space: normal;
-  overflow-wrap: break-word;
-  color: #333;
-}
-
-.cart-item-line .item-price {
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-align: right;
-  min-width: 60px;
-  font-weight: bold;
-}
-.featured-images {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: #f9f9f9;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.featured-images h2 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  color: #008060;
-}
-
-.image-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.image-grid img {
+  position: relative;
   width: 100%;
-  max-width: 280px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.storefront-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-  border-bottom: 2px solid #d4a373;
-}
+  height: 200px;
+  overflow: hidden;
+  border-top-left-radius: 16px;
+  border
