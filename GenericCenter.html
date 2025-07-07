@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na Ikaayong Lawas</title>
+  <title>Dala🚲Na Inasal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
@@ -111,81 +111,129 @@
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-    <h1>Ikaayong Lawas</h1>
-    <div class="cart-btn" onclick="toggleCart()">
-      <i class="fas fa-receipt"></i>
-      <span class="cart-count" id="cart-count">0</span>
+     <header>
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+      <h1>Ikaayong Lawas</h1>
+      <div class="cart-btn" onclick="toggleCart()">
+        <i class="fas fa-receipt"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search products..." />
+      <button onclick="filterProducts()">Search</button>
     </div>
-  </header>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search products...">
-    <button onclick="filterProducts()">Search</button>
-  </div>
+  <div style="text-align:center; margin-top: 0.5rem;">
+      <label for="store-selection"><strong>Select Store</strong></label><br />
+      <select id="store-selection" required style="padding: 0.5rem; width: 60%; max-width: 300px; margin-top: 0.25rem;">
+        <option value="">Select a branch</option>
+        <option value="Watson">Watson Hypermarket</option>
+        <option value="The Generics Pharmacy">The Generics Pharmacy</option>
+      </select>
+    </div>
 
-    <div style="text-align:center; margin-top: 0.5rem;">
-  <label for="store-selection"><strong>Select Store</strong></label><br />
-  <select id="store-selection" required style="padding: 0.5rem; width: 60%; max-width: 300px; margin-top: 0.25rem;">
-    <option value="">Select a branch</option>
-    <option value="Watson Hypermarket">Watson Hypermarket</option>
-    <option value="The Generics Pharmacy">Proper – The Generics Pharmacy</option>
-    <option value="JDN Pharmacy">Proper – JDN Pharmacy</option>
-  </select>
-</div>
+    <div id="product-list" style="display: none;"></div>
 
-  <div id="product-list" style="display: none;"></div>
+    <div class="cart-modal hidden" id="cart-modal">
+      <div class="close-btn" onclick="toggleCart()">&times;</div>
+      <div class="cart-summary" id="cart-summary"></div>
 
-<div class="cart-modal hidden" id="cart-modal">
-  <div class="close-btn" onclick="toggleCart()">&times;</div>
+      <div class="form-section" id="form-section">
+        <h3>Customer Info</h3>
+        <input type="text" id="customer-name" placeholder="Full Name" required />
+        <input type="tel" id="customer-phone" placeholder="Phone Number" required />
+        <input type="email" id="customer-email" placeholder="Email Address" required />
+        <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
+        <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
+        <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
 
-  <div class="cart-summary" id="cart-summary"></div>
+        <h3>Delivery Details</h3>
+        <input type="date" id="delivery-date" required disabled />
+        <input type="time" id="delivery-time" required disabled />
+        <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
 
-  <!-- ✅ Begin form section -->
-  <div class="form-section" id="form-section">
+        <h3>Payment</h3>
+        <select id="payment-method">
+          <option value="GCash">GCash (may incur transfer fee)</option>
+          <option value="PayMaya">PayMaya (may incur transfer fee)</option>
+          <option value="Bank">Bank Transfer (may incur transfer fee)</option>
+          <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
+        </select>
+        <input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
+        <div style="margin-top: 0.5rem;">
+          <a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
+        </div>
 
-    <h3>Customer Info</h3>
-    <input type="text" id="customer-name" placeholder="Full Name" required />
-    <input type="tel" id="customer-phone" placeholder="Phone Number" required />
-    <input type="email" id="customer-email" placeholder="Email Address" required />
-    <input type="text" id="delivery-address" placeholder="📍 Paste Google Maps link or address" required />
-    <button type="button" class="location-btn" onclick="getLocation()">📍 Use Current Location</button>
-    <input type="text" id="delivery-notes" placeholder="🏠 House number, landmarks, etc. (Optional)" />
+        <div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
+          ✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
+          Orders are final and subject to store policies.
+        </div>
 
-    <h3>Delivery Details</h3>
-    <input type="date" id="delivery-date" required disabled />
-    <input type="time" id="delivery-time" required disabled />
-    <div id="delivery-note" style="font-size: 0.85rem; color: #444;"></div>
-
-    <h3>Payment</h3>
-    <select id="payment-method">
-      <option value="GCash">GCash (may incur transfer fee)</option>
-      <option value="PayMaya">PayMaya (may incur transfer fee)</option>
-      <option value="Bank">Bank Transfer (may incur transfer fee)</option>
-      <option value="Cash">Cash on Delivery (COD) – Recommended ✅</option>
-    </select>
-<input type="text" id="payment-ref" placeholder="📄 Payment reference number (required for GCash/Bank)" style="margin-top: 0.5rem; display: none;" />
-
-<div style="margin-top: 0.5rem;">
-<a id="payment-link" href="payment-instructions.html?method=GCash" target="_blank" style="color: #008060; text-decoration: underline;">View payment instructions</a>
-</div>
-
-<div style="margin-top: 1rem; font-size: 0.85rem; color: #444;">
-✅ I agree to the <a href="terms.html" target="_blank" style="color: #008060; text-decoration: underline;">Terms & Conditions</a>.
-Orders are final and subject to store policies.
-</div>
-
-<button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
-</div>
-</div>
+        <button class="checkout-btn bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" id="checkout-btn" onclick="submitOrder()" disabled>🛒 Checkout via WhatsApp</button>
+      </div>
+    </div>
 <script>
   const markup = 1.99;
   const cart = {};
 
   const categorizedProducts = {
-    "Medicines": [
+    "Watson Hypermarket": [
   { name: "Paracetamol 500mg Tablet", base: 8, desc: "Para sa hilanat kag kasakit sang ulo" },
+  { name: "Dolfenal 500mg Tablet", base: 10, desc: "Para sa kasakit sang ulo, pus-on" },
+  { name: "Ibuprofen 400mg Tablet", base: 7, desc: "Pain reliever kag anti-inflammation" },
+  { name: "Mefenamic Acid 500mg Tablet", base: 6, desc: "Para sa kasakit sang pus-on kag regla" },
+  { name: "Alaxan FR Capsule", base: 8, desc: "Kasakit sang kalawasan ukon panuhot" },
+  { name: "Bioflu 500mg Tablet", base: 10, desc: "Para sa sip-on kag hilanat" },
+  { name: "Neozep Forte Tablet", base: 9, desc: "Para sa sinat kag sip-on" },
+  { name: "Tuseran Forte Tablet", base: 11, desc: "Para sa ubo nga may sip-on" },
+  { name: "Solmux 60ml Syrup", base: 50, desc: "Ginapahulas sang plema sa ubo" },
+  { name: "Ambroxol 60ml Syrup", base: 48, desc: "Para sa ubo nga may plema" },
+  { name: "Cetirizine 10mg Tablet", base: 4, desc: "Anti-allergy, para sa katol" },
+  { name: "Loratadine 10mg Tablet", base: 6, desc: "Para sa allergy nga wala duka" },
+  { name: "Vitamin C 500mg Tablet", base: 4, desc: "Pangpalig-on sang resistensya" },
+  { name: "Ascorbic Acid + Zinc Tablet", base: 6, desc: "Para sa immune system" },
+  { name: "Multivitamins Tablet", base: 5, desc: "Ginahatagan sang kusog ang lawas" },
+  { name: "Neurobion Tablet", base: 9, desc: "Para sa nerve health kag kusog" },
+  { name: "Revicon Forte Capsule", base: 12, desc: "Pangpalig-on sang lawas" },
+  { name: "Diatabs 2mg Capsule", base: 5, desc: "Para sa kalibanga" },
+  { name: "Loperamide 2mg Capsule", base: 4, desc: "Ginapahunong ang kalibanga" },
+  { name: "Kremil-S Tablet", base: 5, desc: "Para sa asido kag kabudlayan sang tiyan" },
+  { name: "Charcoal Tablet", base: 4, desc: "Para sa hilo ukon guba tiyan" },
+  { name: "Antacid Tablet", base: 4, desc: "Para sa kabudlayan sa tiyan" },
+  { name: "Hydrite Oral Rehydration Salt", base: 8, desc: "Para sa dehydration" },
+  { name: "Oral Rehydration Salt Sachet", base: 7, desc: "Tubig nga may sustansya para sa diarrhea" },
+  { name: "Tolak Angin Herbal 15ml", base: 16, desc: "Ginainom para sa kabudlayan sang tiyan" },
+  { name: "Ferrous Sulfate 325mg Tablet", base: 4, desc: "Para sa anemia ukon kakulang sang dugo" },
+  { name: "Folic Acid 5mg Tablet", base: 4, desc: "Para sa nagabusong kag anemia" },
+  { name: "Glutathione + Vitamin C Capsule", base: 18, desc: "Para sa panit kag immune support" },
+  { name: "Zinc Syrup 60ml", base: 45, desc: "Para sa resistensya sang kabataan" },
+  { name: "Vitamin C Syrup 120ml", base: 50, desc: "Para sa kabataan nga kulang sustansya" },
+  { name: "Isopropyl Alcohol 70% 150ml", base: 38, desc: "Pang-disinfect ukon linis" },
+  { name: "Efficascent Oil 50ml", base: 35, desc: "Para sa panuhot kag kasakit sang kalawasan" },
+  { name: "Omega Pain Killer 60ml", base: 40, desc: "Ginapahaplas para sa arthritis" },
+  { name: "Katinko 10g", base: 25, desc: "Para sa kasakit ukon katol" },
+  { name: "Vicks Vaporub 25g", base: 35, desc: "Para sa ubo kag sip-on" },
+  { name: "Salonpas Patch", base: 18, desc: "Ginadikit para sa kasakit sang kalawasan" },
+  { name: "Bactidol 120ml", base: 65, desc: "Pang-gargle para sa tutunlan" },
+  { name: "Betadine Gargle 120ml", base: 75, desc: "Antiseptic para sa sore throat" },
+  { name: "Buscopan Tablet", base: 12, desc: "Para sa pus-on nga masakit" },
+  { name: "Salbutamol Tablet", base: 6, desc: "Para sa asthmatic nga hapos ang ginhawa" },
+  { name: "Ventolin Nebules", base: 20, desc: "Para sa hapos nga may nebulizer" },
+  { name: "Tempra Drops", base: 58, desc: "Para sa hilanat sang baby" },
+  { name: "Paracetamol 60ml Syrup", base: 38, desc: "Para sa hilanat sang kabataan" },
+  { name: "Tuseran Syrup", base: 55, desc: "Ubo syrup para sa kabataan" },
+  { name: "Diatabs Suspension", base: 32, desc: "Kalibanga sang mga bata" },
+  { name: "Calpol Syrup 60ml", base: 52, desc: "Pain reliever for kids" },
+  { name: "Myra E 400 IU Capsule", base: 10, desc: "Para sa panit kag kinaiya" },
+  { name: "Celine Plus Vitamin C + Zinc", base: 6, desc: "Immune booster para sa bata" },
+  { name: "Skinol Astringent 60ml", base: 25, desc: "Para sa pimples kag panit" },
+  { name: "Povidone-Iodine 30ml", base: 20, desc: "Panglimpyo sang samad" },
+  { name: "Kool Fever Patch", base: 28, desc: "Cooling patch para sa bata nga may hilanat" },
+],
+"The Generic Phamacy": [
+{ name: "Paracetamol 500mg Tablet", base: 8, desc: "Para sa hilanat kag kasakit sang ulo" },
   { name: "Dolfenal 500mg Tablet", base: 10, desc: "Para sa kasakit sang ulo, pus-on" },
   { name: "Ibuprofen 400mg Tablet", base: 7, desc: "Pain reliever kag anti-inflammation" },
   { name: "Mefenamic Acid 500mg Tablet", base: 6, desc: "Para sa kasakit sang pus-on kag regla" },
@@ -239,181 +287,205 @@ Orders are final and subject to store policies.
 ]
   };
 function renderProductList() {
-      const container = document.getElementById('product-list');
-      container.innerHTML = "";
-      for (const [category, items] of Object.entries(categorizedProducts)) {
-        const section = document.createElement("div");
-        section.innerHTML = `<div class="category-title">${category}</div><div class="product-grid"></div>`;
-        const grid = section.querySelector('.product-grid');
+    const container = document.getElementById('product-list');
+    container.innerHTML = "";
 
-        items.forEach(item => {
-          const id = item.name.replace(/\s+/g, '-').toLowerCase();
-          const price = (item.base + markup).toFixed(2);
-          const qty = cart[item.name]?.qty || 0;
+    const items = categorizedProducts[selectedStore];
+    if (!items) return;
 
-          const [prodName, details] = item.name.split('(');
-          const [flavorOrType, grams] = details?.replace(')', '').split(', ') || ["", ""];
+    const section = document.createElement("div");
+    section.innerHTML = `<div class="category-title">${selectedStore} Menu</div><div class="product-grid"></div>`;
+    const grid = section.querySelector('.product-grid');
 
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.innerHTML = `
-            <div class="product-name"> ${prodName.trim()}</div>
-            <div class="product-description">${flavorOrType || "—"}</div>
-            <div class="product-size">${grams || ""}</div>
-            <div class="product-footer">
-              <div class="product-price">₱${price}</div>
-              <div class="qty-controls">
-                <button onclick="decreaseQty('${item.name}')">-</button>
-                <span id="qty-${id}">${qty}</span>
-                <button onclick="increaseQty('${item.name}')">+</button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
+    items.forEach(item => {
+      const id = item.name.replace(/\s+/g, '-').toLowerCase();
+      const price = (item.base + markup).toFixed(2);
+      const qty = cart[item.name]?.qty || 0;
 
-        container.appendChild(section);
-      }
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <h4>${item.name}</h4>
+        <div class="desc">${item.desc || "—"}</div>
+        <div class="price">₱${price}</div>
+        <div class="qty-controls">
+          <button onclick="decreaseQty('${item.name}')">-</button>
+          <span id="qty-${id}">${qty}</span>
+          <button onclick="increaseQty('${item.name}')">+</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    container.appendChild(section);
+  }
+
+  document.getElementById('store-selection').addEventListener('change', function () {
+    selectedStore = this.value;
+    const productList = document.getElementById('product-list');
+
+    if (selectedStore) {
+      productList.style.display = 'block';
+      renderProductList();
+    } else {
+      productList.style.display = 'none';
     }
 
-    function increaseQty(name) {
-      const item = findProduct(name);
-      if (!item) return;
-      if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
-      cart[name].qty++;
+    validateForm();
+  });
+  function increaseQty(name) {
+    const item = findProduct(name);
+    if (!item) return;
+    if (!cart[name]) cart[name] = { name, qty: 0, price: +(item.base + markup).toFixed(2) };
+    cart[name].qty++;
+    updateQtyDisplay(name);
+    updateCartSummary();
+  }
+
+  function decreaseQty(name) {
+    if (cart[name]) {
+      cart[name].qty--;
+      if (cart[name].qty <= 0) delete cart[name];
       updateQtyDisplay(name);
-      updateCartSummary(); //
+      updateCartSummary();
+    }
+  }
+
+  function updateQtyDisplay(name) {
+    const id = name.replace(/\s+/g, '-').toLowerCase();
+    const qty = cart[name]?.qty || 0;
+    document.getElementById(`qty-${id}`).innerText = qty;
+    document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+  }
+
+  function findProduct(name) {
+    const items = categorizedProducts[selectedStore] || [];
+    return items.find(i => i.name === name) || null;
+  }
+
+  function updateCartSummary() {
+    let html = `
+      <h2 style="text-align:center;">🧾 Receipt Summary</h2>
+      <p style="text-align:center;">Dala🚲Na Inasal</p>
+      <ul style="list-style:none; padding:0;">`;
+
+    let subtotal = 0;
+    Object.values(cart).forEach(item => {
+      html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right;">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
+      subtotal += item.qty * item.price;
+    });
+
+    const serviceFee = 10.01;
+    const deliveryFee = 29.99;
+    const total = subtotal + serviceFee + deliveryFee;
+
+    html += `</ul><hr />
+      <p><strong>Subtotal:</strong> <span style="float:right;">₱${subtotal.toFixed(2)}</span></p>
+      <p><strong>Service Fee:</strong> <span style="float:right;">₱${serviceFee.toFixed(2)}</span></p>
+      <p><strong>Delivery Fee:</strong> <span style="float:right;">₱${deliveryFee.toFixed(2)}</span></p>
+      <hr />
+      <h3 style="text-align:center;">Total: ₱${total.toFixed(2)}</h3>`;
+
+    document.getElementById('cart-summary').innerHTML = html;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('hidden');
+  }
+
+  function filterProducts() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
+    });
+  }
+  function validateForm() {
+    const name = document.getElementById('customer-name')?.value.trim();
+    const phone = document.getElementById('customer-phone')?.value.trim();
+    const email = document.getElementById('customer-email')?.value.trim();
+    const address = document.getElementById('delivery-address')?.value.trim();
+    const method = document.getElementById('payment-method')?.value;
+    const ref = document.getElementById('payment-ref')?.value.trim();
+    const store = document.getElementById('store-selection')?.value;
+
+    const isCash = method === 'Cash';
+    const isRefValid = isCash || ref.length > 3;
+
+    const isValid = name && phone && email && address && store && isRefValid;
+
+    const btn = document.getElementById('checkout-btn');
+    if (btn) {
+      btn.disabled = !isValid;
+      btn.classList.toggle('cursor-not-allowed', !isValid);
+      btn.style.background = isValid ? "#008060" : "#ccc";
+    }
+  }
+
+  async function getLocation() {
+    const addressInput = document.getElementById('delivery-address');
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
     }
 
-    function decreaseQty(name) {
-      if (cart[name]) {
-        cart[name].qty--;
-        if (cart[name].qty <= 0) delete cart[name];
-        updateQtyDisplay(name);
-        updateCartSummary(); //
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          const readableAddress = data.display_name || `https://www.google.com/maps?q=${latitude},${longitude}`;
+          addressInput.value = readableAddress;
+          validateForm();
+        } catch (error) {
+          console.error("Geocoding failed:", error);
+          addressInput.value = `https://www.google.com/maps?q=${latitude},${longitude}`;
+          alert("Failed to convert location to address. Map link was inserted instead.");
+        }
+      },
+      (error) => {
+        alert("Unable to retrieve your location. Please check location permission.");
       }
+    );
+  }
+
+  document.getElementById('store-selection').addEventListener('change', function () {
+    selectedStore = this.value;
+    const productList = document.getElementById('product-list');
+
+    if (selectedStore && categorizedProducts[selectedStore]) {
+      productList.style.display = 'block';
+      renderProductList();
+    } else {
+      productList.style.display = 'none';
     }
 
-    function updateQtyDisplay(name) {
-      const id = name.replace(/\s+/g, '-').toLowerCase();
-      const qty = cart[name]?.qty || 0;
-      document.getElementById(`qty-${id}`).innerText = qty;
-      document.getElementById('cart-count').innerText = Object.values(cart).reduce((a, b) => a + b.qty, 0);
-    }
-function updateCartSummary() {
-  let html = `
-    <h2 style="text-align: center;">🧾 Receipt Summary</h2>
-    <p style="text-align: center;">Dala🚲Na Ikaayong lawas</p>
-    <ul style="list-style: none; padding: 0;">`;
-
-  let subtotal = 0;
-  Object.values(cart).forEach(item => {
-    html += `<li><strong>${item.qty}x</strong> ${item.name} <span style="float:right">₱${(item.qty * item.price).toFixed(2)}</span></li>`;
-    subtotal += item.qty * item.price;
+    validateForm();
   });
 
-  const serviceFee = 10.01;
-  const deliveryFee = 29.99;
-  const grand = subtotal + serviceFee + deliveryFee;
+  document.getElementById('payment-method').addEventListener('change', function () {
+    const method = this.value;
+    const refInput = document.getElementById('payment-ref');
+    const link = document.getElementById('payment-link');
 
-  html += `</ul><hr>
-<p><strong>Subtotal:</strong> <span style="float:right;">₱${subtotal.toFixed(2)}</span></p>
-<p><strong>Service Fee:</strong> <span style="float:right;">₱${serviceFee.toFixed(2)}</span></p>
-<p><strong>Delivery Fee:</strong> <span style="float:right;">₱${deliveryFee.toFixed(2)}</span></p>
-<hr><h3 style="text-align:center;">Total: ₱${grand.toFixed(2)}</h3>`;
-
-  document.getElementById('cart-summary').innerHTML = html;
-}
-  function toggleCart() {
-  const modal = document.getElementById('cart-modal');
-  modal.classList.toggle('hidden');
-}
-
-    function filterProducts() {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.product-card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(search) ? '' : 'none';
-      });
-    }
-
-    function findProduct(name) {
-      for (const items of Object.values(categorizedProducts)) {
-        for (const item of items) {
-          if (item.name === name) return item;
-        }
+    if (refInput) {
+      if (method === 'Cash') {
+        refInput.style.display = 'none';
+        refInput.value = '';
+      } else {
+        refInput.style.display = 'block';
       }
-          return null;
     }
-function validateForm() {
-  const name = document.getElementById('customer-name')?.value.trim();
-  const phone = document.getElementById('customer-phone')?.value.trim();
-  const email = document.getElementById('customer-email')?.value.trim();
-  const address = document.getElementById('delivery-address')?.value.trim();
-  const method = document.getElementById('payment-method')?.value;
-  const ref = document.getElementById('payment-ref')?.value.trim();
-  const store = document.getElementById('store-selection')?.value;
 
-  const isCash = method === 'Cash';
-  const isRefValid = isCash || ref.length > 3;
-
-  const isValid = name && phone && email && address && store && isRefValid;
-
-  const btn = document.getElementById('checkout-btn');
-  if (btn) {
-    btn.disabled = !isValid;
-    btn.classList.toggle('cursor-not-allowed', !isValid);
-    btn.style.background = isValid ? "#008060" : "#ccc";
-  }
-}
-}
-function getLocation() {
-  const addressInput = document.getElementById('delivery-address');
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser.");
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
-
-      try {
-        // Reverse geocoding via Nominatim API
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-        );
-        const data = await response.json();
-
-        const readableAddress = data.display_name || `https://www.google.com/maps?q=${latitude},${longitude}`;
-        addressInput.value = readableAddress;
-
-        validateForm(); // Revalidate form
-      } catch (error) {
-        console.error("Geocoding failed:", error);
-        addressInput.value = `https://www.google.com/maps?q=${latitude},${longitude}`;
-        alert("Failed to convert location to address. Map link was inserted instead.");
-      }
-    },
-    (error) => {
-      alert("Unable to retrieve your location. Please check location permission.");
+    if (link) {
+      link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
+      link.textContent = `View ${method} instructions`;
     }
-  );
-}
-let selectedStore = ""; // Global variable
 
-document.getElementById('store-selection').addEventListener('change', function () {
-  selectedStore = this.value;
-  const productList = document.getElementById('product-list');
-
-  if (selectedStore) {
-    productList.style.display = 'block';
-    renderProductList(); // Call your existing function to show the product grid
-  } else {
-    productList.style.display = 'none';
-  }
-
-  validateForm(); // Recheck if checkout can be enabled
-});
-  }
+    validateForm();
+  });
   window.onload = () => {
     renderProductList();
 
@@ -441,45 +513,8 @@ document.getElementById('store-selection').addEventListener('change', function (
       if (el) el.addEventListener('input', validateForm);
     });
 
-    // ✅ Handle payment method logic
-    document.getElementById('payment-method').addEventListener('change', function () {
-      const method = this.value;
-      const refInput = document.getElementById('payment-ref');
-      const link = document.getElementById('payment-link');
-    
-      if (refInput) {
-        if (method === 'Cash') {
-          refInput.style.display = 'none';
-          refInput.value = '';
-        } else {
-          refInput.style.display = 'block';
-        }
-      }
-
-      if (link) {
-        link.href = `payment-instructions.html?method=${encodeURIComponent(method)}`;
-        link.textContent = `View ${method} instructions`;
-      }
-
-      validateForm();
-    });
-document.getElementById('store-selection').addEventListener('change', function () {
-    selectedStore = this.value;
-    const productList = document.getElementById('product-list');
-
-    if (selectedStore) {
-      productList.style.display = 'block';
-      renderProductList();
-    } else {
-      productList.style.display = 'none';
-    }
-
-    validateForm();
-  });
-    // ✅ Trigger once on load
     document.getElementById('payment-method').dispatchEvent(new Event('change'));
-
-    validateForm(); // Initial validation
+    validateForm();
   };
 
   async function submitOrder() {
@@ -496,10 +531,10 @@ document.getElementById('store-selection').addEventListener('change', function (
 
     const items = Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(', ');
     const serviceFee = 10.01;
-const deliveryFee = 29.99;
-const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
-const total = subtotal + serviceFee + deliveryFee;
-const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
+    const deliveryFee = 29.99;
+    const subtotal = Object.values(cart).reduce((sum, i) => sum + i.qty * i.price, 0);
+    const total = subtotal + serviceFee + deliveryFee;
+    const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
 
     // 1. Submit to Fillout silently
     const filloutUrl = new URL("https://forms.fillout.com/t/oMZACWUnvFus");
@@ -522,24 +557,8 @@ const confirmation = 'DALA-' + Math.floor(100000 + Math.random() * 900000);
     document.body.appendChild(iframe);
 
     // 2. Send to WhatsApp
-    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation} ...`;
-Name: ${name}
-Phone: ${phone}
-Email: ${email}
-📍 Address: ${address}
-📌 Notes: ${notes || 'N/A'}
-
-Items: ${items}
-Subtotal: ₱${subtotal.toFixed(2)}
-Service Fee: ₱${serviceFee.toFixed(2)}
-Delivery Fee: ₱${deliveryFee.toFixed(2)}
-Total: ₱${total.toFixed(2)}
-
-Delivery: ${date} ${time}
-Payment: ${method}
-Ref #: ${ref || 'N/A'}`;
-
-const encoded = encodeURIComponent(message);
+    const message = `🧾 New Order - ${store}\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n📍 Address: ${address}\n📌 Notes: ${notes || 'N/A'}\n\nItems: ${items}\nSubtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}\n\nDelivery: ${date} ${time}\nPayment: ${method}\nRef #: ${ref || 'N/A'}`;
+    const encoded = encodeURIComponent(message);
     const merchant = "63XXXXXXXXXX";
     const admin = "63YYYYYYYYYY";
     const driver = "63ZZZZZZZZZZ";
