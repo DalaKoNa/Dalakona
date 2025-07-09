@@ -163,35 +163,131 @@
   const markup = 1.99;
   const cart = {};
 const categorizedProducts = {
-  "Premium Cakes": [
-    { name: "Black Forest Cake (Petite)", base: 552 },
-    { name: "Chocolate Caramel Decadence", base: 794 },
-    { name: "Royal Fudge w/ Toblerone", base: 794 },
-    { name: "Mango Dream (9\" Round)", base: 828 },
-    { name: "Classic Sansrival", base: 1012 },
+  "Premium Cakes - 8 Round": [
+    { name: "Black Forest Cake", base: 649 },
+    { name: "Chocolate Mousse Cake", base: 649 },
+    { name: "Classic Sansrival", base: 825 },
+    { name: "Royal Fudge Cake with Toblerone", base: 649 },
+    { name: "Chocolate Cherry Torte", base: 649 },
   ],
-  "Choco Sulit Cakes": [
-    { name: "Luscious Chocolate (9\" Round)", base: 689 },
-    { name: "Classic Choco Balloons (9\" Round)", base: 518 },
-    { name: "Classic Mocha Balloons (9\" Round)", base: 558 },
+  "Greeting Cakes Classic 8x12": [
+    { name: "Pastel Blooms Mocha 8x12 with Filling", base: 649 },
   ],
-  "Greeting Cakes": [
-    { name: "Luscious Caramel (9\" Round)", base: 689 },
-    { name: "Luscious Caramel (8x12)", base: 989 },
-    { name: "Classic Choco Balloons (8x12)", base: 777 },
-    { name: "Celebrate Chocolate (8x12)", base: 777 },
+  "Greeting Cakes Classic 8x13": [
+    { name: "Pastel Blooms Choco 8x12 with Filling", base: 649 },
   ],
-  "Bitbit (6s)": [
-    { name: "Assorted Butter Slices (6s)", base: 252 },
-    { name: "Fluffy Mamon (6s)", base: 204 },
-    { name: "Cheesy Ensaymada (6s)", base: 246 },
+  "Greeting Cakes Classic 8x14": [
+    { name: "Celebrate Mocha 8x12", base: 649 },
   ],
-  "Rolls & Snacks": [
-    { name: "Chocolate Whole Roll", base: 695 },
-    { name: "Brazo de Mercedes (Roll)", base: 529 },
-    { name: "Chiffon Cake Slice", base: 43 },
-    { name: "Chocolate Cake Slice", base: 45 },
-    { name: "Ube Vanilla Slice", base: 43 },
+  "Greeting Cakes Classic 8x15": [
+    { name: "Celebrate Choco 8x12", base: 649 },
+  ],
+  "Greeting Cakes Classic 8x16": [
+    { name: "Balloons Mocha 8x12", base: 649 },
+  ],
+  "Greeting Cakes Classic 8x17": [
+    { name: "Balloons Choco 8x12", base: 649 },
+  ],
+  "Greeting Cakes Classic 8x18": [
+    { name: "Unicorn Mocha 8x12 with Filling", base: 649 },
+  ],
+  "Greeting Cakes Classic 8x19": [
+    { name: "Unicorn Choco 8x12", base: 649 },
+  ],
+  "Greeting Cakes Classic 8x20": [
+    { name: "Pastel Blooms Ube 8x12", base: 759 },
+  ],
+  "Greeting Cakes Dual/Triple 8x12": [
+    { name: "Luscious Caramel 8x12", base: 770 },
+  ],
+  "Greeting Cakes Classic 9 Round": [
+    { name: 'Pastel Blooms Choco 9" Round with Filling', base: 429 },
+    { name: 'Pastel Blooms Mocha 9" Round with Filling', base: 429 },
+    { name: "Luscious Caramel 9\" Round", base: 568 },
+  ],
+  "Greeting Cakes Dual/Triple 9 Round": [
+    { name: "Luscious Caramel 9\" Round", base: 605 },
+  ],
+  "Whole Rolls": [
+    { name: "Classic Mocha Whole Roll", base: 330 },
+    { name: "Brazo de Mercedes Whole Roll", base: 429 },
+  ],
+  "Native Cakes": [
+    { name: "Eggpie", base: 275 },
+    { name: "Butter Macaroons", base: 61 },
+  ],
+  "Loaf Breads": [
+    { name: "Egg & Milk Bread", base: 83 },
+  ],
+  "Sweet Breads": [
+    { name: "Monay", base: 72 },
+    { name: "Mongo Loaf", base: 61 },
+    { name: "Ube Loaf", base: 61 },
+  ],
+  "Polvoron - Box": [
+    { name: "Assorted Polvoron Box", base: 220 },
+    { name: "Classic Polvoron Box", base: 176 },
+    { name: "Cashew Polvoron Box", base: 143 },
+    { name: "Cookies n Cream Polvoron Box", base: 143 },
+    { name: "Pinipig Polvoron Box", base: 143 },
+    { name: "Ube Polvoron Box", base: 143 },
+  ],
+  "Polvoron - Pouch": [
+    { name: "Assorted Polvoron", base: 72 },
+    { name: "Classic Polvoron", base: 99 },
+    { name: "Cashew Polvoron", base: 62 },
+    { name: "Cookies and Cream Polvoron", base: 62 },
+    { name: "Pinipig Polvoron", base: 62 },
+    { name: "Ube Polvoron", base: 62 },
+  ],
+  "Pambaon": [
+    { name: "Classic Brownies Big", base: 50 },
+    { name: "Classic Brownies Box", base: 253 },
+    { name: "Chiffon Cake Slice", base: 29 },
+    { name: "Double Dutch Cake Sliced", base: 29 },
+    { name: "Butter Cake Sliced", base: 29 },
+    { name: "Chocolate Cake Sliced", base: 29 },
+    { name: "Marble Cake Sliced", base: 29 },
+    { name: "Mocha Marble Cake Sliced", base: 29 },
+    { name: "Fluffy Mamon", base: 25 },
+    { name: "Cheesy Ensaymada", base: 30 },
+    { name: "Chocolate Chip Cookies", base: 50 },
+    { name: "Raisin Oatmeal Cookies", base: 50 },
+    { name: "Mongo Hopia", base: 72 },
+    { name: "Ube Ensaymada Hugs", base: 132 },
+  ],
+  "Bitbit 3 Pcs": [
+    { name: "Cheesy Ensaymada Bitbit 3 Pcs", base: 86 },
+    { name: "Fluffy Mamon Bitbit 3 Pcs", base: 70 },
+    { name: "Butter Sliced Bitbit 3 Pcs", base: 83 },
+    { name: "Chocolate Sliced Bitbit 3 Pcs", base: 83 },
+    { name: "Marble Sliced Bitbit 3 Pcs", base: 83 },
+    { name: "Double Dutch Sliced Bitbit 3 Pcs", base: 83 },
+    { name: "Mocha Marble Sliced Bitbit 3 Pcs", base: 83 },
+    { name: "Chiffon Sliced Bitbit 3 Pcs", base: 83 },
+  ],
+  "Bitbit 6 Pcs": [
+    { name: "Cheesy Ensaymada Bitbit 6 Pcs", base: 171 },
+    { name: "Fluffy Mamon Bitbit 6 Pcs", base: 132 },
+    { name: "Assorted Butter Cake Sliced Bitbit 6 Pcs", base: 160 },
+    { name: "Assorted Chiffon Cake Sliced Bitbit 6 Pcs", base: 160 },
+  ],
+  "Sweets": [
+    { name: "Nutty Caramel Popcorn", base: 22 },
+    { name: "Caramel Popcorn Big", base: 33 },
+  ],
+  "Pinoy Deli RTE": [
+    { name: "Pinoy Deli RTE - Laing", base: 329 },
+    { name: "Pinoy Deli RTE - Dinuguan", base: 494 },
+    { name: "Pinoy Deli RTE - Kare Kare", base: 549 },
+    { name: "Pinoy Deli RTE - Pork BBQ 10pcs", base: 439 },
+    { name: "Pinoy Deli RTE - Caldereta", base: 549 },
+  ],
+  "Pinoy Deli - Food Selections": [
+    { name: "FS. Beef Caldereta", base: 109 },
+    { name: "FS. Pork Dinuguan", base: 109 },
+    { name: "FS. Boneless Chicken Barbecue", base: 109 },
+    { name: "FS. Beef Kare-kare", base: 109 },
   ]
 };
 function renderProductList() {
