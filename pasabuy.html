@@ -3,224 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PasaBuy Order | Dala🚲na</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <title>Goldilocks Pasabuy - DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
+      font-family: 'Inter', sans-serif;
+      background: #fffbe6;
       margin: 0;
-      font-family: 'DM Serif Display', serif;
-      background-color: #fffaf4;
+      padding: 0;
+    }
+    .header {
+      background-color: #ffcc00;
       color: #333;
-    }
-    header {
-      background: #ffe8b0;
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.3rem;
-      border-bottom: 1px solid #e0c08d;
-    }
-    header .logo {
+      padding: 1rem;
+      text-align: center;
       font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
-
-    main {
-      padding: 2rem 1rem;
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .pasabuy-btn {
-      background-color: #f4a261;
-      color: white;
-      padding: 0.9rem 1.5rem;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1.5rem;
-    }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .modal-content {
+    .container {
+      max-width: 480px;
+      margin: 1rem auto;
+      padding: 1rem;
       background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
-    .close-modal {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      background: none;
-      border: none;
-      font-size: 1.4rem;
-      cursor: pointer;
+    h3, h4 {
+      margin-top: 0.5rem;
     }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    label {
+      font-weight: 600;
       margin-top: 1rem;
+      display: block;
     }
-
-    input, textarea {
-      padding: 0.7rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
+    input, textarea, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
-
-    .submit-btn {
-      background-color: #2a9d8f;
+    input[type="file"] {
+      padding: 0.3rem;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    .button {
+      width: 100%;
+      padding: 0.8rem;
+      background: green;
       color: white;
       border: none;
-      padding: 0.9rem;
       font-size: 1rem;
       border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
     }
-
-    #cartItems {
-      list-style-type: disc;
-      margin-left: 1.5rem;
-      text-align: left;
-    }
-
-    footer {
-      background-color: #fff4ca;
+    .footer {
       text-align: center;
-      padding: 2rem 1rem;
       font-size: 0.9rem;
-    }
-
-    footer a {
-      color: #333;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .modal-content {
-        padding: 1.2rem;
-      }
+      color: #999;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Dala🚲na</div>
-</header>
+<div class="header">🎂 Goldilocks Pasabuy – DalaKoNa</div>
 
-<main>
-  <h1>🛍️ Custom PasaBuy Order</h1>
-  <p>Request any item from your suki tindahan or palengke. We'll pick it up for you!</p>
-  <button id="openCheckoutModal" class="pasabuy-btn">📝 Place Custom Order</button>
-</main>
+<div class="container">
+  <h3>🛍 What do you want us to buy?</h3>
+  <textarea id="custom-request" rows="3" placeholder="e.g. 1 medium mocha cake, 2 brownies..." required></textarea>
 
-<!-- Checkout Modal -->
-<div id="checkoutModal" class="modal-overlay">
-  <div class="modal-content">
-    <button class="close-modal" id="closeCheckoutBtn">✕</button>
-    <h2>🛒 Confirm Your Order</h2>
+  <label>📷 Upload a product photo (optional):</label>
+  <input type="file" id="custom-photo" accept="image/*"/>
 
-    <div id="cartSummaryBox">
-      <p><strong>Cart Summary:</strong></p>
-      <ul id="cartItems">
-        <!-- Auto-filled by JS -->
-      </ul>
-    </div>
+  <label>🔗 Or paste a product link (optional):</label>
+  <input type="url" id="custom-link" placeholder="https://..."/>
 
-    <form id="checkoutForm">
-      <input type="text" id="fullName" placeholder="Your Name" required />
-      <input type="text" id="phoneNumber" placeholder="Phone / WhatsApp" required />
-      <textarea id="address" placeholder="Delivery Address" required></textarea>
-      <button type="submit" class="submit-btn">✅ Send via WhatsApp</button>
-    </form>
-  </div>
+  <h4>👤 Your Information</h4>
+  <input type="text" id="cust-name" placeholder="Your Name" required/>
+  <input type="text" id="cust-phone" placeholder="Phone Number" required/>
+  <input type="text" id="cust-address" placeholder="Delivery Address" required/>
+
+  <h4>📅 Delivery Info</h4>
+  <input type="date" id="delivery-date" disabled/>
+  <input type="time" id="delivery-time" disabled/>
+  <div class="note">Delivery is auto-scheduled 1 hour from now.</div>
+
+  <label>💳 Payment Method:</label>
+  <select id="cust-payment">
+    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="GCash">GCash</option>
+    <option value="PayMaya">PayMaya</option>
+  </select>
+
+  <button class="button" onclick="submitCustomOrder()">✅ Send to WhatsApp</button>
 </div>
 
-<footer>
-  <p>© 2025 Dala🚲na. All rights reserved.</p>
-  <a href="about.html">About</a>
-  <a href="terms.html">Terms & Conditions</a>
-  <a href="privacy.html">Privacy Policy</a>
-  <a href="careers.html">Careers</a>
-</footer>
+<div class="footer">DalaKoNa 🚲 Pasabuy Service • Powered by Goldilocks Love 🍰</div>
 
 <script>
-  const openCheckoutModalBtn = document.getElementById('openCheckoutModal');
-  const checkoutModal = document.getElementById('checkoutModal');
-  const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
-  const cartItemsList = document.getElementById('cartItems');
-  const checkoutForm = document.getElementById('checkoutForm');
+function setAutoDeliveryDateTime() {
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
+  document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0, 5);
+}
+setAutoDeliveryDateTime();
 
-  const sampleCart = [
-    { name: '1kg Sugar', qty: 1, price: 55 },
-    { name: 'Lucky Me Pancit Canton', qty: 5, price: 12 }
-  ];
+function submitCustomOrder() {
+  const request = document.getElementById("custom-request").value.trim();
+  const photoInput = document.getElementById("custom-photo");
+  const customLink = document.getElementById("custom-link").value.trim();
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const payment = document.getElementById("cust-payment").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
 
-  function renderCart() {
-    cartItemsList.innerHTML = '';
-    sampleCart.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = `${item.qty}x ${item.name} – ₱${item.qty * item.price}`;
-      cartItemsList.appendChild(li);
-    });
+  if (!request || !name || !phone || !address) {
+    alert("Please complete all required fields.");
+    return;
   }
 
-  openCheckoutModalBtn.addEventListener('click', () => {
-    renderCart();
-    checkoutModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  });
+  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
 
-  closeCheckoutBtn.addEventListener('click', () => {
-    checkoutModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  });
+  let photoUrl = '';
+  if (photoInput.files && photoInput.files[0]) {
+    photoUrl = URL.createObjectURL(photoInput.files[0]);
+  }
 
-  checkoutForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phoneNumber').value.trim();
-    const address = document.getElementById('address').value.trim();
+  navigator.geolocation.getCurrentPosition(pos => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
-    const cartDetails = sampleCart.map(item =>
-      `${item.qty}x ${item.name} – ₱${item.qty * item.price}`
-    ).join('\n');
+    let message = `*Pasabuy Order (DalaKoNa)*\n\n🧁 *Buy for me:*\n${request}`;
 
-    const message = `Hello DalaKoNa! I’d like to place a custom order:\n\n🛍️ Items:\n${cartDetails}\n\n📍 Address: ${address}\n👤 Name: ${name}\n📞 Phone: ${phone}`;
+    if (customLink) {
+      message += `\n🔗 *Link:* ${customLink}`;
+    }
+    if (photoUrl) {
+      message += `\n📷 *Photo (preview):* ${photoUrl}`;
+    }
 
-    const whatsappLink = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
-    window.open(whatsappLink, '_blank');
+    message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
 
-    checkoutModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  });
+    const encoded = encodeURIComponent(message);
+    const phoneNumber = "63XXXXXXXXXX"; // Replace with your merchant WhatsApp number
+    window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+  }, () => alert("⚠️ Location permission is required to proceed with delivery."));
+}
 </script>
 
 </body>
