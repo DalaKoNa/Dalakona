@@ -3,200 +3,204 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dala🚲na — PasaBuy, Subong Dayon!</title>
-  <meta name="description" content="Order essentials from your favorite local stores using Dala🚲na" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <title>Dala🚲na – PasaBuy, Subong Dayon!</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #fffdf8;
-      --accent: #d4a373;
-      --text: #222;
-      --card-bg: #fff;
-      --shadow: rgba(0, 0, 0, 0.06);
-    }
-
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'DM Serif Display', serif;
+      background: #fffefb;
+      color: #222;
+      line-height: 1.6;
     }
 
     header {
-      padding: 1.2rem 1.5rem;
+      background: #fff7df;
+      padding: 1rem 2rem;
+      font-size: 1.8rem;
       text-align: center;
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      background-color: #fff7df;
-      border-bottom: 1px solid #eee3c9;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
     }
 
-    section {
-      padding: 2.5rem 1.2rem;
-      max-width: 1080px;
-      margin: auto;
-    }
-
-    section h2 {
-      font-size: 1.6rem;
+    .hero {
       text-align: center;
-      margin-bottom: 2rem;
-      font-family: 'DM Serif Display', serif;
+      padding: 2rem 1rem;
+      background: #fffaf2;
     }
 
-    .store-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .store-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      color: var(--text);
-      box-shadow: 0 8px 20px var(--shadow);
-      transition: transform 0.25s ease;
-    }
-
-    .store-card:hover {
-      transform: scale(1.03);
-    }
-
-    .store-card img {
+    .hero img {
       width: 100%;
-      height: 160px;
-      object-fit: cover;
+      max-width: 720px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
     }
 
-    .store-card h3 {
-      padding: 1rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      font-family: 'DM Serif Display', serif;
-      text-align: center;
-    }
-
-    footer {
-      background-color: #fff4ca;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      font-size: 0.95rem;
-      margin-top: 4rem;
-    }
-
-    footer p {
+    .hero h1 {
+      font-size: 2rem;
       margin-bottom: 0.5rem;
     }
 
-    footer a {
-      color: var(--text);
-      margin: 0 10px;
+    .hero p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .storefront-section {
+      padding: 2rem 1rem;
+    }
+
+    .storefront-section h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .storefront-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .storefront-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      text-align: center;
       text-decoration: none;
-      font-weight: 500;
+      color: inherit;
+      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .storefront-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .storefront-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .storefront-card h3 {
+      font-size: 1rem;
+      padding: 0.8rem;
+    }
+
+    footer {
+      background: #fff4ca;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    footer a {
+      margin: 0 0.5rem;
+      color: #555;
+      text-decoration: none;
     }
 
     footer a:hover {
       text-decoration: underline;
     }
 
-    /* WhatsApp Floating Button */
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #25d366;
-      color: white;
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
+      font-size: 1.5rem;
+      background: #25d366;
+      color: #fff;
+      padding: 0.7rem 1rem;
+      border-radius: 50px;
       text-decoration: none;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-      z-index: 2000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 999;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
       header {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
+      }
+      .hero h1 {
+        font-size: 1.4rem;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
-  Dala🚲na
-</header>
+  <header>
+    Dala🚲na
+  </header>
 
-<section>
-  <h2>📍 Order sa paborito mo nga tindahan, PasaBuy mo Dala🚲na.</h2>
-  <div class="store-grid">
+  <section class="hero">
+    <img src="storefront-hero.png" alt="DalaKoNa Storefront Image" />
+    <h1>PasaBuy, Subong Dayon</h1>
+    <p>Order from your favorite stores in one tap. Dala Ko Na 🚴</p>
+  </section>
 
-    <a href="hypermarket.html" class="store-card" data-aos="fade-up">
-      <img src="products.jpg" alt="Hypermarket" />
-      <h3>🛒 Hypermarket</h3>
-    </a>
+  <section class="storefront-section">
+    <h2>📍 Order sa paborito mo nga tindahan</h2>
+    <div class="storefront-grid">
 
-    <a href="ellens-cakes.html" class="store-card" data-aos="fade-up">
-      <img src="cake.jpg" alt="Ellen's Cakes" />
-      <h3>🎂 Ellen’s Cakes</h3>
-    </a>
+      <a href="hypermarket.html" class="storefront-card">
+        <img src="products.jpg" alt="Hypermarket" />
+        <h3>Hypermarket</h3>
+      </a>
 
-    <a href="generic-center.html" class="store-card" data-aos="fade-up">
-      <img src="medicines.jpg" alt="Generic Center" />
-      <h3>💊 Generic Center</h3>
-    </a>
+      <a href="ellens-cakes.html" class="storefront-card">
+        <img src="cake.jpg" alt="Ellen's Cakes" />
+        <h3>Ellen's Cakes</h3>
+      </a>
 
-    <a href="inasal-center.html" class="store-card" data-aos="fade-up">
-      <img src="inasal.jpg" alt="Inasal Center" />
-      <h3>🔥 Inasal Center</h3>
-    </a>
+      <a href="generic-center.html" class="storefront-card">
+        <img src="medicines.jpg" alt="Generic Center" />
+        <h3>Generic Center</h3>
+      </a>
 
-    <a href="fashion-retail.html" class="store-card" data-aos="fade-up">
-      <img src="fashion.jpg" alt="Fashion Retail" />
-      <h3>👗 Fashion Retail</h3>
-    </a>
+      <a href="inasal-center.html" class="storefront-card">
+        <img src="inasal.jpg" alt="Inasal Center" />
+        <h3>Inasal Center</h3>
+      </a>
 
-    <a href="pasabuy-request.html" class="store-card" data-aos="fade-up">
-      <img src="custom-request.jpg" alt="PasaBuy Request" />
-      <h3>📝 PasaBuy Custom Request</h3>
-    </a>
+      <a href="fashion-retail.html" class="storefront-card">
+        <img src="fashion.jpg" alt="Fashion Retail" />
+        <h3>Fashion Retail</h3>
+      </a>
 
-  </div>
-</section>
+      <a href="custom-request.html" class="storefront-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png" alt="PasaBuy Request" />
+        <h3>📦 Custom PasaBuy</h3>
+      </a>
 
-<footer>
-  <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
-  <div>
-    <a href="about.html">About</a>
-    <a href="terms.html">Terms</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="careers.html">Careers</a>
-  </div>
-</footer>
+    </div>
+  </section>
 
-<!-- WhatsApp Button -->
-<a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
-   class="whatsapp-float" target="_blank" aria-label="Chat with Support">📲</a>
+  <footer>
+    <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
+    <div>
+      <a href="about.html">About</a> |
+      <a href="terms.html">Terms</a> |
+      <a href="privacy.html">Privacy</a> |
+      <a href="careers.html">Careers</a>
+    </div>
+  </footer>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+  <a class="whatsapp-float" href="https://wa.me/63XXXXXXXXXX" target="_blank">💬 WhatsApp</a>
 
 </body>
 </html>
