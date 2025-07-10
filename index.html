@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na – PasaBuy, Subong Dayon!</title>
-  <meta name="description" content="Order from your favorite local stores using Dala🚲na!" />
-  <link rel="icon" href="favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Cinzel&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dala🚲na — PasaBuy, Subong Dayon!</title>
+  <meta name="description" content="Order essentials from your favorite local stores using Dala🚲na" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <style>
     :root {
+      --bg: #fffdf8;
       --accent: #d4a373;
-      --light: #fffaf4;
-      --shadow: rgba(0, 0, 0, 0.05);
+      --text: #222;
+      --card-bg: #fff;
+      --shadow: rgba(0, 0, 0, 0.06);
     }
 
     * {
@@ -22,70 +23,68 @@
     }
 
     body {
-      font-family: 'Cinzel', serif;
-      background-color: var(--light);
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
     header {
-      background-color: #fff7df;
-      padding: 1rem 2rem;
+      padding: 1.2rem 1.5rem;
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
       font-family: 'DM Serif Display', serif;
-      border-bottom: 1px solid #eae2cf;
+      font-size: 2rem;
+      background-color: #fff7df;
+      border-bottom: 1px solid #eee3c9;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
 
-    .merchant-section {
-      padding: 3rem 1.5rem;
+    section {
+      padding: 2.5rem 1.2rem;
+      max-width: 1080px;
+      margin: auto;
+    }
+
+    section h2 {
+      font-size: 1.6rem;
       text-align: center;
-    }
-
-    .merchant-section h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
       margin-bottom: 2rem;
-      color: #222;
+      font-family: 'DM Serif Display', serif;
     }
 
-    .merchant-grid {
+    .store-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      gap: 1.5rem;
     }
 
-    .merchant-card {
-      display: block;
-      background-color: #ffffff;
+    .store-card {
+      background: var(--card-bg);
       border-radius: 16px;
       overflow: hidden;
       text-decoration: none;
-      color: #333;
+      color: var(--text);
       box-shadow: 0 8px 20px var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      transition: transform 0.25s ease;
     }
 
-    .merchant-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    .store-card:hover {
+      transform: scale(1.03);
     }
 
-    .merchant-card img {
+    .store-card img {
       width: 100%;
       height: 160px;
       object-fit: cover;
     }
 
-    .merchant-card h3 {
+    .store-card h3 {
       padding: 1rem;
-      font-family: 'Cinzel', serif;
       font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'DM Serif Display', serif;
+      text-align: center;
     }
 
     footer {
@@ -94,14 +93,16 @@
       text-align: center;
       font-size: 0.95rem;
       margin-top: 4rem;
-      color: #333;
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
     }
 
     footer a {
-      color: #333;
-      text-decoration: none;
+      color: var(--text);
       margin: 0 10px;
-      display: inline-block;
+      text-decoration: none;
       font-weight: 500;
     }
 
@@ -109,65 +110,93 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
-      .merchant-grid {
-        grid-template-columns: 1fr;
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      z-index: 2000;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        font-size: 1.7rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    Dala🚲na
-  </header>
+<header>
+  Dala🚲na
+</header>
 
-  <section class="merchant-section" id="partners">
-    <h2>📍 Order sa paborito mo nga tindahan, PasaBuy mo Dala🚲na.</h2>
-    <div class="merchant-grid">
+<section>
+  <h2>📍 Order sa paborito mo nga tindahan, PasaBuy mo Dala🚲na.</h2>
+  <div class="store-grid">
 
-      <a href="hypermarket.html" class="merchant-card" data-aos="fade-up">
-        <img src="products.jpg" alt="Hypermarket" />
-        <h3>Hypermarket</h3>
-      </a>
+    <a href="hypermarket.html" class="store-card" data-aos="fade-up">
+      <img src="products.jpg" alt="Hypermarket" />
+      <h3>🛒 Hypermarket</h3>
+    </a>
 
-      <a href="ellens-cakes.html" class="merchant-card" data-aos="fade-up">
-        <img src="cake.jpg" alt="Ellen's Cakes" />
-        <h3>Ellen's Cakes</h3>
-      </a>
+    <a href="ellens-cakes.html" class="store-card" data-aos="fade-up">
+      <img src="cake.jpg" alt="Ellen's Cakes" />
+      <h3>🎂 Ellen’s Cakes</h3>
+    </a>
 
-      <a href="generic-center.html" class="merchant-card" data-aos="fade-up">
-        <img src="medicines.jpg" alt="Generic Center" />
-        <h3>Generic Center</h3>
-      </a>
+    <a href="generic-center.html" class="store-card" data-aos="fade-up">
+      <img src="medicines.jpg" alt="Generic Center" />
+      <h3>💊 Generic Center</h3>
+    </a>
 
-      <a href="inasal-center.html" class="merchant-card" data-aos="fade-up">
-        <img src="inasal.jpg" alt="Inasal Center" />
-        <h3>Inasal Center</h3>
-      </a>
+    <a href="inasal-center.html" class="store-card" data-aos="fade-up">
+      <img src="inasal.jpg" alt="Inasal Center" />
+      <h3>🔥 Inasal Center</h3>
+    </a>
 
-      <a href="fashion-retail.html" class="merchant-card" data-aos="fade-up">
-        <img src="fashion.jpg" alt="Fashion Retail" />
-        <h3>Fashion Retail</h3>
-      </a>
+    <a href="fashion-retail.html" class="store-card" data-aos="fade-up">
+      <img src="fashion.jpg" alt="Fashion Retail" />
+      <h3>👗 Fashion Retail</h3>
+    </a>
 
-    </div>
-  </section>
+    <a href="pasabuy-request.html" class="store-card" data-aos="fade-up">
+      <img src="custom-request.jpg" alt="PasaBuy Request" />
+      <h3>📝 PasaBuy Custom Request</h3>
+    </a>
 
-  <footer>
-    <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
-    <div>
-      <a href="about.html">About</a>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="careers.html">Careers</a>
-    </div>
-  </footer>
+  </div>
+</section>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
+<footer>
+  <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
+  <div>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="careers.html">Careers</a>
+  </div>
+</footer>
+
+<!-- WhatsApp Button -->
+<a href="https://wa.me/63XXXXXXXXXX?text=Hello%20DalaKoNa!%20Buligi%20ko%20palihog%20mag-order.%20Salamat!" 
+   class="whatsapp-float" target="_blank" aria-label="Chat with Support">📲</a>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
 </body>
 </html>
