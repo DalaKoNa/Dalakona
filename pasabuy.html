@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PasaBuy Order | Dala🚲na</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'DM Serif Display', serif;
+      background-color: #fffaf4;
+      color: #333;
+    }
+    header {
+      background: #ffe8b0;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.3rem;
+      border-bottom: 1px solid #e0c08d;
+    }
+    header .logo {
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    main {
+      padding: 2rem 1rem;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .pasabuy-btn {
+      background-color: #f4a261;
+      color: white;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    input, textarea {
+      padding: 0.7rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .submit-btn {
+      background-color: #2a9d8f;
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #cartItems {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      text-align: left;
+    }
+
+    footer {
+      background-color: #fff4ca;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #333;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .modal-content {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Dala🚲na</div>
+</header>
+
+<main>
+  <h1>🛍️ Custom PasaBuy Order</h1>
+  <p>Request any item from your suki tindahan or palengke. We'll pick it up for you!</p>
+  <button id="openCheckoutModal" class="pasabuy-btn">📝 Place Custom Order</button>
+</main>
+
+<!-- Checkout Modal -->
+<div id="checkoutModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-modal" id="closeCheckoutBtn">✕</button>
+    <h2>🛒 Confirm Your Order</h2>
+
+    <div id="cartSummaryBox">
+      <p><strong>Cart Summary:</strong></p>
+      <ul id="cartItems">
+        <!-- Auto-filled by JS -->
+      </ul>
+    </div>
+
+    <form id="checkoutForm">
+      <input type="text" id="fullName" placeholder="Your Name" required />
+      <input type="text" id="phoneNumber" placeholder="Phone / WhatsApp" required />
+      <textarea id="address" placeholder="Delivery Address" required></textarea>
+      <button type="submit" class="submit-btn">✅ Send via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Dala🚲na. All rights reserved.</p>
+  <a href="about.html">About</a>
+  <a href="terms.html">Terms & Conditions</a>
+  <a href="privacy.html">Privacy Policy</a>
+  <a href="careers.html">Careers</a>
+</footer>
+
+<script>
+  const openCheckoutModalBtn = document.getElementById('openCheckoutModal');
+  const checkoutModal = document.getElementById('checkoutModal');
+  const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
+  const cartItemsList = document.getElementById('cartItems');
+  const checkoutForm = document.getElementById('checkoutForm');
+
+  const sampleCart = [
+    { name: '1kg Sugar', qty: 1, price: 55 },
+    { name: 'Lucky Me Pancit Canton', qty: 5, price: 12 }
+  ];
+
+  function renderCart() {
+    cartItemsList.innerHTML = '';
+    sampleCart.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.qty}x ${item.name} – ₱${item.qty * item.price}`;
+      cartItemsList.appendChild(li);
+    });
+  }
+
+  openCheckoutModalBtn.addEventListener('click', () => {
+    renderCart();
+    checkoutModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeCheckoutBtn.addEventListener('click', () => {
+    checkoutModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+
+  checkoutForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phoneNumber').value.trim();
+    const address = document.getElementById('address').value.trim();
+
+    const cartDetails = sampleCart.map(item =>
+      `${item.qty}x ${item.name} – ₱${item.qty * item.price}`
+    ).join('\n');
+
+    const message = `Hello DalaKoNa! I’d like to place a custom order:\n\n🛍️ Items:\n${cartDetails}\n\n📍 Address: ${address}\n👤 Name: ${name}\n📞 Phone: ${phone}`;
+
+    const whatsappLink = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, '_blank');
+
+    checkoutModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+</script>
+
+</body>
+</html>
