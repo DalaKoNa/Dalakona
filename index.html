@@ -2,33 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>awe storefront 🚲 – PasaBuy, Subong Dayon!</title>
-  <meta name="description" content="Order from your favorite local stores via awe storefront. Pasabuy system. Subong dayon!"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>awe storefront 🚲 – DalaKoNa</title>
+  <meta name="description" content="Order groceries, cakes, lechon, and essentials from your favorite local stores. Subong dayon." />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Cinzel', serif;
-      background: #fffdf6;
+      background: #fffaf4;
       color: #333;
     }
 
-    .navbar {
+    header.navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem;
-      background: #fff9dc;
+      padding: 1em;
+      background-color: #fff7df;
       border-bottom: 1px solid #eee;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
+
     .navbar .title {
-      font-size: 1.5rem;
+      font-size: 1.5em;
       font-weight: bold;
     }
 
@@ -36,37 +37,102 @@
       text-align: center;
       padding: 2rem 1rem;
       background: url('storefront-hero.png') center/cover no-repeat;
-      color: #fff;
+      color: #000;
     }
+
     .hero h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       margin: 0.5rem 0;
-      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero p {
+      margin: 0.5rem 0 1rem;
+    }
+
+    .cta {
+      background-color: #ffc107;
+      padding: 0.6rem 1.4rem;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      color: black;
       display: inline-block;
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
     }
 
-    .store-highlights {
+    .storefront-section {
       padding: 2rem 1rem;
-      background-color: #fff9ec;
-      text-align: center;
-    }
-    .store-highlights h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
+      background: #fffdf6;
     }
 
-    .highlight-grid {
+    .storefront-section h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .storefront-wrapper-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .storefront-card {
+      width: 280px;
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: center;
+      background: #fff;
+      border: 2px solid #d4a373;
+      transition: transform 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: #333;
+    }
+
+    .storefront-card:hover {
+      transform: scale(1.03);
+    }
+
+    .storefront-content {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .storefront-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .storefront-content h3 {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      margin: 0;
+      padding: 0.5rem;
+    }
+
+    footer {
+      background-color: #fff4ca;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .highlight-cards {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
       max-width: 1000px;
-      margin: 0 auto;
+      margin: auto;
     }
 
-    .highlight-card {
+    .highlight-cards a {
       background: #fffef7;
       border: 1px solid #f0d9aa;
       padding: 1.2rem 1.5rem;
@@ -80,36 +146,22 @@
       text-align: center;
     }
 
-    .highlight-card:hover {
+    .highlight-cards a:hover {
       background: #fdf6e0;
       transform: scale(1.02);
     }
 
-    .highlight-card strong {
-      color: #000;
-    }
-
-    .footer {
-      background-color: #fff4ca;
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 0.95rem;
-    }
-
     @media (max-width: 600px) {
-      .highlight-grid {
+      .highlight-cards {
         flex-direction: column;
         align-items: center;
-      }
-      .highlight-card {
-        width: 90%;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Header -->
   <header class="navbar">
     <div class="title">awe storefront 🚲</div>
     <div>👤</div>
@@ -118,47 +170,73 @@
   <!-- Hero -->
   <section class="hero">
     <h1>PasaBuy. Subong Dayon!</h1>
+    <p>Order from trusted local stores and essentials.</p>
+    <a href="#partners" class="cta">🛒 Start Shopping</a>
   </section>
 
-  <!-- Store Highlights Section -->
-  <section class="store-highlights">
-    <h2 data-aos="fade-down">🛍️ Order from your favorite stores</h2>
-    <div class="highlight-grid">
+  <!-- Highlight Section -->
+  <section class="storefront-section">
+    <h2 data-aos="fade-down">🛍️ Order from your favorite stores like…</h2>
+    <div class="highlight-cards">
+      <a href="hypermarket.html" data-aos="fade-up">🛒 Groceries from <strong>Hypermarket</strong></a>
+      <a href="goldilocks.html" data-aos="fade-up">🍰 Manamit nga cake from <strong>Goldilocks</strong></a>
+      <a href="generic-center.html" data-aos="fade-up">💊 Affordable meds from <strong>Generic Center</strong></a>
+      <a href="ellens-cakes.html" data-aos="fade-up">🎂 Special cakes from <strong>Ellen’s Cakes</strong></a>
+      <a href="inasal-center.html" data-aos="fade-up">🔥 Lechon Manok from <strong>Inasal Center</strong></a>
+      <a href="fashion-retail.html" data-aos="fade-up">👚 Daily wear from <strong>Fashion Retail</strong></a>
+    </div>
+  </section>
 
-      <a href="hypermarket.html" class="highlight-card" data-aos="fade-up">
-        🛒 Groceries from <strong>Hypermarket</strong>
+  <!-- Merchant Cards -->
+  <section class="storefront-section" id="partners">
+    <h2>📍 Mga Tindahan</h2>
+    <div class="storefront-wrapper-grid">
+
+      <a href="hypermarket.html" class="storefront-card" data-aos="fade-up">
+        <div class="storefront-content">
+          <img src="products.jpg" />
+          <h3>Hypermarket</h3>
+        </div>
       </a>
 
-      <a href="goldilocks.html" class="highlight-card" data-aos="fade-up" data-aos-delay="100">
-        🍰 Manamit nga cake from <strong>Goldilocks</strong>
+      <a href="ellens-cakes.html" class="storefront-card" data-aos="fade-up">
+        <div class="storefront-content">
+          <img src="cake.jpg" />
+          <h3>Ellen's Cakes</h3>
+        </div>
       </a>
 
-      <a href="inasal-center.html" class="highlight-card" data-aos="fade-up" data-aos-delay="200">
-        🍗 Lechon Manok from <strong>Inasal Center</strong>
+      <a href="generic-center.html" class="storefront-card" data-aos="fade-up">
+        <div class="storefront-content">
+          <img src="medicines.jpg" />
+          <h3>Generic Center</h3>
+        </div>
       </a>
 
-      <a href="generic-center.html" class="highlight-card" data-aos="fade-up" data-aos-delay="300">
-        💊 Affordable meds from <strong>Generic Center</strong>
+      <a href="inasal-center.html" class="storefront-card" data-aos="fade-up">
+        <div class="storefront-content">
+          <img src="inasal.jpg" />
+          <h3>Inasal Center</h3>
+        </div>
       </a>
 
-      <a href="ellens-cakes.html" class="highlight-card" data-aos="fade-up" data-aos-delay="400">
-        🎂 Birthday cakes from <strong>Ellen’s Cakes</strong>
-      </a>
-
-      <a href="fashion-retail.html" class="highlight-card" data-aos="fade-up" data-aos-delay="500">
-        👚 Daily wear from <strong>Fashion Retail</strong>
+      <a href="fashion-retail.html" class="storefront-card" data-aos="fade-up">
+        <div class="storefront-content">
+          <img src="fashion.jpg" />
+          <h3>Fashion Retail</h3>
+        </div>
       </a>
 
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer>
     <p>&copy; 2025 awe storefront. Powered by Dala🚲na.</p>
-    <p>Follow us: FB | IG | X</p>
+    <p>Follow us: Facebook | Instagram | X</p>
   </footer>
 
-  <!-- AOS Script -->
+  <!-- AOS Animation Script -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 700, once: true });
