@@ -3,209 +3,227 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dala🚲na – PasaBuy, Subong Dayon!</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <title>PasaBuy – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    * {
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
-    body {
-      font-family: 'DM Serif Display', serif;
-      background: #fffefb;
-      color: #222;
-      line-height: 1.6;
-    }
-
-    header {
-      background: #fff7df;
-      padding: 1rem 2rem;
-      font-size: 1.8rem;
+    .header {
+      background-color: #ffcc00;
+      color: #333;
+      padding: 1rem;
       text-align: center;
       font-weight: bold;
-      border-bottom: 1px solid #eee;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      font-size: 1.2rem;
     }
-
-    .hero {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #fffaf2;
+    .container {
+      max-width: 480px;
+      margin: 1rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-
-    .hero img {
+    h3, h4 {
+      margin-top: 0.5rem;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+    input, textarea, select {
       width: 100%;
-      max-width: 720px;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      margin-bottom: 1.5rem;
+      padding: 0.6rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
-
-    .hero h1 {
-      font-size: 2rem;
+    .item-row {
+      display: flex;
+      gap: 0.5rem;
       margin-bottom: 0.5rem;
     }
-
-    .hero p {
-      font-size: 1.1rem;
-      color: #555;
+    .item-row input {
+      flex: 1;
     }
-
-    .storefront-section {
-      padding: 2rem 1rem;
+    .item-row button {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
     }
-
-    .storefront-section h2 {
-      text-align: center;
-      font-size: 1.5rem;
+    .add-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .summary-box {
+      background: #f9f9f9;
+      padding: 0.75rem;
+      border-radius: 8px;
       margin-bottom: 1rem;
     }
-
-    .storefront-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1.5rem;
-      padding: 0 1rem;
-    }
-
-    .storefront-card {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 12px;
-      overflow: hidden;
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    }
-
-    .storefront-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .storefront-card img {
+    .button {
       width: 100%;
-      height: 120px;
-      object-fit: cover;
-    }
-
-    .storefront-card h3 {
-      font-size: 1rem;
       padding: 0.8rem;
+      background: green;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
     }
-
-    footer {
-      background: #fff4ca;
+    .footer {
       text-align: center;
-      padding: 2rem 1rem;
       font-size: 0.9rem;
+      color: #999;
       margin-top: 2rem;
-    }
-
-    footer a {
-      margin: 0 0.5rem;
-      color: #555;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      font-size: 1.5rem;
-      background: #25d366;
-      color: #fff;
-      padding: 0.7rem 1rem;
-      border-radius: 50px;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 999;
-    }
-
-    @media (max-width: 480px) {
-      header {
-        font-size: 1.4rem;
-      }
-      .hero h1 {
-        font-size: 1.4rem;
-      }
     }
   </style>
 </head>
 <body>
+  <div class="header">🛒 PasaBuy – DalaKoNa</div>
 
-  <header>
-    Dala🚲na
-  </header>
-
-  <section class="hero">
-    <img src="storefront-hero.png" alt="DalaKoNa Storefront Image" />
-    <h1>PasaBuy, Subong Dayon</h1>
-    <p>Order from your favorite stores in one tap. Dala Ko Na 🚴</p>
-  </section>
-
-  <section class="storefront-section">
-    <h2>📍 Order sa paborito mo nga tindahan</h2>
-    <div class="storefront-grid">
-
-      <a href="hypermarket.html" class="storefront-card">
-        <img src="products.jpg" alt="Hypermarket" />
-        <h3>Hypermarket</h3>
-      </a>
-      
-      <a href="GoldiCakesCenter.html" class="storefront-card">
-        <img src="kaouther-djouada-hcEDfkiVmMI-unsplash.jpg" alt="Goldicakes" />
-        <h3>Goldicakes</h3>
-      </a>
-
-      <a href="EllensCakeCenter.html" class="storefront-card">
-        <img src="kaouther-djouada-hcEDfkiVmMI-unsplash.jpg" alt="Ellen's Cakes" />
-        <h3>Ellen's Cakes</h3>
-      </a>
-
-      <a href="GenericCenter.html" class="storefront-card">
-        <img src="medicines.jpg" alt="Generic Center" />
-        <h3>Generic Center</h3>
-      </a>
-
-      <a href="InasalCenter.html" class="storefront-card">
-        <img src="claudio-schwarz-4qJlXK4mYzU-unsplash.jpg" alt="Inasal Center" />
-        <h3>Inasal Center</h3>
-      </a>
-
-      <a href="fashion-retail.html" class="storefront-card">
-        <img src="fashion.jpg" alt="Fashion Retail" />
-        <h3>Fashion Retail</h3>
-      </a>
-
-      <a href="pasabuy.html" class="storefront-card">
-        <img src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png" alt="Pasabuy Order" />
-        <h3>📦 Custom PasaBuy</h3>
-      </a>
-
+  <div class="container">
+    <h3>🧾 What would you like us to buy?</h3>
+    
+    <div id="item-list">
+      <div class="item-row">
+        <input type="text" placeholder="Item (e.g. Piaya Ube)" class="item-name" required />
+        <input type="number" placeholder="Qty" min="1" class="item-qty" required />
+        <button onclick="removeItem(this)">✖</button>
+      </div>
     </div>
-  </section>
+    <button class="add-btn" onclick="addItem()">+ Add Another Item</button>
 
-  <footer>
-    <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
-    <div>
-      <a href="about.html">About</a> |
-      <a href="terms.html">Terms</a> |
-      <a href="privacy.html">Privacy</a> |
-      <a href="careers.html">Careers</a>
+    <h4>👤 Your Information</h4>
+    <input type="text" id="cust-name" placeholder="Your Name" required />
+    <input type="text" id="cust-phone" placeholder="Phone Number" required />
+    <input type="text" id="cust-address" placeholder="Delivery Address" required />
+
+    <h4>📦 Cart Summary</h4>
+    <div class="summary-box">
+      <p>🛍 Requested Items: Custom list</p>
+      <p>🚚 Delivery Fee: ₱29.99</p>
+      <p>⚙️ Service Fee: ₱10.01</p>
+      <p><strong>Estimate: ₱40.00 + item total</strong></p>
     </div>
-  </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/63XXXXXXXXXX" target="_blank">💬 WhatsApp</a>
+    <h4>📅 Delivery Info</h4>
+    <input type="date" id="delivery-date" disabled />
+    <input type="time" id="delivery-time" disabled />
+    <div style="font-size: 0.85rem; color: #666;">Delivery is auto-scheduled 1 hour from now.</div>
 
+    <label>💳 Payment Method:</label>
+    <select id="cust-payment">
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+    </select>
+
+    <button class="button" onclick="submitOrder()">✅ Send Order via WhatsApp</button>
+    <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+      📲 After sending your order, tap back to return here.
+    </p>
+  </div>
+
+  <div class="footer">
+    DalaKoNa 🚲 Pasabuy Service • Powered by your neighborhood hustle 💛
+  </div>
+<script>
+function setAutoDeliveryDateTime() {
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
+  document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0, 5);
+}
+setAutoDeliveryDateTime();
+
+function addItem() {
+  const itemRow = document.createElement("div");
+  itemRow.className = "item-row";
+  itemRow.innerHTML = `
+    <input type="text" placeholder="Item (e.g. Spanish Latte)" class="item-name" required />
+    <input type="number" placeholder="Qty" min="1" class="item-qty" required />
+    <button onclick="removeItem(this)">✖</button>
+  `;
+  document.getElementById("item-list").appendChild(itemRow);
+}
+
+function removeItem(btn) {
+  btn.parentElement.remove();
+}
+
+function submitOrder() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const payment = document.getElementById("cust-payment").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+
+  if (!name || !phone || !address) {
+    alert("Please fill out all required fields.");
+    return;
+  }
+
+  const itemNames = document.querySelectorAll(".item-name");
+  const itemQtys = document.querySelectorAll(".item-qty");
+
+  let items = "";
+  for (let i = 0; i < itemNames.length; i++) {
+    const item = itemNames[i].value.trim();
+    const qty = itemQtys[i].value.trim();
+    if (item && qty) {
+      items += `• ${qty}x ${item}\n`;
+    }
+  }
+
+  if (!items) {
+    alert("Please add at least one item.");
+    return;
+  }
+
+  const latLng = position => {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+    const deliveryFee = 29.99;
+    const serviceFee = 10.01;
+    const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+
+    let message = `*PasaBuy Order – DalaKoNa*\n\n🛍 *Items:*\n${items}`;
+    message += `\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
+    message += `\n*Estimated Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}\n`;
+    message += `\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}`;
+    message += `\n🌐 *Map:* ${mapUrl}`;
+    message += `\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
+    message += `\n\n🔁 Tap back after sending to return to our site.`;
+
+    const encoded = encodeURIComponent(message);
+    const phoneNumber = "63XXXXXXXXXX"; // Replace with your WhatsApp number
+    window.location.href = `https://wa.me/${phoneNumber}?text=${encoded}`;
+  };
+
+  navigator.geolocation.getCurrentPosition(latLng, () => {
+    alert("⚠️ Location permission is required for delivery tracking.");
+  });
+}
+</script>
 </body>
 </html>
