@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Goldilocks Pasabuy - DalaKoNa</title>
+  <title>PasaBuy - DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
@@ -53,6 +53,16 @@
       color: #666;
       margin-bottom: 1rem;
     }
+    .summary-box {
+      background: #f7f7f7;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .summary-box p {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+    }
     .button {
       width: 100%;
       padding: 0.8rem;
@@ -74,7 +84,7 @@
 </head>
 <body>
 
-<div class="header">🎂 Goldilocks Pasabuy – DalaKoNa</div>
+<div class="header">🛒 PasaBuy – DalaKoNa</div>
 
 <div class="container">
   <h3>🛍 What do you want us to buy?</h3>
@@ -91,6 +101,14 @@
   <input type="text" id="cust-phone" placeholder="Phone Number" required/>
   <input type="text" id="cust-address" placeholder="Delivery Address" required/>
 
+  <h4>📦 Cart Summary</h4>
+  <div class="summary-box">
+    <p>🛍 Requested Items: Custom</p>
+    <p>🚚 Delivery Fee: ₱29.99</p>
+    <p>⚙️ Service Fee: ₱10.01</p>
+    <p><strong>Total Estimated: ₱40.00 + item cost</strong></p>
+  </div>
+
   <h4>📅 Delivery Info</h4>
   <input type="date" id="delivery-date" disabled/>
   <input type="time" id="delivery-time" disabled/>
@@ -103,10 +121,10 @@
     <option value="PayMaya">PayMaya</option>
   </select>
 
-  <button class="button" onclick="submitCustomOrder()">✅ Send to WhatsApp</button>
+  <button class="button" onclick="submitCustomOrder()">✅ Place Order via WhatsApp</button>
 </div>
 
-<div class="footer">DalaKoNa 🚲 Pasabuy Service • Powered by Goldilocks Love 🍰</div>
+<div class="footer">DalaKoNa 🚲 Pasabuy Service • Powered by your neighborhood hustle 💛</div>
 
 <script>
 function setAutoDeliveryDateTime() {
@@ -134,6 +152,8 @@ function submitCustomOrder() {
   }
 
   const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+  const deliveryFee = 29.99;
+  const serviceFee = 10.01;
 
   let photoUrl = '';
   if (photoInput.files && photoInput.files[0]) {
@@ -145,20 +165,23 @@ function submitCustomOrder() {
     const lng = pos.coords.longitude;
     const locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
-    let message = `*Pasabuy Order (DalaKoNa)*\n\n🧁 *Buy for me:*\n${request}`;
-
-    if (customLink) {
-      message += `\n🔗 *Link:* ${customLink}`;
-    }
-    if (photoUrl) {
-      message += `\n📷 *Photo (preview):* ${photoUrl}`;
-    }
+    let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Buy this for me:*\n${request}`;
+    if (customLink) message += `\n🔗 *Product Link:* ${customLink}`;
+    if (photoUrl) message += `\n📷 *Attached Photo:* ${photoUrl}`;
 
     message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
+    message += `\n\n💰 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n*Estimated Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
 
     const encoded = encodeURIComponent(message);
-    const phoneNumber = "63XXXXXXXXXX"; // Replace with your merchant WhatsApp number
+    const phoneNumber = "63XXXXXXXXXX"; // 🔁 Replace with merchant WhatsApp number
+
+    // Open WhatsApp
     window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+
+    // Redirect after 3 seconds
+    setTimeout(() => {
+      window.location.href = "thank-you.html";
+    }, 3000);
   }, () => alert("⚠️ Location permission is required to proceed with delivery."));
 }
 </script>
