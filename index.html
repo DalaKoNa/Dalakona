@@ -3,230 +3,171 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>awe storefront 🚲 – DalaKoNa</title>
-  <meta name="description" content="Order groceries, cakes, lechon, and essentials from your favorite local stores. Subong dayon." />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+  <title>Dala🚲na – PasaBuy, Subong Dayon!</title>
+  <meta name="description" content="Order from your favorite local stores using Dala🚲na!" />
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Cinzel&display=swap" rel="stylesheet" />
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; }
-    body {
+    :root {
+      --accent: #d4a373;
+      --light: #fffaf4;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Cinzel', serif;
-      background: #fffaf4;
+      background-color: var(--light);
       color: #333;
     }
 
-    header.navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1em;
+    header {
       background-color: #fff7df;
-      border-bottom: 1px solid #eee;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      font-family: 'DM Serif Display', serif;
+      border-bottom: 1px solid #eae2cf;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
 
-    .navbar .title {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    .hero {
+    .merchant-section {
+      padding: 3rem 1.5rem;
       text-align: center;
-      padding: 2rem 1rem;
-      background: url('storefront-hero.png') center/cover no-repeat;
-      color: #000;
     }
 
-    .hero h1 {
-      font-size: 2.5rem;
-      margin: 0.5rem 0;
+    .merchant-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #222;
     }
 
-    .hero p {
-      margin: 0.5rem 0 1rem;
+    .merchant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .cta {
-      background-color: #ffc107;
-      padding: 0.6rem 1.4rem;
-      font-weight: bold;
-      border-radius: 30px;
-      text-decoration: none;
-      color: black;
-      display: inline-block;
-    }
-
-    .storefront-section {
-      padding: 2rem 1rem;
-      background: #fffdf6;
-    }
-
-    .storefront-section h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .storefront-wrapper-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-    }
-
-    .storefront-card {
-      width: 280px;
+    .merchant-card {
+      display: block;
+      background-color: #ffffff;
       border-radius: 16px;
       overflow: hidden;
-      text-align: center;
-      background: #fff;
-      border: 2px solid #d4a373;
-      transition: transform 0.3s ease;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
       text-decoration: none;
       color: #333;
+      box-shadow: 0 8px 20px var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
-    .storefront-card:hover {
-      transform: scale(1.03);
+    .merchant-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
     }
 
-    .storefront-content {
-      position: relative;
-      height: 180px;
-      overflow: hidden;
-    }
-
-    .storefront-content img {
+    .merchant-card img {
       width: 100%;
-      height: 100%;
+      height: 160px;
       object-fit: cover;
     }
 
-    .storefront-content h3 {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      margin: 0;
-      padding: 0.5rem;
+    .merchant-card h3 {
+      padding: 1rem;
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
     }
 
     footer {
       background-color: #fff4ca;
-      padding: 2rem 1rem;
+      padding: 2rem 1.5rem;
       text-align: center;
       font-size: 0.95rem;
-    }
-
-    .highlight-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .highlight-cards a {
-      background: #fffef7;
-      border: 1px solid #f0d9aa;
-      padding: 1.2rem 1.5rem;
-      border-radius: 12px;
-      font-size: 1rem;
-      text-decoration: none;
+      margin-top: 4rem;
       color: #333;
-      transition: all 0.3s ease;
-      flex: 1 1 280px;
-      max-width: 300px;
-      text-align: center;
     }
 
-    .highlight-cards a:hover {
-      background: #fdf6e0;
-      transform: scale(1.02);
+    footer a {
+      color: #333;
+      text-decoration: none;
+      margin: 0 10px;
+      display: inline-block;
+      font-weight: 500;
     }
 
-    @media (max-width: 600px) {
-      .highlight-cards {
-        flex-direction: column;
-        align-items: center;
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .merchant-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="navbar">
-    <div class="title">Dala🚲na</div>
-    <div>👤</div>
+  <header>
+    Dala🚲na
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1>PasaBuy. Subong Dayon!</h1>
-    <p>Order from trusted local stores and essentials.</p>
-    <a href="#partners" class="cta">🛒 Start Shopping</a>
+  <section class="merchant-section" id="partners">
+    <h2>📍 Order sa paborito mo nga tindahan, PasaBuy mo Dala🚲na.</h2>
+    <div class="merchant-grid">
+
+      <a href="hypermarket.html" class="merchant-card" data-aos="fade-up">
+        <img src="products.jpg" alt="Hypermarket" />
+        <h3>Hypermarket</h3>
+      </a>
+
+      <a href="ellens-cakes.html" class="merchant-card" data-aos="fade-up">
+        <img src="cake.jpg" alt="Ellen's Cakes" />
+        <h3>Ellen's Cakes</h3>
+      </a>
+
+      <a href="generic-center.html" class="merchant-card" data-aos="fade-up">
+        <img src="medicines.jpg" alt="Generic Center" />
+        <h3>Generic Center</h3>
+      </a>
+
+      <a href="inasal-center.html" class="merchant-card" data-aos="fade-up">
+        <img src="inasal.jpg" alt="Inasal Center" />
+        <h3>Inasal Center</h3>
+      </a>
+
+      <a href="fashion-retail.html" class="merchant-card" data-aos="fade-up">
+        <img src="fashion.jpg" alt="Fashion Retail" />
+        <h3>Fashion Retail</h3>
+      </a>
+
+    </div>
   </section>
 
- <!-- Merchant Cards Section with Headline -->
-<section class="section" id="partners">
-  <h2>📍 Order sa paborito mo nga tindahan, PasaBuy mo Dala🚲na.</h2>
-  <div class="storefront-wrapper-grid">
-
-    <a href="hypermarket.html" class="storefront-card" data-aos="fade-up">
-      <div class="storefront-content">
-        <img src="products.jpg" />
-        <h3>Hypermarket</h3>
-      </div>
-    </a>
-
-    <a href="ellens-cakes.html" class="storefront-card" data-aos="fade-up">
-      <div class="storefront-content">
-        <img src="cake.jpg" />
-        <h3>Ellen's Cakes</h3>
-      </div>
-    </a>
-
-    <a href="generic-center.html" class="storefront-card" data-aos="fade-up">
-      <div class="storefront-content">
-        <img src="medicines.jpg" />
-        <h3>Generic Center</h3>
-      </div>
-    </a>
-
-    <a href="inasal-center.html" class="storefront-card" data-aos="fade-up">
-      <div class="storefront-content">
-        <img src="inasal.jpg" />
-        <h3>Inasal Center</h3>
-      </div>
-    </a>
-
-    <a href="fashion-retail.html" class="storefront-card" data-aos="fade-up">
-      <div class="storefront-content">
-        <img src="fashion.jpg" />
-        <h3>Fashion Retail</h3>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-  <!-- Footer -->
   <footer>
-    <p>&copy;Dala🚲na. All rights reserved </p>
-    <p>Follow us: Facebook | Instagram | X</p>
+    <p>&copy; 2025 Dala🚲na. All rights reserved.</p>
+    <div>
+      <a href="about.html">About</a>
+      <a href="terms.html">Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="careers.html">Careers</a>
+    </div>
   </footer>
 
-  <!-- AOS Animation Script -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 700, once: true });
+    AOS.init();
   </script>
+
 </body>
 </html>
