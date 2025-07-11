@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fff;
+      background: #ffffff;
       margin: 0;
       padding: 0;
     }
@@ -17,78 +17,354 @@
       color: white;
       padding: 1rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 1.1rem;
     }
-    .container {
+    .header a {
+      color: white;
+      text-decoration: none;
+    }
+    .step-section {
+      display: none;
       max-width: 480px;
-      margin: auto;
+      margin: 2rem auto;
       padding: 1rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .step-section.active {
+      display: block;
     }
     .item-group {
       background: #f9f9f9;
-      border-radius: 8px;
       padding: 1rem;
-      margin-bottom: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
       position: relative;
     }
-    .item-group input {
-      width: 100%;
-      margin-top: 0.3rem;
-      padding: 0.6rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
     .remove-btn {
-      position: absolute;
-      right: 0.5rem;
-      top: 0.5rem;
       background: red;
       color: white;
       border: none;
-      padding: 0.2rem 0.5rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 4px;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.9rem;
+    }
+    .qty-btn {
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 1.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
+    .qty-btn:hover {
+      background: #ddd;
     }
     .button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
       background: green;
       color: white;
-      padding: 0.8rem;
-      width: 100%;
+      border: none;
       font-size: 1rem;
       font-weight: bold;
-      border: none;
       border-radius: 8px;
-      margin-top: 1rem;
       cursor: pointer;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #999;
+      margin: 2rem auto;
     }
   </style>
 </head>
 <body>
 
 <div class="header">
-  <a href="index.html" style="color:white; text-decoration:none;">← Back</a>
-  <div>PasaBuy – DalaKoNa</div>
-  <div style="width:1.5rem;"></div>
+  <a href="index.html">← Back</a>
+  <span>PasaBuy – DalaKoNa</span>
+  <span style="width: 2rem;"></span>
 </div>
 
-<div class="container">
-  <h2>🛍 Add Items</h2>
+<!-- Step 1: Add Items -->
+<div class="step-section active" id="step-items">
+  <h2>🍭 What do you want us to buy?</h2>
   <div id="items-container"></div>
-  <button class="button" style="background:#444;" onclick="addItem()">➕ Add Item</button>
-  <h2>👤 Your Info</h2>
-  <label>Name:</label>
-  <input type="text" id="cust-name" placeholder="Your Name" required>
+  <button class="button" style="background:#444;" onclick="addItem()">➕ Add Another Item</button>
+  <button class="button" style="background:#0057b8;" onclick="goToCustomerForm()">Next: Delivery Info</button>
+</div>
 
-  <label>Phone:</label>
-  <input type="text" id="cust-phone" placeholder="09XXXXXXXXX" required>
+<!-- Step 2: Customer Details -->
+<div class="step-section" id="step-details">
+  <h2>👤 Your Delivery Info</h2>
+  <label>Name:</label>
+  <input type="text" id="cust-name" required />
+
+  <label>Phone Number:</label>
+  <input type="text" id="cust-phone" required />
 
   <label>Delivery Address:</label>
-  <input type="text" id="cust-address" placeholder="Exact location..." required>
+  <input type="text" id="cust-address" required />
 
-  <label>🕒 Delivery Time (auto-filled):</label>
-  <input type="date" id="delivery-date" disabled>
-  <input type="time" id="delivery-time" disabled>
+  <label>Payment Method:</label>
+  <select id="cust-payment">
+    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="GCash">GCash</option>
+    <option value="PayMaya">PayMaya</option>
+  </select>
+
+  <button class="button" onclick="submitOrder()">✅ Place Order</button>
+</div>
+
+<div class="footer">
+  🚲 DalaKoNa Pasabuy • We deliver with love
+</div>
+
+<script>
+let itemCounter = 0;
+
+function addItem() {
+  const container = document.getElementById("items-container");
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "item-group";
+  wrapper.id = `item-${itemCounter}`;
+  wrapper.innerHTML = `
+    <label>Item Name</label>
+    <input type="text" class="item-name" placeholder="e.g. 1 Mocha Cake" required>
+
+    <label>Quantity</label>
+    <div style="display:flex; gap: 0.5rem; align-items:center;">
+      <button type="button" class="qty-btn" onclick="adjustQty(${itemCounter}, -1)">−</button>
+      <input type="number" min="1" value="1" class="item-qty" id="qty-${itemCounter}" style="flex:1; text-align:center;">
+      <button type="button" class="qty-btn" onclick="adjustQty(${itemCounter}, 1)">+</button>
+    </div>
+
+    <label>Optional Product Link</label>
+    <input type="url" class="item-link" placeholder="https://...">
+
+    <label>Optional Photo</label>
+    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemCounter})">
+    <img id="preview-${itemCounter}" class="preview" style="display:none; max-width:100%; margin-top:0.5rem; border-radius:8px;"/>
+
+    <button type="button" class="remove-btn" onclick="removeItem(${itemCounter})">✖ Remove</button>
+  `;
+  container.appendChild(wrapper);
+  itemCounter++;
+}
+
+function adjustQty(id, change) {
+  const qtyInput = document.getElementById(`qty-${id}`);
+  let current = parseInt(qtyInput.value) || 1;
+  current += change;
+  if (current < 1) current = 1;
+  qtyInput.value = current;
+}
+
+function removeItem(id) {
+  const itemDiv = document.getElementById(`item-${id}`);
+  if (itemDiv) itemDiv.remove();
+}
+
+function previewImage(event, id) {
+  const file = event.target.files[0];
+  const preview = document.getElementById(`preview-${id}`);
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+  }
+}
+
+function goToCustomerForm() {
+  if (document.querySelectorAll('.item-group').length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
+  document.getElementById("step-items").classList.remove("active");
+  document.getElementById("step-details").classList.add("active");
+}
+</script>
+</body>
+</html>
+<script>
+let itemIndex = 0;
+const deliveryFee = 29.99;
+const serviceFee = 10.01;
+
+// Add item group
+function addItem() {
+  const container = document.getElementById('items-container');
+
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'item-group';
+  itemDiv.id = `item-${itemIndex}`;
+  itemDiv.innerHTML = `
+    <label>Item Name:</label>
+    <input type="text" class="item-name" placeholder="e.g. 2 Bottles of Soy Sauce" required/>
+
+    <label>Quantity:</label>
+    <div class="qty-wrapper">
+      <button type="button" onclick="adjustQty(${itemIndex}, -1)">−</button>
+      <input type="number" class="item-qty" id="qty-${itemIndex}" value="1" min="1" required />
+      <button type="button" onclick="adjustQty(${itemIndex}, 1)">+</button>
+    </div>
+
+    <label>Optional Product Link:</label>
+    <input type="url" class="item-link" placeholder="https://..." />
+
+    <label>Optional Photo:</label>
+    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})" />
+    <img id="preview-${itemIndex}" class="preview" style="display:none" />
+
+    <button class="remove-btn" onclick="removeItem(${itemIndex})">🗑️ Remove</button>
+  `;
+  container.appendChild(itemDiv);
+  itemIndex++;
+}
+
+function adjustQty(index, change) {
+  const qtyInput = document.getElementById(`qty-${index}`);
+  let current = parseInt(qtyInput.value || '1');
+  current = isNaN(current) ? 1 : current + change;
+  qtyInput.value = current < 1 ? 1 : current;
+}
+
+function removeItem(index) {
+  const item = document.getElementById(`item-${index}`);
+  if (item) item.remove();
+}
+
+function previewImage(event, index) {
+  const file = event.target.files[0];
+  const preview = document.getElementById(`preview-${index}`);
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+  }
+}
+
+function goToStep(stepId) {
+  document.querySelectorAll('.step-section').forEach(div => div.classList.remove('active'));
+  document.getElementById(stepId).classList.add('active');
+}
+
+function autoFillDateTime() {
+  const now = new Date();
+  const plusOneHour = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
+  document.getElementById("delivery-time").value = plusOneHour.toTimeString().slice(0, 5);
+}
+
+function generateConfirmationCode() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
+function submitOrder() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const payment = document.getElementById("cust-payment").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+
+  if (!name || !phone || !address) {
+    alert("Please complete all required fields.");
+    return;
+  }
+
+  const items = [];
+  document.querySelectorAll(".item-group").forEach((group, i) => {
+    const itemName = group.querySelector(".item-name").value.trim();
+    const qty = group.querySelector(".item-qty").value;
+    const link = group.querySelector(".item-link").value.trim();
+    const photo = group.querySelector(".item-photo").files[0];
+    const photoUrl = photo ? URL.createObjectURL(photo) : "";
+
+    if (itemName && qty) {
+      items.push({ itemName, qty, link, photoUrl });
+    }
+  });
+
+  if (items.length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
+
+  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+  const confirmationCode = generateConfirmationCode();
+
+  let message = `🛍 *PasaBuy Order – DalaKoNa*\n\n`;
+  items.forEach((item, i) => {
+    message += `🔹 ${item.itemName} (x${item.qty})\n`;
+    if (item.link) message += `🔗 ${item.link}\n`;
+    if (item.photoUrl) message += `📷 Attached photo\n`;
+  });
+
+  message += `\n📍 *Delivery Address:* ${address}`;
+  message += `\n🗓 *Date:* ${date}`;
+  message += `\n🕒 *Time:* ${time}`;
+  message += `\n👤 *Customer:* ${name}`;
+  message += `\n📞 *Phone:* ${phone}`;
+  message += `\n💳 *Payment:* ${payStatus}`;
+  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n💰 *Total Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+  message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
+
+  navigator.geolocation.getCurrentPosition(position => {
+    const mapLink = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+    message += `\n🌐 *Location:* ${mapLink}`;
+
+    sendToWhatsApp(message, confirmationCode);
+  }, () => {
+    sendToWhatsApp(message, confirmationCode);
+  });
+}
+
+function sendToWhatsApp(message, code) {
+  const encoded = encodeURIComponent(message);
+  const adminNumber = "63XXXXXXXXXX";   // Replace with Admin's WhatsApp
+  const driverNumber = "63YYYYYYYYYY";  // Replace with Driver's WhatsApp
+
+  // Send to admin and driver
+  window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
+  setTimeout(() => {
+    window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
+  }, 1000);
+
+  // Redirect after
+  setTimeout(() => {
+    window.location.href = `PasaBuy-thank-you.html?ref=${code}`;
+  }, 4000);
+}
+</script>
+<!-- Step 2: Customer Delivery Form -->
+<div class="step-section" id="step-details">
+  <h2>📦 Delivery & Customer Info</h2>
+
+  <label>Full Name:</label>
+  <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required/>
+
+  <label>Phone Number:</label>
+  <input type="text" id="cust-phone" placeholder="09XXXXXXXXX" required/>
+
+  <label>Complete Delivery Address:</label>
+  <input type="text" id="cust-address" placeholder="House No, Street, Barangay, City" required/>
+
+  <label>📅 Delivery Date:</label>
+  <input type="date" id="delivery-date" readonly />
+
+  <label>⏰ Delivery Time:</label>
+  <input type="time" id="delivery-time" readonly />
 
   <label>💳 Payment Method:</label>
   <select id="cust-payment">
@@ -97,136 +373,88 @@
     <option value="PayMaya">PayMaya</option>
   </select>
 
-  <div style="margin-top:1rem; background:#f3f3f3; padding:1rem; border-radius:8px;">
-    <p>🚚 Delivery Fee: ₱29.99</p>
-    <p>⚙️ Service Fee: ₱10.01</p>
-    <p><strong>Total Add-on: ₱40.00 + item costs</strong></p>
+  <div id="payment-instructions" style="display: none; background: #f8f8f8; border-radius: 10px; padding: 1rem; margin-top: 1rem;">
+    <h4>💸 Payment Instructions</h4>
+    <div id="gcash-info" style="display: none;">
+      <p><strong>GCash Number:</strong> 09XXXXXXXXX</p>
+      <img src="gcash-qr.png" alt="GCash QR" style="max-width: 100%; border-radius: 8px;"/>
+    </div>
+    <div id="paymaya-info" style="display: none;">
+      <p><strong>PayMaya Number:</strong> 09YYYYYYYYY</p>
+      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width: 100%; border-radius: 8px;"/>
+    </div>
   </div>
 
   <button class="button" onclick="submitOrder()">✅ Place Order via WhatsApp</button>
 </div>
+
 <script>
-const deliveryFee = 29.99;
-const serviceFee = 10.01;
-let itemCount = 0;
+  // Handle Payment Instructions Display
+  document.getElementById('cust-payment').addEventListener('change', function () {
+    const val = this.value;
+    const container = document.getElementById('payment-instructions');
+    const gcash = document.getElementById('gcash-info');
+    const paymaya = document.getElementById('paymaya-info');
 
-function setDeliverySchedule() {
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-  document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
-  document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0,5);
-}
-setDeliverySchedule();
-
-function addItem() {
-  const container = document.getElementById('items-container');
-
-  const div = document.createElement('div');
-  div.className = 'item-entry';
-  div.innerHTML = `
-    <label>🛒 Item ${itemCount + 1}</label>
-    <input type="text" class="item-name" placeholder="What to buy?" required>
-    <label>Qty:</label>
-    <input type="number" min="1" value="1" class="item-qty">
-    <label>Link (optional):</label>
-    <input type="url" class="item-link" placeholder="https://...">
-    <label>Photo (optional):</label>
-    <input type="file" class="item-photo" accept="image/*">
-    <hr/>
-  `;
-  container.appendChild(div);
-  itemCount++;
-}
-
-function submitOrder() {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
-  const date = document.getElementById("delivery-date").value;
-  const time = document.getElementById("delivery-time").value;
-  const payment = document.getElementById("cust-payment").value;
-
-  if (!name || !phone || !address || itemCount === 0) {
-    alert("Please complete all required fields and add at least 1 item.");
-    return;
-  }
-
-  let message = `*🛍 PasaBuy Order – DalaKoNa*\n\n*Items:*\n`;
-  const items = document.querySelectorAll('.item-entry');
-  items.forEach((item, i) => {
-    const itemName = item.querySelector('.item-name').value.trim();
-    const qty = item.querySelector('.item-qty').value;
-    const link = item.querySelector('.item-link').value.trim();
-
-    if (itemName) {
-      message += `• ${itemName} (x${qty})\n`;
-      if (link) message += `🔗 ${link}\n`;
+    if (val === "GCash") {
+      container.style.display = 'block';
+      gcash.style.display = 'block';
+      paymaya.style.display = 'none';
+    } else if (val === "PayMaya") {
+      container.style.display = 'block';
+      gcash.style.display = 'none';
+      paymaya.style.display = 'block';
+    } else {
+      container.style.display = 'none';
+      gcash.style.display = 'none';
+      paymaya.style.display = 'none';
     }
   });
 
-  message += `\n📍 *Delivery Address:* ${address}`;
-  message += `\n📞 *Phone:* ${phone}`;
-  message += `\n👤 *Name:* ${name}`;
-  message += `\n🕒 *Delivery:* ${date} ${time}`;
-  message += `\n💳 *Payment:* ${payment}`;
-  message += `\n\n🚚 Delivery Fee: ₱${deliveryFee.toFixed(2)}\n⚙️ Service Fee: ₱${serviceFee.toFixed(2)}\n💰 Total Add-on: ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-
-  const encoded = encodeURIComponent(message);
-
-  // Replace these with real numbers
-  const adminPhone = "63XXXXXXXXXX";
-  const driverPhone = "63YYYYYYYYYY";
-
-  // Send to Admin
-  window.open(`https://wa.me/${adminPhone}?text=${encoded}`, '_blank');
-  // Send to Driver
-  window.open(`https://wa.me/${driverPhone}?text=${encoded}`, '_blank');
-
-  // Redirect after short delay
-  setTimeout(() => {
-    window.location.href = "PasaBuy-thank-you.html";
-  }, 3000);
-}
+  // Auto-fill date and time on load
+  window.onload = autoFillDateTime;
 </script>
-<!-- Optional Payment Instructions -->
-<div id="payment-instructions" style="display:none; background: #f7f7f7; padding: 1rem; margin: 1rem auto; border-radius: 12px; max-width: 480px;">
-  <h4>💸 Payment Instructions</h4>
-  <div id="gcash-info" style="display:none;">
-    <p><strong>GCash:</strong> 09XXXXXXXXX</p>
-    <img src="gcash-qr.png" alt="GCash QR" style="max-width:100%; border-radius:8px;">
-  </div>
-  <div id="paymaya-info" style="display:none;">
-    <p><strong>PayMaya:</strong> 09YYYYYYYYY</p>
-    <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width:100%; border-radius:8px;">
-  </div>
+<!-- Footer -->
+<div class="footer">
+  🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.
 </div>
+
+<!-- Optional Success Sound -->
+<audio id="success-sound" src="success.mp3" preload="auto"></audio>
 
 <script>
-document.getElementById('cust-payment').addEventListener('change', function() {
-  const value = this.value;
-  const container = document.getElementById('payment-instructions');
-  const gcash = document.getElementById('gcash-info');
-  const paymaya = document.getElementById('paymaya-info');
-
-  if (value === 'GCash') {
-    container.style.display = 'block';
-    gcash.style.display = 'block';
-    paymaya.style.display = 'none';
-  } else if (value === 'PayMaya') {
-    container.style.display = 'block';
-    gcash.style.display = 'none';
-    paymaya.style.display = 'block';
-  } else {
-    container.style.display = 'none';
-    gcash.style.display = 'none';
-    paymaya.style.display = 'none';
+  function playSuccessSound() {
+    const audio = document.getElementById("success-sound");
+    if (audio) audio.play();
   }
-});
 </script>
 
-<div class="footer">
-  <p>🚲 DalaKoNa Pasabuy • We deliver with love</p>
-</div>
+<!-- Responsive Fixes -->
+<style>
+  @media screen and (max-width: 500px) {
+    .header {
+      font-size: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .step-section {
+      padding: 1rem;
+      margin: 1rem;
+    }
+
+    .item-group input,
+    .item-group select,
+    .item-group textarea {
+      font-size: 0.95rem;
+    }
+
+    .button {
+      font-size: 1rem;
+      padding: 0.75rem;
+    }
+  }
+</style>
 
 </body>
 </html>
