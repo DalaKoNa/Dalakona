@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PasaBuy – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -17,29 +17,14 @@
       color: white;
       padding: 1rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       font-weight: bold;
+      font-size: 1.1rem;
     }
     .header a {
       color: white;
       text-decoration: none;
-    }
-    .cart-icon-wrapper {
-      position: relative;
-      font-size: 1.5rem;
-    }
-    #cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: red;
-      color: white;
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 2px 6px;
-      border-radius: 50%;
-      display: none;
     }
     .main-container {
       max-width: 480px;
@@ -47,62 +32,34 @@
       padding: 1rem;
       background: white;
       border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     h2 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       margin-bottom: 1rem;
     }
     label {
-      margin-top: 1rem;
       display: block;
+      margin-top: 1rem;
       font-weight: 600;
     }
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 0.6rem;
-      margin-top: 0.3rem;
       border: 1px solid #ccc;
       border-radius: 8px;
+      margin-top: 0.3rem;
     }
     .button {
-      margin-top: 1rem;
       width: 100%;
       padding: 0.75rem;
+      margin-top: 1.5rem;
       font-size: 1rem;
       font-weight: bold;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    }
-    .button.add-item { background: #444; color: white; }
-    .button.next { background: #0057b8; color: white; }
-    .item-group {
-      background: #f9f9f9;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-bottom: 1.2rem;
-      position: relative;
-    }
-    .remove-btn {
-      background: red;
+      background: #0057b8;
       color: white;
-      border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
-      cursor: pointer;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 0.9rem;
-    }
-    .qty-btn {
-      width: 2rem;
-      height: 2rem;
-      font-size: 1.2rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #eee;
     }
     .footer {
       text-align: center;
@@ -110,249 +67,108 @@
       color: #999;
       margin: 2rem auto;
     }
-    .section { display: none; }
-    .section.active { display: block; }
   </style>
 </head>
 <body>
-
-<!-- Header -->
-<div class="header">
-  <a href="index.html">← Back</a>
-  <span>PasaBuy – DalaKoNa</span>
-  <div class="cart-icon-wrapper">
-    <button onclick="toggleCartModal()" style="background:none; border:none;">🛒</button>
-    <span id="cart-count">0</span>
-  </div>
-</div>
-
-<!-- Step 1: Add Items -->
-<div class="main-container section active" id="step-items">
-  <h2>🛒 What do you want us to buy?</h2>
-  <div id="items-container"></div>
-  <button class="button add-item" onclick="addItem()">➕ Add Another Item</button>
-  <button class="button next" onclick="toggleCartModal()">Next: View Cart</button>
-</div>
-
-<!-- Cart Modal -->
-<div id="cart-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
-  <div style="max-width:480px; background:white; margin:5vh auto; padding:1.5rem; border-radius:12px; position:relative;">
-    <button onclick="toggleCartModal()" style="position:absolute; top:1rem; right:1rem; background:red; color:white; border:none; border-radius:50%; font-size:1.2rem; width:2rem; height:2rem;">×</button>
-    <h3>🧾 Order Summary</h3>
-    <div id="cart-items-list" style="margin-top:1rem;"></div>
-    <hr/>
-    <p>🚚 Delivery Fee: ₱29.99</p>
-    <p>⚙️ Service Fee: ₱10.01</p>
-    <p><strong>💰 Total Add-on: ₱40.00</strong></p>
-    <button class="button next" onclick="goToCustomerForm()">Next: Enter Delivery Info</button>
-  </div>
-</div>
-
-<!-- Step 2: Delivery Info -->
-<div class="main-container section" id="step-details">
-  <h2>📦 Delivery & Customer Info</h2>
-  <label>Full Name:</label>
-  <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required />
-
-  <label>Phone Number:</label>
-  <input type="text" id="cust-phone" placeholder="09XXXXXXXXX" required />
-
-  <label>Complete Address:</label>
-  <input type="text" id="cust-address" placeholder="House No, Street, Barangay" required />
-
-  <label>📅 Delivery Date:</label>
-  <input type="date" id="delivery-date" readonly />
-
-  <label>⏰ Delivery Time:</label>
-  <input type="time" id="delivery-time" readonly />
-
-  <label>💳 Payment Method:</label>
-  <select id="cust-payment">
-    <option value="Cash on Delivery">Cash on Delivery</option>
-    <option value="GCash">GCash</option>
-    <option value="PayMaya">PayMaya</option>
-  </select>
-
-  <div id="payment-instructions" style="display: none; margin-top: 1rem; background: #f8f8f8; padding: 1rem; border-radius: 10px;">
-    <div id="gcash-info" style="display: none;">
-      <strong>GCash Number:</strong> 09XXXXXXXXX<br/>
-      <img src="gcash-qr.png" alt="GCash QR" style="max-width:100%; margin-top:0.5rem;" />
-    </div>
-    <div id="paymaya-info" style="display: none;">
-      <strong>PayMaya Number:</strong> 09YYYYYYYYY<br/>
-      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width:100%; margin-top:0.5rem;" />
-    </div>
+  <div class="header">
+    <a href="index.html">← Back</a>
+    <span>PasaBuy – DalaKoNa</span>
+    <span></span>
   </div>
 
-  <button class="button next" onclick="submitOrder()">✅ Submit Order</button>
-</div>
+  <div class="main-container">
+    <h2>📦 Customer & Delivery Info</h2>
+    <label>Full Name:</label>
+    <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required />
 
-<!-- Scripts -->
-<script>
-let itemIndex = 0;
-const deliveryFee = 29.99;
-const serviceFee = 10.01;
-const adminNumber = "639082900309";
-const driverNumber = "";
+    <label>Phone Number:</label>
+    <input type="text" id="cust-phone" placeholder="09123456789" required />
 
-window.onload = () => {
-  autoFillDateTime();
-  addItem();
-};
+    <label>Email Address:</label>
+    <input type="email" id="cust-email" placeholder="juan@email.com" required />
 
-function addItem() {
-  const container = document.getElementById("items-container");
-  const id = itemIndex++;
-  const div = document.createElement("div");
-  div.className = "item-group";
-  div.id = `item-${id}`;
-  div.innerHTML = `
-    <label>Item Name:</label>
-    <input type="text" class="item-name" required />
+    <label>Delivery Address:</label>
+    <input type="text" id="cust-address" placeholder="Street, Barangay, City" required />
 
-    <label>Quantity:</label>
-    <div style="display:flex; gap:0.5rem; align-items:center;">
-      <button class="qty-btn" onclick="adjustQty(${id}, -1)">−</button>
-      <input type="number" min="1" value="1" class="item-qty" id="qty-${id}" style="text-align:center;">
-      <button class="qty-btn" onclick="adjustQty(${id}, 1)">+</button>
-    </div>
+    <label>Notes / Instructions:</label>
+    <textarea id="cust-notes" placeholder="Anything we should know?"></textarea>
 
-    <label>Optional Link:</label>
-    <input type="url" class="item-link" placeholder="https://..." />
+    <label>📅 Delivery Date:</label>
+    <input type="date" id="delivery-date" readonly />
 
-    <label>Optional Photo:</label>
-    <input type="file" class="item-photo" accept="image/*" />
+    <label>⏰ Delivery Time:</label>
+    <input type="time" id="delivery-time" readonly />
 
-    <button class="remove-btn" onclick="removeItem(${id})">✖ Remove</button>
-  `;
-  container.appendChild(div);
-  updateCartCount();
-}
+    <label>💳 Payment Method:</label>
+    <select id="cust-payment">
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+    </select>
 
-function adjustQty(id, delta) {
-  const qty = document.getElementById(`qty-${id}`);
-  let val = parseInt(qty.value);
-  val = isNaN(val) ? 1 : val + delta;
-  qty.value = val < 1 ? 1 : val;
-  updateCartCount();
-}
+    <label>Ref # (if paid):</label>
+    <input type="text" id="cust-ref" placeholder="GCash/PayMaya Reference" />
 
-function removeItem(id) {
-  document.getElementById(`item-${id}`)?.remove();
-  updateCartCount();
-}
+    <button class="button" onclick="submitOrder()">✅ Send to WhatsApp</button>
+  </div>
 
-function toggleCartModal() {
-  const modal = document.getElementById("cart-modal");
-  populateCartItems();
-  modal.style.display = modal.style.display === "block" ? "none" : "block";
-}
+  <script>
+    const deliveryFee = 29.99;
+    const serviceFee = 10.01;
+    const adminNumber = "639082900309";
 
-function updateCartCount() {
-  const count = document.querySelectorAll(".item-group").length;
-  const badge = document.getElementById("cart-count");
-  badge.textContent = count;
-  badge.style.display = count > 0 ? "inline-block" : "none";
-}
+    function autoFillDateTime() {
+      const now = new Date();
+      const plus1Hr = new Date(now.getTime() + 60 * 60 * 1000);
+      document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
+      document.getElementById("delivery-time").value = plus1Hr.toTimeString().slice(0, 5);
+    }
+    window.onload = autoFillDateTime;
 
-function populateCartItems() {
-  const list = document.getElementById("cart-items-list");
-  list.innerHTML = "";
-  document.querySelectorAll(".item-group").forEach(group => {
-    const name = group.querySelector(".item-name").value || "(No name)";
-    const qty = group.querySelector(".item-qty").value || "1";
-    list.innerHTML += `<p>🛒 <strong>${name}</strong> × ${qty}</p>`;
-  });
-}
+    function generateConfirmationCode() {
+      return Math.floor(100000 + Math.random() * 900000);
+    }
 
-function goToCustomerForm() {
-  toggleCartModal();
-  document.getElementById("step-items").classList.remove("active");
-  document.getElementById("step-details").classList.add("active");
-}
+    function submitOrder() {
+      const name = document.getElementById("cust-name").value.trim();
+      const phone = document.getElementById("cust-phone").value.trim();
+      const email = document.getElementById("cust-email").value.trim();
+      const address = document.getElementById("cust-address").value.trim();
+      const notes = document.getElementById("cust-notes").value.trim();
+      const date = document.getElementById("delivery-date").value;
+      const time = document.getElementById("delivery-time").value;
+      const method = document.getElementById("cust-payment").value;
+      const ref = document.getElementById("cust-ref").value.trim();
 
-function autoFillDateTime() {
-  const now = new Date();
-  const plus1h = new Date(now.getTime() + 3600000);
-  document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-  document.getElementById("delivery-time").value = plus1h.toTimeString().slice(0, 5);
-}
+      const items = ["Bread (x2)", "Milk (x1)", "Eggs (x12)"]; // For now, static. You can later loop from cart
+      const subtotal = 145.00;
+      const fee = deliveryFee + serviceFee;
+      const total = subtotal + fee;
+      const confirmation = generateConfirmationCode();
 
-document.getElementById("cust-payment").addEventListener("change", function () {
-  const method = this.value;
-  document.getElementById("payment-instructions").style.display = "block";
-  document.getElementById("gcash-info").style.display = method === "GCash" ? "block" : "none";
-  document.getElementById("paymaya-info").style.display = method === "PayMaya" ? "block" : "none";
-  if (method === "Cash on Delivery") document.getElementById("payment-instructions").style.display = "none";
-});
+      const message = `🧾 New Order - Dala🚲Na PasaBuy\n\nConfirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+📍 Address: ${address}
+📌 Notes: ${notes || 'N/A'}\n\nItems:\n- ${items.join("\n- ")}
+Subtotal: ₱${subtotal.toFixed(2)}
+Service Fee: ₱${fee.toFixed(2)}
+Total: ₱${total.toFixed(2)}\n\nDelivery: ${date} ${time}
+Payment: ${method}
+Ref #: ${ref || 'N/A'}`;
 
-function generateConfirmationCode() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
 
-function submitOrder() {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
-  const payment = document.getElementById("cust-payment").value;
-  const date = document.getElementById("delivery-date").value;
-  const time = document.getElementById("delivery-time").value;
+      setTimeout(() => {
+        window.location.href = `pasabuy-thank-you.html?ref=${confirmation}`;
+      }, 3000);
+    }
+  </script>
 
-  if (!name || !phone || !address) return alert("Please fill out all fields.");
-
-  const items = [];
-  document.querySelectorAll(".item-group").forEach(group => {
-    const itemName = group.querySelector(".item-name")?.value;
-    const qty = group.querySelector(".item-qty")?.value || "1";
-    const link = group.querySelector(".item-link")?.value;
-    const photo = group.querySelector(".item-photo")?.files[0];
-    const hasPhoto = photo ? "📷 Attached" : "";
-    if (itemName) items.push({ itemName, qty, link, hasPhoto });
-  });
-
-  if (!items.length) return alert("Please add at least one item.");
-
-  const code = generateConfirmationCode();
-  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
-  let msg = `🛍 *PasaBuy Order – DalaKoNa*\n\n`;
-  items.forEach(item => {
-    msg += `🔹 ${item.itemName} (x${item.qty})\n`;
-    if (item.link) msg += `🔗 ${item.link}\n`;
-    if (item.hasPhoto) msg += `${item.hasPhoto}\n`;
-  });
-
-  msg += `\n📍 Address: ${address}`;
-  msg += `\n🗓 Date: ${date}`;
-  msg += `\n⏰ Time: ${time}`;
-  msg += `\n👤 Customer: ${name}`;
-  msg += `\n📞 Phone: ${phone}`;
-  msg += `\n💳 Payment: ${payStatus}`;
-  msg += `\n🚚 Delivery Fee: ₱${deliveryFee.toFixed(2)}`;
-  msg += `\n⚙️ Service Fee: ₱${serviceFee.toFixed(2)}`;
-  msg += `\n💰 Total Add-on: ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-  msg += `\n🔖 Confirmation #: ${code}`;
-
-  navigator.geolocation.getCurrentPosition(pos => {
-    msg += `\n🌐 https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-    sendToWhatsApp(msg, code);
-  }, () => sendToWhatsApp(msg, code));
-}
-
-function sendToWhatsApp(message, code) {
-  const encoded = encodeURIComponent(message);
-  window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
-  if (driverNumber) setTimeout(() => {
-    window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
-  }, 1500);
-  const sound = document.getElementById("success-sound");
-  if (sound) sound.play();
-  setTimeout(() => {
-    window.location.href = `pasabuy-thank-you.html?ref=${code}`;
-  }, 3500);
-}
-</script>
-
-<audio id="success-sound" src="success.mp3" preload="auto"></audio>
-<div class="footer">🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.</div>
+  <div class="footer">
+    🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.
+  </div>
 </body>
 </html>
