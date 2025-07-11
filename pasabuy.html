@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -12,18 +12,7 @@
       margin: 0;
       padding: 0;
     }
-    .step-section {
-      display: none;
-      max-width: 480px;
-      margin: 1rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .step-section.active {
-      display: block;
-    }
+
     .header {
       background-color: #0057b8;
       color: white;
@@ -34,18 +23,32 @@
       font-weight: bold;
       font-size: 1.1rem;
     }
+
     .header a {
       color: white;
       text-decoration: none;
     }
-    h2 {
-      margin-top: 0;
+
+    .step-section {
+      display: none;
+      max-width: 480px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+
+    .step-section.active {
+      display: block;
+    }
+
     label {
       font-weight: 600;
       display: block;
       margin-top: 1rem;
     }
+
     input, textarea, select {
       width: 100%;
       padding: 0.6rem;
@@ -54,10 +57,12 @@
       border: 1px solid #ccc;
       font-size: 1rem;
     }
+
     .item-group {
       margin-bottom: 1.5rem;
       position: relative;
     }
+
     .remove-btn {
       position: absolute;
       top: 0;
@@ -65,16 +70,18 @@
       background: transparent;
       border: none;
       color: red;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       cursor: pointer;
     }
+
     .preview {
       margin-top: 0.5rem;
       max-width: 100%;
       border-radius: 8px;
     }
+
     .button {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       width: 100%;
       padding: 0.75rem;
       background: green;
@@ -85,170 +92,218 @@
       border-radius: 8px;
       cursor: pointer;
     }
+
     .footer {
       text-align: center;
       font-size: 0.9rem;
       color: #999;
       margin: 2rem auto;
     }
-    @media only screen and (max-width: 480px) {
-      h2, label {
+
+    .payment-box {
+      background: #f7f7f7;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .payment-box img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .header {
         font-size: 1rem;
       }
+
       .button {
-        font-size: 1rem;
-        padding: 1rem;
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
-<div class="header">
-  <a href="index.html">← Back</a>
-  <span>PasaBuy – DalaKoNa</span>
-  <span style="width: 2rem;"></span>
-</div>
 
-<div class="step-section active" id="step-items">
-  <h2>🛍 What do you want us to buy?</h2>
-  <div id="items-container"></div>
-  <button class="button" onclick="addItem()">➕ Add Item</button>
-  <button class="button" style="background:#0057b8;" onclick="goToCustomerForm()">Next: Delivery Info</button>
-</div>
+  <div class="header">
+    <a href="index.html">← Back</a>
+    <span>PasaBuy – DalaKoNa</span>
+    <span style="width: 2rem;"></span>
+  </div>
 
-<div class="step-section" id="step-details">
-  <h2>👤 Your Delivery Info</h2>
-  <label>Name:</label>
-  <input type="text" id="cust-name" required />
-  <label>Phone Number:</label>
-  <input type="text" id="cust-phone" required />
-  <label>Delivery Address:</label>
-  <input type="text" id="cust-address" required />
-  <label>Payment Method:</label>
-  <select id="cust-payment">
-    <option value="Cash on Delivery">Cash on Delivery</option>
-    <option value="GCash">GCash</option>
-    <option value="PayMaya">PayMaya</option>
-  </select>
-  <button class="button" onclick="submitOrder()">✅ Place Order</button>
-</div>
+  <!-- Step 1: Items -->
+  <div class="step-section active" id="step-items">
+    <h2>🛍 What do you want us to buy?</h2>
+    <div id="items-container"></div>
+    <button class="button" onclick="addItem()">➕ Add Item</button>
+    <button class="button" style="background:#0057b8;" onclick="goToCustomerForm()">Next: Delivery Info</button>
+  </div>
 
-<div class="footer">
-  🚲 DalaKoNa Pasabuy • We deliver with love
-</div>
+  <!-- Step 2: Customer Info -->
+  <div class="step-section" id="step-details">
+    <h2>👤 Your Delivery Info</h2>
+    <label>Name:</label>
+    <input type="text" id="cust-name" required />
 
-<script>
-let itemIndex = 0;
-const deliveryFee = 29.99;
-const serviceFee = 10.01;
+    <label>Phone Number:</label>
+    <input type="text" id="cust-phone" required />
 
-function addItem() {
-  const container = document.getElementById('items-container');
-  const itemDiv = document.createElement('div');
-  itemDiv.className = 'item-group';
-  itemDiv.id = `item-${itemIndex}`;
-  itemDiv.innerHTML = `
-    <label>Item ${itemIndex + 1}</label>
-    <input type="text" placeholder="What to buy?" class="item-name" required />
-    <label>Quantity</label>
-    <input type="number" min="1" value="1" class="item-qty" required />
-    <label>Optional Product Link</label>
-    <input type="url" class="item-link" placeholder="https://..." />
-    <label>Optional Photo</label>
-    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})"/>
-    <img id="preview-${itemIndex}" class="preview" style="display:none"/>
-    <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖</button>
-  `;
-  container.appendChild(itemDiv);
-  itemIndex++;
-}
+    <label>Delivery Address:</label>
+    <input type="text" id="cust-address" required />
 
-function removeItem(index) {
-  const item = document.getElementById(`item-${index}`);
-  if (item) item.remove();
-}
+    <label>Payment Method:</label>
+    <select id="cust-payment">
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="GCash">GCash</option>
+      <option value="PayMaya">PayMaya</option>
+    </select>
 
-function previewImage(event, index) {
-  const file = event.target.files[0];
-  const preview = document.getElementById(`preview-${index}`);
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = 'block';
-  }
-}
+    <div id="payment-instructions" class="payment-box" style="display:none;">
+      <h4>💸 Payment Instructions</h4>
+      <div id="gcash-info" style="display:none;">
+        <p><strong>GCash:</strong> 09XXXXXXXXX</p>
+        <img src="gcash-qr.png" alt="GCash QR"/>
+      </div>
+      <div id="paymaya-info" style="display:none;">
+        <p><strong>PayMaya:</strong> 09YYYYYYYYY</p>
+        <img src="paymaya-qr.png" alt="PayMaya QR"/>
+      </div>
+    </div>
 
-function goToCustomerForm() {
-  if (document.querySelectorAll('.item-group').length === 0) {
-    alert("Please add at least one item.");
-    return;
-  }
-  document.getElementById("step-items").classList.remove("active");
-  document.getElementById("step-details").classList.add("active");
-}
+    <button class="button" onclick="submitOrder()">✅ Place Order via WhatsApp</button>
+  </div>
 
-function generateConfirmationCode() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
+  <div class="footer">
+    🚲 DalaKoNa Pasabuy • We deliver with love 💛
+  </div>
 
-function submitOrder() {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
-  const payment = document.getElementById("cust-payment").value;
-  if (!name || !phone || !address) {
-    alert("Please complete all required fields.");
-    return;
-  }
+  <script>
+    let itemIndex = 0;
+    const deliveryFee = 29.99;
+    const serviceFee = 10.01;
 
-  const items = [];
-  document.querySelectorAll('.item-group').forEach((group) => {
-    const itemName = group.querySelector('.item-name').value.trim();
-    const itemQty = group.querySelector('.item-qty').value;
-    const itemLink = group.querySelector('.item-link').value.trim();
-    const itemPhoto = group.querySelector('.item-photo').files[0];
-    const photoUrl = itemPhoto ? URL.createObjectURL(itemPhoto) : null;
-    items.push({ itemName, itemQty, itemLink, photoUrl });
-  });
+    function addItem() {
+      const container = document.getElementById('items-container');
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'item-group';
+      itemDiv.id = `item-${itemIndex}`;
+      itemDiv.innerHTML = `
+        <label>Item ${itemIndex + 1}</label>
+        <input type="text" placeholder="e.g. Spanish Latte or Piaya Ube" class="item-name" required />
+        <label>Quantity</label>
+        <input type="number" min="1" value="1" class="item-qty" required />
+        <label>Product Link (optional)</label>
+        <input type="url" class="item-link" placeholder="https://..." />
+        <label>Upload Photo (optional)</label>
+        <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})" />
+        <img id="preview-${itemIndex}" class="preview" style="display:none"/>
+        <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖</button>
+      `;
+      container.appendChild(itemDiv);
+      itemIndex++;
+    }
 
-  const confirmationCode = generateConfirmationCode();
-  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+    function removeItem(index) {
+      const item = document.getElementById(`item-${index}`);
+      if (item) item.remove();
+    }
 
-  let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Items to Buy:*\n`;
-  items.forEach((item) => {
-    message += `• ${item.itemName} (x${item.itemQty})\n`;
-    if (item.itemLink) message += `🔗 ${item.itemLink}\n`;
-    if (item.photoUrl) message += `📷 Photo Attached\n`;
-  });
+    function previewImage(event, index) {
+      const file = event.target.files[0];
+      const preview = document.getElementById(`preview-${index}`);
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    }
 
-  message += `\n📍 *Delivery Address:* ${address}`;
-  message += `\n👤 *Customer:* ${name}`;
-  message += `\n📞 *Phone:* ${phone}`;
-  message += `\n💳 *Payment:* ${payStatus}`;
-  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}`;
-  message += `\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
-  message += `\n💰 *Add-on Total:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-  message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
+    function goToCustomerForm() {
+      if (document.querySelectorAll('.item-group').length === 0) {
+        alert("Please add at least one item.");
+        return;
+      }
+      document.getElementById("step-items").classList.remove("active");
+      document.getElementById("step-details").classList.add("active");
+    }
 
-  navigator.geolocation.getCurrentPosition(pos => {
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
-    message += `\n📍 *Location:* https://maps.google.com/?q=${lat},${lng}`;
+    document.getElementById('cust-payment').addEventListener('change', function() {
+      const value = this.value;
+      document.getElementById('payment-instructions').style.display = 'block';
+      document.getElementById('gcash-info').style.display = value === 'GCash' ? 'block' : 'none';
+      document.getElementById('paymaya-info').style.display = value === 'PayMaya' ? 'block' : 'none';
+      if (value === 'Cash on Delivery') {
+        document.getElementById('payment-instructions').style.display = 'none';
+      }
+    });
 
-    const encoded = encodeURIComponent(message);
-    const phoneNumber = "63XXXXXXXXXX"; // Replace with real number
-    window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
-    setTimeout(() => {
-      window.location.href = `pasabuy-thank-you.html?ref=${confirmationCode}`;
-    }, 3000);
-  }, () => {
-    const encoded = encodeURIComponent(message);
-    const phoneNumber = "63XXXXXXXXXX";
-    window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
-    setTimeout(() => {
-      window.location.href = `pasabuy-thank-you.html?ref=${confirmationCode}`;
-    }, 3000);
-  });
-}
-</script>
+    function generateConfirmationCode() {
+      return Math.floor(100000 + Math.random() * 900000);
+    }
+
+    function submitOrder() {
+      const name = document.getElementById("cust-name").value.trim();
+      const phone = document.getElementById("cust-phone").value.trim();
+      const address = document.getElementById("cust-address").value.trim();
+      const payment = document.getElementById("cust-payment").value;
+
+      if (!name || !phone || !address) {
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      const items = [];
+      document.querySelectorAll('.item-group').forEach((group) => {
+        const itemName = group.querySelector('.item-name').value.trim();
+        const itemQty = group.querySelector('.item-qty').value;
+        const itemLink = group.querySelector('.item-link').value.trim();
+        const itemPhoto = group.querySelector('.item-photo').files[0];
+        const photoUrl = itemPhoto ? URL.createObjectURL(itemPhoto) : null;
+        items.push({ itemName, itemQty, itemLink, photoUrl });
+      });
+
+      const confirmationCode = generateConfirmationCode();
+      const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+
+      let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Items to Buy:*\n`;
+      items.forEach((item, i) => {
+        message += `• ${item.itemName} (x${item.itemQty})\n`;
+        if (item.itemLink) message += `🔗 ${item.itemLink}\n`;
+        if (item.photoUrl) message += `📷 Attached Photo\n`;
+      });
+
+      message += `\n📍 *Delivery Address:* ${address}`;
+      message += `\n👤 *Customer:* ${name}`;
+      message += `\n📞 *Phone:* ${phone}`;
+      message += `\n💳 *Payment:* ${payStatus}`;
+      message += `\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
+      message += `\n💰 *Add-on Total:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+      message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
+
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        message += `\n📍 *Location:* https://maps.google.com/?q=${lat},${lng}`;
+
+        const encoded = encodeURIComponent(message);
+        const phoneNumber = "63XXXXXXXXXX"; // Replace with actual merchant number
+        window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+
+        setTimeout(() => {
+          window.location.href = `PasaBuy-thank-you.html?ref=${confirmationCode}`;
+        }, 3000);
+      }, () => {
+        const encoded = encodeURIComponent(message);
+        const phoneNumber = "63XXXXXXXXXX";
+        window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+        setTimeout(() => {
+          window.location.href = `PasaBuy-thank-you.html?ref=${confirmationCode}`;
+        }, 3000);
+      });
+    }
+
+    // Init first item
+    window.onload = () => addItem();
+  </script>
 </body>
 </html>
