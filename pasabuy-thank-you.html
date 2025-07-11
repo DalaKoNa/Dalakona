@@ -3,87 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thank You – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <title>Thank You – PasaBuy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #ffffff;
+      background-color: #ffffff;
       margin: 0;
       padding: 0;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      min-height: 100vh;
       text-align: center;
-      color: #333;
+      padding: 1rem;
     }
 
-    .box {
-      max-width: 420px;
+    .thankyou-box {
+      max-width: 480px;
+      background-color: #f5faff;
       padding: 2rem;
-      background: #f7f7f7;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     h1 {
-      color: green;
-      font-size: 2rem;
-    }
-
-    .check {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    .ref {
-      margin-top: 1rem;
-      font-weight: bold;
-      font-size: 1.1rem;
       color: #0057b8;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
-    .home-btn {
-      margin-top: 2rem;
-      background: #0057b8;
-      color: white;
-      padding: 0.75rem 1.5rem;
+    p {
       font-size: 1rem;
+      color: #333;
+      margin-bottom: 1.25rem;
+    }
+
+    .code-box {
+      background: #e1f3ff;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #0057b8;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background-color: #0057b8;
+      color: #fff;
       border: none;
       border-radius: 8px;
+      cursor: pointer;
       text-decoration: none;
-      display: inline-block;
     }
 
     .footer {
       margin-top: 2rem;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #888;
     }
   </style>
 </head>
 <body>
+  <div class="thankyou-box">
+    <h1>🎉 Order Sent!</h1>
+    <p>Thanks for using <strong>DalaKoNa PasaBuy</strong>.</p>
+    <p>Your order has been forwarded to our team and rider.</p>
 
-<div class="box">
-  <div class="check">✅</div>
-  <h1>Order Placed!</h1>
-  <p>We’ve received your request and sent it to our rider.</p>
-  <p class="ref">Reference #: <span id="ref-code">loading...</span></p>
+    <div class="code-box" id="confirmation-code">
+      Loading...
+    </div>
 
-  <a href="index.html" class="home-btn">← Back to Home</a>
-</div>
+    <a class="button" href="index.html">← Back to Home</a>
 
-<div class="footer">
-  DalaKoNa 🚲 Pasabuy Service • Delivered with love 💛
-</div>
+    <div class="footer">We'll be in touch shortly. Stay safe! 💛</div>
+  </div>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const ref = params.get("ref");
-  document.getElementById("ref-code").innerText = ref || "N/A";
-</script>
-
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    document.getElementById("confirmation-code").textContent = ref
+      ? `Confirmation #: ${ref}`
+      : "No Confirmation Code";
+  </script>
 </body>
 </html>
