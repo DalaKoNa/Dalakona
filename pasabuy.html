@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -11,7 +11,8 @@
     }
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       background-color: #f4f4f4;
     }
     .header {
@@ -46,9 +47,11 @@
     .modal {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 999;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -72,7 +75,6 @@
       font-size: 1.2rem;
       width: 2rem;
       height: 2rem;
-      cursor: pointer;
     }
     .button {
       background: #0057b8;
@@ -85,23 +87,23 @@
       cursor: pointer;
       width: 100%;
     }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.25rem 0 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-    }
-    label {
-      font-weight: 600;
+    .item {
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
     }
     .footer {
       text-align: center;
       font-size: 0.9rem;
       color: #999;
       margin: 2rem auto;
+    }
+    /* Make readonly inputs truly non-editable & non-interactive on mobile */
+    input[readonly], textarea[readonly] {
+      pointer-events: none;
+      background-color: #eee;
+      color: #666;
     }
     @media screen and (max-width: 500px) {
       .modal-content {
@@ -125,39 +127,39 @@
   </div>
 
   <!-- Add Item Modal -->
-  <div id="add-item-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="addItemTitle">
+  <div id="add-item-modal" class="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('add-item-modal')" aria-label="Close Add Item Modal">&times;</button>
-      <h3 id="addItemTitle">Add Item</h3>
+      <button class="close-btn" onclick="closeModal('add-item-modal')" aria-label="Close">&times;</button>
+      <h3>Add Item</h3>
       <label for="item-name">Item Name</label>
-      <input type="text" id="item-name" aria-required="true" />
+      <input type="text" id="item-name" style="width:100%; margin-bottom:0.5rem;" />
       <label for="item-qty">Quantity</label>
-      <input type="number" id="item-qty" value="1" min="1" aria-required="true" />
+      <input type="number" id="item-qty" value="1" min="1" style="width:100%; margin-bottom:0.5rem;" />
       <button class="button" onclick="addItemToCart()">Add to Cart</button>
     </div>
   </div>
 
   <!-- Customer Info Modal -->
-  <div id="checkout-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+  <div id="checkout-modal" class="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('checkout-modal')" aria-label="Close Customer Info Modal">&times;</button>
-      <h3 id="checkoutTitle">Customer Info</h3>
+      <button class="close-btn" onclick="closeModal('checkout-modal')" aria-label="Close">&times;</button>
+      <h3>Customer Info</h3>
       <label for="cust-name">Full Name</label>
-      <input type="text" id="cust-name" aria-required="true" />
+      <input type="text" id="cust-name" style="width:100%;" />
       <label for="cust-phone">Phone</label>
-      <input type="tel" id="cust-phone" aria-required="true" />
+      <input type="text" id="cust-phone" style="width:100%;" />
       <label for="cust-email">Email</label>
-      <input type="email" id="cust-email" />
+      <input type="email" id="cust-email" style="width:100%;" />
       <label for="cust-address">Address</label>
-      <input type="text" id="cust-address" aria-required="true" />
+      <input type="text" id="cust-address" style="width:100%;" />
       <label for="cust-notes">Notes</label>
-      <textarea id="cust-notes" rows="3"></textarea>
+      <textarea id="cust-notes" style="width:100%;"></textarea>
       <label for="delivery-date">Date</label>
-      <input type="date" id="delivery-date" readonly />
+      <input type="date" id="delivery-date" readonly style="width:100%;" />
       <label for="delivery-time">Time</label>
-      <input type="time" id="delivery-time" readonly />
+      <input type="time" id="delivery-time" readonly style="width:100%;" />
       <label for="cust-method">Payment Method</label>
-      <select id="cust-method" aria-required="true">
+      <select id="cust-method" style="width:100%;">
         <option>Cash on Delivery</option>
         <option>GCash</option>
         <option>PayMaya</option>
@@ -167,12 +169,12 @@
   </div>
 
   <!-- Cart Modal -->
-  <div id="cart-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div id="cart-modal" class="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('cart-modal')" aria-label="Close Cart Modal">&times;</button>
-      <h3 id="cartTitle">Your Cart</h3>
-      <div id="cart-items" style="min-height: 80px; margin-bottom: 1rem;"></div>
-      <p id="subtotal-text" style="white-space: pre-line; font-weight: 600;"></p>
+      <button class="close-btn" onclick="closeModal('cart-modal')" aria-label="Close">&times;</button>
+      <h3>Your Cart</h3>
+      <div id="cart-items"></div>
+      <p id="subtotal-text" style="white-space: pre-line;"></p>
       <button class="button" onclick="openModal('checkout-modal')">Next: Checkout</button>
     </div>
   </div>
@@ -184,16 +186,12 @@
   <script>
     const items = [];
     const adminNumber = "639082900309";
-    const driverNumber = ""; // Leave blank or add driver WhatsApp number here if needed
+    const driverNumber = ""; // Leave blank
     const serviceFee = 10;
     const deliveryFee = 29.99;
 
     function openModal(id) {
       document.getElementById(id).style.display = 'block';
-      // Focus first input for accessibility
-      const modal = document.getElementById(id);
-      const focusable = modal.querySelector('input, select, textarea, button');
-      if (focusable) focusable.focus();
     }
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
@@ -203,23 +201,15 @@
       openModal('cart-modal');
     }
     function addItemToCart() {
-      const nameInput = document.getElementById("item-name");
-      const qtyInput = document.getElementById("item-qty");
-      const name = nameInput.value.trim();
-      const qty = parseInt(qtyInput.value);
-      if (!name) {
-        alert("Please enter item name.");
-        nameInput.focus();
-        return;
-      }
-      if (!qty || qty < 1) {
-        alert("Quantity must be at least 1.");
-        qtyInput.focus();
+      const name = document.getElementById("item-name").value.trim();
+      const qty = parseInt(document.getElementById("item-qty").value);
+      if (!name || qty < 1) {
+        alert("Please enter a valid item name and quantity.");
         return;
       }
       items.push({ name, qty });
-      nameInput.value = "";
-      qtyInput.value = 1;
+      document.getElementById("item-name").value = "";
+      document.getElementById("item-qty").value = 1;
       updateCartCount();
       closeModal('add-item-modal');
     }
@@ -241,25 +231,15 @@
         document.getElementById("subtotal-text").textContent = "";
         return;
       }
+      let subtotal = 0;
       items.forEach(item => {
-        const p = document.createElement("p");
-        p.textContent = `🔹 ${item.name} (x${item.qty})`;
-        container.appendChild(p);
+        container.innerHTML += `<p>🔹 ${item.name} (x${item.qty})</p>`;
+        subtotal += 0; // Price ignored; just keep subtotal zero
       });
-
-      // Subtotal is zero (ignore item prices)
-      const subtotal = 0;
       const total = subtotal + serviceFee + deliveryFee;
-
-      document.getElementById("subtotal-text").textContent =
-        `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: To be confirmed by store`;
+      document.getElementById("subtotal-text").textContent = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
     }
-
     function submitOrder() {
-      if (items.length === 0) {
-        alert("Please add at least one item to your cart before checkout.");
-        return;
-      }
       const name = document.getElementById("cust-name").value.trim();
       const phone = document.getElementById("cust-phone").value.trim();
       const email = document.getElementById("cust-email").value.trim();
@@ -271,23 +251,27 @@
       const confirmation = Math.floor(100000 + Math.random() * 900000);
 
       if (!name || !phone || !address) {
-        alert("Please complete all required customer info fields.");
+        alert("Please complete all required fields.");
+        return;
+      }
+      if (items.length === 0) {
+        alert("Please add at least one item to your cart.");
         return;
       }
 
-      let itemList = items.map(i => `🔹 ${i.name} (x${i.qty})`).join("\n");
+      const itemList = items.map(i => `🔹 ${i.name} (x${i.qty})`).join("\n");
+      const subtotal = 0; // Prices are not calculated, user will be advised later.
+      const total = subtotal + serviceFee + deliveryFee;
 
-      // Subtotal = 0 as per your request (ignore item prices)
-      let subtotal = 0;
-
-      const message = `🧾 New Order - Dala🚲Na PasaBuy
+      const message = 
+`🧾 New Order - Dala🚲Na PasaBuy
 
 Confirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
-Email: ${email || "N/A"}
+Email: ${email}
 📍 Address: ${address}
-📌 Notes: ${notes || "N/A"}
+📌 Notes: ${notes || 'N/A'}
 
 Items:
 ${itemList}
@@ -295,7 +279,7 @@ ${itemList}
 Subtotal: ₱${subtotal.toFixed(2)}
 Service Fee: ₱${serviceFee.toFixed(2)}
 Delivery Fee: ₱${deliveryFee.toFixed(2)}
-Total: To be confirmed by store
+Total: ₱${total.toFixed(2)}
 
 Delivery: ${date} ${time}
 Payment: ${method}
@@ -303,7 +287,6 @@ Ref #: N/A`;
 
       const encoded = encodeURIComponent(message);
       window.open(`https://wa.me/${adminNumber}?text=${encoded}`, '_blank');
-
       if (driverNumber) {
         setTimeout(() => {
           window.open(`https://wa.me/${driverNumber}?text=${encoded}`, '_blank');
@@ -311,20 +294,16 @@ Ref #: N/A`;
       }
 
       document.getElementById("success-sound").play();
-
-      // Redirect after 3.5s
       setTimeout(() => {
         window.location.href = "pasabuy-thank-you.html?ref=" + confirmation;
       }, 3500);
     }
 
-    // Autofill date and time on load
+    // Autofill date and time as readonly
     window.onload = function () {
       const now = new Date();
       document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-      // plus 1 hour for delivery time
-      const plus1hr = new Date(now.getTime() + 60 * 60 * 1000);
-      document.getElementById("delivery-time").value = plus1hr.toTimeString().slice(0,5);
+      document.getElementById("delivery-time").value = now.toTimeString().slice(0, 5);
       updateCartCount();
     };
   </script>
