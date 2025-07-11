@@ -2,173 +2,289 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PasaBuy – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
+      margin: 0; padding: 0;
+      background: #f4f4f4;
     }
     .header {
-      background-color: #0057b8;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-    .header a {
-      color: white;
-      text-decoration: none;
-    }
-    .main-container {
-      max-width: 480px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 16px;
-    }
-    h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-top: 0.3rem;
-    }
-    .button {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 1.5rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
       background: #0057b8;
       color: white;
+      padding: 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .header a { color: white; text-decoration: none; }
+    #cart-count {
+      position: absolute;
+      top: -8px; right: -10px;
+      background: red; color: white;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      display: none;
+    }
+    .main-container {
+      max-width: 480px; margin: 1rem auto;
+      background: white; border-radius: 16px;
+      padding: 1rem;
+    }
+    .button {
+      width: 100%; margin-top: 1rem;
+      padding: 0.8rem; font-weight: bold;
+      border: none; border-radius: 8px;
+      cursor: pointer; font-size: 1rem;
+    }
+    .add-item { background: #444; color: white; }
+    .view-cart { background: #0057b8; color: white; }
+    .item-group {
+      margin-top: 1rem; padding: 1rem;
+      background: #f9f9f9; border-radius: 12px;
+      position: relative;
+    }
+    .remove-btn {
+      position: absolute; top: 1rem; right: 1rem;
+      background: red; color: white;
+      border: none; border-radius: 6px;
+      font-size: 0.9rem; padding: 0.3rem 0.6rem;
+      cursor: pointer;
+    }
+    input, select {
+      width: 100%; padding: 0.6rem;
+      margin-top: 0.4rem;
+      border: 1px solid #ccc; border-radius: 6px;
     }
     .footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #999;
-      margin: 2rem auto;
+      text-align: center; font-size: 0.85rem;
+      color: #888; margin: 2rem auto;
+    }
+    .qty-wrapper { display: flex; gap: 0.5rem; align-items: center; }
+    .qty-wrapper button {
+      width: 2rem; height: 2rem;
+      font-size: 1.2rem; border-radius: 6px;
+      border: 1px solid #ccc; background: #eee;
+    }
+    .qty-wrapper input {
+      width: 60px; text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <a href="index.html">← Back</a>
-    <span>PasaBuy – DalaKoNa</span>
-    <span></span>
+
+<!-- Header -->
+<div class="header">
+  <a href="index.html">← Back</a>
+  <span>PasaBuy – DalaKoNa</span>
+  <div style="position: relative;">
+    <button onclick="toggleCartModal()" style="font-size: 1.5rem; background:none; border:none;">🛒
+      <span id="cart-count">0</span>
+    </button>
   </div>
+</div>
 
-  <div class="main-container">
-    <h2>📦 Customer & Delivery Info</h2>
-    <label>Full Name:</label>
-    <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required />
+<!-- Main -->
+<div class="main-container">
+  <h2>🛍 Add Items to Your Pasabuy</h2>
+  <button class="button add-item" onclick="addItem()">➕ Add Item</button>
+  <div id="items-container"></div>
+  <button class="button view-cart" onclick="toggleCartModal()">🧾 View Cart & Checkout</button>
+</div>
 
-    <label>Phone Number:</label>
-    <input type="text" id="cust-phone" placeholder="09123456789" required />
-
-    <label>Email Address:</label>
-    <input type="email" id="cust-email" placeholder="juan@email.com" required />
-
-    <label>Delivery Address:</label>
-    <input type="text" id="cust-address" placeholder="Street, Barangay, City" required />
-
-    <label>Notes / Instructions:</label>
-    <textarea id="cust-notes" placeholder="Anything we should know?"></textarea>
-
-    <label>📅 Delivery Date:</label>
-    <input type="date" id="delivery-date" readonly />
-
-    <label>⏰ Delivery Time:</label>
-    <input type="time" id="delivery-time" readonly />
-
-    <label>💳 Payment Method:</label>
+<!-- Cart Modal -->
+<div id="cart-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000080; z-index:99;">
+  <div style="max-width: 480px; background:white; margin: 5vh auto; border-radius:12px; padding:1.5rem; position:relative;">
+    <button onclick="toggleCartModal()" style="position:absolute; top:1rem; right:1rem; background:red; color:white; border:none; border-radius:50%; font-size:1.2rem; width:2rem; height:2rem;">×</button>
+    <h3>🧾 Order Summary</h3>
+    <div id="cart-items-list" style="margin-top:1rem;"></div>
+    <hr/>
+    <p>🚚 Delivery Fee: ₱29.99</p>
+    <p>⚙️ Service Fee: ₱10.01</p>
+    <p id="subtotal-line">🧮 Subtotal: ₱0.00</p>
+    <p><strong>💰 Total: ₱0.00</strong></p>
+    <hr/>
+    <h4>📦 Delivery Info</h4>
+    <input type="text" id="cust-name" placeholder="Full Name" required/>
+    <input type="text" id="cust-phone" placeholder="Phone Number" required/>
+    <input type="email" id="cust-email" placeholder="Email Address"/>
+    <input type="text" id="cust-address" placeholder="Delivery Address" required/>
+    <input type="text" id="cust-notes" placeholder="Notes (optional)"/>
+    <input type="date" id="delivery-date" readonly/>
+    <input type="time" id="delivery-time" readonly/>
     <select id="cust-payment">
       <option value="Cash on Delivery">Cash on Delivery</option>
       <option value="GCash">GCash</option>
       <option value="PayMaya">PayMaya</option>
     </select>
-
-    <label>Ref # (if paid):</label>
-    <input type="text" id="cust-ref" placeholder="GCash/PayMaya Reference" />
-
-    <button class="button" onclick="submitOrder()">✅ Send to WhatsApp</button>
+    <button class="button" style="background:green; color:white;" onclick="submitOrder()">✅ Place Order via WhatsApp</button>
   </div>
+</div>
 
-  <script>
-    const deliveryFee = 29.99;
-    const serviceFee = 10.01;
-    const adminNumber = "639082900309";
+<!-- Success Sound -->
+<audio id="success-sound" src="success.mp3" preload="auto"></audio>
 
-    function autoFillDateTime() {
-      const now = new Date();
-      const plus1Hr = new Date(now.getTime() + 60 * 60 * 1000);
-      document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-      document.getElementById("delivery-time").value = plus1Hr.toTimeString().slice(0, 5);
-    }
-    window.onload = autoFillDateTime;
+<!-- Footer -->
+<div class="footer">🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.</div>
 
-    function generateConfirmationCode() {
-      return Math.floor(100000 + Math.random() * 900000);
-    }
+<script>
+let itemIndex = 0;
+const deliveryFee = 29.99;
+const serviceFee = 10.01;
+const adminNumber = "639082900309";
+const driverNumber = ""; // leave blank or assign if needed
 
-    function submitOrder() {
-      const name = document.getElementById("cust-name").value.trim();
-      const phone = document.getElementById("cust-phone").value.trim();
-      const email = document.getElementById("cust-email").value.trim();
-      const address = document.getElementById("cust-address").value.trim();
-      const notes = document.getElementById("cust-notes").value.trim();
-      const date = document.getElementById("delivery-date").value;
-      const time = document.getElementById("delivery-time").value;
-      const method = document.getElementById("cust-payment").value;
-      const ref = document.getElementById("cust-ref").value.trim();
+// Autofill delivery date/time
+window.onload = () => {
+  const now = new Date();
+  const later = new Date(now.getTime() + 60*60*1000);
+  document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
+  document.getElementById("delivery-time").value = later.toTimeString().slice(0,5);
+};
 
-      const items = ["Bread (x2)", "Milk (x1)", "Eggs (x12)"]; // For now, static. You can later loop from cart
-      const subtotal = 145.00;
-      const fee = deliveryFee + serviceFee;
-      const total = subtotal + fee;
-      const confirmation = generateConfirmationCode();
+// Add Item Function
+function addItem() {
+  const container = document.getElementById("items-container");
+  const id = itemIndex;
+  const wrapper = document.createElement("div");
+  wrapper.className = "item-group";
+  wrapper.id = `item-${id}`;
+  wrapper.innerHTML = `
+    <label>Item Name</label>
+    <input type="text" class="item-name" placeholder="e.g. 1kg Rice"/>
+    <label>Quantity</label>
+    <div class="qty-wrapper">
+      <button onclick="adjustQty(${id}, -1)">−</button>
+      <input type="number" class="item-qty" id="qty-${id}" value="1" min="1"/>
+      <button onclick="adjustQty(${id}, 1)">+</button>
+    </div>
+    <label>Optional Link</label>
+    <input type="url" class="item-link" placeholder="https://..."/>
+    <button class="remove-btn" onclick="removeItem(${id})">✖ Remove</button>
+  `;
+  container.appendChild(wrapper);
+  itemIndex++;
+  updateCartCount();
+}
 
-      const message = `🧾 New Order - Dala🚲Na PasaBuy\n\nConfirmation #: ${confirmation}
+// Adjust Quantity
+function adjustQty(id, delta) {
+  const input = document.getElementById(`qty-${id}`);
+  let val = parseInt(input.value);
+  if (!val) val = 1;
+  val += delta;
+  if (val < 1) val = 1;
+  input.value = val;
+  updateCartCount();
+}
+
+// Remove Item
+function removeItem(id) {
+  const item = document.getElementById(`item-${id}`);
+  if (item) item.remove();
+  updateCartCount();
+}
+
+// Update Badge Count
+function updateCartCount() {
+  const count = document.querySelectorAll(".item-group").length;
+  const badge = document.getElementById("cart-count");
+  badge.style.display = count ? "inline-block" : "none";
+  badge.textContent = count;
+}
+
+// Toggle Cart Modal
+function toggleCartModal() {
+  const modal = document.getElementById("cart-modal");
+  if (modal.style.display === "none" || !modal.style.display) {
+    populateCart();
+    modal.style.display = "block";
+  } else {
+    modal.style.display = "none";
+  }
+}
+
+// Populate Cart Summary
+function populateCart() {
+  const list = document.getElementById("cart-items-list");
+  list.innerHTML = "";
+  const items = document.querySelectorAll(".item-group");
+  let subtotal = 0;
+
+  items.forEach(item => {
+    const name = item.querySelector(".item-name").value || "(No name)";
+    const qty = parseInt(item.querySelector(".item-qty").value) || 1;
+    subtotal += qty * 1;
+    const line = document.createElement("p");
+    line.textContent = `🛒 ${name} × ${qty}`;
+    list.appendChild(line);
+  });
+
+  document.getElementById("subtotal-line").innerText = `🧮 Subtotal: ₱${subtotal.toFixed(2)}`;
+  list.insertAdjacentHTML("beforeend", `<p><strong>💰 Total: ₱${(subtotal + deliveryFee + serviceFee).toFixed(2)}</strong></p>`);
+}
+
+// Submit Order
+function submitOrder() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const email = document.getElementById("cust-email").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const notes = document.getElementById("cust-notes").value.trim();
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+  const method = document.getElementById("cust-payment").value;
+
+  if (!name || !phone || !address) return alert("Please complete all required fields.");
+
+  const itemsArr = [];
+  let subtotal = 0;
+
+  document.querySelectorAll(".item-group").forEach(item => {
+    const itemName = item.querySelector(".item-name").value || "(Unnamed)";
+    const qty = parseInt(item.querySelector(".item-qty").value) || 1;
+    itemsArr.push(`${itemName} x${qty}`);
+    subtotal += qty * 1;
+  });
+
+  const confirmation = Math.floor(100000 + Math.random() * 900000);
+  const total = subtotal + deliveryFee + serviceFee;
+
+  const msg = `🧾 New Order - Dala🚲Na Pasabuy\n\nConfirmation #: ${confirmation}
 Name: ${name}
 Phone: ${phone}
-Email: ${email}
+Email: ${email || 'N/A'}
 📍 Address: ${address}
-📌 Notes: ${notes || 'N/A'}\n\nItems:\n- ${items.join("\n- ")}
+📌 Notes: ${notes || 'N/A'}
+
+Items:
+${itemsArr.join("\n")}
+
 Subtotal: ₱${subtotal.toFixed(2)}
-Service Fee: ₱${fee.toFixed(2)}
-Total: ₱${total.toFixed(2)}\n\nDelivery: ${date} ${time}
-Payment: ${method}
-Ref #: ${ref || 'N/A'}`;
+Service Fee: ₱${serviceFee.toFixed(2)}
+Delivery Fee: ₱${deliveryFee.toFixed(2)}
+Total: ₱${total.toFixed(2)}
 
-      const encoded = encodeURIComponent(message);
-      window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
+Delivery: ${date} ${time}
+Payment: ${method}`;
 
-      setTimeout(() => {
-        window.location.href = `pasabuy-thank-you.html?ref=${confirmation}`;
-      }, 3000);
-    }
-  </script>
+  const encoded = encodeURIComponent(msg);
+  window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
 
-  <div class="footer">
-    🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.
-  </div>
+  if (driverNumber) {
+    setTimeout(() => window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank"), 1000);
+  }
+
+  document.getElementById("success-sound").play();
+
+  setTimeout(() => {
+    window.location.href = `pasabuy-thank-you.html?ref=${confirmation}`;
+  }, 3500);
+}
+</script>
+
 </body>
 </html>
