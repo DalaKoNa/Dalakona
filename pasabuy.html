@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fff;
+      background: #ffffff;
       margin: 0;
       padding: 0;
     }
@@ -20,6 +20,7 @@
       align-items: center;
       justify-content: space-between;
       font-weight: bold;
+      font-size: 1.1rem;
     }
     .header a {
       color: white;
@@ -37,22 +38,25 @@
     .step-section.active {
       display: block;
     }
+    h2 {
+      margin-top: 0;
+    }
     label {
       font-weight: 600;
-      margin-top: 1rem;
       display: block;
+      margin-top: 1rem;
     }
     input, textarea, select {
       width: 100%;
       padding: 0.6rem;
+      margin-top: 0.25rem;
       border-radius: 8px;
       border: 1px solid #ccc;
-      margin-top: 0.25rem;
       font-size: 1rem;
     }
     .item-group {
-      position: relative;
       margin-bottom: 1.5rem;
+      position: relative;
     }
     .remove-btn {
       position: absolute;
@@ -61,177 +65,120 @@
       background: transparent;
       border: none;
       color: red;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
     }
     .button {
+      margin-top: 1.5rem;
       width: 100%;
-      padding: 0.8rem;
+      padding: 0.75rem;
       background: green;
       color: white;
       border: none;
       font-size: 1rem;
       font-weight: bold;
       border-radius: 8px;
-      margin-top: 1rem;
       cursor: pointer;
-    }
-    .preview {
-      display: none;
-      max-width: 100%;
-      border-radius: 8px;
-      margin-top: 0.5rem;
     }
     .footer {
       text-align: center;
       font-size: 0.9rem;
       color: #999;
-      margin: 2rem 0;
+      margin: 2rem auto;
     }
   </style>
 </head>
 <body>
 
 <div class="header">
-  <a href="index.html">← Back</a>
+  <a href="index.html">&larr; Back</a>
   <span>PasaBuy – DalaKoNa</span>
-  <span></span>
+  <span style="width: 2rem;"></span>
 </div>
 
 <!-- Step 1: Add Items -->
 <div class="step-section active" id="step-items">
-  <h2>🛍 What do you want us to buy?</h2>
+  <h2>🍭 Add Items to Buy</h2>
   <div id="items-container"></div>
-  <button class="button" onclick="addItem()">➕ Add Item</button>
-  <button class="button" style="background:#0057b8;" onclick="goToStep2()">Next: Delivery Info</button>
+  <button class="button" type="button" onclick="addItem()">➕ Add Item</button>
+  <button class="button" type="button" style="background:#0057b8;" onclick="goToNextStep()">Next: Delivery Info</button>
 </div>
-<!-- Step 2: Delivery Info -->
-<div class="step-section" id="step-details">
-  <h2>👤 Your Delivery Details</h2>
 
-  <label>Name:</label>
+<!-- Step 2: Customer Details -->
+<div class="step-section" id="step-details">
+  <h2>👤 Delivery Information</h2>
+  <label for="cust-name">Name:</label>
   <input type="text" id="cust-name" required />
 
-  <label>Phone Number:</label>
+  <label for="cust-phone">Phone Number:</label>
   <input type="text" id="cust-phone" required />
 
-  <label>Delivery Address:</label>
+  <label for="cust-address">Delivery Address:</label>
   <input type="text" id="cust-address" required />
 
-  <label>🕒 Scheduled Delivery (auto):</label>
+  <label for="delivery-date">Delivery Date:</label>
   <input type="date" id="delivery-date" disabled />
-  <input type="time" id="delivery-time" disabled />
-  <p style="font-size: 0.85rem; color: #555;">Time is auto-scheduled 1 hour from now</p>
 
-  <label>💳 Payment Method:</label>
+  <label for="delivery-time">Delivery Time:</label>
+  <input type="time" id="delivery-time" disabled />
+
+  <label for="cust-payment">Payment Method:</label>
   <select id="cust-payment">
     <option value="Cash on Delivery">Cash on Delivery</option>
     <option value="GCash">GCash</option>
     <option value="PayMaya">PayMaya</option>
   </select>
 
-  <!-- Payment Instructions -->
-  <div id="payment-instructions" style="display:none; background:#f8f8f8; padding:1rem; border-radius:10px; margin-top:1rem;">
-    <h4>💸 Payment Instructions</h4>
-    <div id="gcash-info" style="display:none;">
-      <p><strong>GCash:</strong> 09XXXXXXXXX</p>
-      <img src="gcash-qr.png" alt="GCash QR" style="max-width:100%; border-radius:8px;"/>
-    </div>
-    <div id="paymaya-info" style="display:none;">
-      <p><strong>PayMaya:</strong> 09YYYYYYYYY</p>
-      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width:100%; border-radius:8px;"/>
-    </div>
-  </div>
-
-  <div id="order-summary" style="margin-top: 1.5rem; padding:1rem; background:#f4f4f4; border-radius:10px;">
-    <h4>📦 Estimated Charges</h4>
-    <p>🚚 Delivery Fee: ₱29.99</p>
-    <p>⚙️ Service Fee: ₱10.01</p>
-    <p><strong>Total Add-on: ₱40.00 + item costs</strong></p>
-  </div>
-
-  <button class="button" onclick="submitOrder()">✅ Submit Order via WhatsApp</button>
+  <button class="button" onclick="submitOrder()">✅ Place Order</button>
 </div>
 
 <div class="footer">
-  🚲 DalaKoNa Pasabuy • We deliver with love
+  🚲 DalaKoNa PasaBuy Service
 </div>
+
 <script>
-let itemIndex = 0;
+let itemCount = 0;
 const deliveryFee = 29.99;
 const serviceFee = 10.01;
 
-// Add new item block
-function addItem() {
-  const container = document.getElementById('items-container');
-
-  const itemDiv = document.createElement('div');
-  itemDiv.className = 'item-group';
-  itemDiv.id = `item-${itemIndex}`;
-  itemDiv.innerHTML = `
-    <label>Item ${itemIndex + 1}</label>
-    <input type="text" placeholder="What to buy?" class="item-name" required />
-
-    <label>Quantity</label>
-    <input type="number" min="1" value="1" class="item-qty" required />
-
-    <label>Optional Link</label>
-    <input type="url" class="item-link" placeholder="https://..." />
-
-    <label>Optional Photo</label>
-    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})" />
-    <img id="preview-${itemIndex}" class="preview" style="display:none;" />
-
-    <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖</button>
-  `;
-  container.appendChild(itemDiv);
-  itemIndex++;
-}
-
-function removeItem(index) {
-  const item = document.getElementById(`item-${index}`);
-  if (item) item.remove();
-}
-
-function previewImage(event, index) {
-  const file = event.target.files[0];
-  const preview = document.getElementById(`preview-${index}`);
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = 'block';
-  }
-}
-
-// Auto-fill delivery date/time 1hr from now
 function setAutoDeliveryDateTime() {
   const now = new Date();
   const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
   document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
   document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0, 5);
 }
-window.onload = setAutoDeliveryDateTime;
 
-// Toggle payment QR
-document.getElementById('cust-payment').addEventListener('change', function () {
-  const method = this.value;
-  const container = document.getElementById('payment-instructions');
-  document.getElementById('gcash-info').style.display = method === 'GCash' ? 'block' : 'none';
-  document.getElementById('paymaya-info').style.display = method === 'PayMaya' ? 'block' : 'none';
-  container.style.display = (method === 'GCash' || method === 'PayMaya') ? 'block' : 'none';
-});
+function addItem() {
+  const container = document.getElementById("items-container");
+  const itemDiv = document.createElement("div");
+  itemDiv.classList.add("item-group");
+  itemDiv.innerHTML = `
+    <label>Item:</label>
+    <input type="text" class="item-name" placeholder="e.g. Piaya, Coffee..." required />
+    <label>Quantity:</label>
+    <input type="number" class="item-qty" value="1" min="1" required />
+    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">✖</button>
+  `;
+  container.appendChild(itemDiv);
+  itemCount++;
+}
 
-// Navigate to delivery info step
-function goToCustomerForm() {
+function goToNextStep() {
   if (document.querySelectorAll('.item-group').length === 0) {
     alert("Please add at least one item.");
     return;
   }
   document.getElementById("step-items").classList.remove("active");
   document.getElementById("step-details").classList.add("active");
+  setAutoDeliveryDateTime();
 }
+</script>
 <script>
+const deliveryFee = 29.99;
+const serviceFee = 10.01;
+
 function generateConfirmationCode() {
-  return Math.floor(100000 + Math.random() * 900000); // 6-digit code
+  return Math.floor(100000 + Math.random() * 900000);
 }
 
 function submitOrder() {
@@ -239,28 +186,36 @@ function submitOrder() {
   const phone = document.getElementById("cust-phone").value.trim();
   const address = document.getElementById("cust-address").value.trim();
   const payment = document.getElementById("cust-payment").value;
-  const deliveryDate = document.getElementById("delivery-date").value;
-  const deliveryTime = document.getElementById("delivery-time").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
 
   if (!name || !phone || !address) {
-    alert("Please complete all required fields.");
+    alert("Please complete your info.");
     return;
   }
 
   const items = [];
-  document.querySelectorAll('.item-group').forEach(group => {
+  document.querySelectorAll('.item-group').forEach((group) => {
     const itemName = group.querySelector('.item-name').value.trim();
     const itemQty = group.querySelector('.item-qty').value;
     const itemLink = group.querySelector('.item-link').value.trim();
-    const photo = group.querySelector('.item-photo').files[0];
-    const photoUrl = photo ? URL.createObjectURL(photo) : null;
-    items.push({ itemName, itemQty, itemLink, photoUrl });
+    const itemPhoto = group.querySelector('.item-photo').files[0];
+    const photoUrl = itemPhoto ? URL.createObjectURL(itemPhoto) : null;
+
+    if (itemName && itemQty) {
+      items.push({ itemName, itemQty, itemLink, photoUrl });
+    }
   });
+
+  if (items.length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
 
   const confirmationCode = generateConfirmationCode();
   const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
 
-  let message = `*PasaBuy Order – DalaKoNa*\n\n🛒 *Items to Buy:*\n`;
+  let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Items to Buy:*\n`;
   items.forEach((item, i) => {
     message += `• ${item.itemName} (x${item.itemQty})\n`;
     if (item.itemLink) message += `🔗 ${item.itemLink}\n`;
@@ -268,42 +223,44 @@ function submitOrder() {
   });
 
   message += `\n📍 *Delivery Address:* ${address}`;
-  message += `\n🗓 *Delivery Date:* ${deliveryDate}`;
-  message += `\n⏰ *Delivery Time:* ${deliveryTime}`;
-  message += `\n👤 *Customer:* ${name}`;
-  message += `\n📞 *Phone:* ${phone}`;
+  message += `\n🗓 *Delivery Date:* ${date}\n🕒 *Time:* ${time}`;
+  message += `\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}`;
   message += `\n💳 *Payment:* ${payStatus}`;
-  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n💰 *Add-on Total:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-  message += `\n\n✅ *Confirmation #:* ${confirmationCode}`;
+  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n💰 *Total Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+  message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
 
+  // Geolocation & WhatsApp send
   navigator.geolocation.getCurrentPosition(pos => {
     const lat = pos.coords.latitude;
     const lng = pos.coords.longitude;
     const locationUrl = `https://maps.google.com/?q=${lat},${lng}`;
-    message += `\n📍 *Map Pin:* ${locationUrl}`;
+    message += `\n📍 *Location:* ${locationUrl}`;
 
-    const encodedMessage = encodeURIComponent(message);
+    const encodedMsg = encodeURIComponent(message);
+    const adminNumber = "63XXXXXXXXXX";  // Replace with actual admin WhatsApp
+    const driverNumber = "63YYYYYYYYYY"; // Replace with actual driver WhatsApp
 
-    // WhatsApp send to Admin & Driver
-    const adminNumber = "63XXXXXXXXXX";  // 🛠 Replace with actual admin #
-    const driverNumber = "63YYYYYYYYYY"; // 🛠 Replace with actual driver #
-
-    window.open(`https://wa.me/${adminNumber}?text=${encodedMessage}`, "_blank");
+    // Send to both admin and driver
+    window.open(`https://wa.me/${adminNumber}?text=${encodedMsg}`, '_blank');
     setTimeout(() => {
-      window.open(`https://wa.me/${driverNumber}?text=${encodedMessage}`, "_blank");
-    }, 1500);
+      window.open(`https://wa.me/${driverNumber}?text=${encodedMsg}`, '_blank');
+    }, 800);
 
-    // Redirect to thank-you page
+    // Redirect to Thank You page
     setTimeout(() => {
       window.location.href = `PasaBuy-thank-you.html?ref=${confirmationCode}`;
     }, 3000);
   }, () => {
-    // If location denied
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${adminNumber}?text=${encodedMessage}`, "_blank");
+    // If geolocation denied
+    const encodedMsg = encodeURIComponent(message);
+    const adminNumber = "63XXXXXXXXXX";
+    const driverNumber = "63YYYYYYYYYY";
+
+    window.open(`https://wa.me/${adminNumber}?text=${encodedMsg}`, '_blank');
     setTimeout(() => {
-      window.open(`https://wa.me/${driverNumber}?text=${encodedMessage}`, "_blank");
-    }, 1500);
+      window.open(`https://wa.me/${driverNumber}?text=${encodedMsg}`, '_blank');
+    }, 800);
+
     setTimeout(() => {
       window.location.href = `PasaBuy-thank-you.html?ref=${confirmationCode}`;
     }, 3000);
