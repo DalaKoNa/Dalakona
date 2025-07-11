@@ -12,7 +12,6 @@
       margin: 0;
       padding: 0;
     }
-
     .step-section {
       display: none;
       max-width: 480px;
@@ -25,7 +24,6 @@
     .step-section.active {
       display: block;
     }
-
     .header {
       background-color: #0057b8;
       color: white;
@@ -40,7 +38,9 @@
       color: white;
       text-decoration: none;
     }
-
+    h2 {
+      margin-top: 0;
+    }
     label {
       font-weight: 600;
       display: block;
@@ -65,7 +65,7 @@
       background: transparent;
       border: none;
       color: red;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
     }
     .preview {
@@ -73,7 +73,6 @@
       max-width: 100%;
       border-radius: 8px;
     }
-
     .button {
       margin-top: 1.5rem;
       width: 100%;
@@ -86,55 +85,30 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
-    #payment-instructions {
-      display: none;
-      background: #f7f7f7;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-    }
-
     .footer {
       text-align: center;
       font-size: 0.9rem;
       color: #999;
       margin: 2rem auto;
     }
-
-    @media (max-width: 480px) {
-      body {
-        font-size: 16px;
-      }
-      .header {
+    @media only screen and (max-width: 480px) {
+      h2, label {
         font-size: 1rem;
-        padding: 0.75rem;
       }
       .button {
         font-size: 1rem;
-        padding: 0.9rem;
-        margin-bottom: 1rem;
-      }
-      input, select, textarea {
-        font-size: 1rem;
-        padding: 0.75rem;
-      }
-      .step-section {
-        margin: 1rem auto;
         padding: 1rem;
       }
     }
   </style>
 </head>
 <body>
-
 <div class="header">
   <a href="index.html">← Back</a>
   <span>PasaBuy – DalaKoNa</span>
   <span style="width: 2rem;"></span>
 </div>
 
-<!-- Step 1: Add Items -->
 <div class="step-section active" id="step-items">
   <h2>🛍 What do you want us to buy?</h2>
   <div id="items-container"></div>
@@ -142,80 +116,47 @@
   <button class="button" style="background:#0057b8;" onclick="goToCustomerForm()">Next: Delivery Info</button>
 </div>
 
-<!-- Step 2: Customer Info -->
 <div class="step-section" id="step-details">
-  <h2>👤 Delivery Information</h2>
-
-  <label>Name</label>
+  <h2>👤 Your Delivery Info</h2>
+  <label>Name:</label>
   <input type="text" id="cust-name" required />
-
-  <label>Phone Number</label>
+  <label>Phone Number:</label>
   <input type="text" id="cust-phone" required />
-
-  <label>Delivery Address</label>
+  <label>Delivery Address:</label>
   <input type="text" id="cust-address" required />
-
-  <label>Payment Method</label>
+  <label>Payment Method:</label>
   <select id="cust-payment">
     <option value="Cash on Delivery">Cash on Delivery</option>
     <option value="GCash">GCash</option>
     <option value="PayMaya">PayMaya</option>
   </select>
-
-  <div id="payment-instructions">
-    <h4>💸 Payment Instructions</h4>
-    <div id="gcash-info" style="display:none;">
-      <p><strong>GCash Number:</strong> 09XXXXXXXXX</p>
-      <img src="gcash-qr.png" alt="GCash QR" style="max-width:100%; border-radius: 8px;"/>
-    </div>
-    <div id="paymaya-info" style="display:none;">
-      <p><strong>PayMaya Number:</strong> 09YYYYYYYYY</p>
-      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width:100%; border-radius: 8px;"/>
-    </div>
-  </div>
-
-  <button class="button" onclick="submitOrder()">✅ Place Order via WhatsApp</button>
+  <button class="button" onclick="submitOrder()">✅ Place Order</button>
 </div>
 
-<div class="footer">🚲 DalaKoNa Pasabuy • Powered by your neighborhood hustle 💛</div>
+<div class="footer">
+  🚲 DalaKoNa Pasabuy • We deliver with love
+</div>
 
 <script>
 let itemIndex = 0;
 const deliveryFee = 29.99;
 const serviceFee = 10.01;
 
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById("cust-name").value = localStorage.getItem("custName") || "";
-  document.getElementById("cust-phone").value = localStorage.getItem("custPhone") || "";
-  document.getElementById("cust-address").value = localStorage.getItem("custAddress") || "";
-});
-
-function saveCustomerInfo() {
-  localStorage.setItem("custName", document.getElementById("cust-name").value.trim());
-  localStorage.setItem("custPhone", document.getElementById("cust-phone").value.trim());
-  localStorage.setItem("custAddress", document.getElementById("cust-address").value.trim());
-}
-
 function addItem() {
   const container = document.getElementById('items-container');
-
   const itemDiv = document.createElement('div');
   itemDiv.className = 'item-group';
   itemDiv.id = `item-${itemIndex}`;
   itemDiv.innerHTML = `
     <label>Item ${itemIndex + 1}</label>
     <input type="text" placeholder="What to buy?" class="item-name" required />
-
     <label>Quantity</label>
     <input type="number" min="1" value="1" class="item-qty" required />
-
     <label>Optional Product Link</label>
     <input type="url" class="item-link" placeholder="https://..." />
-
     <label>Optional Photo</label>
     <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})"/>
     <img id="preview-${itemIndex}" class="preview" style="display:none"/>
-
     <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖</button>
   `;
   container.appendChild(itemDiv);
@@ -249,39 +190,15 @@ function generateConfirmationCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-document.getElementById('cust-payment').addEventListener('change', function() {
-  const value = this.value;
-  const container = document.getElementById('payment-instructions');
-  const gcash = document.getElementById('gcash-info');
-  const paymaya = document.getElementById('paymaya-info');
-
-  if (value === 'GCash') {
-    container.style.display = 'block';
-    gcash.style.display = 'block';
-    paymaya.style.display = 'none';
-  } else if (value === 'PayMaya') {
-    container.style.display = 'block';
-    gcash.style.display = 'none';
-    paymaya.style.display = 'block';
-  } else {
-    container.style.display = 'none';
-    gcash.style.display = 'none';
-    paymaya.style.display = 'none';
-  }
-});
-
 function submitOrder() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
   const address = document.getElementById("cust-address").value.trim();
   const payment = document.getElementById("cust-payment").value;
-
   if (!name || !phone || !address) {
     alert("Please complete all required fields.");
     return;
   }
-
-  saveCustomerInfo();
 
   const items = [];
   document.querySelectorAll('.item-group').forEach((group) => {
@@ -290,7 +207,6 @@ function submitOrder() {
     const itemLink = group.querySelector('.item-link').value.trim();
     const itemPhoto = group.querySelector('.item-photo').files[0];
     const photoUrl = itemPhoto ? URL.createObjectURL(itemPhoto) : null;
-
     items.push({ itemName, itemQty, itemLink, photoUrl });
   });
 
@@ -298,17 +214,19 @@ function submitOrder() {
   const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
 
   let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Items to Buy:*\n`;
-  items.forEach((item, i) => {
+  items.forEach((item) => {
     message += `• ${item.itemName} (x${item.itemQty})\n`;
     if (item.itemLink) message += `🔗 ${item.itemLink}\n`;
-    if (item.photoUrl) message += `📷 Photo: ${item.photoUrl}\n`;
+    if (item.photoUrl) message += `📷 Photo Attached\n`;
   });
 
   message += `\n📍 *Delivery Address:* ${address}`;
   message += `\n👤 *Customer:* ${name}`;
   message += `\n📞 *Phone:* ${phone}`;
   message += `\n💳 *Payment:* ${payStatus}`;
-  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n💰 *Add-on Total:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}`;
+  message += `\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
+  message += `\n💰 *Add-on Total:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
   message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
 
   navigator.geolocation.getCurrentPosition(pos => {
@@ -317,22 +235,20 @@ function submitOrder() {
     message += `\n📍 *Location:* https://maps.google.com/?q=${lat},${lng}`;
 
     const encoded = encodeURIComponent(message);
-    const phoneNumber = "63XXXXXXXXXX"; // Replace with real merchant #
-
+    const phoneNumber = "63XXXXXXXXXX"; // Replace with real number
     window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
     setTimeout(() => {
-      window.location.href = `thank-you.html?ref=${confirmationCode}`;
+      window.location.href = `pasabuy-thank-you.html?ref=${confirmationCode}`;
     }, 3000);
   }, () => {
     const encoded = encodeURIComponent(message);
     const phoneNumber = "63XXXXXXXXXX";
     window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
     setTimeout(() => {
-      window.location.href = `thank-you.html?ref=${confirmationCode}`;
+      window.location.href = `pasabuy-thank-you.html?ref=${confirmationCode}`;
     }, 3000);
   });
 }
 </script>
-
 </body>
 </html>
