@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -11,8 +11,7 @@
     }
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background-color: #f4f4f4;
     }
     .header {
@@ -47,13 +46,12 @@
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
       z-index: 999;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .modal-content {
       background: white;
@@ -74,6 +72,7 @@
       font-size: 1.2rem;
       width: 2rem;
       height: 2rem;
+      cursor: pointer;
     }
     .button {
       background: #0057b8;
@@ -86,11 +85,17 @@
       cursor: pointer;
       width: 100%;
     }
-    .item {
-      background: #f9f9f9;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.25rem 0 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    label {
+      font-weight: 600;
     }
     .footer {
       text-align: center;
@@ -120,39 +125,39 @@
   </div>
 
   <!-- Add Item Modal -->
-  <div id="add-item-modal" class="modal">
+  <div id="add-item-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="addItemTitle">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('add-item-modal')">&times;</button>
-      <h3>Add Item</h3>
-      <label>Item Name</label>
-      <input type="text" id="item-name" style="width:100%; margin-bottom:0.5rem;">
-      <label>Quantity</label>
-      <input type="number" id="item-qty" value="1" min="1" style="width:100%; margin-bottom:0.5rem;">
+      <button class="close-btn" onclick="closeModal('add-item-modal')" aria-label="Close Add Item Modal">&times;</button>
+      <h3 id="addItemTitle">Add Item</h3>
+      <label for="item-name">Item Name</label>
+      <input type="text" id="item-name" aria-required="true" />
+      <label for="item-qty">Quantity</label>
+      <input type="number" id="item-qty" value="1" min="1" aria-required="true" />
       <button class="button" onclick="addItemToCart()">Add to Cart</button>
     </div>
   </div>
 
   <!-- Customer Info Modal -->
-  <div id="checkout-modal" class="modal">
+  <div id="checkout-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('checkout-modal')">&times;</button>
-      <h3>Customer Info</h3>
-      <label>Full Name</label>
-      <input type="text" id="cust-name" style="width:100%;">
-      <label>Phone</label>
-      <input type="text" id="cust-phone" style="width:100%;">
-      <label>Email</label>
-      <input type="email" id="cust-email" style="width:100%;">
-      <label>Address</label>
-      <input type="text" id="cust-address" style="width:100%;">
-      <label>Notes</label>
-      <textarea id="cust-notes" style="width:100%;"></textarea>
-      <label>Date</label>
-      <input type="date" id="delivery-date" readonly style="width:100%;">
-      <label>Time</label>
-      <input type="time" id="delivery-time" readonly style="width:100%;">
-      <label>Payment Method</label>
-      <select id="cust-method" style="width:100%;">
+      <button class="close-btn" onclick="closeModal('checkout-modal')" aria-label="Close Customer Info Modal">&times;</button>
+      <h3 id="checkoutTitle">Customer Info</h3>
+      <label for="cust-name">Full Name</label>
+      <input type="text" id="cust-name" aria-required="true" />
+      <label for="cust-phone">Phone</label>
+      <input type="tel" id="cust-phone" aria-required="true" />
+      <label for="cust-email">Email</label>
+      <input type="email" id="cust-email" />
+      <label for="cust-address">Address</label>
+      <input type="text" id="cust-address" aria-required="true" />
+      <label for="cust-notes">Notes</label>
+      <textarea id="cust-notes" rows="3"></textarea>
+      <label for="delivery-date">Date</label>
+      <input type="date" id="delivery-date" readonly />
+      <label for="delivery-time">Time</label>
+      <input type="time" id="delivery-time" readonly />
+      <label for="cust-method">Payment Method</label>
+      <select id="cust-method" aria-required="true">
         <option>Cash on Delivery</option>
         <option>GCash</option>
         <option>PayMaya</option>
@@ -162,12 +167,12 @@
   </div>
 
   <!-- Cart Modal -->
-  <div id="cart-modal" class="modal">
+  <div id="cart-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal('cart-modal')">&times;</button>
-      <h3>Your Cart</h3>
-      <div id="cart-items"></div>
-      <p id="subtotal-text"></p>
+      <button class="close-btn" onclick="closeModal('cart-modal')" aria-label="Close Cart Modal">&times;</button>
+      <h3 id="cartTitle">Your Cart</h3>
+      <div id="cart-items" style="min-height: 80px; margin-bottom: 1rem;"></div>
+      <p id="subtotal-text" style="white-space: pre-line; font-weight: 600;"></p>
       <button class="button" onclick="openModal('checkout-modal')">Next: Checkout</button>
     </div>
   </div>
@@ -179,12 +184,16 @@
   <script>
     const items = [];
     const adminNumber = "639082900309";
-    const driverNumber = ""; // Leave blank
+    const driverNumber = ""; // Leave blank or add driver WhatsApp number here if needed
     const serviceFee = 10;
     const deliveryFee = 29.99;
 
     function openModal(id) {
       document.getElementById(id).style.display = 'block';
+      // Focus first input for accessibility
+      const modal = document.getElementById(id);
+      const focusable = modal.querySelector('input, select, textarea, button');
+      if (focusable) focusable.focus();
     }
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
@@ -194,50 +203,107 @@
       openModal('cart-modal');
     }
     function addItemToCart() {
-      const name = document.getElementById("item-name").value;
-      const qty = parseInt(document.getElementById("item-qty").value);
-      if (!name || qty < 1) return;
+      const nameInput = document.getElementById("item-name");
+      const qtyInput = document.getElementById("item-qty");
+      const name = nameInput.value.trim();
+      const qty = parseInt(qtyInput.value);
+      if (!name) {
+        alert("Please enter item name.");
+        nameInput.focus();
+        return;
+      }
+      if (!qty || qty < 1) {
+        alert("Quantity must be at least 1.");
+        qtyInput.focus();
+        return;
+      }
       items.push({ name, qty });
-      document.getElementById("item-name").value = "";
-      document.getElementById("item-qty").value = 1;
-      document.getElementById("cart-count").style.display = 'inline-block';
-      document.getElementById("cart-count").textContent = items.length;
+      nameInput.value = "";
+      qtyInput.value = 1;
+      updateCartCount();
       closeModal('add-item-modal');
+    }
+    function updateCartCount() {
+      const count = items.length;
+      const badge = document.getElementById("cart-count");
+      if (count > 0) {
+        badge.style.display = "inline-block";
+        badge.textContent = count;
+      } else {
+        badge.style.display = "none";
+      }
     }
     function populateCart() {
       const container = document.getElementById("cart-items");
       container.innerHTML = "";
-      let subtotal = 0;
+      if (items.length === 0) {
+        container.innerHTML = "<p>Your cart is empty.</p>";
+        document.getElementById("subtotal-text").textContent = "";
+        return;
+      }
       items.forEach(item => {
-        container.innerHTML += `<p>🔹 ${item.name} (x${item.qty})</p>`;
-        subtotal += item.qty * 100; // example pricing ₱100 each
+        const p = document.createElement("p");
+        p.textContent = `🔹 ${item.name} (x${item.qty})`;
+        container.appendChild(p);
       });
+
+      // Subtotal is zero (ignore item prices)
+      const subtotal = 0;
       const total = subtotal + serviceFee + deliveryFee;
-      document.getElementById("subtotal-text").innerText = `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}`;
+
+      document.getElementById("subtotal-text").textContent =
+        `Subtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: To be confirmed by store`;
     }
+
     function submitOrder() {
-      const name = document.getElementById("cust-name").value;
-      const phone = document.getElementById("cust-phone").value;
-      const email = document.getElementById("cust-email").value;
-      const address = document.getElementById("cust-address").value;
-      const notes = document.getElementById("cust-notes").value;
+      if (items.length === 0) {
+        alert("Please add at least one item to your cart before checkout.");
+        return;
+      }
+      const name = document.getElementById("cust-name").value.trim();
+      const phone = document.getElementById("cust-phone").value.trim();
+      const email = document.getElementById("cust-email").value.trim();
+      const address = document.getElementById("cust-address").value.trim();
+      const notes = document.getElementById("cust-notes").value.trim();
       const date = document.getElementById("delivery-date").value;
       const time = document.getElementById("delivery-time").value;
       const method = document.getElementById("cust-method").value;
       const confirmation = Math.floor(100000 + Math.random() * 900000);
 
       if (!name || !phone || !address) {
-        alert("Please complete all fields");
+        alert("Please complete all required customer info fields.");
         return;
       }
 
       let itemList = items.map(i => `🔹 ${i.name} (x${i.qty})`).join("\n");
-      let subtotal = items.reduce((sum, i) => sum + i.qty * 100, 0);
-      let total = subtotal + serviceFee + deliveryFee;
-      const message = `📟 New Order - Dala🚲Na PasaBuy\n\nConfirmation #: ${confirmation}\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n📍 Address: ${address}\n📌 Notes: ${notes || 'N/A'}\n\nItems:\n${itemList}\n\nSubtotal: ₱${subtotal.toFixed(2)}\nService Fee: ₱${serviceFee.toFixed(2)}\nDelivery Fee: ₱${deliveryFee.toFixed(2)}\nTotal: ₱${total.toFixed(2)}\n\nDelivery: ${date} ${time}\nPayment: ${method}\nRef #: N/A`;
+
+      // Subtotal = 0 as per your request (ignore item prices)
+      let subtotal = 0;
+
+      const message = `🧾 New Order - Dala🚲Na PasaBuy
+
+Confirmation #: ${confirmation}
+Name: ${name}
+Phone: ${phone}
+Email: ${email || "N/A"}
+📍 Address: ${address}
+📌 Notes: ${notes || "N/A"}
+
+Items:
+${itemList}
+
+Subtotal: ₱${subtotal.toFixed(2)}
+Service Fee: ₱${serviceFee.toFixed(2)}
+Delivery Fee: ₱${deliveryFee.toFixed(2)}
+Total: To be confirmed by store
+
+Delivery: ${date} ${time}
+Payment: ${method}
+Ref #: N/A`;
 
       const encoded = encodeURIComponent(message);
       window.open(`https://wa.me/${adminNumber}?text=${encoded}`, '_blank');
+
       if (driverNumber) {
         setTimeout(() => {
           window.open(`https://wa.me/${driverNumber}?text=${encoded}`, '_blank');
@@ -245,16 +311,21 @@
       }
 
       document.getElementById("success-sound").play();
+
+      // Redirect after 3.5s
       setTimeout(() => {
         window.location.href = "pasabuy-thank-you.html?ref=" + confirmation;
       }, 3500);
     }
 
-    // Autofill date and time
+    // Autofill date and time on load
     window.onload = function () {
       const now = new Date();
       document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-      document.getElementById("delivery-time").value = now.toTimeString().slice(0, 5);
+      // plus 1 hour for delivery time
+      const plus1hr = new Date(now.getTime() + 60 * 60 * 1000);
+      document.getElementById("delivery-time").value = plus1hr.toTimeString().slice(0,5);
+      updateCartCount();
     };
   </script>
 </body>
