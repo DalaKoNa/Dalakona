@@ -8,16 +8,23 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fffbe6;
+      background: #ffffff;
       margin: 0;
       padding: 0;
     }
     .header {
-      background-color: #ffcc00;
-      color: #333;
+      background-color: #0057b8;
+      color: white;
       padding: 1rem;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .header a {
+      color: white;
+      text-decoration: none;
       font-size: 1.2rem;
     }
     .container {
@@ -26,7 +33,7 @@
       padding: 1rem;
       background: white;
       border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     h3, h4 {
       margin-top: 0.5rem;
@@ -84,17 +91,21 @@
 </head>
 <body>
 
-<div class="header">🛒 PasaBuy – DalaKoNa</div>
+<div class="header">
+  <a href="index.html">← Back</a>
+  <span>PasaBuy – DalaKoNa</span>
+  <span style="width: 2rem;"></span>
+</div>
 
 <div class="container">
   <h3>🛍 What do you want us to buy?</h3>
-  <textarea id="custom-request" rows="3" placeholder="e.g. 1 medium mocha cake, 2 brownies..." required></textarea>
+  <textarea id="custom-request" rows="3" placeholder="e.g. 1 Iced Spanish Latte, 2 Piaya Ube..." required></textarea>
 
   <label>📷 Upload a product photo (optional):</label>
   <input type="file" id="custom-photo" accept="image/*"/>
 
   <label>🔗 Or paste a product link (optional):</label>
-  <input type="url" id="custom-link" placeholder="https://..."/>
+  <input type="url" id="custom-link" placeholder="https://..." />
 
   <h4>👤 Your Information</h4>
   <input type="text" id="cust-name" placeholder="Your Name" required/>
@@ -169,20 +180,23 @@ function submitCustomOrder() {
     if (customLink) message += `\n🔗 *Product Link:* ${customLink}`;
     if (photoUrl) message += `\n📷 *Attached Photo:* ${photoUrl}`;
 
-    message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
+    message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}`;
+    message += `\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
     message += `\n\n💰 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n*Estimated Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
 
     const encoded = encodeURIComponent(message);
-    const phoneNumber = "63XXXXXXXXXX"; // 🔁 Replace with merchant WhatsApp number
+    const phoneNumber = "63XXXXXXXXXX"; // 🔁 Replace with real WhatsApp number
 
-    // Open WhatsApp
+    // Send to WhatsApp
     window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
 
-    // Redirect after 3 seconds
+    // Redirect to thank-you page
     setTimeout(() => {
       window.location.href = "thank-you.html";
     }, 3000);
-  }, () => alert("⚠️ Location permission is required to proceed with delivery."));
+  }, () => {
+    alert("⚠️ Location permission is required to proceed with delivery.");
+  });
 }
 </script>
 
