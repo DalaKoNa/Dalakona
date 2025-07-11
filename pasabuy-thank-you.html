@@ -3,93 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thank You – PasaBuy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <title>Order Placed – DalaKoNa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #ffffff;
+      background: #ffffff;
       margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      padding: 2rem 1rem;
       text-align: center;
-      padding: 1rem;
-    }
-
-    .thankyou-box {
-      max-width: 480px;
-      background-color: #f5faff;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      color: #0057b8;
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 1rem;
       color: #333;
-      margin-bottom: 1.25rem;
     }
 
-    .code-box {
-      background: #e1f3ff;
-      padding: 1rem;
-      border-radius: 12px;
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #0057b8;
-      letter-spacing: 1px;
-      margin-bottom: 1.5rem;
+    .checkmark {
+      font-size: 4rem;
+      color: #00c853;
+      animation: pop 0.5s ease-out;
     }
 
-    .button {
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .message {
+      margin-top: 1rem;
+    }
+
+    .confirmation {
+      background: #f1f1f1;
       display: inline-block;
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      background-color: #0057b8;
-      color: #fff;
-      border: none;
+      padding: 0.75rem 1rem;
       border-radius: 8px;
-      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      background: #0057b8;
+      color: white;
+      padding: 0.75rem 1.5rem;
       text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
     }
 
     .footer {
-      margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #888;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #999;
     }
   </style>
 </head>
 <body>
-  <div class="thankyou-box">
-    <h1>🎉 Order Sent!</h1>
-    <p>Thanks for using <strong>DalaKoNa PasaBuy</strong>.</p>
-    <p>Your order has been forwarded to our team and rider.</p>
 
-    <div class="code-box" id="confirmation-code">
-      Loading...
-    </div>
+  <div class="checkmark">✅</div>
+  <h1>Order Placed Successfully!</h1>
+  <p class="message">Your pasabuy request is on its way. Thank you for using DalaKoNa 🚲</p>
 
-    <a class="button" href="index.html">← Back to Home</a>
+  <div class="confirmation">
+    Confirmation Code: <span id="confirm-code">######</span>
+  </div>
 
-    <div class="footer">We'll be in touch shortly. Stay safe! 💛</div>
+  <a class="back-btn" href="index.html">← Back to Home</a>
+
+  <div class="footer">
+    DalaKoNa Pasabuy • Powered by your neighborhood hustle 💛
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    document.getElementById("confirmation-code").textContent = ref
-      ? `Confirmation #: ${ref}`
-      : "No Confirmation Code";
+    // Get ?ref=123456 from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('ref');
+    if (code) {
+      document.getElementById('confirm-code').innerText = code;
+    }
   </script>
 </body>
 </html>
