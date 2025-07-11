@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -30,12 +28,15 @@
       font-size: 1.2rem;
     }
     .container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 1rem auto;
       padding: 1rem;
       background: white;
       border-radius: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    h3, h4 {
+      margin-top: 0.5rem;
     }
     label {
       font-weight: 600;
@@ -54,6 +55,11 @@
     input[type="file"] {
       padding: 0.3rem;
     }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
     .summary-box {
       background: #f7f7f7;
       padding: 0.75rem;
@@ -66,8 +72,8 @@
     }
     .preview-img {
       max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
+      border-radius: 8px;
+      margin-top: 0.5rem;
     }
     .button {
       width: 100%;
@@ -86,19 +92,6 @@
       color: #999;
       margin-top: 2rem;
     }
-    .login-btn {
-      margin: 0 auto;
-      background: #4285f4;
-      color: white;
-      font-weight: bold;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 8px;
-      width: 100%;
-      margin-bottom: 1rem;
-      cursor: pointer;
-    }
-    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -110,142 +103,133 @@
 </div>
 
 <div class="container">
-  <button class="login-btn" onclick="signInWithGoogle()">Sign in with Google</button>
+  <h3>🛍 What do you want us to buy?</h3>
+  <textarea id="custom-request" rows="3" placeholder="e.g. 2 BongBong’s Piaya Ube, 1 Don Macchiatos Latte..." required></textarea>
 
-  <div id="main-form" class="hidden">
-    <h3>🛍 What do you want us to buy?</h3>
-    <textarea id="custom-request" rows="3" placeholder="e.g. 2 Piaya, 1 Iced Latte" required></textarea>
+  <label>🧮 Quantity:</label>
+  <input type="number" id="custom-qty" placeholder="e.g. 3" min="1" value="1" required />
 
-    <label>📷 Upload a product photo (optional):</label>
-    <input type="file" id="custom-photo" accept="image/*" onchange="previewImage(event)"/>
-    <img id="photo-preview" class="preview-img hidden" alt="Preview"/>
+  <label>📷 Upload a product photo (optional):</label>
+  <input type="file" id="custom-photo" accept="image/*" onchange="previewImage()"/>
+  <img id="preview" class="preview-img" style="display:none"/>
 
-    <label>🔗 Or paste a product link (optional):</label>
-    <input type="url" id="custom-link" placeholder="https://..." />
+  <label>🔗 Or paste a product link (optional):</label>
+  <input type="url" id="custom-link" placeholder="https://..." />
 
-    <label>🔢 Quantity (optional):</label>
-    <input type="number" id="item-qty" min="1" placeholder="e.g. 2" />
+  <h4>👤 Your Information</h4>
+  <input type="text" id="cust-name" placeholder="Your Name" required/>
+  <input type="text" id="cust-phone" placeholder="Phone Number" required/>
+  <input type="text" id="cust-address" placeholder="Delivery Address" required/>
 
-    <h4>👤 Your Information</h4>
-    <input type="text" id="cust-name" placeholder="Your Name" required/>
-    <input type="text" id="cust-phone" placeholder="Phone Number" required/>
-    <input type="text" id="cust-address" placeholder="Delivery Address" required/>
-
-    <h4>📦 Cart Summary</h4>
-    <div class="summary-box">
-      <p>🛍 Requested Items: Custom</p>
-      <p>🚚 Delivery Fee: ₱29.99</p>
-      <p>⚙️ Service Fee: ₱10.01</p>
-      <p><strong>Total Estimated: ₱40.00 + item cost</strong></p>
-    </div>
-
-    <h4>📅 Delivery Info</h4>
-    <input type="date" id="delivery-date" disabled/>
-    <input type="time" id="delivery-time" disabled/>
-    <div class="note">Delivery is auto-scheduled 1 hour from now.</div>
-
-    <label>💳 Payment Method:</label>
-    <select id="cust-payment">
-      <option value="Cash on Delivery">Cash on Delivery</option>
-      <option value="GCash">GCash</option>
-      <option value="PayMaya">PayMaya</option>
-    </select>
-
-    <h4>📌 Payment Instructions</h4>
-    <div class="summary-box">
-      <p><strong>GCash:</strong> 09XXXXXXXXX</p>
-      <p><strong>PayMaya:</strong> 09YYYYYYYYY</p>
-      <p>📸 Send proof via WhatsApp after payment.</p>
-    </div>
-
-    <button class="button" onclick="submitCustomOrder()">✅ Place Order via WhatsApp</button>
+  <h4>📦 Cart Summary</h4>
+  <div class="summary-box">
+    <p>🛍 Requested Items: Custom</p>
+    <p>🚚 Delivery Fee: ₱29.99</p>
+    <p>⚙️ Service Fee: ₱10.01</p>
+    <p><strong>Total Estimated: ₱40.00 + item cost</strong></p>
   </div>
+
+  <h4>📅 Delivery Info</h4>
+  <input type="date" id="delivery-date" disabled/>
+  <input type="time" id="delivery-time" disabled/>
+  <div class="note">Delivery is auto-scheduled 1 hour from now.</div>
+
+  <label>💳 Payment Method:</label>
+  <select id="cust-payment">
+    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="GCash">GCash</option>
+    <option value="PayMaya">PayMaya</option>
+  </select>
+
+  <div class="summary-box">
+    <p><strong>💸 GCash:</strong> 09XXXXXXXXX</p>
+    <img src="gcash-qr.png" alt="GCash QR" class="preview-img"/>
+    <br/>
+    <p><strong>💸 PayMaya:</strong> 09XXXXXXXXX</p>
+    <img src="paymaya-qr.png" alt="PayMaya QR" class="preview-img"/>
+    <p class="note">Take a screenshot after payment and attach it when chatting with us on WhatsApp.</p>
+  </div>
+
+  <button class="button" onclick="submitCustomOrder()">✅ Place Order via WhatsApp</button>
 </div>
 
-<div class="footer">DalaKoNa 🚲 Pasabuy Service • Powered by your neighborhood hustle 💛</div>
-
+<div class="footer">DalaKoNa 🚲 PasaBuy Service • Powered by your neighborhood hustle 💛</div>
 <script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    appId: "YOUR_APP_ID"
-  };
-  firebase.initializeApp(firebaseConfig);
+function setAutoDeliveryDateTime() {
+  const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
+  document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0, 5);
+}
+setAutoDeliveryDateTime();
 
-  function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(result => {
-      document.querySelector('.login-btn').classList.add('hidden');
-      document.getElementById('main-form').classList.remove('hidden');
-      document.getElementById('cust-name').value = result.user.displayName;
-    });
-  }
-
-  function setAutoDeliveryDateTime() {
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-    document.getElementById("delivery-date").value = now.toISOString().split('T')[0];
-    document.getElementById("delivery-time").value = oneHourLater.toTimeString().slice(0, 5);
-  }
-  setAutoDeliveryDateTime();
-
-  function previewImage(event) {
+function previewImage() {
+  const file = document.getElementById("custom-photo").files[0];
+  const preview = document.getElementById("preview");
+  if (file) {
     const reader = new FileReader();
-    reader.onload = () => {
-      const img = document.getElementById('photo-preview');
-      img.src = reader.result;
-      img.classList.remove('hidden');
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+      preview.style.display = "block";
     };
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(file);
+  }
+}
+
+function submitCustomOrder() {
+  const request = document.getElementById("custom-request").value.trim();
+  const qty = document.getElementById("custom-qty").value.trim();
+  const photoInput = document.getElementById("custom-photo");
+  const customLink = document.getElementById("custom-link").value.trim();
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const payment = document.getElementById("cust-payment").value;
+  const date = document.getElementById("delivery-date").value;
+  const time = document.getElementById("delivery-time").value;
+
+  if (!request || !qty || !name || !phone || !address) {
+    alert("❗ Please complete all required fields.");
+    return;
   }
 
-  function submitCustomOrder() {
-    const request = document.getElementById("custom-request").value.trim();
-    const photoInput = document.getElementById("custom-photo");
-    const customLink = document.getElementById("custom-link").value.trim();
-    const qty = document.getElementById("item-qty").value;
-    const name = document.getElementById("cust-name").value.trim();
-    const phone = document.getElementById("cust-phone").value.trim();
-    const address = document.getElementById("cust-address").value.trim();
-    const payment = document.getElementById("cust-payment").value;
-    const date = document.getElementById("delivery-date").value;
-    const time = document.getElementById("delivery-time").value;
+  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
+  const deliveryFee = 29.99;
+  const serviceFee = 10.01;
+  const totalFees = (deliveryFee + serviceFee).toFixed(2);
 
-    if (!request || !name || !phone || !address) {
-      alert("Please complete all required fields.");
-      return;
-    }
-
-    const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
-    const deliveryFee = 29.99;
-    const serviceFee = 10.01;
-
-    navigator.geolocation.getCurrentPosition(pos => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      const locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-
-      let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Buy this for me:*\n${request}`;
-      if (qty) message += `\n🔢 *Quantity:* ${qty}`;
-      if (customLink) message += `\n🔗 *Product Link:* ${customLink}`;
-
-      message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}`;
-      message += `\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
-      message += `\n\n💰 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n*Estimated Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-
-      const encoded = encodeURIComponent(message);
-      const phoneNumber = "63XXXXXXXXXX";
-      window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
-
-      setTimeout(() => {
-        window.location.href = "thank-you.html";
-      }, 3000);
-    }, () => {
-      alert("⚠️ Location permission is required to proceed with delivery.");
-    });
+  let photoNote = '';
+  if (photoInput.files && photoInput.files[0]) {
+    photoNote = "\n📷 *Customer uploaded a photo (viewable in chat)*";
   }
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+    let message = `*PasaBuy Order – DalaKoNa*\n\n📝 *Item(s):* ${qty} x ${request}`;
+    if (customLink) message += `\n🔗 *Product Link:* ${customLink}`;
+    if (photoNote) message += photoNote;
+
+    message += `\n\n📍 *Address:* ${address}\n🗓 *Date:* ${date}\n🕒 *Time:* ${time}\n🌐 *Location:* ${locationUrl}`;
+    message += `\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n💸 *Payment:* ${payStatus}`;
+    message += `\n\n💰 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n*Estimated Total Add-on:* ₱${totalFees}`;
+
+    const encoded = encodeURIComponent(message);
+    const phoneNumber = "63XXXXXXXXXX"; // ✅ Replace with real merchant number
+
+    // Send to WhatsApp
+    window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+
+    // Redirect after 3 seconds
+    setTimeout(() => {
+      window.location.href = "thank-you.html";
+    }, 3000);
+  }, () => {
+    alert("⚠️ Location access is required to proceed.");
+  });
+}
 </script>
-
 </body>
 </html>
