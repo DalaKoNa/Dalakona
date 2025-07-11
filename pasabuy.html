@@ -66,9 +66,6 @@
       background: #f0f0f0;
       cursor: pointer;
     }
-    .qty-btn:hover {
-      background: #ddd;
-    }
     .button {
       margin-top: 1.5rem;
       width: 100%;
@@ -87,105 +84,133 @@
       color: #999;
       margin: 2rem auto;
     }
+    @media screen and (max-width: 500px) {
+      .header {
+        font-size: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .step-section {
+        padding: 1rem;
+        margin: 1rem;
+      }
+      .item-group input,
+      .item-group select {
+        font-size: 0.95rem;
+      }
+      .button {
+        font-size: 1rem;
+        padding: 0.75rem;
+      }
+    }
   </style>
 </head>
 <body>
-
 <div class="header">
   <a href="index.html">← Back</a>
   <span>PasaBuy – DalaKoNa</span>
   <span style="width: 2rem;"></span>
 </div>
 
-<!-- Step 1: Add Items -->
-<div class="step-section active" id="step-items">
-  <h2>🍭 What do you want us to buy?</h2>
-  <div id="items-container"></div>
-  <button class="button" style="background:#444;" onclick="addItem()">➕ Add Another Item</button>
-  <button class="button" style="background:#0057b8;" onclick="goToCustomerForm()">Next: Delivery Info</button>
-</div>
-<!-- Step 2: Customer Details -->
-<div class="step-section" id="step-details">
-  <h2>📦 Delivery & Customer Info</h2>
+<!-- Dynamic sections will be added here via script -->
+<div id="form-root"></div>
 
-  <label>Full Name:</label>
-  <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required/>
-
-  <label>Phone Number:</label>
-  <input type="text" id="cust-phone" placeholder="09XXXXXXXXX" required/>
-
-  <label>Complete Delivery Address:</label>
-  <input type="text" id="cust-address" placeholder="House No, Street, Barangay, City" required/>
-
-  <label>📅 Delivery Date:</label>
-  <input type="date" id="delivery-date" readonly />
-
-  <label>⏰ Delivery Time:</label>
-  <input type="time" id="delivery-time" readonly />
-
-  <label>💳 Payment Method:</label>
-  <select id="cust-payment">
-    <option value="Cash on Delivery">Cash on Delivery</option>
-    <option value="GCash">GCash</option>
-    <option value="PayMaya">PayMaya</option>
-  </select>
-
-  <div id="payment-instructions" style="display: none; background: #f8f8f8; border-radius: 10px; padding: 1rem; margin-top: 1rem;">
-    <h4>💸 Payment Instructions</h4>
-    <div id="gcash-info" style="display: none;">
-      <p><strong>GCash Number:</strong> 09XXXXXXXXX</p>
-      <img src="gcash-qr.png" alt="GCash QR" style="max-width: 100%; border-radius: 8px;"/>
-    </div>
-    <div id="paymaya-info" style="display: none;">
-      <p><strong>PayMaya Number:</strong> 09YYYYYYYYY</p>
-      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width: 100%; border-radius: 8px;"/>
-    </div>
-  </div>
-
-  <button class="button" onclick="submitOrder()">✅ Place Order via WhatsApp</button>
+<!-- Footer -->
+<div class="footer">
+  🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.
 </div>
 
+<!-- Success Sound -->
+<audio id="success-sound" src="success.mp3" preload="auto"></audio>
+
+<!-- Scripts -->
 <script>
-  // Handle Payment Instructions Display
-  document.getElementById('cust-payment').addEventListener('change', function () {
-    const val = this.value;
-    const container = document.getElementById('payment-instructions');
-    const gcash = document.getElementById('gcash-info');
-    const paymaya = document.getElementById('paymaya-info');
-
-    if (val === "GCash") {
-      container.style.display = 'block';
-      gcash.style.display = 'block';
-      paymaya.style.display = 'none';
-    } else if (val === "PayMaya") {
-      container.style.display = 'block';
-      gcash.style.display = 'none';
-      paymaya.style.display = 'block';
-    } else {
-      container.style.display = 'none';
-      gcash.style.display = 'none';
-      paymaya.style.display = 'none';
-    }
-  });
-
-  // Auto-fill date and time on load
-  function autoFillDateTime() {
-    const now = new Date();
-    const plusOneHour = new Date(now.getTime() + 60 * 60 * 1000);
-    document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-    document.getElementById("delivery-time").value = plusOneHour.toTimeString().slice(0, 5);
-  }
-
-  window.onload = autoFillDateTime;
-</script>
-<script>
+let itemIndex = 0;
 const deliveryFee = 29.99;
 const serviceFee = 10.01;
 
+// Auto-fill current date and +1hr time
+function autoFillDateTime() {
+  const now = new Date();
+  const plusOneHour = new Date(now.getTime() + 60 * 60 * 1000);
+  document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
+  document.getElementById("delivery-time").value = plusOneHour.toTimeString().slice(0, 5);
+}
+
+window.onload = autoFillDateTime;
+
+// Add item
+function addItem() {
+  const container = document.getElementById('items-container');
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'item-group';
+  itemDiv.id = `item-${itemIndex}`;
+
+  itemDiv.innerHTML = `
+    <label>Item Name:</label>
+    <input type="text" class="item-name" placeholder="e.g. 1 Loaf Bread" required />
+
+    <label>Quantity:</label>
+    <div style="display:flex; gap:0.5rem; align-items:center;">
+      <button type="button" class="qty-btn" onclick="adjustQty(${itemIndex}, -1)">−</button>
+      <input type="number" class="item-qty" id="qty-${itemIndex}" value="1" min="1" required style="width:60px; text-align:center;" />
+      <button type="button" class="qty-btn" onclick="adjustQty(${itemIndex}, 1)">+</button>
+    </div>
+
+    <label>Optional Product Link:</label>
+    <input type="url" class="item-link" placeholder="https://..."/>
+
+    <label>Optional Photo:</label>
+    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})"/>
+    <img id="preview-${itemIndex}" style="display:none; max-width:100%; margin-top:8px; border-radius:8px;"/>
+
+    <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖ Remove</button>
+  `;
+  container.appendChild(itemDiv);
+  itemIndex++;
+}
+
+// Adjust quantity
+function adjustQty(id, change) {
+  const input = document.getElementById(`qty-${id}`);
+  let qty = parseInt(input.value) || 1;
+  qty += change;
+  if (qty < 1) qty = 1;
+  input.value = qty;
+}
+
+// Remove item
+function removeItem(id) {
+  const div = document.getElementById(`item-${id}`);
+  if (div) div.remove();
+}
+
+// Preview uploaded photo
+function previewImage(event, id) {
+  const file = event.target.files[0];
+  const preview = document.getElementById(`preview-${id}`);
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  }
+}
+
+// Go to delivery step
+function goToCustomerForm() {
+  if (document.querySelectorAll(".item-group").length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
+  document.getElementById("step-items").classList.remove("active");
+  document.getElementById("step-details").classList.add("active");
+}
+
+// Generate confirmation #
 function generateConfirmationCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
+// Submit order
 function submitOrder() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
@@ -195,36 +220,36 @@ function submitOrder() {
   const time = document.getElementById("delivery-time").value;
 
   if (!name || !phone || !address) {
-    alert("Please complete all required fields.");
+    alert("Please fill all delivery info.");
     return;
   }
 
   const items = [];
-  document.querySelectorAll(".item-group").forEach((group, i) => {
+  document.querySelectorAll(".item-group").forEach(group => {
     const itemName = group.querySelector(".item-name").value.trim();
     const qty = group.querySelector(".item-qty").value;
     const link = group.querySelector(".item-link").value.trim();
-    const photo = group.querySelector(".item-photo").files[0];
-    const photoUrl = photo ? URL.createObjectURL(photo) : "";
+    const photoInput = group.querySelector(".item-photo");
+    const photo = photoInput.files.length ? "📷 Attached photo" : "";
 
-    if (itemName && qty) {
-      items.push({ itemName, qty, link, photoUrl });
+    if (itemName) {
+      items.push({ itemName, qty, link, photo });
     }
   });
 
   if (items.length === 0) {
-    alert("Please add at least one item.");
+    alert("Add at least one item.");
     return;
   }
 
-  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
   const confirmationCode = generateConfirmationCode();
+  const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
 
   let message = `🛍 *PasaBuy Order – DalaKoNa*\n\n`;
   items.forEach((item, i) => {
     message += `🔹 ${item.itemName} (x${item.qty})\n`;
     if (item.link) message += `🔗 ${item.link}\n`;
-    if (item.photoUrl) message += `📷 Attached photo\n`;
+    if (item.photo) message += `${item.photo}\n`;
   });
 
   message += `\n📍 *Delivery Address:* ${address}`;
@@ -233,15 +258,13 @@ function submitOrder() {
   message += `\n👤 *Customer:* ${name}`;
   message += `\n📞 *Phone:* ${phone}`;
   message += `\n💳 *Payment:* ${payStatus}`;
-  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}`;
-  message += `\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
-  message += `\n💰 *Total Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}\n💰 *Total Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
   message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
 
-  // Try to get GPS, fallback if denied
+  // Attempt geolocation
   navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const mapLink = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+    pos => {
+      const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
       message += `\n🌐 *Location:* ${mapLink}`;
       sendToWhatsApp(message, confirmationCode);
     },
@@ -251,102 +274,45 @@ function submitOrder() {
   );
 }
 
+// Send to WhatsApp (admin + driver)
 function sendToWhatsApp(message, code) {
   const encoded = encodeURIComponent(message);
-  const adminNumber = "63XXXXXXXXXX";   // Replace with Admin’s real number
-  const driverNumber = "63YYYYYYYYYY";  // Replace with Driver’s real number
+  const adminNumber = "63XXXXXXXXXX";   // Replace with real #
+  const driverNumber = "63YYYYYYYYYY";  // Replace with real #
 
-  // Play success sound
+  window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
+  setTimeout(() => {
+    window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
+  }, 1200);
+
   const audio = document.getElementById("success-sound");
   if (audio) audio.play();
 
-  // Send to Admin
-  window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
-
-  // Send to Driver after 1 second
-  setTimeout(() => {
-    window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
-  }, 1000);
-
-  // Redirect to Thank You
   setTimeout(() => {
     window.location.href = `PasaBuy-thank-you.html?ref=${code}`;
-  }, 3500);
+  }, 3000);
 }
-</script>
-<!-- Payment Instruction Logic -->
-<script>
-  document.getElementById('cust-payment').addEventListener('change', function () {
-    const val = this.value;
-    const container = document.getElementById('payment-instructions');
-    const gcash = document.getElementById('gcash-info');
-    const paymaya = document.getElementById('paymaya-info');
 
-    if (val === "GCash") {
-      container.style.display = 'block';
-      gcash.style.display = 'block';
-      paymaya.style.display = 'none';
-    } else if (val === "PayMaya") {
-      container.style.display = 'block';
-      gcash.style.display = 'none';
-      paymaya.style.display = 'block';
-    } else {
-      container.style.display = 'none';
-      gcash.style.display = 'none';
-      paymaya.style.display = 'none';
-    }
-  });
+// Payment display toggle
+document.getElementById("cust-payment").addEventListener("change", function () {
+  const container = document.getElementById("payment-instructions");
+  const gcash = document.getElementById("gcash-info");
+  const paymaya = document.getElementById("paymaya-info");
 
-  // Auto-fill date/time on load
-  function autoFillDateTime() {
-    const now = new Date();
-    const plusOneHour = new Date(now.getTime() + 60 * 60 * 1000);
-    document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-    document.getElementById("delivery-time").value = plusOneHour.toTimeString().slice(0, 5);
+  if (this.value === "GCash") {
+    container.style.display = 'block';
+    gcash.style.display = 'block';
+    paymaya.style.display = 'none';
+  } else if (this.value === "PayMaya") {
+    container.style.display = 'block';
+    gcash.style.display = 'none';
+    paymaya.style.display = 'block';
+  } else {
+    container.style.display = 'none';
+    gcash.style.display = 'none';
+    paymaya.style.display = 'none';
   }
-
-  window.onload = autoFillDateTime;
+});
 </script>
-
-<!-- Success sound -->
-<audio id="success-sound" src="success.mp3" preload="auto"></audio>
-
-<!-- Footer -->
-<div class="footer">
-  🚲 DalaKoNa Pasabuy • Trusted. Fast. Local.
-</div>
-
-<!-- Mobile Responsive Styles -->
-<style>
-  @media screen and (max-width: 500px) {
-    .header {
-      font-size: 1rem;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .step-section {
-      padding: 1rem;
-      margin: 1rem;
-    }
-
-    .item-group input,
-    .item-group select {
-      font-size: 0.95rem;
-    }
-
-    .button {
-      font-size: 1rem;
-      padding: 0.75rem;
-    }
-
-    .qty-btn {
-      width: 2rem;
-      height: 2rem;
-    }
-  }
-</style>
-
 </body>
 </html>
