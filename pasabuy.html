@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PasaBuy – DalaKoNa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -17,10 +17,9 @@
       color: white;
       padding: 1rem;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       font-weight: bold;
-      font-size: 1.1rem;
     }
     .header a {
       color: white;
@@ -28,8 +27,7 @@
     }
     .cart-icon-wrapper {
       position: relative;
-      font-size: 1.4rem;
-      cursor: pointer;
+      font-size: 1.5rem;
     }
     #cart-count {
       position: absolute;
@@ -51,47 +49,34 @@
       border-radius: 16px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
-    .section {
-      display: none;
-    }
-    .section.active {
-      display: block;
-    }
     h2 {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       margin-bottom: 1rem;
     }
     label {
-      display: block;
       margin-top: 1rem;
+      display: block;
       font-weight: 600;
     }
-    input,
-    select {
+    input, select {
       width: 100%;
       padding: 0.6rem;
+      margin-top: 0.3rem;
       border: 1px solid #ccc;
       border-radius: 8px;
-      margin-top: 0.3rem;
     }
     .button {
+      margin-top: 1rem;
       width: 100%;
       padding: 0.75rem;
-      margin-top: 1.5rem;
       font-size: 1rem;
       font-weight: bold;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
-    .button.add-item {
-      background: #444;
-      color: white;
-    }
-    .button.next {
-      background: #0057b8;
-      color: white;
-    }
+    .button.add-item { background: #444; color: white; }
+    .button.next { background: #0057b8; color: white; }
     .item-group {
       background: #f9f9f9;
       padding: 1rem;
@@ -111,12 +96,7 @@
       right: 1rem;
       font-size: 0.9rem;
     }
-    .qty-wrapper {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    .qty-wrapper button {
+    .qty-btn {
       width: 2rem;
       height: 2rem;
       font-size: 1.2rem;
@@ -124,185 +104,192 @@
       border: 1px solid #ccc;
       background: #eee;
     }
-    .qty-wrapper input {
-      width: 60px;
-      text-align: center;
-    }
     .footer {
       text-align: center;
       font-size: 0.9rem;
       color: #999;
       margin: 2rem auto;
     }
+    .section { display: none; }
+    .section.active { display: block; }
   </style>
 </head>
 <body>
-<!-- Header with cart badge -->
+
+<!-- Header -->
 <div class="header">
   <a href="index.html">← Back</a>
   <span>PasaBuy – DalaKoNa</span>
-  <div style="position: relative;">
-    <button onclick="toggleCartModal()" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">
-      🛒
-      <span id="cart-count" style="position:absolute; top:-8px; right:-10px; background:red; color:white; font-size:0.75rem; padding:2px 6px; border-radius:50%; display:none;">0</span>
-    </button>
+  <div class="cart-icon-wrapper">
+    <button onclick="toggleCartModal()" style="background:none; border:none;">🛒</button>
+    <span id="cart-count">0</span>
   </div>
 </div>
 
-<!-- CART MODAL -->
+<!-- Step 1: Add Items -->
+<div class="main-container section active" id="step-items">
+  <h2>🛒 What do you want us to buy?</h2>
+  <div id="items-container"></div>
+  <button class="button add-item" onclick="addItem()">➕ Add Another Item</button>
+  <button class="button next" onclick="toggleCartModal()">Next: View Cart</button>
+</div>
+
+<!-- Cart Modal -->
 <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
-  <div style="max-width:480px; background:white; margin:5vh auto; border-radius:12px; padding:1.5rem; position:relative;">
+  <div style="max-width:480px; background:white; margin:5vh auto; padding:1.5rem; border-radius:12px; position:relative;">
     <button onclick="toggleCartModal()" style="position:absolute; top:1rem; right:1rem; background:red; color:white; border:none; border-radius:50%; font-size:1.2rem; width:2rem; height:2rem;">×</button>
     <h3>🧾 Order Summary</h3>
     <div id="cart-items-list" style="margin-top:1rem;"></div>
-
     <hr/>
     <p>🚚 Delivery Fee: ₱29.99</p>
     <p>⚙️ Service Fee: ₱10.01</p>
     <p><strong>💰 Total Add-on: ₱40.00</strong></p>
-
-    <button class="button" style="margin-top:1rem;" onclick="goToCustomerForm()">Next: Enter Delivery Info</button>
+    <button class="button next" onclick="goToCustomerForm()">Next: Enter Delivery Info</button>
   </div>
 </div>
+
+<!-- Step 2: Delivery Info -->
+<div class="main-container section" id="step-details">
+  <h2>📦 Delivery & Customer Info</h2>
+  <label>Full Name:</label>
+  <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required />
+
+  <label>Phone Number:</label>
+  <input type="text" id="cust-phone" placeholder="09XXXXXXXXX" required />
+
+  <label>Complete Address:</label>
+  <input type="text" id="cust-address" placeholder="House No, Street, Barangay" required />
+
+  <label>📅 Delivery Date:</label>
+  <input type="date" id="delivery-date" readonly />
+
+  <label>⏰ Delivery Time:</label>
+  <input type="time" id="delivery-time" readonly />
+
+  <label>💳 Payment Method:</label>
+  <select id="cust-payment">
+    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="GCash">GCash</option>
+    <option value="PayMaya">PayMaya</option>
+  </select>
+
+  <div id="payment-instructions" style="display: none; margin-top: 1rem; background: #f8f8f8; padding: 1rem; border-radius: 10px;">
+    <div id="gcash-info" style="display: none;">
+      <strong>GCash Number:</strong> 09XXXXXXXXX<br/>
+      <img src="gcash-qr.png" alt="GCash QR" style="max-width:100%; margin-top:0.5rem;" />
+    </div>
+    <div id="paymaya-info" style="display: none;">
+      <strong>PayMaya Number:</strong> 09YYYYYYYYY<br/>
+      <img src="paymaya-qr.png" alt="PayMaya QR" style="max-width:100%; margin-top:0.5rem;" />
+    </div>
+  </div>
+
+  <button class="button next" onclick="submitOrder()">✅ Submit Order</button>
+</div>
+
+<!-- Scripts -->
 <script>
 let itemIndex = 0;
 const deliveryFee = 29.99;
 const serviceFee = 10.01;
+const adminNumber = "639082900309";
+const driverNumber = "";
 
-// When page loads, autofill date/time
 window.onload = () => {
   autoFillDateTime();
-  updateCartCount();
+  addItem();
 };
 
-// Add item to form
 function addItem() {
   const container = document.getElementById("items-container");
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "item-group";
-  wrapper.id = `item-${itemIndex}`;
-  wrapper.innerHTML = `
+  const id = itemIndex++;
+  const div = document.createElement("div");
+  div.className = "item-group";
+  div.id = `item-${id}`;
+  div.innerHTML = `
     <label>Item Name:</label>
-    <input type="text" class="item-name" placeholder="e.g. 2 Loaves of Bread" required/>
+    <input type="text" class="item-name" required />
 
     <label>Quantity:</label>
     <div style="display:flex; gap:0.5rem; align-items:center;">
-      <button type="button" class="qty-btn" onclick="adjustQty(${itemIndex}, -1)">−</button>
-      <input type="number" min="1" value="1" class="item-qty" id="qty-${itemIndex}" style="flex:1; text-align:center;">
-      <button type="button" class="qty-btn" onclick="adjustQty(${itemIndex}, 1)">+</button>
+      <button class="qty-btn" onclick="adjustQty(${id}, -1)">−</button>
+      <input type="number" min="1" value="1" class="item-qty" id="qty-${id}" style="text-align:center;">
+      <button class="qty-btn" onclick="adjustQty(${id}, 1)">+</button>
     </div>
 
     <label>Optional Link:</label>
     <input type="url" class="item-link" placeholder="https://..." />
 
     <label>Optional Photo:</label>
-    <input type="file" accept="image/*" class="item-photo" onchange="previewImage(event, ${itemIndex})">
-    <img id="preview-${itemIndex}" class="preview" style="display:none; max-width:100%; margin-top:0.5rem; border-radius:8px;"/>
+    <input type="file" class="item-photo" accept="image/*" />
 
-    <button type="button" class="remove-btn" onclick="removeItem(${itemIndex})">✖ Remove</button>
+    <button class="remove-btn" onclick="removeItem(${id})">✖ Remove</button>
   `;
-  container.appendChild(wrapper);
-  itemIndex++;
+  container.appendChild(div);
   updateCartCount();
 }
 
-// Adjust quantity
-function adjustQty(id, change) {
-  const qtyInput = document.getElementById(`qty-${id}`);
-  let current = parseInt(qtyInput.value) || 1;
-  current += change;
-  if (current < 1) current = 1;
-  qtyInput.value = current;
+function adjustQty(id, delta) {
+  const qty = document.getElementById(`qty-${id}`);
+  let val = parseInt(qty.value);
+  val = isNaN(val) ? 1 : val + delta;
+  qty.value = val < 1 ? 1 : val;
   updateCartCount();
 }
 
-// Remove item
 function removeItem(id) {
-  const el = document.getElementById(`item-${id}`);
-  if (el) el.remove();
+  document.getElementById(`item-${id}`)?.remove();
   updateCartCount();
 }
 
-// Preview uploaded photo
-function previewImage(event, id) {
-  const file = event.target.files[0];
-  const preview = document.getElementById(`preview-${id}`);
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = 'block';
-  }
-}
-
-// Toggle cart modal
 function toggleCartModal() {
   const modal = document.getElementById("cart-modal");
-  if (modal.style.display === "none" || !modal.style.display) {
-    populateCartItems();
-    modal.style.display = "block";
-  } else {
-    modal.style.display = "none";
-  }
+  populateCartItems();
+  modal.style.display = modal.style.display === "block" ? "none" : "block";
 }
 
-// Count items for badge
 function updateCartCount() {
   const count = document.querySelectorAll(".item-group").length;
   const badge = document.getElementById("cart-count");
-  if (count > 0) {
-    badge.style.display = "inline-block";
-    badge.textContent = count;
-  } else {
-    badge.style.display = "none";
-  }
+  badge.textContent = count;
+  badge.style.display = count > 0 ? "inline-block" : "none";
 }
 
-// Show items in cart modal
 function populateCartItems() {
   const list = document.getElementById("cart-items-list");
   list.innerHTML = "";
-  const items = document.querySelectorAll(".item-group");
-  if (items.length === 0) {
-    list.innerHTML = "<p>No items added yet.</p>";
-    return;
-  }
-
-  items.forEach(group => {
-    const name = group.querySelector(".item-name").value || "(Unnamed item)";
+  document.querySelectorAll(".item-group").forEach(group => {
+    const name = group.querySelector(".item-name").value || "(No name)";
     const qty = group.querySelector(".item-qty").value || "1";
-    const row = document.createElement("p");
-    row.innerHTML = `🛒 <strong>${name}</strong> × ${qty}`;
-    list.appendChild(row);
+    list.innerHTML += `<p>🛒 <strong>${name}</strong> × ${qty}</p>`;
   });
 }
 
-// Proceed to customer info form
 function goToCustomerForm() {
   toggleCartModal();
   document.getElementById("step-items").classList.remove("active");
   document.getElementById("step-details").classList.add("active");
 }
-</script>
-<script>
-const deliveryFee = 29.99;
-const serviceFee = 10.01;
-const adminNumber = "639082900309"; // Admin WhatsApp number
-const driverNumber = ""; // Leave blank or set if needed
 
-// Auto-fill current date and time
 function autoFillDateTime() {
   const now = new Date();
-  const plus1Hr = new Date(now.getTime() + 60 * 60 * 1000);
+  const plus1h = new Date(now.getTime() + 3600000);
   document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-  document.getElementById("delivery-time").value = plus1Hr.toTimeString().slice(0, 5);
+  document.getElementById("delivery-time").value = plus1h.toTimeString().slice(0, 5);
 }
 
-// Generate 6-digit confirmation code
+document.getElementById("cust-payment").addEventListener("change", function () {
+  const method = this.value;
+  document.getElementById("payment-instructions").style.display = "block";
+  document.getElementById("gcash-info").style.display = method === "GCash" ? "block" : "none";
+  document.getElementById("paymaya-info").style.display = method === "PayMaya" ? "block" : "none";
+  if (method === "Cash on Delivery") document.getElementById("payment-instructions").style.display = "none";
+});
+
 function generateConfirmationCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-// Send order
 function submitOrder() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
@@ -311,117 +298,61 @@ function submitOrder() {
   const date = document.getElementById("delivery-date").value;
   const time = document.getElementById("delivery-time").value;
 
-  if (!name || !phone || !address) {
-    alert("Please complete all required fields.");
-    return;
-  }
+  if (!name || !phone || !address) return alert("Please fill out all fields.");
 
   const items = [];
   document.querySelectorAll(".item-group").forEach(group => {
-    const itemName = group.querySelector(".item-name")?.value.trim();
+    const itemName = group.querySelector(".item-name")?.value;
     const qty = group.querySelector(".item-qty")?.value || "1";
-    const link = group.querySelector(".item-link")?.value.trim();
+    const link = group.querySelector(".item-link")?.value;
     const photo = group.querySelector(".item-photo")?.files[0];
     const hasPhoto = photo ? "📷 Attached" : "";
-
-    if (itemName) {
-      items.push({ itemName, qty, link, hasPhoto });
-    }
+    if (itemName) items.push({ itemName, qty, link, hasPhoto });
   });
 
-  if (items.length === 0) {
-    alert("Please add at least one item.");
-    return;
-  }
+  if (!items.length) return alert("Please add at least one item.");
 
-  const confirmationCode = generateConfirmationCode();
+  const code = generateConfirmationCode();
   const payStatus = payment === "Cash on Delivery" ? "Unpaid - COD" : `Paid via ${payment}`;
-
-  let message = `🛍 *PasaBuy Order – DalaKoNa*\n\n`;
+  let msg = `🛍 *PasaBuy Order – DalaKoNa*\n\n`;
   items.forEach(item => {
-    message += `🔹 ${item.itemName} (x${item.qty})\n`;
-    if (item.link) message += `🔗 ${item.link}\n`;
-    if (item.hasPhoto) message += `${item.hasPhoto}\n`;
+    msg += `🔹 ${item.itemName} (x${item.qty})\n`;
+    if (item.link) msg += `🔗 ${item.link}\n`;
+    if (item.hasPhoto) msg += `${item.hasPhoto}\n`;
   });
 
-  message += `\n📍 *Address:* ${address}`;
-  message += `\n🗓 *Date:* ${date}`;
-  message += `\n⏰ *Time:* ${time}`;
-  message += `\n👤 *Customer:* ${name}`;
-  message += `\n📞 *Phone:* ${phone}`;
-  message += `\n💳 *Payment:* ${payStatus}`;
-  message += `\n\n🚚 *Delivery Fee:* ₱${deliveryFee.toFixed(2)}`;
-  message += `\n⚙️ *Service Fee:* ₱${serviceFee.toFixed(2)}`;
-  message += `\n💰 *Total Add-on:* ₱${(deliveryFee + serviceFee).toFixed(2)}`;
-  message += `\n\n🔖 *Confirmation #:* ${confirmationCode}`;
+  msg += `\n📍 Address: ${address}`;
+  msg += `\n🗓 Date: ${date}`;
+  msg += `\n⏰ Time: ${time}`;
+  msg += `\n👤 Customer: ${name}`;
+  msg += `\n📞 Phone: ${phone}`;
+  msg += `\n💳 Payment: ${payStatus}`;
+  msg += `\n🚚 Delivery Fee: ₱${deliveryFee.toFixed(2)}`;
+  msg += `\n⚙️ Service Fee: ₱${serviceFee.toFixed(2)}`;
+  msg += `\n💰 Total Add-on: ₱${(deliveryFee + serviceFee).toFixed(2)}`;
+  msg += `\n🔖 Confirmation #: ${code}`;
 
-  // Try to include map location if allowed
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      const mapLink = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
-      message += `\n📍 *Location:* ${mapLink}`;
-      sendToWhatsApp(message, confirmationCode);
-    },
-    () => {
-      sendToWhatsApp(message, confirmationCode);
-    }
-  );
+  navigator.geolocation.getCurrentPosition(pos => {
+    msg += `\n🌐 https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+    sendToWhatsApp(msg, code);
+  }, () => sendToWhatsApp(msg, code));
 }
 
-// Send to WhatsApp and redirect
 function sendToWhatsApp(message, code) {
   const encoded = encodeURIComponent(message);
   window.open(`https://wa.me/${adminNumber}?text=${encoded}`, "_blank");
-
-  if (driverNumber) {
-    setTimeout(() => {
-      window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
-    }, 1500);
-  }
-
-  // Success sound
+  if (driverNumber) setTimeout(() => {
+    window.open(`https://wa.me/${driverNumber}?text=${encoded}`, "_blank");
+  }, 1500);
   const sound = document.getElementById("success-sound");
   if (sound) sound.play();
-
-  // Redirect
   setTimeout(() => {
     window.location.href = `pasabuy-thank-you.html?ref=${code}`;
   }, 3500);
 }
 </script>
 
-<!-- Handle payment instructions -->
-<script>
-document.getElementById('cust-payment').addEventListener('change', function () {
-  const method = this.value;
-  const instructions = document.getElementById('payment-instructions');
-  const gcash = document.getElementById('gcash-info');
-  const paymaya = document.getElementById('paymaya-info');
-
-  if (method === "GCash") {
-    instructions.style.display = "block";
-    gcash.style.display = "block";
-    paymaya.style.display = "none";
-  } else if (method === "PayMaya") {
-    instructions.style.display = "block";
-    gcash.style.display = "none";
-    paymaya.style.display = "block";
-  } else {
-    instructions.style.display = "none";
-    gcash.style.display = "none";
-    paymaya.style.display = "none";
-  }
-});
-</script>
-
-<!-- Optional Success Sound -->
 <audio id="success-sound" src="success.mp3" preload="auto"></audio>
-
-<!-- Footer -->
-<div class="footer">
-  🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.
-</div>
-
-<!-- Closing Tags -->
+<div class="footer">🚲 DalaKoNa Pasabuy • Fast. Local. Trusted.</div>
 </body>
 </html>
