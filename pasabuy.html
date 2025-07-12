@@ -82,9 +82,6 @@
       <option>Other</option>
     </select>
 
-    <label for="cust-location">📍 Pin Location (Google Maps link)</label>
-<input type="url" id="cust-location" placeholder="Paste your Google Maps link here" style="width:100%;" />
-
     <label for="store">Select Store</label>
     <select id="store">
       <option value="">-- Choose Store --</option>
@@ -107,7 +104,7 @@
       <input type="text" id="cust-name" placeholder="Full Name" />
       <input type="text" id="cust-phone" placeholder="Phone Number" />
       <input type="email" id="cust-email" placeholder="Email Address (optional)" />
-      <input type="text" id="cust-address" placeholder="Full Address" />
+      📌 Location Pin: ${locationPin || 'N/A'}
       <textarea id="cust-notes" placeholder="Special Notes (optional)"></textarea>
 
       <label>Scheduled Delivery (optional)</label>
@@ -218,6 +215,24 @@ Payment: ${method}`;
         window.location.href = 'pasabuy-thank-you.html?ref=' + confirmation;
       }, 2000);
     }
+    
+function getUserLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+        document.getElementById("cust-location").value = mapLink;
+      },
+      function (error) {
+        alert("Location access denied. Please allow location access or enter manually.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
 
     window.onload = () => {
       const now = new Date();
