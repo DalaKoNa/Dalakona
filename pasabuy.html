@@ -82,8 +82,8 @@
       <option>Other</option>
     </select>
 
-    <label for="geo">Pin location (Google Maps link)</label>
-    <input type="url" id="geo" placeholder="https://goo.gl/maps/...">
+    <label for="cust-location">📍 Pin Location (Google Maps link)</label>
+<input type="url" id="cust-location" placeholder="Paste your Google Maps link here" style="width:100%;" />
 
     <label for="store">Select Store</label>
     <select id="store">
@@ -176,6 +176,7 @@
       const email = document.getElementById('cust-email').value;
       const address = document.getElementById('cust-address').value;
       const notes = document.getElementById('cust-notes').value;
+      const locationPin = document.getElementById("cust-location").value.trim();
       const method = document.getElementById('cust-method').value;
       const date = document.getElementById('delivery-date').value;
       const time = document.getElementById('delivery-time').value;
@@ -199,6 +200,8 @@ Email: ${email || 'N/A'}
 Address: ${address}, ${barangay}
 Location: ${geo || 'N/A'}
 Notes: ${notes || 'N/A'}
+📌 Location Pin: ${locationPin || 'N/A'}
+
 
 Items:\n${itemList}
 
