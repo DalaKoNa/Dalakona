@@ -104,10 +104,11 @@
       <input type="text" id="cust-name" placeholder="Full Name" />
       <input type="text" id="cust-phone" placeholder="Phone Number" />
       <input type="email" id="cust-email" placeholder="Email Address (optional)" />
-      📌 Location Pin: ${locationPin || 'N/A'}
-      <textarea id="cust-notes" placeholder="Special Notes (optional)"></textarea>
-
+      <label for="cust-location">📌 Location Pin (auto-filled or paste Google Maps link)</label>
+<input type="text" id="cust-location" placeholder="https://maps.google.com/..." />
+<button type="button" onclick="getUserLocation()">📍 Get My Location</button>
       <label>Scheduled Delivery (optional)</label>
+<textarea id="cust-notes" placeholder="Special Notes (optional)"></textarea>
       <input type="datetime-local" id="scheduled-delivery" />
 
       <input type="text" id="delivery-date" readonly />
