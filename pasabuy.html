@@ -6,9 +6,7 @@
   <title>PasaBuy – DalaKoNa</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -24,10 +22,7 @@
       justify-content: space-between;
       font-weight: bold;
     }
-    .header a {
-      color: white;
-      text-decoration: none;
-    }
+    .header a { color: white; text-decoration: none; }
     .container {
       max-width: 500px;
       margin: auto;
@@ -54,9 +49,6 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 1rem;
-    }
-    .hidden {
-      display: none;
     }
     .footer {
       text-align: center;
@@ -105,10 +97,11 @@
       <input type="text" id="cust-phone" placeholder="Phone Number" />
       <input type="email" id="cust-email" placeholder="Email Address (optional)" />
       <label for="cust-location">📌 Location Pin (auto-filled or paste Google Maps link)</label>
-<input type="text" id="cust-location" placeholder="https://maps.google.com/..." />
-<button type="button" onclick="getUserLocation()">📍 Get My Location</button>
+      <input type="text" id="cust-location" placeholder="https://maps.google.com/..." />
+      <button type="button" onclick="getUserLocation()">📍 Get My Location</button>
+      <textarea id="cust-notes" placeholder="Special Notes (optional)"></textarea>
+
       <label>Scheduled Delivery (optional)</label>
-<textarea id="cust-notes" placeholder="Special Notes (optional)"></textarea>
       <input type="datetime-local" id="scheduled-delivery" />
 
       <input type="text" id="delivery-date" readonly />
@@ -120,7 +113,7 @@
         <option>PayMaya</option>
       </select>
 
-      <div class="modal">
+      <div class="note">
         <strong>Payment Notes:</strong><br />
         Online payments may incur a small transfer fee. GCash/PayMaya QR will be sent after confirmation.
       </div>
@@ -146,7 +139,7 @@
     const adminNumber = '639082900309';
 
     function addItem() {
-      const name = document.getElementById('item-name').value;
+      const name = document.getElementById('item-name').value.trim();
       const qty = parseInt(document.getElementById('item-qty').value);
       if (!name || qty < 1) return alert("Enter valid item and quantity");
       items.push({ name, qty });
@@ -169,22 +162,28 @@
     }
 
     function submitOrder() {
-      const name = document.getElementById('cust-name').value;
-      const phone = document.getElementById('cust-phone').value;
-      const email = document.getElementById('cust-email').value;
-      const address = document.getElementById('cust-address').value;
-      const notes = document.getElementById('cust-notes').value;
-      const locationPin = document.getElementById("cust-location").value.trim();
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+      const locationPin = document.getElementById('cust-location').value.trim();
+      const notes = document.getElementById('cust-notes').value.trim();
       const method = document.getElementById('cust-method').value;
       const date = document.getElementById('delivery-date').value;
       const time = document.getElementById('delivery-time').value;
-      const geo = document.getElementById('geo').value;
       const store = document.getElementById('store').value;
       const barangay = document.getElementById('barangay').value;
       const scheduled = document.getElementById('scheduled-delivery').value;
 
-      const confirmation = Math.floor(Math.random() * 900000 + 100000);
+      if (!name || !phone || !store || !barangay) {
+        alert("Please complete required fields including barangay, store, name and phone.");
+        return;
+      }
+      if (items.length === 0) {
+        alert("Please add at least one item.");
+        return;
+      }
 
+      const confirmation = Math.floor(Math.random() * 900000 + 100000);
       const itemList = items.map(i => `🔹 ${i.name} (x${i.qty})`).join("\n");
 
       const message = `
@@ -195,13 +194,12 @@ Store: ${store}
 Name: ${name}
 Phone: ${phone}
 Email: ${email || 'N/A'}
-Address: ${address}, ${barangay}
-Location: ${geo || 'N/A'}
-Notes: ${notes || 'N/A'}
+Barangay: ${barangay}
 📌 Location Pin: ${locationPin || 'N/A'}
+Notes: ${notes || 'N/A'}
 
-
-Items:\n${itemList}
+Items:
+${itemList}
 
 Service Fee: ₱${serviceFee.toFixed(2)}
 Delivery Fee: ₱${deliveryFee.toFixed(2)}
@@ -216,30 +214,30 @@ Payment: ${method}`;
         window.location.href = 'pasabuy-thank-you.html?ref=' + confirmation;
       }, 2000);
     }
-    
-function getUserLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
-        document.getElementById("cust-location").value = mapLink;
-      },
-      function (error) {
-        alert("Location access denied. Please allow location access or enter manually.");
+
+    function getUserLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+            document.getElementById("cust-location").value = mapLink;
+          },
+          function () {
+            alert("Location access denied. Please allow location access or enter manually.");
+          }
+        );
+      } else {
+        alert("Geolocation not supported by this browser.");
       }
-    );
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
+    }
 
     window.onload = () => {
       const now = new Date();
       now.setHours(now.getHours() + 1);
       document.getElementById("delivery-date").value = now.toISOString().split("T")[0];
-      document.getElementById("delivery-time").value = now.toTimeString().slice(0,5);
+      document.getElementById("delivery-time").value = now.toTimeString().slice(0, 5);
     }
   </script>
 </body>
