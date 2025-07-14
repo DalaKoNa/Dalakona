@@ -15,12 +15,9 @@
       padding: 0;
       color: #333;
     }
-
     .awning-top {
       height: 42px;
-      background: repeating-linear-gradient(
-        90deg, #9e1c1c 0 25px, #fff9f3 25px 50px
-      );
+      background: repeating-linear-gradient(90deg, #9e1c1c 0 25px, #fff9f3 25px 50px);
       clip-path: polygon(
         0 100%, 5% 85%, 10% 100%, 15% 85%, 20% 100%, 25% 85%,
         30% 100%, 35% 85%, 40% 100%, 45% 85%, 50% 100%, 55% 85%,
@@ -28,23 +25,19 @@
         90% 100%, 95% 85%, 100% 100%, 100% 0, 0 0
       );
     }
-
     .header {
       text-align: center;
       padding: 1.5rem 1rem 1rem;
       color: #9e1c1c;
     }
-
     .header h1 {
       font-size: 1.6rem;
       margin-bottom: 0.5rem;
     }
-
     .header p {
       font-size: 1rem;
       color: #555;
     }
-
     .decorative-underline {
       width: 80px;
       height: 4px;
@@ -53,12 +46,10 @@
       border-radius: 2px;
       animation: glowPulse 2s ease-in-out infinite;
     }
-
     @keyframes glowPulse {
       0%, 100% { box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
       50% { box-shadow: 0 0 6px rgba(183, 28, 28, 0.3); }
     }
-
     .jobs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -67,7 +58,6 @@
       max-width: 1100px;
       margin: auto;
     }
-
     .job-card {
       background: #fff;
       border-radius: 14px;
@@ -76,23 +66,19 @@
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .job-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 10px 24px rgba(0,0,0,0.1);
     }
-
     .job-card h2 {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
       color: #9e1c1c;
     }
-
     .job-card p {
       font-size: 1rem;
       color: #444;
     }
-
     .btn {
       display: inline-block;
       margin-top: 1rem;
@@ -105,11 +91,9 @@
       cursor: pointer;
       border: none;
     }
-
     .btn:hover {
       background: #b71c1c;
     }
-
     .apply-form {
       display: none;
       max-width: 600px;
@@ -119,7 +103,6 @@
       border-radius: 12px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.06);
     }
-
     .apply-form input, .apply-form textarea {
       width: 100%;
       padding: 0.8rem;
@@ -129,7 +112,6 @@
       border-radius: 8px;
       font-size: 1rem;
     }
-
     .apply-form button {
       background: #9e1c1c;
       color: white;
@@ -139,14 +121,12 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
     .note {
       text-align: center;
       font-size: 0.95rem;
       color: #666;
       margin-top: 1rem;
     }
-
     footer {
       background-color: #fff3e0;
       padding: 2rem 1rem;
@@ -156,40 +136,32 @@
       flex-wrap: wrap;
       border-top: 1px solid #e6dbc9;
     }
-
     .footer-left, .footer-right {
       flex: 1;
       min-width: 200px;
       margin-bottom: 1rem;
     }
-
     .footer-left p, .footer-right a {
       margin: 0.5rem 0;
       color: #333;
     }
-
     .footer-right a {
       text-decoration: none;
     }
-
     .footer-right a:hover {
       text-decoration: underline;
     }
-
     @media (max-width: 600px) {
       .header h1 {
         font-size: 1.4rem;
       }
-
       footer {
         flex-direction: column;
         align-items: flex-start;
       }
-
       .footer-right {
         margin-top: 1.5rem;
       }
-
       .awning-top {
         height: 30px;
         background-size: 30px 30px;
@@ -229,16 +201,17 @@
 
   <section class="apply-form" id="formSection">
     <h2 style="text-align:center; color:#9e1c1c;">Apply for a Position</h2>
-    <form action="https://formsubmit.co/dalakona.service@gmail.com" method="POST">
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email Address" required>
-      <input type="text" name="position" placeholder="Position Applying For" required>
-      <textarea name="message" rows="5" placeholder="Tell us about yourself..." required></textarea>
-      <button type="submit">Submit Application</button>
+    <form onsubmit="sendApplicationViaWhatsApp(event)">
+      <input type="text" id="app-name" placeholder="Full Name" required>
+      <input type="email" id="app-email" placeholder="Email Address" required>
+      <input type="text" id="app-position" placeholder="Position Applying For" required>
+      <textarea id="app-message" rows="5" placeholder="Tell us about yourself..." required></textarea>
+      <button type="submit">Submit via WhatsApp</button>
     </form>
     <p class="note">📩 Or email us directly: <strong>dalakona.service@gmail.com</strong></p>
   </section>
-<div style="text-align:center;">
+
+  <div style="text-align:center;">
     <a href="index.html" class="btn">← Balik sa Dala🚲na</a>
   </div>
 
@@ -258,11 +231,31 @@
   </footer>
 
   <script>
+    const hiringNumber = "639082900309"; // For WhatsApp international format
+
     function toggleForm() {
       const form = document.getElementById('formSection');
       form.style.display = form.style.display === 'block' ? 'none' : 'block';
       form.scrollIntoView({ behavior: 'smooth' });
     }
+
+    function sendApplicationViaWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById('app-name').value.trim();
+      const email = document.getElementById('app-email').value.trim();
+      const position = document.getElementById('app-position').value.trim();
+      const message = document.getElementById('app-message').value.trim();
+
+      if (!name || !email || !position || !message) {
+        alert('Please complete all fields.');
+        return;
+      }
+
+      const text = `📄 *Dala🚲na Job Application*\n\n👤 Name: ${name}\n📧 Email: ${email}\n💼 Position: ${position}\n📝 Message:\n${message}`;
+      const encoded = encodeURIComponent(text);
+      window.open(`https://wa.me/${hiringNumber}?text=${encoded}`, '_blank');
+    }
   </script>
+
 </body>
 </html>
