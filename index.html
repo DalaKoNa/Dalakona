@@ -13,27 +13,28 @@
     }
     body {
       font-family: 'DM Serif Display', serif;
-      background: #fffefb;
-      color: #222;
+      background: #fffdfa;
+      color: #333;
       line-height: 1.6;
     }
 
     header {
-      background: #fff7df;
+      background: #ffeedd;
       padding: 1rem 2rem;
       font-size: 1.8rem;
       text-align: center;
       font-weight: bold;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #f4e3d4;
       position: sticky;
       top: 0;
       z-index: 100;
+      color: #864400;
     }
 
     .hero {
       text-align: center;
       padding: 2rem 1rem;
-      background: #fffaf2;
+      background: #fff7f0;
     }
 
     .hero img {
@@ -41,7 +42,7 @@
       max-width: 720px;
       height: auto;
       border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
       margin-bottom: 1.5rem;
     }
 
@@ -52,7 +53,7 @@
 
     .hero p {
       font-size: 1.1rem;
-      color: #555;
+      color: #6a4e2f;
     }
 
     .storefront-section {
@@ -61,8 +62,9 @@
 
     .storefront-section h2 {
       text-align: center;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: #905b00;
     }
 
     .storefront-grid {
@@ -74,18 +76,19 @@
 
     .storefront-card {
       background: #fff;
-      border: 1px solid #eee;
-      border-radius: 12px;
+      border: 1px solid #f2e6dc;
+      border-radius: 14px;
       overflow: hidden;
       text-align: center;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
 
     .storefront-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
     .storefront-card img {
@@ -97,19 +100,21 @@
     .storefront-card h3 {
       font-size: 1rem;
       padding: 0.8rem;
+      color: #764f2a;
     }
 
     footer {
-      background: #fff4ca;
+      background: #fff2d6;
       text-align: center;
       padding: 2rem 1rem;
       font-size: 0.9rem;
+      color: #555;
       margin-top: 2rem;
     }
 
     footer a {
       margin: 0 0.5rem;
-      color: #555;
+      color: #8a5d2f;
       text-decoration: none;
     }
 
@@ -118,25 +123,25 @@
     }
 
     .whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 1.1rem;
-  background: #25d366;
-  color: #fff;
-  padding: 0.5rem 0.8rem;
-  border-radius: 30px;
-  text-decoration: none;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  z-index: 999;
-}
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.8rem;
+      background: #25d366;
+      color: white;
+      padding: 0.65rem 0.75rem;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      z-index: 999;
+    }
 
     @media (max-width: 480px) {
       header {
         font-size: 1.4rem;
       }
       .hero h1 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -157,23 +162,21 @@
     <h2>📍 Order sa paborito mo nga tindahan</h2>
     <div class="storefront-grid">
 
-<a href="pasabuy.html" class="storefront-card">
+      <a href="pasabuy.html" class="storefront-card">
         <img src="pastel-hero.jpg" alt="Pasabuy Order" />
         <h3>📦 Custom PasaBuy</h3>
       </a>
-
 
       <a href="MarketCenter.html" class="storefront-card">
         <img src="products.jpg" alt="Hypermarket" />
         <h3>Hypermarket</h3>
       </a>
-      
+
       <a href="GoldiCakesCenter.html" class="storefront-card">
         <img src="kaouther-djouada-hcEDfkiVmMI-unsplash.jpg" alt="Goldicakes" />
         <h3>Goldicakes</h3>
       </a>
 
-    
       <a href="GenericCenter.html" class="storefront-card">
         <img src="medicines.jpg" alt="Generic Center" />
         <h3>Generic Center</h3>
@@ -197,7 +200,8 @@
     </div>
   </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/63XXXXXXXXXX" target="_blank">💬 WhatsApp</a>
+  <!-- Icon-only WhatsApp float -->
+  <a class="whatsapp-float" href="https://wa.me/63XXXXXXXXXX" target="_blank" aria-label="Chat via WhatsApp">💬</a>
 
 </body>
 </html>
