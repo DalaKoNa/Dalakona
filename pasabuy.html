@@ -3,87 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PasaBuy Order Form</title>
+  <title>Dala🚲na – PasaBuy</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f0f0f0;
-      margin: 0;
       padding: 2rem;
     }
-    .container {
+    .form-container {
       background: white;
       padding: 2rem;
-      border-radius: 8px;
-      width: 100%;
+      border-radius: 12px;
       max-width: 600px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
     }
     label {
-      font-weight: bold;
-      display: block;
-      margin-top: 1rem;
+      font-weight: 600;
     }
     input, select, textarea, button {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.6rem;
       margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 5px;
       font-size: 1rem;
+    }
+    button {
+      background: #00c853;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
     }
     .item-group {
       display: flex;
       gap: 0.5rem;
-      margin-top: 0.5rem;
     }
     .item-group input {
       flex: 1;
     }
     .remove-item-btn {
-      background-color: #e74c3c;
+      background: #e53935;
       color: white;
+      padding: 0.6rem;
+      border-radius: 8px;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
       cursor: pointer;
-    }
-    #items-container {
-      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>🛒 PasaBuy Order Form</h2>
-    <form id="orderForm">
-
-      <label>Customer Name *</label>
-      <input type="text" id="customerName" required />
+  <div class="form-container">
+    <h2>PasaBuy Request 🛒</h2>
+    <form id="pasabuyForm">
+      <label>Full Name *</label>
+      <input type="text" id="fullName" required />
 
       <label>Phone Number *</label>
-      <input type="tel" id="customerPhone" required />
+      <input type="tel" id="phoneNumber" required />
 
-      <label>Email *</label>
-      <input type="email" id="customerEmail" required />
+      <label>Email Address</label>
+      <input type="email" id="email" />
 
       <label>Store *</label>
       <select id="store" required>
         <option value="">-- Select Store --</option>
         <option>Handumanan Hypermarket</option>
-        <option>Chooks To Go</option>
+        <option>Chooks to Go</option>
         <option>Uling Rooster</option>
         <option>Goldilocks</option>
         <option>The Generics Pharmacy</option>
         <option>Watsons</option>
         <option>Julie's Bakeshop</option>
-        <option>Bong Bongs</option>
+        <option>Bong Bong's</option>
         <option>Don Macchiatos</option>
         <option>Joe Joe's Chicken</option>
         <option>JDE Hardware and Construction Supply</option>
@@ -92,43 +92,38 @@
         <option>Others (Please Specify Below)</option>
       </select>
 
-      <label>If "Others", specify</label>
-      <input type="text" id="otherStore" />
+      <input type="text" id="otherStore" placeholder="Specify store if Others selected" />
 
       <label>Items to Buy *</label>
       <div id="items-container"></div>
-      <button type="button" onclick="addItem()">➕ Add Item</button>
-
-      <label>Exact Address *</label>
-      <textarea id="address" placeholder="e.g. Purok Masinadyahon, Brgy. Handumanan, Bacolod City" required></textarea>
-
-      <label>Detected Location *</label>
-      <input type="text" id="geoLocation" required />
+      <button type="button" onclick="addItem()">+ Add Item</button>
 
       <label>Delivery Type *</label>
-      <select id="deliveryType" required onchange="toggleDeliveryFields()">
-        <option value="">-- Select --</option>
-        <option value="today">Today (Within 1 hour)</option>
-        <option value="later">Deliver Later</option>
+      <select id="deliveryType" required>
+        <option value="Today">Today (Within 1 Hour)</option>
+        <option value="Later">Later</option>
       </select>
-
-      <label>Delivery Date *</label>
-      <input type="date" id="deliveryDate" required />
 
       <label>Delivery Time *</label>
       <input type="time" id="deliveryTime" required />
 
-      <label>Budget (₱, max 3000) *</label>
-      <input type="number" id="budget" max="3000" min="1" required />
+      <label>Delivery Address *</label>
+      <input type="text" id="deliveryAddress" required />
 
-      <label>Downpayment Bank Details *</label>
-      <input type="text" id="bankDetails" placeholder="e.g. GCash 0917XXXXXXX" required />
+      <label>Geo Location *</label>
+      <input type="text" id="geoLocation" placeholder="Click Get Location" readonly required />
+      <button type="button" onclick="getExactLocation()">📍 Get My Location</button>
 
-      <label>Proof of Deposit *</label>
-      <input type="file" id="depositProof" required />
+      <label>Budget (₱) *</label>
+      <input type="number" id="budget" max="3000" required />
 
-      <br /><br />
-      <button type="submit">📤 Submit via WhatsApp</button>
+      <label>Estimated Downpayment (50%)</label>
+      <input type="text" id="downpayment" readonly />
+
+      <label>Upload Payment Proof (optional)</label>
+      <input type="file" id="paymentProof" accept="image/*" />
+
+      <button type="submit">Submit via WhatsApp</button>
     </form>
   </div>
 
@@ -138,84 +133,87 @@
       const itemGroup = document.createElement('div');
       itemGroup.className = 'item-group';
       itemGroup.innerHTML = `
-        <input type="text" name="itemName[]" placeholder="Item name" value="${name}" required />
-        <input type="number" name="itemQty[]" placeholder="Qty" value="${qty}" min="1" required />
+        <input type="text" placeholder="Item name (e.g. Soy Sauce)" required />
+        <input type="number" placeholder="Qty" min="1" required />
         <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">🗑</button>
       `;
       container.appendChild(itemGroup);
     }
 
-    function toggleDeliveryFields() {
-      const type = document.getElementById('deliveryType').value;
-      const dateField = document.getElementById('deliveryDate');
+    document.getElementById('deliveryType').addEventListener('change', function () {
       const timeField = document.getElementById('deliveryTime');
-      const now = new Date();
-      if (type === 'today') {
-        const todayStr = now.toISOString().split('T')[0];
-        dateField.value = todayStr;
-        dateField.readOnly = true;
-
-        let hour = now.getHours() + 1;
-        if (hour >= 24) hour = 23;
-        timeField.value = `${hour.toString().padStart(2, '0')}:00`;
+      if (this.value === 'Today') {
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        timeField.value = now.toTimeString().slice(0,5);
         timeField.readOnly = true;
       } else {
-        dateField.readOnly = false;
-        timeField.readOnly = false;
-        dateField.value = '';
         timeField.value = '';
+        timeField.readOnly = false;
       }
+    });
+
+    document.getElementById('budget').addEventListener('input', function () {
+      const val = parseFloat(this.value);
+      if (!isNaN(val)) {
+        document.getElementById('downpayment').value = '₱' + (val * 0.5).toFixed(2);
+      } else {
+        document.getElementById('downpayment').value = '';
+      }
+    });
+
+    function getExactLocation() {
+      if (!navigator.geolocation) return alert("Geolocation not supported");
+      navigator.geolocation.getCurrentPosition(async pos => {
+        const { latitude, longitude } = pos.coords;
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+        const data = await res.json();
+        const fullAddress = data.display_name;
+        document.getElementById('geoLocation').value = fullAddress;
+      });
     }
 
-    document.getElementById('orderForm').addEventListener('submit', function (e) {
+    document.getElementById('pasabuyForm').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      const confirmationCode = 'DALA' + Math.floor(100000 + Math.random() * 900000);
-      const name = document.getElementById('customerName').value;
-      const phone = document.getElementById('customerPhone').value;
-      const email = document.getElementById('customerEmail').value;
-      const store = document.getElementById('store').value === 'Others (Please Specify Below)'
-        ? document.getElementById('otherStore').value
-        : document.getElementById('store').value;
-      const address = document.getElementById('address').value;
+      const name = document.getElementById('fullName').value;
+      const phone = document.getElementById('phoneNumber').value;
+      const email = document.getElementById('email').value;
+      const store = document.getElementById('store').value;
+      const otherStore = document.getElementById('otherStore').value;
+      const deliveryType = document.getElementById('deliveryType').value;
+      const deliveryTime = document.getElementById('deliveryTime').value;
+      const address = document.getElementById('deliveryAddress').value;
       const geo = document.getElementById('geoLocation').value;
-      const type = document.getElementById('deliveryType').value === 'today'
-        ? 'Today (within 1 hour)'
-        : 'Deliver Later';
-      const date = document.getElementById('deliveryDate').value;
-      const time = document.getElementById('deliveryTime').value;
-      const budget = parseFloat(document.getElementById('budget').value);
-      const bank = document.getElementById('bankDetails').value;
-      const items = Array.from(document.querySelectorAll('.item-group')).map(group => {
-        const name = group.querySelector('input[name="itemName[]"]').value;
-        const qty = group.querySelector('input[name="itemQty[]"]').value;
-        return `- ${name} ×${qty}`;
-      }).join('\n');
+      const budget = document.getElementById('budget').value;
+      const downpayment = document.getElementById('downpayment').value;
 
-      const down = (budget * 0.5).toFixed(2);
-      const total = budget.toFixed(2);
+      const items = Array.from(document.querySelectorAll('#items-container .item-group')).map(group => {
+        const inputs = group.querySelectorAll('input');
+        return `• ${inputs[0].value} x${inputs[1].value}`;
+      }).join("\n");
 
-      const msg = `🛍️ *New PasaBuy Order* - Confirmation #${confirmationCode}` +
-        `\n\n📍 *Store*: ${store}` +
-        `\n📦 *Items to Buy:*\n${items}` +
-        `\n\n🏠 *Exact Address*: ${address}` +
-        `\n📌 *Detected Location*: ${geo}` +
-        `\n📅 *Delivery Type*: ${type}` +
-        `\n📆 *Delivery Date*: ${date}` +
-        `\n⏰ *Delivery Time*: ${time}` +
-        `\n\n💸 *Budget*: ₱${total}` +
-        `\n🔻 *50% Downpayment*: ₱${down}` +
-        `\n🏦 *Bank Payment*: ${bank}` +
-        `\n📎 *Proof of Deposit*: Attached` +
-        `\n\n👤 *Customer Name*: ${name}` +
-        `\n📞 *Phone*: ${phone}` +
-        `\n📧 *Email*: ${email}` +
-        `\n\n✅ *Status*: Waiting for rider`;
+      const msg = `🛒 *PasaBuy Request*
 
-      const whatsappUrl = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`;
+👤 Name: ${name}
+📞 Phone: ${phone}
+📧 Email: ${email}
+🏪 Store: ${store}${store === 'Others (Please Specify Below)' ? ` (${otherStore})` : ''}
+📦 Items:
+${items}
 
-      window.location.href = whatsappUrl;
+📍 Address: ${address}
+🗺️ Location: ${geo}
+⏰ Delivery: ${deliveryType} at ${deliveryTime}
+💰 Budget: ₱${budget}
+💸 50% DP: ${downpayment}`;
+
+      const whatsappUrl = `https://wa.me/639123456789?text=${encodeURIComponent(msg)}`;
+      window.open(whatsappUrl, '_blank');
+      window.location.href = 'pasabuy-thank-you.html';
     });
+
+    // Add first item by default
+    addItem();
   </script>
 </body>
 </html>
