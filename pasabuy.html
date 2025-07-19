@@ -2,150 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PasaBuy – Custom Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dala🚲Na – Custom PasaBuy</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; }
-    input, select, textarea { width: 100%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; }
-    .item-row { display: flex; gap: 8px; margin-bottom: 10px; }
-    .item-row input { flex: 1; }
-    button { background-color: #28a745; color: white; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background-color: #218838; }
+    body {
+      background-color: #ffffff;
+    }
+    .fade-enter {
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0;
+    }
+    .fade-enter-active {
+      opacity: 1;
+    }
   </style>
 </head>
-<body>
-  <h1>🛍️ Custom PasaBuy Request</h1>
+<body class="font-sans text-gray-800">
+  <div class="max-w-xl mx-auto py-10 px-4">
+    <h1 class="text-2xl font-bold mb-4">🛒 Custom PasaBuy Order (Handumanan Only)</h1>
+    
+    <form id="orderForm" class="space-y-4">
+      <input type="text" id="name" placeholder="Your Name" class="w-full border p-2 rounded" required />
+      <input type="tel" id="phone" placeholder="Phone Number" class="w-full border p-2 rounded" required />
+      
+      <div class="space-y-2" id="items"></div>
+      <button type="button" onclick="addItem()" class="bg-green-500 text-white px-3 py-1 rounded">+ Add Item</button>
 
-  <form id="pasabuyForm">
-    <label>Full Name:</label>
-    <input type="text" id="customerName" required />
-
-    <label>Phone Number:</label>
-    <input type="tel" id="customerPhone" required />
-
-    <label>Barangay:</label>
-    <select id="barangay" required>
-      <option value="">Select Barangay</option>
-      <option value="Handumanan">Handumanan</option>
-      <option value="Alijis">Alijis</option>
-      <option value="Tangub">Tangub</option>
-      <!-- Add more if needed -->
-    </select>
-
-    <label>Preferred Store:</label>
-    <select id="store" required>
-      <option value="">Select Store</option>
-      <option value="Handumanan Hypermarket">Handumanan Hypermarket</option>
-      <option value="Ellen's Bakery">Ellen's Bakery</option>
-      <!-- Add more stores -->
-    </select>
-
-    <label>Preferred Delivery Time:</label>
-    <input type="time" id="preferredTime" required />
-
-    <label>Special Notes:</label>
-    <textarea id="notes" placeholder="Optional notes…"></textarea>
-
-    <hr>
-    <h3>🛒 Items to Buy</h3>
-    <div id="itemsContainer">
-      <div class="item-row">
-        <input type="text" class="item-name" placeholder="Item name" required />
-        <input type="number" class="item-qty" placeholder="Qty" min="1" required />
-        <input type="number" class="item-budget" placeholder="Budget ₱" step="0.01" required />
+      <div class="pt-4">
+        <label>Barangay</label>
+        <select class="w-full border p-2 rounded" id="barangay" required>
+          <option value="Handumanan">Handumanan</option>
+        </select>
       </div>
-    </div>
-    <button type="button" onclick="addItem()">➕ Add Another Item</button>
 
-    <hr>
-    <p><strong>Total Budget: ₱<span id="totalBudget">0.00</span></strong></p>
+      <div>
+        <label>Payment Option</label>
+        <select id="paymentOption" class="w-full border p-2 rounded">
+          <option value="pay_later">Pay Later</option>
+          <option value="wallet_topup">Top-Up Wallet</option>
+        </select>
+      </div>
 
-    <button type="submit">📤 Submit PasaBuy Request</button>
-  </form>
+      <div class="bg-gray-100 p-4 rounded mt-4">
+        <p>Subtotal: ₱<span id="subtotal">0.00</span></p>
+        <p>Service Fee: ₱29.99</p>
+        <p>Delivery Fee: ₱10.01</p>
+        <p class="font-bold">Grand Total: ₱<span id="grandTotal">0.00</span></p>
+      </div>
+
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full mt-4">📤 Submit Order</button>
+    </form>
+  </div>
 
   <script>
+    let itemCount = 0;
+
     function addItem() {
-      const container = document.getElementById("itemsContainer");
-      const row = document.createElement("div");
-      row.classList.add("item-row");
-      row.innerHTML = `
-        <input type="text" class="item-name" placeholder="Item name" required />
-        <input type="number" class="item-qty" placeholder="Qty" min="1" required />
-        <input type="number" class="item-budget" placeholder="Budget ₱" step="0.01" required />
+      const itemDiv = document.createElement('div');
+      itemDiv.className = "flex space-x-2";
+      itemDiv.innerHTML = `
+        <input type="text" placeholder="Item name" class="w-2/3 border p-2 rounded item-name" required>
+        <input type="number" placeholder="₱ Price" class="w-1/3 border p-2 rounded item-price" required oninput="calculateTotal()">
       `;
-      container.appendChild(row);
+      document.getElementById('items').appendChild(itemDiv);
     }
 
-    function updateBudget() {
-      const budgets = document.querySelectorAll(".item-budget");
-      let total = 0;
-      budgets.forEach(b => total += parseFloat(b.value) || 0);
-      document.getElementById("totalBudget").textContent = total.toFixed(2);
+    function calculateTotal() {
+      const prices = document.querySelectorAll('.item-price');
+      let subtotal = 0;
+      prices.forEach(p => subtotal += parseFloat(p.value || 0));
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+      const grand = subtotal + 29.99 + 10.01;
+      document.getElementById('grandTotal').textContent = grand.toFixed(2);
     }
 
-    document.getElementById("itemsContainer").addEventListener("input", updateBudget);
+    document.getElementById('orderForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    document.getElementById("pasabuyForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const name = document.getElementById("customerName").value.trim();
-      const phone = document.getElementById("customerPhone").value.trim();
-      const barangay = document.getElementById("barangay").value;
-      const store = document.getElementById("store").value;
-      const time = document.getElementById("preferredTime").value;
-      const notes = document.getElementById("notes").value.trim();
-      const itemRows = document.querySelectorAll(".item-row");
-
-      const items = Array.from(itemRows).map(row => {
-        const item = row.querySelector(".item-name").value.trim();
-        const qty = row.querySelector(".item-qty").value;
-        const budget = row.querySelector(".item-budget").value;
-        return `${qty} x ${item} (₱${budget})`;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const barangay = document.getElementById('barangay').value;
+      const paymentOption = document.getElementById('paymentOption').value;
+      const items = Array.from(document.querySelectorAll('.item-name')).map((el, i) => {
+        const price = document.querySelectorAll('.item-price')[i].value;
+        return `${el.value} - ₱${price}`;
       });
 
-      const totalBudget = items.reduce((sum, _, i) => {
-        const budget = parseFloat(document.querySelectorAll(".item-budget")[i].value);
-        return sum + (isNaN(budget) ? 0 : budget);
-      }, 0).toFixed(2);
+      const subtotal = parseFloat(document.getElementById('subtotal').textContent);
+      const grandTotal = parseFloat(document.getElementById('grandTotal').textContent);
 
-      const message = `Hi! I'd like to request a PasaBuy:\n\n👤 ${name}\n📱 ${phone}\n📍 ${barangay}\n🏪 ${store}\n🕒 ${time}\n📝 ${notes}\n\n🛒 Items:\n${items.join('\n')}\n\n💸 Total Budget: ₱${totalBudget}`;
+      // 🔗 Airtable + WhatsApp (Simulated)
+      const airtableData = {
+        name,
+        phone,
+        barangay,
+        paymentOption,
+        items: items.join("\n"),
+        subtotal,
+        serviceFee: 29.99,
+        deliveryFee: 10.01,
+        total: grandTotal
+      };
 
-      try {
-        // 1. Airtable submission
-        await fetch("https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer YOUR_AIRTABLE_PAT"
-          },
-          body: JSON.stringify({
-            fields: {
-              Name: name,
-              Phone: phone,
-              Barangay: barangay,
-              Store: store,
-              Time: time,
-              Notes: notes,
-              Items: items.join(", "),
-              Budget: parseFloat(totalBudget)
-            }
-          })
-        });
+      // Replace with your actual Airtable call here
+      console.log("Saving to Airtable:", airtableData);
 
-        // 2. WhatsApp trigger
-        const encoded = encodeURIComponent(message);
-        const whatsappNumber = "63XXXXXXXXXX"; // Replace with your WhatsApp number
-        window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, "_blank");
+      // WhatsApp Message (redirect or open)
+      const msg = `🛒 Custom Order\n\nName: ${name}\nBarangay: ${barangay}\nItems:\n${items.join("\n")}\n\nEstimated Total: ₱${subtotal}\n+ Service: ₱29.99\n+ Delivery: ₱10.01\n= ₱${grandTotal.toFixed(2)}\n\nPayment: ${paymentOption === 'wallet_topup' ? 'Wallet Top-Up' : 'Pay Later'}\n📞 ${phone}`;
 
-        // 3. Redirect to Thank You
-        setTimeout(() => {
-          window.location.href = "pasabuy-thankyou.html";
-        }, 3000);
-      } catch (err) {
-        alert("Something went wrong. Please try again.");
-        console.error(err);
-      }
+      window.open(`https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+      alert("Order submitted successfully!");
+      this.reset();
+      document.getElementById('items').innerHTML = "";
+      document.getElementById('subtotal').textContent = "0.00";
+      document.getElementById('grandTotal').textContent = "0.00";
     });
+
+    // Add 1 item by default
+    window.onload = addItem;
   </script>
 </body>
 </html>
