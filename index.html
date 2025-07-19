@@ -1,78 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dala🚲na – PasaBuy, Subong Dayon!</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --brand: #ff8c42;
+      --light-bg: #fffaf5;
+      --dark-bg: #1e1e1e;
+      --text: #333;
+      --text-dark: #eee;
+      --muted: #6a4e2f;
+      --muted-dark: #aaa;
+      --card-bg: #fff;
+      --card-bg-dark: #2c2c2c;
+      --accent: #864400;
+    }
+
+    [data-theme="dark"] {
+      --light-bg: var(--dark-bg);
+      --text: var(--text-dark);
+      --muted: var(--muted-dark);
+      --card-bg: var(--card-bg-dark);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      font-family: 'DM Serif Display', serif;
-      background: #fffdfa;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
     }
 
     header {
-      background: #ffeedd;
-      padding: 1rem 2rem;
-      font-size: 1.8rem;
+      font-family: 'DM Serif Display', serif;
+      background: var(--brand);
+      color: white;
+      font-size: 2rem;
       text-align: center;
-      font-weight: bold;
-      border-bottom: 1px solid #f4e3d4;
+      padding: 1rem;
       position: sticky;
       top: 0;
-      z-index: 100;
-      color: #864400;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-btn {
+      font-size: 1.4rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: white;
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.2);
     }
 
     .hero {
       text-align: center;
-      padding: 2rem 1rem;
-      background: #fff7f0;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(135deg, #fff2e6, #ffe7d9);
+    }
+
+    [data-theme="dark"] .hero {
+      background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
     }
 
     .hero img {
       width: 100%;
-      height: 40vh;
-      max-height: 300px;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      max-width: 600px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       margin-bottom: 1.5rem;
     }
 
     .hero h1 {
-      font-size: 2rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
       margin-bottom: 0.5rem;
+      color: var(--accent);
     }
 
     .hero p {
-      font-size: 1.1rem;
-      color: #6a4e2f;
+      font-size: 1.2rem;
+      color: var(--muted);
     }
 
     .storefront-section {
-      padding: 2rem 1rem;
+      padding: 3rem 1rem 4rem;
     }
 
     .storefront-section h2 {
       text-align: center;
       font-size: 1.4rem;
-      margin-bottom: 1.5rem;
-      color: #905b00;
+      margin-bottom: 2rem;
+      color: var(--accent);
     }
 
     .storefront-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
       padding: 0 1rem;
     }
 
@@ -88,17 +138,16 @@
     }
 
     .storefront-card {
-      background: #fff;
-      border: 1px solid #f2e6dc;
+      background: var(--card-bg);
       border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
       overflow: hidden;
       text-align: center;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s;
       opacity: 0;
-      animation: fadeInUp 0.6s ease forwards;
+      animation: fadeInUp 0.5s ease forwards;
     }
 
     .storefront-card:nth-child(1) { animation-delay: 0.1s; }
@@ -108,61 +157,72 @@
     .storefront-card:nth-child(5) { animation-delay: 0.5s; }
 
     .storefront-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     .storefront-card img {
       width: 100%;
-      height: 120px;
+      height: 140px;
       object-fit: cover;
     }
 
     .storefront-card h3 {
       font-size: 1rem;
-      padding: 0.8rem;
-      color: #764f2a;
+      font-weight: 600;
+      padding: 1rem;
+      background: transparent;
     }
 
     footer {
-      background: #fff2d6;
+      background: #fef2e8;
       text-align: center;
       padding: 2rem 1rem;
       font-size: 0.9rem;
-      color: #555;
-      margin-top: 2rem;
+      color: #795548;
+      border-top: 1px solid #f0e0d0;
+    }
+
+    [data-theme="dark"] footer {
+      background: #1a1a1a;
+      color: #bbb;
+      border-top: 1px solid #333;
+    }
+
+    footer div {
+      margin-top: 0.5rem;
     }
 
     footer a {
-      margin: 0 0.5rem;
-      color: #8a5d2f;
+      color: #864400;
       text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+      margin: 0 0.5rem;
+      font-weight: 500;
     }
 
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      font-size: 1.8rem;
       background: #25d366;
       color: white;
-      padding: 0.65rem 0.75rem;
+      font-size: 1.6rem;
+      padding: 0.6rem 0.8rem;
       border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      z-index: 999;
+      z-index: 1000;
     }
 
-    @media (max-width: 480px) {
-      header {
-        font-size: 1.4rem;
-      }
+    @media (max-width: 500px) {
       .hero h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .storefront-grid {
+        gap: 1rem;
       }
     }
   </style>
@@ -171,6 +231,10 @@
 
   <header>
     Dala🚲na
+    <div class="header-icons">
+      <button class="icon-btn" id="cart-btn" title="Cart">🛒</button>
+      <button class="icon-btn" id="theme-toggle" title="Toggle dark mode">🌓</button>
+    </div>
   </header>
 
   <section class="hero">
@@ -182,32 +246,26 @@
   <section class="storefront-section">
     <h2>📍 Order sa paborito mo nga tindahan</h2>
     <div class="storefront-grid">
-
       <a href="pasabuy.html" class="storefront-card">
         <img src="pastel-hero.jpg" alt="Pasabuy Order" />
         <h3>📦 Custom PasaBuy</h3>
       </a>
-
       <a href="MarketCenter.html" class="storefront-card">
         <img src="products.jpg" alt="Hypermarket" />
-        <h3>Hypermarket</h3>
+        <h3>🛒 Hypermarket</h3>
       </a>
-
       <a href="GoldiCakesCenter.html" class="storefront-card">
         <img src="kaouther-djouada-hcEDfkiVmMI-unsplash.jpg" alt="Goldicakes" />
-        <h3>Goldicakes</h3>
+        <h3>🍰 Goldicakes</h3>
       </a>
-
       <a href="GenericCenter.html" class="storefront-card">
         <img src="medicines.jpg" alt="Generic Center" />
-        <h3>Generic Center</h3>
+        <h3>💊 Generic Center</h3>
       </a>
-
       <a href="InasalCenter.html" class="storefront-card">
         <img src="claudio-schwarz-4qJlXK4mYzU-unsplash.jpg" alt="Inasal Center" />
-        <h3>Inasal Center</h3>
+        <h3>🔥 Inasal Center</h3>
       </a>
-
     </div>
   </section>
 
@@ -222,6 +280,14 @@
   </footer>
 
   <a class="whatsapp-float" href="https://wa.me/63XXXXXXXXXX" target="_blank" aria-label="Chat via WhatsApp">💬</a>
+
+  <script>
+    const toggle = document.getElementById("theme-toggle");
+    toggle.addEventListener("click", () => {
+      const html = document.documentElement;
+      html.setAttribute("data-theme", html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  </script>
 
 </body>
 </html>
