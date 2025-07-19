@@ -3,196 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PasaBuy Order – Dala🚲Na</title>
+  <title>PasaBuy Order Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #fff;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      max-width: 480px;
+      width: 100%;
       padding: 20px;
-      color: #222;
-    }
-    h1 {
-      text-align: center;
-    }
-    .form-section, .cart-section {
-      margin-bottom: 20px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     }
     input, textarea, select, button {
       width: 100%;
+      margin: 10px 0;
       padding: 10px;
-      margin: 8px 0;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      font-size: 16px;
     }
-    .item-row {
+    .flex-row {
       display: flex;
       gap: 10px;
     }
-    .item-row input {
+    .flex-row > * {
       flex: 1;
     }
-    #items-container {
-      margin-bottom: 10px;
+    .sticky-footer {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      padding: 10px 0;
     }
-    .summary {
+    #cart-summary {
       font-weight: bold;
-      margin-top: 10px;
+      text-align: right;
     }
-    #walletModal {
+    #qrModal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
+      z-index: 999;
     }
-    #walletModalContent {
-      background: white;
-      padding: 20px;
+    #qrModal img {
+      max-width: 90%;
       border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>🛒 PasaBuy – Handumanan Only</h1>
+<div class="container">
+  <h2>PasaBuy Order</h2>
+  <input type="text" id="name" placeholder="Your Name" required />
+  <input type="tel" id="phone" placeholder="Phone Number" required />
+  <textarea id="address" placeholder="Address"></textarea>
 
-  <div class="form-section">
-    <label>Full Name</label>
-    <input type="text" id="customerName" required />
-
-    <label>Phone Number</label>
-    <input type="tel" id="customerPhone" required />
-
-    <label>Exact Address / Landmark</label>
-    <textarea id="customerAddress" required></textarea>
-
-    <label>Delivery Date</label>
-    <input type="date" id="deliveryDate" readonly value="" />
-    <label><input type="checkbox" id="deliverLaterToggle" /> Deliver later</label>
+  <div class="flex-row">
+    <input type="text" id="geo" placeholder="Geo Location (Click 📍)" readonly />
+    <button onclick="getGeoLocation()">📍</button>
   </div>
 
-  <div class="form-section">
-    <h3>🛍️ Add Items</h3>
-    <div id="items-container"></div>
-    <button onclick="addItem()">Add Item</button>
+  <textarea id="items" placeholder="List items you want to order (with quantity)"></textarea>
+  <select id="budget">
+    <option value="">Select Your Max Budget</option>
+    <option value="300">₱300</option>
+    <option value="500">₱500</option>
+    <option value="1000">₱1000</option>
+  </select>
+
+  <div class="flex-row">
+    <input type="text" id="deliveryDate" value="Today" readonly />
+    <label><input type="checkbox" id="deliverLater" onchange="toggleDeliveryDate()" /> Deliver Later</label>
   </div>
 
-  <div class="cart-section">
-    <h3>💵 Order Summary</h3>
-    <div id="summaryList"></div>
-    <p class="summary">Subtotal: ₱<span id="subtotal">0.00</span></p>
-    <p class="summary">Delivery Fee: ₱29.99</p>
-    <p class="summary">Service Fee: ₱10.01</p>
-    <p class="summary">Total: ₱<span id="total">0.00</span></p>
-    <p class="summary">Required Downpayment (50%): ₱<span id="downpayment">0.00</span></p>
-  </div>
+  <div id="cart-summary"></div>
 
-  <div class="form-section">
-    <label>Payment Method</label>
-    <select id="paymentMethod">
-      <option value="wallet">Wallet Top-up</option>
-      <option value="cod">Cash on Delivery (Full)</option>
-    </select>
-    <button onclick="showWalletModal()">Show Wallet QR</button>
-  </div>
+  <button onclick="showQRModal()">💳 Pay 50% Downpayment</button>
+  <button onclick="submitOrder()">📤 Submit to WhatsApp</button>
+</div>
 
-  <div style="text-align:center">
-    <button onclick="submitOrder()">✅ Submit Order</button>
-  </div>
+<div id="qrModal" onclick="this.style.display='none'">
+  <img src="https://via.placeholder.com/300x300.png?text=GCash+or+PayMaya+QR" alt="QR Code" />
+</div>
 
-  <div id="walletModal">
-    <div id="walletModalContent">
-      <h3>📱 Wallet Top-up QR</h3>
-      <p>Send 50% downpayment to:</p>
-      <img src="qr-gcash.png" alt="GCash QR" style="width:200px;" />
-      <p><strong>0927-XXXX-XXX</strong> – GCash</p>
-      <button onclick="hideWalletModal()">Close</button>
-    </div>
-  </div>
+<script>
+function toggleDeliveryDate() {
+  const checkbox = document.getElementById("deliverLater");
+  document.getElementById("deliveryDate").readOnly = !checkbox.checked;
+  if (!checkbox.checked) document.getElementById("deliveryDate").value = "Today";
+}
 
-  <script>
-    let deliveryFee = 29.99;
-    let serviceFee = 10.01;
-    document.getElementById('deliveryDate').value = new Date().toISOString().split('T')[0];
+function getGeoLocation() {
+  if (!navigator.geolocation) return alert("Geolocation not supported");
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+    const data = await res.json();
+    const place = data.address?.suburb || data.address?.neighbourhood || data.display_name;
+    document.getElementById("geo").value = `${place} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+  }, err => alert("Location error: " + err.message));
+}
 
-    document.getElementById('deliverLaterToggle').addEventListener('change', (e) => {
-      document.getElementById('deliveryDate').disabled = !e.target.checked;
-    });
+function showQRModal() {
+  document.getElementById("qrModal").style.display = 'flex';
+}
 
-    function addItem() {
-      const container = document.getElementById('items-container');
-      const row = document.createElement('div');
-      row.className = 'item-row';
-      row.innerHTML = `
-        <input type="text" placeholder="Item name" class="item-name" required />
-        <input type="number" placeholder="Qty" min="1" value="1" class="item-qty" required />
-        <input type="number" placeholder="Price" min="0" class="item-price" required />
-      `;
-      container.appendChild(row);
-      row.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', calculateTotal);
-      });
-    }
+function calculateSummary() {
+  const serviceFee = 29.99;
+  const deliveryFee = 10.01;
+  const budget = parseFloat(document.getElementById("budget").value || 0);
+  const total = budget + serviceFee + deliveryFee;
+  const down = (total / 2).toFixed(2);
 
-    function calculateTotal() {
-      let subtotal = 0;
-      const items = document.querySelectorAll('.item-row');
-      const summary = document.getElementById('summaryList');
-      summary.innerHTML = '';
-      items.forEach(row => {
-        const name = row.querySelector('.item-name').value;
-        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-        const price = parseFloat(row.querySelector('.item-price').value) || 0;
-        const itemTotal = qty * price;
-        if (name && qty && price) {
-          subtotal += itemTotal;
-          const itemLine = document.createElement('p');
-          itemLine.textContent = `${qty} × ${name} @ ₱${price} = ₱${itemTotal.toFixed(2)}`;
-          summary.appendChild(itemLine);
-        }
-      });
-      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
-      const total = subtotal + deliveryFee + serviceFee;
-      document.getElementById('total').textContent = total.toFixed(2);
-      document.getElementById('downpayment').textContent = (total / 2).toFixed(2);
-    }
+  document.getElementById("cart-summary").innerHTML = `
+    Budget: ₱${budget.toFixed(2)}<br>
+    + Service Fee: ₱${serviceFee.toFixed(2)}<br>
+    + Delivery Fee: ₱${deliveryFee.toFixed(2)}<br>
+    <b>Total: ₱${total.toFixed(2)}</b><br>
+    <span style="color: green">💰 Downpayment: ₱${down}</span>
+  `;
 
-    function showWalletModal() {
-      document.getElementById('walletModal').style.display = 'flex';
-    }
+  return { total: total.toFixed(2), down };
+}
 
-    function hideWalletModal() {
-      document.getElementById('walletModal').style.display = 'none';
-    }
+document.getElementById("budget").addEventListener("change", calculateSummary);
 
-    function submitOrder() {
-      const name = document.getElementById('customerName').value;
-      const phone = document.getElementById('customerPhone').value;
-      const address = document.getElementById('customerAddress').value;
-      const deliveryDate = document.getElementById('deliveryDate').value;
-      const method = document.getElementById('paymentMethod').value;
+function submitOrder() {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+  const items = document.getElementById("items").value;
+  const geo = document.getElementById("geo").value;
+  const delivery = document.getElementById("deliveryDate").value;
+  const budget = document.getElementById("budget").value;
+  const { total, down } = calculateSummary();
 
-      const items = Array.from(document.querySelectorAll('.item-row')).map(row => {
-        return `${row.querySelector('.item-qty').value}x ${row.querySelector('.item-name').value}`;
-      }).join(', ');
+  const message = `PASABUY ORDER\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nLocation: ${geo}\nDelivery: ${delivery}\n\nItems:\n${items}\n\nBudget: ₱${budget}\nService Fee: ₱29.99\nDelivery Fee: ₱10.01\nTotal: ₱${total}\nDownpayment (50%): ₱${down}`;
 
-      const total = document.getElementById('total').textContent;
-      const down = document.getElementById('downpayment').textContent;
-
-      const message = `Hello Admin/Rider! 🛒 New PasaBuy Order\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nDelivery Date: ${deliveryDate}\n\nItems: ${items}\nTotal: ₱${total}\nDownpayment: ₱${down}\nPayment Method: ${method}`;
-
-      const adminNumber = '63XXXXXXXXXX';
-      const riderNumber = '63YYYYYYYYYY';
-      const encodedMsg = encodeURIComponent(message);
-
-      window.open(`https://wa.me/${adminNumber}?text=${encodedMsg}`);
-      window.open(`https://wa.me/${riderNumber}?text=${encodedMsg}`);
-    }
-  </script>
+  const url = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
+</script>
 </body>
 </html>
