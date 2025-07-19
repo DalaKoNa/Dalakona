@@ -104,7 +104,7 @@
     <div id="items-container"></div>
     <button type="button" onclick="addItem()">➕ Add Item</button>
 
-    <label>Budget (₱) *</label>
+    <label>Estimated Total (₱) *</label>
     <input type="number" id="budget" min="1" max="3000" required />
 
     <label>Delivery Type *</label>
@@ -216,7 +216,7 @@
       const msg = `📦 *PasaBuy Order* #${confirmationNumber}%0A%0A` +
         `*Store:* ${store}%0A` +
         `*Items:*%0A${items}%0A` +
-        `*Budget:* ₱${document.getElementById('budget').value}%0A` +
+        `*Estimated Total:* ₱${document.getElementById('budget').value}%0A` +
         `*Delivery:* ${deliveryDate} at ${deliveryTime}%0A` +
         `*Location:* ${geo}%0A` +
         `*Name:* ${name}%0A*Phone:* ${phone}%0A` +
