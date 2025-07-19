@@ -3,44 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲na – PasaBuy Order</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>PasaBuy Order Form</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f7f7f7;
+      font-family: Arial, sans-serif;
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      align-items: center;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 2rem;
     }
     .container {
       background: white;
       padding: 2rem;
-      max-width: 600px;
+      border-radius: 8px;
       width: 100%;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      border-radius: 12px;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h1 {
-      font-size: 1.5rem;
+    h2 {
       text-align: center;
-      margin-bottom: 1rem;
     }
     label {
+      font-weight: bold;
       display: block;
-      font-weight: 600;
       margin-top: 1rem;
     }
     input, select, textarea, button {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.75rem;
       margin-top: 0.5rem;
-      font-size: 1rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 5px;
+      font-size: 1rem;
     }
     .item-group {
       display: flex;
@@ -50,52 +46,38 @@
     .item-group input {
       flex: 1;
     }
-    .item-group button {
-      flex: 0 0 auto;
-      padding: 0.5rem 0.7rem;
-      background: #dc3545;
+    .remove-item-btn {
+      background-color: #e74c3c;
       color: white;
       border: none;
-      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .row {
-      display: flex;
-      gap: 1rem;
-    }
-    .row > div {
-      flex: 1;
-    }
-    button[type="submit"] {
-      background: #007bff;
-      color: white;
-      margin-top: 2rem;
-      font-weight: bold;
-    }
-    .hidden { display: none; }
-    .summary {
+    #items-container {
       margin-top: 1rem;
-      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Dala🚲Na PasaBuy</h1>
-    <form id="pasabuyForm">
+    <h2>🛒 PasaBuy Order Form</h2>
+    <form id="orderForm">
+
       <label>Customer Name *</label>
       <input type="text" id="customerName" required />
 
       <label>Phone Number *</label>
       <input type="tel" id="customerPhone" required />
 
-      <label>Address *</label>
-      <input type="text" id="customerAddress" required />
+      <label>Email *</label>
+      <input type="email" id="customerEmail" required />
 
       <label>Store *</label>
-      <select id="storeSelect" required>
-        <option value="">Select Store</option>
+      <select id="store" required>
+        <option value="">-- Select Store --</option>
         <option>Handumanan Hypermarket</option>
-        <option>Chooks to Go</option>
+        <option>Chooks To Go</option>
         <option>Uling Rooster</option>
         <option>Goldilocks</option>
         <option>The Generics Pharmacy</option>
@@ -106,41 +88,47 @@
         <option>Joe Joe's Chicken</option>
         <option>JDE Hardware and Construction Supply</option>
         <option>Sabon Depot</option>
-        <option>Others (Specify Below)</option>
+        <option>Mr. DIY</option>
+        <option>Others (Please Specify Below)</option>
       </select>
-      <input type="text" id="otherStore" placeholder="If others, specify here..." />
+
+      <label>If "Others", specify</label>
+      <input type="text" id="otherStore" />
 
       <label>Items to Buy *</label>
       <div id="items-container"></div>
-      <button type="button" onclick="addItem()">+ Add Item</button>
+      <button type="button" onclick="addItem()">➕ Add Item</button>
+
+      <label>Exact Address *</label>
+      <textarea id="address" placeholder="e.g. Purok Masinadyahon, Brgy. Handumanan, Bacolod City" required></textarea>
+
+      <label>Detected Location *</label>
+      <input type="text" id="geoLocation" required />
 
       <label>Delivery Type *</label>
       <select id="deliveryType" required onchange="toggleDeliveryFields()">
-        <option value="">Select Delivery Option</option>
-        <option value="today">Today (within 1 hour)</option>
+        <option value="">-- Select --</option>
+        <option value="today">Today (Within 1 hour)</option>
         <option value="later">Deliver Later</option>
       </select>
 
-      <div id="laterFields" class="hidden">
-        <label>Delivery Date *</label>
-        <input type="date" id="deliveryDate" />
+      <label>Delivery Date *</label>
+      <input type="date" id="deliveryDate" required />
 
-        <label>Delivery Time *</label>
-        <input type="time" id="deliveryTime" />
-      </div>
+      <label>Delivery Time *</label>
+      <input type="time" id="deliveryTime" required />
 
-      <label>Estimated Budget (₱) *</label>
-      <input type="number" id="budget" min="1" max="3000" required oninput="calculateDownpayment()" />
+      <label>Budget (₱, max 3000) *</label>
+      <input type="number" id="budget" max="3000" min="1" required />
 
-      <div class="summary" id="summaryBox"></div>
+      <label>Downpayment Bank Details *</label>
+      <input type="text" id="bankDetails" placeholder="e.g. GCash 0917XXXXXXX" required />
 
-      <label>Bank Transfer Details</label>
-      <p>Pay to GCash/PayMaya: 0917-XXX-XXXX (Dala Ko Na)</p>
+      <label>Proof of Deposit *</label>
+      <input type="file" id="depositProof" required />
 
-      <label>Upload Proof of Deposit *</label>
-      <input type="file" id="proofUpload" required />
-
-      <button type="submit">Submit Order</button>
+      <br /><br />
+      <button type="submit">📤 Submit via WhatsApp</button>
     </form>
   </div>
 
@@ -151,72 +139,83 @@
       itemGroup.className = 'item-group';
       itemGroup.innerHTML = `
         <input type="text" name="itemName[]" placeholder="Item name" value="${name}" required />
-        <input type="number" name="itemQty[]" placeholder="Qty" min="1" value="${qty}" required />
-        <button type="button" onclick="this.parentElement.remove()">🗑</button>
+        <input type="number" name="itemQty[]" placeholder="Qty" value="${qty}" min="1" required />
+        <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">🗑</button>
       `;
       container.appendChild(itemGroup);
     }
 
     function toggleDeliveryFields() {
       const type = document.getElementById('deliveryType').value;
-      const laterFields = document.getElementById('laterFields');
-      if (type === 'later') {
-        laterFields.classList.remove('hidden');
+      const dateField = document.getElementById('deliveryDate');
+      const timeField = document.getElementById('deliveryTime');
+      const now = new Date();
+      if (type === 'today') {
+        const todayStr = now.toISOString().split('T')[0];
+        dateField.value = todayStr;
+        dateField.readOnly = true;
+
+        let hour = now.getHours() + 1;
+        if (hour >= 24) hour = 23;
+        timeField.value = `${hour.toString().padStart(2, '0')}:00`;
+        timeField.readOnly = true;
       } else {
-        laterFields.classList.add('hidden');
+        dateField.readOnly = false;
+        timeField.readOnly = false;
+        dateField.value = '';
+        timeField.value = '';
       }
     }
 
-    function calculateDownpayment() {
-      const budget = parseFloat(document.getElementById('budget').value);
-      if (!isNaN(budget)) {
-        const down = (budget * 0.5).toFixed(2);
-        document.getElementById('summaryBox').innerHTML = `
-          Total Estimate: ₱${budget.toFixed(2)}<br>
-          Downpayment Required: ₱${down}`;
-      }
-    }
-
-    document.getElementById('pasabuyForm').addEventListener('submit', function(e) {
+    document.getElementById('orderForm').addEventListener('submit', function (e) {
       e.preventDefault();
+
+      const confirmationCode = 'DALA' + Math.floor(100000 + Math.random() * 900000);
       const name = document.getElementById('customerName').value;
       const phone = document.getElementById('customerPhone').value;
-      const address = document.getElementById('customerAddress').value;
-      const store = document.getElementById('storeSelect').value || document.getElementById('otherStore').value;
-      const type = document.getElementById('deliveryType').value;
-      const budget = document.getElementById('budget').value;
-
-      let items = '';
-      document.querySelectorAll('#items-container .item-group').forEach(group => {
-        const item = group.querySelector('input[name="itemName[]"]').value;
+      const email = document.getElementById('customerEmail').value;
+      const store = document.getElementById('store').value === 'Others (Please Specify Below)'
+        ? document.getElementById('otherStore').value
+        : document.getElementById('store').value;
+      const address = document.getElementById('address').value;
+      const geo = document.getElementById('geoLocation').value;
+      const type = document.getElementById('deliveryType').value === 'today'
+        ? 'Today (within 1 hour)'
+        : 'Deliver Later';
+      const date = document.getElementById('deliveryDate').value;
+      const time = document.getElementById('deliveryTime').value;
+      const budget = parseFloat(document.getElementById('budget').value);
+      const bank = document.getElementById('bankDetails').value;
+      const items = Array.from(document.querySelectorAll('.item-group')).map(group => {
+        const name = group.querySelector('input[name="itemName[]"]').value;
         const qty = group.querySelector('input[name="itemQty[]"]').value;
-        items += `\n- ${item} x${qty}`;
-      });
+        return `- ${name} ×${qty}`;
+      }).join('\n');
 
-      const deliveryDetails = type === 'today' ?
-        'Today (within 1 hour)' :
-        `${document.getElementById('deliveryDate').value} at ${document.getElementById('deliveryTime').value}`;
+      const down = (budget * 0.5).toFixed(2);
+      const total = budget.toFixed(2);
 
-      const message = `
-📦 *New PasaBuy Order*
-👤 Name: ${name}
-📞 Phone: ${phone}
-🏠 Address: ${address}
-🏬 Store: ${store}
-🛒 Items: ${items}
-💰 Budget: ₱${budget}
-🚚 Delivery: ${deliveryDetails}
-📤 Proof of deposit uploaded.
-`;
+      const msg = `🛍️ *New PasaBuy Order* - Confirmation #${confirmationCode}` +
+        `\n\n📍 *Store*: ${store}` +
+        `\n📦 *Items to Buy:*\n${items}` +
+        `\n\n🏠 *Exact Address*: ${address}` +
+        `\n📌 *Detected Location*: ${geo}` +
+        `\n📅 *Delivery Type*: ${type}` +
+        `\n📆 *Delivery Date*: ${date}` +
+        `\n⏰ *Delivery Time*: ${time}` +
+        `\n\n💸 *Budget*: ₱${total}` +
+        `\n🔻 *50% Downpayment*: ₱${down}` +
+        `\n🏦 *Bank Payment*: ${bank}` +
+        `\n📎 *Proof of Deposit*: Attached` +
+        `\n\n👤 *Customer Name*: ${name}` +
+        `\n📞 *Phone*: ${phone}` +
+        `\n📧 *Email*: ${email}` +
+        `\n\n✅ *Status*: Waiting for rider`;
 
-      const encoded = encodeURIComponent(message);
-      window.location.href = `https://wa.me/63XXXXXXXXXX?text=${encoded}`;
-      setTimeout(() => {
-        window.location.href = "pasabuy-thank-you.html";
-      }, 2000);
+      const whatsappUrl = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(msg)}`;
+
+      window.location.href = whatsappUrl;
     });
-
-    window.onload = () => addItem();
   </script>
 </body>
 </html>
