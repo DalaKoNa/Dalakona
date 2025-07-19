@@ -3,73 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dala🚲Na – PasaBuy Form</title>
+  <title>Dala🚲na – Pasabuy Form</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.10/css/pico.min.css">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 1rem;
-      background: #f7f7f7;
-    }
-    .form-container {
-      background: white;
-      max-width: 600px;
-      margin: auto;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      margin: 12px 0 4px;
-      font-weight: bold;
-    }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
     .item-group {
       display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .item-group input[type="text"],
-    .item-group input[type="number"] {
-      flex: 1;
-      min-width: 120px;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     .remove-item-btn {
-      background: #e53e3e;
-      color: white;
+      background: none;
       border: none;
-      padding: 0 10px;
-      border-radius: 5px;
+      color: red;
+      font-size: 1.2rem;
       cursor: pointer;
     }
-    .btn-primary {
-      background-color: #4CAF50;
-      color: white;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
+    #items-container input[type="text"], #items-container input[type="number"] {
+      flex: 1;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>PasaBuy Order Form</h2>
-    
+  <main class="container">
+    <h2>🛒 Dala🚲na – Pasabuy Order</h2>
     <form id="pasabuyForm">
-      <label for="store">Store Name *</label>
-      <select id="store" name="store" required>
-        <option value="" disabled selected>Select store</option>
+
+      <label>📍 Select Store *</label>
+      <select name="store" id="store" required onchange="toggleCustomStore()">
+        <option value="">-- Choose Store --</option>
         <option>Handumanan Hypermarket</option>
         <option>Chooks to Go</option>
         <option>Uling Rooster</option>
@@ -82,114 +43,133 @@
         <option>Joe Joe's Chicken</option>
         <option>JDE Hardware</option>
         <option>Sabon Depot</option>
-        <option>Mr DIY</option>
         <option>Others (specify below)</option>
       </select>
+      <input type="text" id="customStore" name="customStore" placeholder="If others, specify here..." style="display:none;" />
 
-      <label>Exact Store or Other Name (if Others)</label>
-      <input type="text" name="customStore" placeholder="e.g. Nene Store, Barangay Mart..." />
-
-      <label>Items to Buy *</label>
+      <label>🧾 Items to Buy *</label>
       <div id="items-container"></div>
-      <button type="button" onclick="addItem()">➕ Add Item</button>
+      <button type="button" onclick="addItem()">+ Add Item</button>
 
-      <label for="budget">Estimated Total Budget (₱) *</label>
-      <select id="budget" name="budget" required onchange="calculateDownPayment()">
-        <option value="" disabled selected>Select your budget</option>
-        <option value="200">₱200</option>
-        <option value="300">₱300</option>
-        <option value="400">₱400</option>
-        <option value="500">₱500</option>
-        <option value="750">₱750</option>
-        <option value="1000">₱1,000</option>
-        <option value="1500">₱1,500</option>
-        <option value="2000">₱2,000</option>
-        <option value="2500">₱2,500</option>
-        <option value="3000">₱3,000</option>
-      </select>
+      <label>💰 Budget (₱) *</label>
+      <input type="number" id="budget" min="1" max="3000" required />
 
-      <label for="downPayment">Required Downpayment (50%)</label>
-      <input type="text" id="downPayment" readonly placeholder="₱0.00" />
+      <label>📉 Downpayment (50%)</label>
+      <input type="text" id="downpayment" readonly />
 
-      <label>Upload Proof of Deposit *</label>
-      <input type="file" name="depositProof" accept="image/*" required />
+      <label>📸 Proof of Downpayment *</label>
+      <input type="file" id="proof" required />
 
-      <label for="address">Exact Delivery Address *</label>
-      <input type="text" name="address" id="address" placeholder="e.g. Purok Y, Handumanan, Bacolod City" required />
+      <label>📅 Delivery Date *</label>
+      <input type="date" id="deliveryDate" readonly />
 
-      <label for="location">Geo-Location *</label>
-      <input type="text" name="location" id="location" placeholder="Fetching your location..." required readonly />
+      <label>⏰ Delivery Time *</label>
+      <input type="time" id="deliveryTime" readonly />
+      <small><em>Note: Today's orders are targeted to be delivered within 1 hour.</em></small>
 
-      <label>Delivery Date *</label>
-      <input type="date" name="deliveryDate" id="deliveryDate" readonly required />
+      <label>🧑 Your Name *</label>
+      <input type="text" id="customerName" required />
 
-      <label>Delivery Time *</label>
-      <input type="time" name="deliveryTime" id="deliveryTime" readonly required />
+      <label>📞 Phone Number *</label>
+      <input type="text" id="phone" required />
 
-      <label for="notes">Special Instructions</label>
-      <textarea name="notes" placeholder="Leave at the gate, call when outside, etc."></textarea>
+      <label>📍 Exact Location *</label>
+      <input type="text" id="location" placeholder="Fetching your address..." required />
 
-      <button type="submit" class="btn-primary">Submit Order via WhatsApp</button>
+      <button type="submit">📤 Submit Order via WhatsApp</button>
     </form>
-  </div>
+  </main>
 
   <script>
+    const serviceFee = 29.99;
+    const deliveryFee = 10.01;
+
+    function toggleCustomStore() {
+      const store = document.getElementById('store').value;
+      document.getElementById('customStore').style.display = (store === 'Others (specify below)') ? 'block' : 'none';
+    }
+
     function addItem(name = '', qty = '') {
       const container = document.getElementById('items-container');
       const itemGroup = document.createElement('div');
       itemGroup.className = 'item-group';
       itemGroup.innerHTML = `
         <input type="text" name="itemName[]" placeholder="Item name (e.g. Soy Sauce)" value="${name}" required />
-        <input type="number" name="itemQty[]" placeholder="Quantity (e.g. 2)" value="${qty}" min="1" required />
+        <input type="number" name="itemQty[]" placeholder="Qty" value="${qty}" min="1" required />
         <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">🗑</button>
       `;
       container.appendChild(itemGroup);
     }
 
-    function calculateDownPayment() {
+    document.getElementById('budget').addEventListener('input', () => {
       const budget = parseFloat(document.getElementById('budget').value || 0);
-      const down = (budget * 0.5).toFixed(2);
-      document.getElementById('downPayment').value = `₱${down}`;
-    }
+      const total = budget + serviceFee + deliveryFee;
+      const down = (total * 0.5).toFixed(2);
+      document.getElementById('downpayment').value = `₱${down}`;
+    });
 
-    // Auto-fill delivery date/time
-    const today = new Date();
-    const isoDate = today.toISOString().split('T')[0];
-    const hours = today.getHours().toString().padStart(2, '0');
-    const minutes = today.getMinutes().toString().padStart(2, '0');
-    document.getElementById('deliveryDate').value = isoDate;
-    document.getElementById('deliveryTime').value = `${hours}:${minutes}`;
-
-    // Get geolocation
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
-          .then(res => res.json())
-          .then(data => {
-            document.getElementById('location').value = data.display_name || `${position.coords.latitude}, ${position.coords.longitude}`;
-          });
-      });
-    }
-
-    // WhatsApp Submit Handler
-    document.getElementById('pasabuyForm').addEventListener('submit', function(e) {
+    document.getElementById('pasabuyForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const form = new FormData(this);
-      const items = [...form.getAll('itemName[]')].map((item, i) => `- ${item} x${form.getAll('itemQty[]')[i]}`).join('\n');
 
-      const message = `*New PasaBuy Order*\n\n` +
-        `Store: ${form.get('store')}\n` +
-        `Items:\n${items}\n\n` +
+      const form = new FormData(e.target);
+      if (form.get('store') === 'Others (specify below)' && !form.get('customStore')) {
+        alert('Please specify the store name.');
+        return;
+      }
+
+      const items = [...document.querySelectorAll('[name="itemName[]"]')].map((el, i) => {
+        const qty = document.querySelectorAll('[name="itemQty[]"]')[i].value;
+        return `• ${el.value} x${qty}`;
+      }).join('\n');
+
+      const message = `🛒 *New Pasabuy Order*\n\n` +
+        `Store: ${form.get('store') === 'Others (specify below)' ? form.get('customStore') : form.get('store')}\n` +
+        `Items:\n${items}\n` +
         `Budget: ₱${form.get('budget')}\n` +
-        `Downpayment: ${document.getElementById('downPayment').value}\n` +
-        `Address: ${form.get('address')}\n` +
-        `Location: ${form.get('location')}\n` +
-        `Delivery: ${form.get('deliveryDate')} at ${form.get('deliveryTime')}\n\n` +
-        `Notes: ${form.get('notes') || 'None'}\n`;
+        `Downpayment: ${document.getElementById('downpayment').value}\n` +
+        `Delivery: ${form.get('deliveryDate')} @ ${form.get('deliveryTime')}\n` +
+        `Name: ${form.get('customerName')}\n` +
+        `Phone: ${form.get('phone')}\n` +
+        `Location: ${form.get('location')}\n`;
 
       const encoded = encodeURIComponent(message);
       window.open(`https://wa.me/63XXXXXXXXXX?text=${encoded}`, '_blank');
+      setTimeout(() => {
+        window.open(`https://wa.me/63YYYYYYYYYY?text=${encoded}`, '_blank');
+      }, 1000);
+      setTimeout(() => {
+        window.location.href = 'pasabuy-thank-you.html';
+      }, 2000);
     });
+
+    window.onload = () => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('deliveryDate').value = `${yyyy}-${mm}-${dd}`;
+
+      const hour = String(today.getHours()).padStart(2, '0');
+      const minute = String(today.getMinutes()).padStart(2, '0');
+      document.getElementById('deliveryTime').value = `${hour}:${minute}`;
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+            const data = await res.json();
+            document.getElementById('location').value = data.display_name;
+          } catch (err) {
+            console.error(err);
+            document.getElementById('location').placeholder = "Location fetch failed. Enter manually";
+          }
+        });
+      }
+
+      addItem(); // Add first item row
+    };
   </script>
 </body>
 </html>
