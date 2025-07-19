@@ -3,158 +3,208 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PasaBuy Order Form</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>PasaBuy – Handumanan Delivery</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
+      background: #fff;
       margin: 0;
-      background: #f9f9f9;
+      padding: 20px;
       display: flex;
       justify-content: center;
     }
     .container {
-      background: white;
-      max-width: 480px;
+      max-width: 600px;
       width: 100%;
+      border: 1px solid #ddd;
       padding: 20px;
-      margin: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
-    input, textarea, select, button {
+    .field {
+      margin-bottom: 16px;
+    }
+    .field label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .field input, .field textarea, .field select {
       width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 8px;
+      font-size: 1rem;
       border: 1px solid #ccc;
-      font-size: 16px;
+      border-radius: 6px;
     }
-    .flex-row {
+    .items-container {
+      margin-bottom: 20px;
+    }
+    .item-row {
       display: flex;
       gap: 10px;
+      margin-bottom: 10px;
     }
-    .flex-row > * {
+    .item-row input {
       flex: 1;
     }
-    .sticky-footer {
-      position: sticky;
-      bottom: 0;
-      background: white;
-      padding: 10px 0;
+    .proof-preview {
+      margin-top: 10px;
+      max-width: 100%;
+      max-height: 150px;
     }
-    #cart-summary {
-      font-weight: bold;
-      text-align: right;
-    }
-    #qrModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    #qrModal img {
-      max-width: 90%;
-      border-radius: 10px;
+    button {
+      background-color: #333;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h2>PasaBuy Order</h2>
-  <input type="text" id="name" placeholder="Your Name" required />
-  <input type="tel" id="phone" placeholder="Phone Number" required />
-  <textarea id="address" placeholder="Address"></textarea>
+  <div class="container">
+    <h2>PasaBuy Order – Handumanan Only</h2>
+    <form id="orderForm">
+      <div class="field">
+        <label for="customerName">Full Name</label>
+        <input type="text" id="customerName" required />
+      </div>
+      <div class="field">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="tel" id="phoneNumber" required />
+      </div>
+      <div class="field">
+        <label for="address">Exact Address (Handumanan only)</label>
+        <input type="text" id="address" required />
+      </div>
+      <div class="field">
+        <label>Items to Buy</label>
+        <div class="items-container" id="itemsContainer"></div>
+        <button type="button" onclick="addItem()">+ Add Item</button>
+      </div>
 
-  <div class="flex-row">
-    <input type="text" id="geo" placeholder="Geo Location (Click 📍)" readonly />
-    <button onclick="getGeoLocation()">📍</button>
+      <div class="field">
+        <label for="deliveryOption">Delivery Option</label>
+        <select id="deliveryOption" required onchange="toggleDeliveryTime()">
+          <option value="today">Deliver Today</option>
+          <option value="later">Deliver Later</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="deliveryDate">Delivery Date</label>
+        <input type="date" id="deliveryDate" required disabled />
+      </div>
+      <div class="field">
+        <label for="deliveryTime">Delivery Time</label>
+        <input type="time" id="deliveryTime" required disabled />
+      </div>
+
+      <div class="field">
+        <label for="budget">Budget Estimate (₱)</label>
+        <input type="number" id="budget" required />
+      </div>
+
+      <div class="field">
+        <label for="depositProof">Upload Proof of 50% Downpayment</label>
+        <input type="file" id="depositProof" accept="image/*" required />
+        <img id="proofPreview" class="proof-preview" />
+      </div>
+
+      <div class="field">
+        <strong>Total (est.): ₱<span id="totalEstimate">0</span></strong><br/>
+        <strong>Downpayment (50%): ₱<span id="downPayment">0</span></strong><br/>
+        <small>+ Service Fee ₱29.99 & Delivery Fee ₱10.01 already included</small>
+      </div>
+
+      <div class="field">
+        <strong>Bank Details:</strong>
+        <p>BPI<br/>Account Name: Dala Ko Na Service<br/>Account #: 1234-5678-90</p>
+      </div>
+
+      <button type="submit">Submit Order via WhatsApp</button>
+    </form>
   </div>
 
-  <textarea id="items" placeholder="List items you want to order (with quantity)"></textarea>
-  <select id="budget">
-    <option value="">Select Your Max Budget</option>
-    <option value="300">₱300</option>
-    <option value="500">₱500</option>
-    <option value="1000">₱1000</option>
-  </select>
+  <script>
+    const itemsContainer = document.getElementById('itemsContainer');
+    const deliveryOption = document.getElementById('deliveryOption');
+    const deliveryDate = document.getElementById('deliveryDate');
+    const deliveryTime = document.getElementById('deliveryTime');
 
-  <div class="flex-row">
-    <input type="text" id="deliveryDate" value="Today" readonly />
-    <label><input type="checkbox" id="deliverLater" onchange="toggleDeliveryDate()" /> Deliver Later</label>
-  </div>
+    function toggleDeliveryTime() {
+      if (deliveryOption.value === 'later') {
+        deliveryDate.disabled = false;
+        deliveryTime.disabled = false;
+        const today = new Date();
+        deliveryDate.min = today.toISOString().split('T')[0];
+        deliveryTime.min = '09:00';
+        deliveryTime.max = '18:00';
+      } else {
+        deliveryDate.disabled = true;
+        deliveryTime.disabled = true;
+      }
+    }
 
-  <div id="cart-summary"></div>
+    function addItem() {
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Item name" required />
+        <input type="number" placeholder="Qty" min="1" value="1" required />
+        <input type="text" placeholder="Notes (optional)" />
+      `;
+      itemsContainer.appendChild(row);
+    }
 
-  <button onclick="showQRModal()">💳 Pay 50% Downpayment</button>
-  <button onclick="submitOrder()">📤 Submit to WhatsApp</button>
-</div>
+    document.getElementById('depositProof').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const preview = document.getElementById('proofPreview');
+      if (file) preview.src = URL.createObjectURL(file);
+    });
 
-<div id="qrModal" onclick="this.style.display='none'">
-  <img src="https://via.placeholder.com/300x300.png?text=GCash+or+PayMaya+QR" alt="QR Code" />
-</div>
+    document.getElementById('budget').addEventListener('input', updateTotals);
 
-<script>
-function toggleDeliveryDate() {
-  const checkbox = document.getElementById("deliverLater");
-  document.getElementById("deliveryDate").readOnly = !checkbox.checked;
-  if (!checkbox.checked) document.getElementById("deliveryDate").value = "Today";
-}
+    function updateTotals() {
+      const budget = parseFloat(document.getElementById('budget').value || 0);
+      const total = budget + 29.99 + 10.01;
+      const down = total * 0.5;
+      document.getElementById('totalEstimate').textContent = total.toFixed(2);
+      document.getElementById('downPayment').textContent = down.toFixed(2);
+    }
 
-function getGeoLocation() {
-  if (!navigator.geolocation) return alert("Geolocation not supported");
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
-    const data = await res.json();
-    const place = data.address?.suburb || data.address?.neighbourhood || data.display_name;
-    document.getElementById("geo").value = `${place} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-  }, err => alert("Location error: " + err.message));
-}
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-function showQRModal() {
-  document.getElementById("qrModal").style.display = 'flex';
-}
+      const name = document.getElementById('customerName').value;
+      const phone = document.getElementById('phoneNumber').value;
+      const address = document.getElementById('address').value;
+      const budget = document.getElementById('budget').value;
+      const proof = document.getElementById('depositProof').files[0];
+      const delivery = deliveryOption.value;
+      const date = delivery === 'later' ? deliveryDate.value : 'Today';
+      const time = delivery === 'later' ? deliveryTime.value : 'ASAP';
 
-function calculateSummary() {
-  const serviceFee = 29.99;
-  const deliveryFee = 10.01;
-  const budget = parseFloat(document.getElementById("budget").value || 0);
-  const total = budget + serviceFee + deliveryFee;
-  const down = (total / 2).toFixed(2);
+      let itemsText = '';
+      const rows = itemsContainer.querySelectorAll('.item-row');
+      rows.forEach(row => {
+        const [item, qty, notes] = row.querySelectorAll('input');
+        itemsText += `• ${item.value} x${qty.value}${notes.value ? ` (${notes.value})` : ''}\n`;
+      });
 
-  document.getElementById("cart-summary").innerHTML = `
-    Budget: ₱${budget.toFixed(2)}<br>
-    + Service Fee: ₱${serviceFee.toFixed(2)}<br>
-    + Delivery Fee: ₱${deliveryFee.toFixed(2)}<br>
-    <b>Total: ₱${total.toFixed(2)}</b><br>
-    <span style="color: green">💰 Downpayment: ₱${down}</span>
-  `;
+      const message = `PasaBuy Order:\n👤 ${name}\n📞 ${phone}\n📍 ${address}\n\n🛒 Items:\n${itemsText}\n📅 Delivery: ${date} ${time}\n💵 Budget: ₱${budget}\n📑 Downpayment: Proof Uploaded\n🏦 Sent to Bank\n💰 Total est.: ₱${(parseFloat(budget) + 29.99 + 10.01).toFixed(2)}\n🚚 Service ₱29.99 + Delivery ₱10.01`;
 
-  return { total: total.toFixed(2), down };
-}
+      const encoded = encodeURIComponent(message);
+      const adminWhatsApp = `https://wa.me/63XXXXXXXXXX?text=${encoded}`;
+      const riderWhatsApp = `https://wa.me/63YYYYYYYYYY?text=${encoded}`;
+      window.open(adminWhatsApp, '_blank');
+      window.open(riderWhatsApp, '_blank');
+    });
 
-document.getElementById("budget").addEventListener("change", calculateSummary);
-
-function submitOrder() {
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const address = document.getElementById("address").value;
-  const items = document.getElementById("items").value;
-  const geo = document.getElementById("geo").value;
-  const delivery = document.getElementById("deliveryDate").value;
-  const budget = document.getElementById("budget").value;
-  const { total, down } = calculateSummary();
-
-  const message = `PASABUY ORDER\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nLocation: ${geo}\nDelivery: ${delivery}\n\nItems:\n${items}\n\nBudget: ₱${budget}\nService Fee: ₱29.99\nDelivery Fee: ₱10.01\nTotal: ₱${total}\nDownpayment (50%): ₱${down}`;
-
-  const url = `https://wa.me/63XXXXXXXXXX?text=${encodeURIComponent(message)}`;
-  window.open(url, '_blank');
-}
-</script>
+    // Add 1 item on load
+    addItem();
+  </script>
 </body>
 </html>
