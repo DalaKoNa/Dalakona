@@ -2,209 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PasaBuy – Handumanan Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dala🚲Na - PasaBuy Order</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
+      font-family: sans-serif;
+      margin: 0; padding: 1rem;
+      background: #ffffff;
+      max-width: 480px;
+      margin: auto;
     }
-    .container {
-      max-width: 600px;
-      width: 100%;
-      border: 1px solid #ddd;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .field {
-      margin-bottom: 16px;
-    }
-    .field label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .field input, .field textarea, .field select {
-      width: 100%;
-      padding: 8px;
-      font-size: 1rem;
+    h2 { text-align: center; }
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    input, textarea, select {
+      padding: 0.6rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-    }
-    .items-container {
-      margin-bottom: 20px;
-    }
-    .item-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .item-row input {
-      flex: 1;
-    }
-    .proof-preview {
-      margin-top: 10px;
-      max-width: 100%;
-      max-height: 150px;
-    }
-    button {
-      background-color: #333;
-      color: #fff;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
       width: 100%;
+    }
+    label { font-weight: bold; }
+    .hidden { display: none; }
+    .notice {
+      background: #f0f8ff;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .btn {
+      background: #00b894;
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: 0.2s ease;
+    }
+    .btn:hover {
+      background: #019875;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>PasaBuy Order – Handumanan Only</h2>
-    <form id="orderForm">
-      <div class="field">
-        <label for="customerName">Full Name</label>
-        <input type="text" id="customerName" required />
-      </div>
-      <div class="field">
-        <label for="phoneNumber">Phone Number</label>
-        <input type="tel" id="phoneNumber" required />
-      </div>
-      <div class="field">
-        <label for="address">Exact Address (Handumanan only)</label>
-        <input type="text" id="address" required />
-      </div>
-      <div class="field">
-        <label>Items to Buy</label>
-        <div class="items-container" id="itemsContainer"></div>
-        <button type="button" onclick="addItem()">+ Add Item</button>
-      </div>
 
-      <div class="field">
-        <label for="deliveryOption">Delivery Option</label>
-        <select id="deliveryOption" required onchange="toggleDeliveryTime()">
-          <option value="today">Deliver Today</option>
-          <option value="later">Deliver Later</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="deliveryDate">Delivery Date</label>
-        <input type="date" id="deliveryDate" required disabled />
-      </div>
-      <div class="field">
-        <label for="deliveryTime">Delivery Time</label>
-        <input type="time" id="deliveryTime" required disabled />
-      </div>
+<h2>🛒 PasaBuy Order (Handumanan)</h2>
 
-      <div class="field">
-        <label for="budget">Budget Estimate (₱)</label>
-        <input type="number" id="budget" required />
-      </div>
+<form id="pasabuyForm" enctype="multipart/form-data">
 
-      <div class="field">
-        <label for="depositProof">Upload Proof of 50% Downpayment</label>
-        <input type="file" id="depositProof" accept="image/*" required />
-        <img id="proofPreview" class="proof-preview" />
-      </div>
+  <label>Customer Name</label>
+  <input type="text" name="name" required />
 
-      <div class="field">
-        <strong>Total (est.): ₱<span id="totalEstimate">0</span></strong><br/>
-        <strong>Downpayment (50%): ₱<span id="downPayment">0</span></strong><br/>
-        <small>+ Service Fee ₱29.99 & Delivery Fee ₱10.01 already included</small>
-      </div>
+  <label>Phone Number</label>
+  <input type="tel" name="phone" required />
 
-      <div class="field">
-        <strong>Bank Details:</strong>
-        <p>BPI<br/>Account Name: Dala Ko Na Service<br/>Account #: 1234-5678-90</p>
-      </div>
+  <label>Exact Address</label>
+  <input type="text" name="address" required />
 
-      <button type="submit">Submit Order via WhatsApp</button>
-    </form>
+  <label>Exact Location Name (Auto)</label>
+  <input type="text" id="exactLocation" name="locationName" required placeholder="Tap to auto-detect" />
+
+  <label>List of Items</label>
+  <textarea name="items" required placeholder="e.g. 1kg rice, 2 cans tuna..."></textarea>
+
+  <label>Total Budget (₱)</label>
+  <input type="number" id="budget" name="budget" required min="1" />
+
+  <label>Quantity of Items</label>
+  <input type="number" name="quantity" required min="1" />
+
+  <label>Delivery Option</label>
+  <label><input type="radio" name="deliveryType" value="today" checked> Deliver Today (within 1 hour)</label>
+  <label><input type="radio" name="deliveryType" value="later"> Deliver Later</label>
+
+  <div id="laterSchedule" class="hidden">
+    <label>Choose Date</label>
+    <input type="date" id="laterDate" name="laterDate" />
+    <label>Choose Time</label>
+    <input type="time" id="laterTime" name="laterTime" />
   </div>
 
-  <script>
-    const itemsContainer = document.getElementById('itemsContainer');
-    const deliveryOption = document.getElementById('deliveryOption');
-    const deliveryDate = document.getElementById('deliveryDate');
-    const deliveryTime = document.getElementById('deliveryTime');
+  <label>Proof of Deposit (Image)</label>
+  <input type="file" name="depositProof" accept="image/*" required />
 
-    function toggleDeliveryTime() {
-      if (deliveryOption.value === 'later') {
-        deliveryDate.disabled = false;
-        deliveryTime.disabled = false;
-        const today = new Date();
-        deliveryDate.min = today.toISOString().split('T')[0];
-        deliveryTime.min = '09:00';
-        deliveryTime.max = '18:00';
-      } else {
-        deliveryDate.disabled = true;
-        deliveryTime.disabled = true;
-      }
-    }
+  <label>50% Downpayment (Auto)</label>
+  <input type="text" id="downpayment" readonly />
 
-    function addItem() {
-      const row = document.createElement('div');
-      row.className = 'item-row';
-      row.innerHTML = `
-        <input type="text" placeholder="Item name" required />
-        <input type="number" placeholder="Qty" min="1" value="1" required />
-        <input type="text" placeholder="Notes (optional)" />
-      `;
-      itemsContainer.appendChild(row);
-    }
+  <div class="notice">
+    Please deposit 50% of your budget to:<br />
+    <strong>GCash: 0917-XXXXXXX</strong><br/>
+    Send proof above.
+  </div>
 
-    document.getElementById('depositProof').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      const preview = document.getElementById('proofPreview');
-      if (file) preview.src = URL.createObjectURL(file);
+  <button type="submit" class="btn">Submit Order</button>
+</form>
+
+<script>
+  // Toggle delivery schedule
+  document.querySelectorAll('[name="deliveryType"]').forEach(el => {
+    el.addEventListener('change', () => {
+      const later = document.querySelector('[name="deliveryType"]:checked').value === "later";
+      document.getElementById("laterSchedule").classList.toggle("hidden", !later);
     });
+  });
 
-    document.getElementById('budget').addEventListener('input', updateTotals);
-
-    function updateTotals() {
-      const budget = parseFloat(document.getElementById('budget').value || 0);
-      const total = budget + 29.99 + 10.01;
-      const down = total * 0.5;
-      document.getElementById('totalEstimate').textContent = total.toFixed(2);
-      document.getElementById('downPayment').textContent = down.toFixed(2);
-    }
-
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('customerName').value;
-      const phone = document.getElementById('phoneNumber').value;
-      const address = document.getElementById('address').value;
-      const budget = document.getElementById('budget').value;
-      const proof = document.getElementById('depositProof').files[0];
-      const delivery = deliveryOption.value;
-      const date = delivery === 'later' ? deliveryDate.value : 'Today';
-      const time = delivery === 'later' ? deliveryTime.value : 'ASAP';
-
-      let itemsText = '';
-      const rows = itemsContainer.querySelectorAll('.item-row');
-      rows.forEach(row => {
-        const [item, qty, notes] = row.querySelectorAll('input');
-        itemsText += `• ${item.value} x${qty.value}${notes.value ? ` (${notes.value})` : ''}\n`;
+  // Autofill exact location
+  window.addEventListener("load", () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const data = await res.json();
+        document.getElementById("exactLocation").value = data.display_name || '';
       });
+    }
+  });
 
-      const message = `PasaBuy Order:\n👤 ${name}\n📞 ${phone}\n📍 ${address}\n\n🛒 Items:\n${itemsText}\n📅 Delivery: ${date} ${time}\n💵 Budget: ₱${budget}\n📑 Downpayment: Proof Uploaded\n🏦 Sent to Bank\n💰 Total est.: ₱${(parseFloat(budget) + 29.99 + 10.01).toFixed(2)}\n🚚 Service ₱29.99 + Delivery ₱10.01`;
+  // Auto-calculate downpayment
+  document.getElementById("budget").addEventListener("input", (e) => {
+    const budget = parseFloat(e.target.value);
+    const down = budget * 0.5 + 29.99 + 10.01; // budget x 50% + service + delivery
+    document.getElementById("downpayment").value = "₱" + down.toFixed(2);
+  });
 
-      const encoded = encodeURIComponent(message);
-      const adminWhatsApp = `https://wa.me/63XXXXXXXXXX?text=${encoded}`;
-      const riderWhatsApp = `https://wa.me/63YYYYYYYYYY?text=${encoded}`;
-      window.open(adminWhatsApp, '_blank');
-      window.open(riderWhatsApp, '_blank');
-    });
+  // WhatsApp & Airtable Integration
+  document.getElementById("pasabuyForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    // Add 1 item on load
-    addItem();
-  </script>
+    const form = e.target;
+    const name = form.name.value;
+    const phone = form.phone.value;
+    const address = form.address.value;
+    const locationName = form.locationName.value;
+    const items = form.items.value;
+    const budget = form.budget.value;
+    const quantity = form.quantity.value;
+    const delivery = form.deliveryType.value === 'today' ? 'Today (within 1hr)' : `${form.laterDate.value} at ${form.laterTime.value}`;
+    const downpayment = document.getElementById("downpayment").value;
+
+    // WhatsApp Message Summary
+    const message = `🛒 *PasaBuy Order*\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n🏡 Address: ${address}\n📍 Location: ${locationName}\n📦 Items: ${items}\n📊 Qty: ${quantity}\n💰 Budget: ₱${budget}\n📅 Delivery: ${delivery}\n💸 Downpayment: ${downpayment}`;
+
+    // Send to WhatsApp (Admin/Rider)
+    const encodedMsg = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/63XXXXXXXXXX?text=${encodedMsg}`;
+    window.open(whatsappURL, "_blank");
+
+    // Optional: Send to Airtable
+    // Use fetch() with FormData or make webhook call here
+    alert("Order submitted! Please wait for confirmation.");
+    form.reset();
+    document.getElementById("downpayment").value = "";
+    document.getElementById("laterSchedule").classList.add("hidden");
+  });
+</script>
+
 </body>
 </html>
